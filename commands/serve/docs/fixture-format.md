@@ -97,6 +97,9 @@ Options for `EnigmaMocker` that will be used when rendering the fixture. See `@n
 ```js
 export default () => ({
   enigmaMockerOptions: {
+    appMethods: {
+      getField: () => {},
+    },
     delay: 3000,
   },
   // ...

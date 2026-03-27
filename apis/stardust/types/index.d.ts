@@ -978,6 +978,7 @@ declare namespace stardust {
      * Options for Enigma Mocker
      */
     interface EnigmaMockerOptions {
+        appMethods?: object; 
         delay: number;
     }
 

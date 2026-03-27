@@ -365,4 +365,32 @@ describe('enigma-mocker', () => {
       expect(listObjectModel).toBe(undefined);
     });
   });
+
+  describe('options', () => {
+    test('should add app methods to mocked app', async () => {
+      const options = {
+        appMethods: {
+          method1: () => {},
+          method2: () => {},
+          method3: () => {},
+        },
+      };
+      const app = await createEnigmaMocker(genericObject, options);
+      expect(app.method1).toBe(options.appMethods.method1);
+      expect(app.method2).toBe(options.appMethods.method2);
+      expect(app.method3).toBe(options.appMethods.method3);
+    });
+
+    test('should not overwrite existing properties in mocked app', async () => {
+      const options = {
+        appMethods: {
+          session: {},
+          getObject: () => {},
+        },
+      };
+      const app = await createEnigmaMocker(genericObject, options);
+      expect(app.session).not.toBe(options.appMethods.session);
+      expect(app.getObject).not.toBe(options.appMethods.getObject);
+    });
+  });
 });
