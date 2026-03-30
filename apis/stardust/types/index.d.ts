@@ -628,6 +628,20 @@ declare namespace stardust {
 
     }
 
+    interface LoadType {
+        (type: {
+            name: string;
+            version: string;
+        }): Promise<stardust.Visualization>;
+    }
+
+    interface TypeInfo {
+        name: string;
+        version?: string;
+        load: stardust.LoadType;
+        meta?: object;
+    }
+
     type Field = string | qix.NxDimension | qix.NxMeasure | stardust.LibraryField;
 
     /**
@@ -678,20 +692,6 @@ declare namespace stardust {
             name: string;
         };
         fn: ()=>void;
-    }
-
-    interface LoadType {
-        (type: {
-            name: string;
-            version: string;
-        }): Promise<stardust.Visualization>;
-    }
-
-    interface TypeInfo {
-        name: string;
-        version?: string;
-        load: stardust.LoadType;
-        meta?: object;
     }
 
     class RenderError extends Error {
@@ -978,7 +978,7 @@ declare namespace stardust {
      * Options for Enigma Mocker
      */
     interface EnigmaMockerOptions {
-        appMethods?: object; 
+        appMethods?: object;
         delay: number;
     }
 
