@@ -8660,10 +8660,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dts-dom@npm:^3.1.0":
-  version: 3.7.0
-  resolution: "dts-dom@npm:3.7.0"
-  checksum: 10c0/8fc5206de7bb92c653026b245e568013c0f6f4c2918981b55b306caebe1e4b9a892c5cc6265e90d946938a3dae9e9131f9f6cfdd255db67d242282162bed8027
+"dts-dom@npm:3.6.0":
+  version: 3.6.0
+  resolution: "dts-dom@npm:3.6.0"
+  checksum: 10c0/f837605f518f5126645bfbd538a9322b4afb0e111c5300c30679ef78d29e67955682fc398095224c4d22cdedfced80dd6c91b9fd44a136f11f8acfb4e540e009
   languageName: node
   linkType: hard
 
