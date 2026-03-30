@@ -628,18 +628,14 @@ declare namespace stardust {
 
     }
 
-    interface LoadType {
-        (type: {
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
             name: string;
-            version: string;
-        }): Promise<stardust.Visualization>;
-    }
-
-    interface TypeInfo {
-        name: string;
-        version?: string;
-        load: stardust.LoadType;
-        meta?: object;
+        };
+        fn: ()=>void;
     }
 
     type Field = string | qix.NxDimension | qix.NxMeasure | stardust.LibraryField;
@@ -684,14 +680,18 @@ declare namespace stardust {
         type: "dimension" | "measure";
     }
 
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
+    interface LoadType {
+        (type: {
             name: string;
-        };
-        fn: ()=>void;
+            version: string;
+        }): Promise<stardust.Visualization>;
+    }
+
+    interface TypeInfo {
+        name: string;
+        version?: string;
+        load: stardust.LoadType;
+        meta?: object;
     }
 
     class RenderError extends Error {

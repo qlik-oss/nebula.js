@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.8.0](https://github.com/qlik-oss/nebula.js/compare/v6.7.0...v6.8.0) (2026-03-30)
+
+### Bug Fixes
+
+- align requirements better with client ([#1937](https://github.com/qlik-oss/nebula.js/issues/1937)) ([908a3d5](https://github.com/qlik-oss/nebula.js/commit/908a3d5cca50692fdbf8d169e38e9a39adec7fac))
+- **deps:** update dependency puppeteer to v24.40.0 ([#1947](https://github.com/qlik-oss/nebula.js/issues/1947)) ([5549eba](https://github.com/qlik-oss/nebula.js/commit/5549eba1491a9fd3235f756b8d7b19d781319e5a))
+- **deps:** update dependency webpack-cli to v7 ([#1935](https://github.com/qlik-oss/nebula.js/issues/1935)) ([db7f521](https://github.com/qlik-oss/nebula.js/commit/db7f5216a74ee6859e801e7b996cbe70f07d938c))
+- **deps:** update minor and patch ([#1934](https://github.com/qlik-oss/nebula.js/issues/1934)) ([c9c29a8](https://github.com/qlik-oss/nebula.js/commit/c9c29a806db4ed5def4999f1579927cafbff43d2))
+- **deps:** update minor and patch ([#1948](https://github.com/qlik-oss/nebula.js/issues/1948)) ([430499f](https://github.com/qlik-oss/nebula.js/commit/430499f4a6e1c285e0d2ca8086ee4172b56500b3))
+- overly permissive regex ranges in color.js ([#1951](https://github.com/qlik-oss/nebula.js/issues/1951)) ([8a42eb0](https://github.com/qlik-oss/nebula.js/commit/8a42eb0c2873c2df64f50770e7a29264970ff966))
+- prototype pollution vulnerabilities in json-patch.js ([#1941](https://github.com/qlik-oss/nebula.js/issues/1941)) ([85185bd](https://github.com/qlik-oss/nebula.js/commit/85185bda18c0b0dc5091cba9a9999c2f297f5827))
+- prototype pollution vulnerabilities in utils.js and json-patch.js ([#1952](https://github.com/qlik-oss/nebula.js/issues/1952)) ([05eb5aa](https://github.com/qlik-oss/nebula.js/commit/05eb5aa63451ba63ad2a8fabe894276c23e19b87))
+- resolve prototype pollution security issues in color.js ([#1944](https://github.com/qlik-oss/nebula.js/issues/1944)) ([9c4f733](https://github.com/qlik-oss/nebula.js/commit/9c4f73323f0078ad1711c78eca8dd5cef2eb3384))
+
+### Features
+
+- **enigma-mocker:** possibility to add methods to mocked app ([#1955](https://github.com/qlik-oss/nebula.js/issues/1955)) ([e8478a5](https://github.com/qlik-oss/nebula.js/commit/e8478a573cef862686dee4118f73532c18225072))
+
 # [6.7.0](https://github.com/qlik-oss/nebula.js/compare/v6.6.0...v6.7.0) (2026-03-12)
 
 ### Bug Fixes
