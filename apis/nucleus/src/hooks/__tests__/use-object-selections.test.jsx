@@ -249,6 +249,37 @@ describe('useObjectSelections', () => {
     expect(ref.current.result[0].isModal()).toBe(true);
   });
 
+  test('isActive returns false after deactivated event is emitted externally (e.g. toolbar clear)', async () => {
+    await render();
+
+    await ref.current.result[0].begin(['/foo']);
+    expect(ref.current.result[0].isActive()).toBe(true);
+
+    // Simulate toolbar clearing selections by emitting 'deactivated' externally
+    objectSel.emit('deactivated');
+    expect(ref.current.result[0].isActive()).toBe(false);
+  });
+
+  test('isActive returns false after confirm', async () => {
+    await render();
+
+    await ref.current.result[0].begin(['/foo']);
+    expect(ref.current.result[0].isActive()).toBe(true);
+
+    await ref.current.result[0].confirm();
+    expect(ref.current.result[0].isActive()).toBe(false);
+  });
+
+  test('isActive returns false after cancel', async () => {
+    await render();
+
+    await ref.current.result[0].begin(['/foo']);
+    expect(ref.current.result[0].isActive()).toBe(true);
+
+    await ref.current.result[0].cancel();
+    expect(ref.current.result[0].isActive()).toBe(false);
+  });
+
   test('begin modal state', async () => {
     await render();
 

@@ -196,6 +196,10 @@ const createObjectSelections = ({ appSelections, appModal, model }) => {
 
   eventmixin(api);
 
+  api.addListener('deactivated', () => {
+    isActive = false;
+  });
+
   return api;
 };
 
