@@ -30,6 +30,7 @@ const THEME_OBJECT_TYPE_MAP = {
   'sn-table': 'straightTableV2',
   waterfallchart: 'waterfallChart',
   'sn-tabbed-container': 'tabContainer',
+  'sn-slider': 'slider',
 };
 
 const getThemeObjectType = (visualization) => {
