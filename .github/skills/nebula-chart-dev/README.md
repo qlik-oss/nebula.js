@@ -25,9 +25,3 @@ If you want to target GitHub Copilot explicitly:
 ```bash
 npx skills add https://github.com/qlik-oss/nebula.js --skill nebula-chart-dev -a github-copilot
 ```
-
-This is the Nebula equivalent of:
-
-```bash
-npx skills add https://github.com/oxc-project/oxc --skill migrate-oxlint
-```
