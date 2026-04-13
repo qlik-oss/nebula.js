@@ -18,6 +18,7 @@ For a real scaffold (not only markdown snippets), use the files in:
 - `./assets/advanced-chart-template/src/components/root.jsx`
 - `./assets/advanced-chart-template/src/components/AdvancedChart.jsx`
 - `./assets/advanced-chart-template/src/components/chart.css`
+- `./assets/sample-fixture.fix.js`
 
 When asked to generate a new nebula chart in this skill, prefer copying this template folder first, then fill in the TODO sections with chart-specific logic.
 
@@ -553,6 +554,19 @@ Use `.fix.js` file names, for example:
 scenario-1.fix.js
 ```
 
+This skill includes a ready-to-use sample at:
+
+```
+./assets/sample-fixture.fix.js
+```
+
+Copy it into your fixture folder before running the dev server:
+
+```bash
+mkdir -p test/integration/component
+cp .github/skills/nebula-chart-dev/assets/sample-fixture.fix.js test/integration/component/
+```
+
 ### Run Command
 
 Start the dev server with fixture discovery:
@@ -567,6 +581,12 @@ Open the render route with a fixture query:
 
 ```text
 http://localhost:8000/render/?fixture=scenario-1.fix.js
+```
+
+Using the included sample fixture:
+
+```text
+http://localhost:8000/render/?fixture=sample-fixture.fix.js
 ```
 
 Important:
