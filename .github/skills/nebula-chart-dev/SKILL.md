@@ -7,6 +7,20 @@ description: 'Build, develop, and review nebula.js (stardust) visualization char
 
 Reference: [Official quickstart](https://qlik.dev/extend/extend-quickstarts/first-extension/) | [Examples repo](https://github.com/qlik-oss/nebula.js-examples/tree/main/examples) | [In-Sense guide](https://qlik.dev/extend/build-extension/in-qlik-sense/) | [Property panel guide](https://qlik.dev/extend/property-panel-basics/extensions-add-custom-properties/)
 
+## Multi-File Starter Template
+
+For a real scaffold (not only markdown snippets), use the files in:
+
+- `./assets/advanced-chart-template/src/index.js`
+- `./assets/advanced-chart-template/src/data.js`
+- `./assets/advanced-chart-template/src/object-properties.js`
+- `./assets/advanced-chart-template/src/ext.js`
+- `./assets/advanced-chart-template/src/components/root.jsx`
+- `./assets/advanced-chart-template/src/components/AdvancedChart.jsx`
+- `./assets/advanced-chart-template/src/components/chart.css`
+
+When asked to generate a new nebula chart in this skill, prefer copying this template folder first, then fill in the TODO sections with chart-specific logic.
+
 ---
 
 ## Project Structure
@@ -521,6 +535,65 @@ Nebula uses a chain-of-promises mechanism to decide when a chart is "done" rende
 
 ---
 
+## Fixture Testing (Engine-Free Development)
+
+Use fixture files for deterministic chart testing without depending on a live engine.
+
+### Setup
+
+Store fixtures in:
+
+```
+test/integration/component/
+```
+
+Use `.fix.js` file names, for example:
+
+```
+scenario-1.fix.js
+```
+
+### Run Command
+
+Start the dev server with fixture discovery:
+
+```bash
+nebula serve --fixturePath test/integration/component
+```
+
+### Render URL Pattern
+
+Open the render route with a fixture query:
+
+```text
+http://localhost:8000/render/?fixture=scenario-1.fix.js
+```
+
+Important:
+
+- Use `/render/` route (not root).
+- Include full fixture filename with `.fix.js`.
+
+### Minimal Fixture Shape
+
+A fixture should export a default function that returns:
+
+- `type` — chart type name
+- `genericObjects` — array of object definitions
+- `getLayout()` — function returning `qHyperCube` with:
+  - `qDimensionInfo` — dimension metadata
+  - `qMeasureInfo` — measure metadata
+  - `qDataPages[0].qMatrix` — table data
+- optional `getEffectiveProperties()` — property defaults
+
+### Debug Tips
+
+- Keep fixture matrices intentionally small while debugging interactions.
+- Add explicit `qElemNumber` and `qState` values to verify selection behavior.
+- Use multiple fixtures (baseline, empty, null-values, selection-states) to cover edge cases.
+
+---
+
 ## Security & DOM Rules
 
 **Never:**
@@ -602,3 +675,41 @@ useEffect(() => {
   renderAll(element, layout, theme);
 }, [theme, layout, element]); // include theme in deps!
 ```
+
+### Local Interaction Feedback With `useStaleLayout`
+
+When using `useStaleLayout`, layout updates are delayed until selections confirm. Local interaction feedback (hover highlights, click feedback) must be handled client-side before layout arrives.
+
+**Recommended pattern:**
+
+1. Maintain transient interaction state locally (selected marks, active categories, hovered ids).
+2. Emit transient state changes immediately on user interaction.
+3. Pass transient state into chart settings/rendering options.
+4. Trigger lightweight chart updates when transient state changes.
+5. Use renderer logic to visualize transient state (highlight selected, dim non-selected).
+
+**Architecture:**
+
+- **Interaction glue layer**: Translate DOM/chart interaction events into transient state + selection actions.
+- **Supernova component layer**: Hold transient state in hook state; pass into rendering; separate layout-driven from transient-only updates.
+- **Renderer layer**: Read transient state from options; apply deterministic visual rules.
+
+**QIX Selection Guidance:**
+
+- For value brushing, use q field paths (e.g. `qHyperCube/qDimensionInfo/0`), not grouping tokens.
+- Ensure selection mode is active before sending `select()` calls.
+- If helper-based selection is unstable, call QIX methods directly via `selections.select({ method, params })`.
+
+**Common Regressions:**
+
+- Mixing transient-state dependencies into main layout/data effects.
+- Triggering full chart updates for transient visual changes.
+- Emitting transient updates before selection actions complete.
+
+**Mitigation:**
+
+- Keep two separate effect flows:
+  - Flow A: layout/data-driven updates.
+  - Flow B: transient settings-only updates.
+- In event handlers, perform selection action first, then update transient visuals.
+- Use minimal diagnostics around selection calls and listener lifecycle.
