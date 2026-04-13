@@ -20,25 +20,6 @@ export default function ext(galaxy) {
           component: 'expandable-items',
           label: 'Template appearance',
           items: {
-            textHeader: {
-              type: 'items',
-              label: 'Text',
-              items: {
-                titleText: {
-                  ref: 'props.titleText',
-                  type: 'string',
-                  label: 'Title',
-                  expression: 'optional',
-                },
-                showSubtitle: {
-                  ref: 'props.showSubtitle',
-                  type: 'boolean',
-                  component: 'switch',
-                  label: 'Show subtitle',
-                  defaultValue: true,
-                },
-              },
-            },
             colorHeader: {
               type: 'items',
               label: 'Color',
