@@ -7,6 +7,20 @@ description: 'Build, develop, and review nebula.js (stardust) visualization char
 
 Reference: [Official quickstart](https://qlik.dev/extend/extend-quickstarts/first-extension/) | [Examples repo](https://github.com/qlik-oss/nebula.js-examples/tree/main/examples) | [In-Sense guide](https://qlik.dev/extend/build-extension/in-qlik-sense/) | [Property panel guide](https://qlik.dev/extend/property-panel-basics/extensions-add-custom-properties/)
 
+## Multi-File Starter Template
+
+For a real scaffold (not only markdown snippets), use the files in:
+
+- `./assets/advanced-chart-template/src/index.js`
+- `./assets/advanced-chart-template/src/data.js`
+- `./assets/advanced-chart-template/src/object-properties.js`
+- `./assets/advanced-chart-template/src/ext.js`
+- `./assets/advanced-chart-template/src/components/root.jsx`
+- `./assets/advanced-chart-template/src/components/AdvancedChart.jsx`
+- `./assets/advanced-chart-template/src/components/chart.css`
+
+When asked to generate a new nebula chart in this skill, prefer copying this template folder first, then fill in the TODO sections with chart-specific logic.
+
 ---
 
 ## Project Structure
