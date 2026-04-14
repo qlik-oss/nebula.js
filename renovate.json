@@ -10,7 +10,7 @@
     {
       "fileMatch": ["^commands/create/templates/.*/_package\\.json$"],
       "matchStrings": [
-        "^\\s{4}\\\"(?<depName>@?[a-zA-Z0-9._/-]+)\\\"\\s*:\\s*\\\"(?<currentValue>[~^]?\\d+\\.\\d+\\.\\d+(?:[-+][0-9A-Za-z.-]+)?)\\\""
+        "^\\s+\\\"(?<depName>@?[a-zA-Z0-9._/-]+)\\\"\\s*:\\s*\\\"(?<currentValue>[~^]?\\d+\\.\\d+\\.\\d+(?:[-+][0-9A-Za-z.-]+)?)\\\""
       ],
       "datasourceTemplate": "npm"
     }
