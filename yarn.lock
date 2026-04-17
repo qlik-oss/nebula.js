@@ -3483,7 +3483,7 @@ __metadata:
   resolution: "@nebula.js/cli-create@workspace:commands/create"
   dependencies:
     chalk: "npm:4.1.2"
-    ejs: "npm:5.0.1"
+    ejs: "npm:5.0.2"
     fs-extra: "npm:11.3.4"
     inquirer: "npm:8.2.7"
   languageName: unknown
@@ -3545,7 +3545,7 @@ __metadata:
     puppeteer: "npm:24.40.0"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
-    react-router: "npm:7.14.0"
+    react-router: "npm:7.14.1"
     regenerator-runtime: "npm:0.14.1"
     source-map-loader: "npm:5.0.0"
     webpack: "npm:5.106.1"
@@ -3647,9 +3647,9 @@ __metadata:
     "@nebula.js/theme": "npm:^6.8.0"
     "@nebula.js/ui": "npm:^6.8.0"
     "@qlik/api": "npm:2.7.0"
-    "@scriptappy/cli": "npm:0.10.5"
-    "@scriptappy/from-jsdoc": "npm:0.19.5"
-    "@scriptappy/to-dts": "npm:1.0.3"
+    "@scriptappy/cli": "npm:0.10.6"
+    "@scriptappy/from-jsdoc": "npm:0.19.6"
+    "@scriptappy/to-dts": "npm:1.0.4"
     extend: "npm:3.0.2"
     node-event-emitter: "npm:0.0.1"
     react: "npm:18.3.1"
@@ -4940,32 +4940,32 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@scriptappy/cli@npm:0.10.5":
-  version: 0.10.5
-  resolution: "@scriptappy/cli@npm:0.10.5"
+"@scriptappy/cli@npm:0.10.6":
+  version: 0.10.6
+  resolution: "@scriptappy/cli@npm:0.10.6"
   dependencies:
-    "@scriptappy/from-jsdoc": "npm:^0.19.5"
+    "@scriptappy/from-jsdoc": "npm:^0.19.6"
     import-cwd: "npm:3.0.0"
     yargs: "npm:18.0.0"
   bin:
     sy: index.js
-  checksum: 10c0/2bd9d33f3e8184b0bd244f15cbcbb5b6c5c7ec87293697698288c063153b16213b24072f2dfe4c7e6f2b3f691fcbbbea659bb03a278734c6a0cdb8345a3c6894
+  checksum: 10c0/c07d5aefca2ac42580d7823961e918b0447a85edde95f838d3c469a4b8c44d14093839d66b00554e5d807c4c0171c0cc086776681c61d0513f589eb9bb77786d
   languageName: node
   linkType: hard
 
-"@scriptappy/from-jsdoc@npm:0.19.5, @scriptappy/from-jsdoc@npm:^0.19.5":
-  version: 0.19.5
-  resolution: "@scriptappy/from-jsdoc@npm:0.19.5"
+"@scriptappy/from-jsdoc@npm:0.19.6, @scriptappy/from-jsdoc@npm:^0.19.6":
+  version: 0.19.6
+  resolution: "@scriptappy/from-jsdoc@npm:0.19.6"
   dependencies:
     "@scriptappy/schema": "npm:^1.1.3"
     "@scriptappy/tools": "npm:^0.7.2"
-    catharsis: "npm:^0.9.0"
+    catharsis: "npm:^0.11.0"
     chokidar: "npm:5.0.0"
     extend: "npm:3.0.2"
     fast-glob: "npm:^3.3.0"
     jsdoc: "npm:4.0.5"
     yargs: "npm:18.0.0"
-  checksum: 10c0/e9602b34bd226c9b9cbd42971816eef61d6f81dccd253d51536a49c42e64edbdd5dd5dbdecd34f88c0c8ff86dd2e05cd7135007456399423638de999517aa95e
+  checksum: 10c0/7dcb534c38645c971e5794201ae1202f50c74cc2b8501fe1b23e74dddb9007fe22cbfc9e0f490dc188032785fcc0e25dabb137ad841fd1c8454d5773dfc8ce9d
   languageName: node
   linkType: hard
 
@@ -4976,13 +4976,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@scriptappy/to-dts@npm:1.0.3":
-  version: 1.0.3
-  resolution: "@scriptappy/to-dts@npm:1.0.3"
+"@scriptappy/to-dts@npm:1.0.4":
+  version: 1.0.4
+  resolution: "@scriptappy/to-dts@npm:1.0.4"
   dependencies:
-    dts-dom: "patch:dts-dom@npm%3A3.7.0#~/.yarn/patches/dts-dom-npm-3.7.0-3f6e1b92cd.patch"
+    dts-dom: "npm:3.7.0"
     extend: "npm:3.0.2"
-  checksum: 10c0/b34678db97f68f14ebd82e4d067ff6e45306bb08ced1361e77243c41f504380924ae97e46f509d3d0d60a6da0a47237fbb40b18edf7114c6584c3406d46eaef6
+  checksum: 10c0/f038709a14c16fbad34064fd13766da3722e16dcf69d5194feb999a22ce1ae600699782184cec96e6e09e08610b572ea18b8d7e219099a78bb1bf0495946964f
   languageName: node
   linkType: hard
 
@@ -7235,10 +7235,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"caniuse-lite@npm:1.0.30001787":
-  version: 1.0.30001787
-  resolution: "caniuse-lite@npm:1.0.30001787"
-  checksum: 10c0/93a6975afbf07f49c9077b348948bbc25b6a82596ccd07b4b6503e48f6f968e1a1e057cc25004db8a2d1d4f35f0c792739e33634edfcefc88ff184c9a2f7a036
+"caniuse-lite@npm:1.0.30001788":
+  version: 1.0.30001788
+  resolution: "caniuse-lite@npm:1.0.30001788"
+  checksum: 10c0/d3c4695d0e7a1e95194cc5072e26db59cbcd25adfff64253859213c1a04ce9bc17f7b8ec8b11908ac1ecc6c1a0caf95fae0aec064a64b8df03286dffa629ce8a
+  languageName: node
+  linkType: hard
+
+"catharsis@npm:^0.11.0":
+  version: 0.11.0
+  resolution: "catharsis@npm:0.11.0"
+  dependencies:
+    lodash: "npm:^4.17.21"
+  checksum: 10c0/f9161d2982bd282a7f8e849ec5f4b62adef5621fe5e7941b795c46662243464dca4e31faa22a392e2aac975711a1977d3fa64d7faf8c3158c130378f2d8d3f0f
   languageName: node
   linkType: hard
 
@@ -8702,6 +8711,15 @@ __metadata:
   bin:
     ejs: bin/cli.js
   checksum: 10c0/7791e4d621e1c050b4310b87b75b43bb18de20cbe4560ee4640693ec052a19ae884df838ed4e391c26ec25530af90b58c35a3465462b6b1734e4b084ce45f872
+  languageName: node
+  linkType: hard
+
+"ejs@npm:5.0.2":
+  version: 5.0.2
+  resolution: "ejs@npm:5.0.2"
+  bin:
+    ejs: bin/cli.js
+  checksum: 10c0/6377ba83487e9e818dd77ab92d67a5f6c0d093689fa500aa0654305f4c19af13a30a606cc6286b8dfef1cf8aae89a71130af16aca5b72dc500a4a44ac3aa13bf
   languageName: node
   linkType: hard
 
@@ -10457,7 +10475,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:^17.4.0":
+"globals@npm:^17.5.0":
   version: 17.5.0
   resolution: "globals@npm:17.5.0"
   checksum: 10c0/92828102ed2f5637907725f0478038bed02fc83e9fc89300bb753639ba7c022b6c02576fc772117302b431b204591db1f2fa909d26f3f0a9852cc856a941df3f
@@ -15832,9 +15850,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router@npm:7.14.0":
-  version: 7.14.0
-  resolution: "react-router@npm:7.14.0"
+"react-router@npm:7.14.1":
+  version: 7.14.1
+  resolution: "react-router@npm:7.14.1"
   dependencies:
     cookie: "npm:^1.0.1"
     set-cookie-parser: "npm:^2.6.0"
@@ -15844,7 +15862,7 @@ __metadata:
   peerDependenciesMeta:
     react-dom:
       optional: true
-  checksum: 10c0/a496489973cd5e87dcc5c1c7312f4cc99463eb5e0a0f97b3f298467531b754a3227562a83e0c9019b9d2452fd0681d05882ee061af2e0cafb0818f857578b805
+  checksum: 10c0/57b86accdc50b917509e4b21f821dd432807e3f62b5e978d0d5174fc7da3798ce57ce896cbf70a8ba8f6f3d53515a07021e759829908239b4eee34c804695120
   languageName: node
   linkType: hard
 
@@ -16548,7 +16566,7 @@ __metadata:
     eslint-plugin-prettier: "npm:5.5.5"
     eslint-plugin-react: "npm:7.37.5"
     express: "npm:5.2.1"
-    globals: "npm:^17.4.0"
+    globals: "npm:^17.5.0"
     husky: "npm:9.1.7"
     jest: "npm:^30.3.0"
     jest-environment-jsdom: "npm:^30.3.0"
