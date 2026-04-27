@@ -1,5 +1,5 @@
 {
-  "extends": ["local>qlik-oss/renovate-config"],
+  "extends": ["local>qlik-oss/renovate-config", ":automergeMinor", ":automergeDigest"],
   "circleci": {
     "ignoreDeps": []
   },
