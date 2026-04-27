@@ -10,9 +10,9 @@ describe('<Error />', () => {
     };
     TestRenderer(<Error error={error} />);
 
-    expect(screen.queryByText(error.message)).toBeInTheDocument();
+    expect(screen.getByText(error.message)).toBeInTheDocument();
     error.hints.map((h) => {
-      expect(screen.queryByText(h)).toBeInTheDocument();
+      expect(screen.getByText(h)).toBeInTheDocument();
     });
   });
 });

@@ -3,21 +3,118 @@ import globals from 'globals';
 import mocha from 'eslint-plugin-mocha';
 import qlik from '@qlik/eslint-config';
 
-// import-x plugin is provided by @qlik/eslint-config; re-use its instance to avoid dual-plugin issues
-const importX = qlik.configs.react[0].plugins['import-x'];
-const reactPlugin = qlik.configs.react[0].plugins['react'];
+const ROOT_IGNORES = [
+  '**/dist/',
+  '**/coverage/',
+  '**/node_modules/',
+  'apis/snapshooter/client.js',
+  'apis/*/core/**/*.js',
+  '**/*.d.ts',
+  '.github/**',
+  '.storybook_old/**',
+];
+
+const TEST_FILES = ['**/__test__/**/*.{js,jsx}', '**/__tests__/**/*.{js,jsx}', '**/*.spec.{js,jsx}', '**/*.test.{js,jsx}'];
+const NODE_RUNTIME_FILES = [
+  'commands/**/*.{js,cjs,mjs}',
+  'scripts/**/*',
+  'apis/stardust/index.js',
+  'apis/test-utils/index.js',
+  'apis/test-utils/src/index.js',
+  'apis/snapshooter/rollup.config.js',
+  'apis/stardust/api-spec/**/*.js',
+  'rollup.config.js',
+];
+const ROOT_NODE_FILES = ['jest.setup.js', 'jest.config.js', 'rollup.config.js'];
+const NODE_EXAMPLE_FILES = ['test/**/*', 'examples/**/*', '**/playwright.config*.{js,ts,mjs,cjs}'];
+const COMMON_IMPORT_RELAXATIONS = {
+  'import-x/no-unresolved': 0,
+  'import-x/extensions': 0,
+};
+const BASE_RULE_OVERRIDES = {
+  'no-plusplus': 0,
+  'no-bitwise': 0,
+  'no-unused-expressions': 0,
+  'react/destructuring-assignment': [0, 'always'],
+  'react/prop-types': 0,
+  'react/no-deprecated': 0,
+  ...COMMON_IMPORT_RELAXATIONS,
+  'import-x/namespace': 0,
+  'import-x/named': 0,
+  'react-hooks/exhaustive-deps': 0,
+  'react-hooks/rules-of-hooks': 0,
+  'react/jsx-no-leaked-render': 0,
+  'react/no-object-type-as-default-prop': 0,
+  'react/display-name': 0,
+  'react/hook-use-state': 0,
+  'react/no-array-index-key': 1,
+  'require-atomic-updates': 0,
+  'prefer-object-has-own': 0,
+  'func-names': 0,
+  'no-useless-call': 0,
+  'react-hooks/refs': 0,
+  'react-hooks/set-state-in-effect': 0,
+  'react-hooks/immutability': 0,
+  'react-hooks/use-memo': 0,
+  'react-hooks/void-use-memo': 0,
+  'react-hooks/preserve-manual-memoization': 0,
+  'import-x/no-extraneous-dependencies': [
+    2,
+    {
+      devDependencies: true,
+    },
+  ],
+  'import-x/no-dynamic-require': 0,
+  'no-unused-vars': [
+    'error',
+    {
+      caughtErrors: 'none',
+    },
+  ],
+};
+const TEST_RULE_OVERRIDES = {
+  'testing-library/await-async-queries': 0,
+  'testing-library/render-result-naming-convention': 0,
+  'testing-library/no-unnecessary-act': 0,
+  'testing-library/prefer-screen-queries': 0,
+  'testing-library/no-node-access': 0,
+  'testing-library/no-render-in-lifecycle': 0,
+  'testing-library/no-await-sync-queries': 0,
+  'testing-library/await-async-utils': 0,
+  'jest/no-conditional-expect': 0,
+  'jest/no-standalone-expect': 0,
+  'jest/valid-title': 0,
+  'jest/valid-expect-in-promise': 0,
+};
+
+const getPresetPlugin = (configs, pluginName) => {
+  const plugin = configs.find((config) => config.plugins?.[pluginName])?.plugins?.[pluginName];
+
+  if (!plugin) {
+    throw new Error(`Unable to find "${pluginName}" in @qlik/eslint-config react preset`);
+  }
+
+  return plugin;
+};
+
+const withNodeGlobals = (files, options = {}) => ({
+  ...options,
+  files,
+  languageOptions: {
+    ...options.languageOptions,
+    globals: {
+      ...globals.node,
+      ...options.languageOptions?.globals,
+    },
+  },
+});
+
+// Re-use plugin instances from @qlik/eslint-config to avoid dual-plugin issues
+const importX = getPresetPlugin(qlik.configs.react, 'import-x');
+const reactPlugin = getPresetPlugin(qlik.configs.react, 'react');
 
 export default qlik.compose(
-  globalIgnores([
-    '**/dist/',
-    '**/coverage/',
-    '**/node_modules/',
-    'apis/snapshooter/client.js',
-    'apis/*/core/**/*.js',
-    '**/*.d.ts',
-    '.github/**',
-    '.storybook_old/**',
-  ]),
+  globalIgnores(ROOT_IGNORES),
   ...qlik.configs.react,
   ...qlik.configs.jest,
   {
@@ -39,125 +136,21 @@ export default qlik.compose(
     },
 
     rules: {
-      'no-plusplus': 0,
-      'no-bitwise': 0,
-      'no-unused-expressions': 0,
-      'react/destructuring-assignment': [0, 'always'],
-      'react/prop-types': 0,
-      'react/no-deprecated': 0,
-
-      // New rules from @qlik/eslint-config not suited to this codebase
-      'import-x/no-unresolved': 0,
-      'import-x/extensions': 0,
-      'import-x/namespace': 0,
-      'import-x/named': 0,
-      'react-hooks/exhaustive-deps': 0,
-      'react-hooks/rules-of-hooks': 0,
-      'react/jsx-no-leaked-render': 0,
-      'react/no-object-type-as-default-prop': 0,
-      'react/display-name': 0,
-      'react/hook-use-state': 0,
-      'react/no-array-index-key': 1,
-      'require-atomic-updates': 0,
-      'prefer-object-has-own': 0,
-      'func-names': 0,
-      'no-useless-call': 0,
-
-      // New react-hooks rules from React Compiler plugin (not applicable to this codebase)
-      'react-hooks/refs': 0,
-      'react-hooks/set-state-in-effect': 0,
-      'react-hooks/immutability': 0,
-      'react-hooks/use-memo': 0,
-      'react-hooks/void-use-memo': 0,
-      'react-hooks/preserve-manual-memoization': 0,
-
-      // testing-library rules from jest config — not applicable to this codebase's test style
-      'testing-library/await-async-queries': 0,
-      'testing-library/render-result-naming-convention': 0,
-      'testing-library/no-unnecessary-act': 0,
-      'testing-library/prefer-presence-queries': 0,
-      'testing-library/prefer-screen-queries': 0,
-      'testing-library/no-node-access': 0,
-      'testing-library/no-render-in-lifecycle': 0,
-      'testing-library/no-await-sync-queries': 0,
-      'testing-library/await-async-utils': 0,
-
-      // Jest rules not previously enforced
-      'jest/no-conditional-expect': 0,
-      'jest/no-standalone-expect': 0,
-      'jest/valid-title': 0,
-      'jest/valid-expect-in-promise': 0,
-
-      'import-x/no-extraneous-dependencies': [
-        2,
-        {
-          devDependencies: true,
-        },
-      ],
-
-      'import-x/no-dynamic-require': 0,
-      'no-unused-vars': [
-        'error',
-        {
-          caughtErrors: 'none',
-        },
-      ],
+      ...BASE_RULE_OVERRIDES,
     },
   },
-  // Node.js/CommonJS globals for all non-web command files and CJS API files
-  {
-    files: [
-      'commands/**/*.{js,cjs,mjs}',
-      'scripts/**/*',
-      'apis/stardust/index.js',
-      'apis/test-utils/index.js',
-      'apis/test-utils/src/index.js',
-      'apis/snapshooter/rollup.config.js',
-      'apis/stardust/api-spec/**/*.js',
-      'rollup.config.js',
-    ],
+  withNodeGlobals(TEST_FILES, {
+    rules: TEST_RULE_OVERRIDES,
+  }),
+  withNodeGlobals(NODE_RUNTIME_FILES, {
     ignores: ['commands/serve/web/**/*'],
-
-    languageOptions: {
-      globals: {
-        ...globals.node,
-      },
-    },
-  },
-  // Add node globals to jest test files (for `global`, `require`, `process` used in mocking)
-  {
-    files: ['**/__test__/**/*.{js,jsx}', '**/__tests__/**/*.{js,jsx}', '**/*.spec.{js,jsx}', '**/*.test.{js,jsx}'],
-
-    languageOptions: {
-      globals: {
-        ...globals.node,
-      },
-    },
-  },
-  // Node globals for root-level config and test runner files
-  {
-    files: ['jest.setup.js', 'jest.config.js', 'rollup.config.js'],
-
-    languageOptions: {
-      globals: {
-        ...globals.node,
-      },
-    },
-  },
-  // test/ and examples/ directories: node globals + relax external deps check
-  {
-    files: ['test/**/*', 'examples/**/*', '**/playwright.config*.{js,ts,mjs,cjs}'],
-
-    languageOptions: {
-      globals: {
-        ...globals.node,
-      },
-    },
-
+  }),
+  withNodeGlobals(ROOT_NODE_FILES),
+  withNodeGlobals(NODE_EXAMPLE_FILES, {
     rules: {
       'import-x/no-extraneous-dependencies': 0,
     },
-  },
+  }),
   {
     files: ['apis/**/*', 'packages/**/*', 'commands/create/**/*', 'commands/sense/src/**/*'],
 
@@ -256,8 +249,7 @@ export default qlik.compose(
     files: ['**/templates/**/*.js'],
 
     rules: {
-      'import-x/no-unresolved': 0,
-      'import-x/extensions': 0,
+      ...COMMON_IMPORT_RELAXATIONS,
       'import-x/no-extraneous-dependencies': 0,
     },
   },
@@ -268,8 +260,8 @@ export default qlik.compose(
       'react/jsx-filename-extension': 0,
       'react/no-multi-comp': 0,
       'react/prefer-stateless-function': 0,
+      ...COMMON_IMPORT_RELAXATIONS,
       'import-x/no-extraneous-dependencies': 0,
-      'import-x/no-unresolved': 0,
     },
   }
 );

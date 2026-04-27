@@ -32,7 +32,7 @@ describe('<ConnectionSteps />', () => {
     TestRenderer(<ConnectionSteps />);
 
     steps.map((step) => {
-      expect(screen.queryByText(step)).toBeInTheDocument();
+      expect(screen.getByText(step)).toBeInTheDocument();
     });
   });
 

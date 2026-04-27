@@ -8,9 +8,9 @@ describe('<SelectEngine />', () => {
     TestRenderer(<SelectEngine />, { error: null });
 
     expect(1).toBe(1);
-    expect(screen.queryByText('Connect to an engine')).toBeInTheDocument();
+    expect(screen.getByText('Connect to an engine')).toBeInTheDocument();
     OptionsToConnect.map((opt) => {
-      expect(screen.queryByText(opt.label)).toBeInTheDocument();
+      expect(screen.getByText(opt.label)).toBeInTheDocument();
     });
   });
 

@@ -13,7 +13,7 @@ describe('<ConnectionGuid />', () => {
       'Qlik Sense on Windows',
       'Qlik Sense Desktop',
     ].map((title) => {
-      expect(screen.queryByText(title)).toBeInTheDocument();
+      expect(screen.getByText(title)).toBeInTheDocument();
     });
   });
 
@@ -24,7 +24,7 @@ describe('<ConnectionGuid />', () => {
       'wss://qlik.eu.qlikcloud.com?qlik-client-id=xxx',
       'wss://mycompany.com/bi',
     ].map((example) => {
-      expect(screen.queryByText(example)).toBeInTheDocument();
+      expect(screen.getByText(example)).toBeInTheDocument();
     });
   });
 });

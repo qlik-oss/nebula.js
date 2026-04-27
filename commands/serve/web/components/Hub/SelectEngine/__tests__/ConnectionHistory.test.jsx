@@ -39,9 +39,9 @@ describe('<ConnectionHistory />', () => {
     };
     TestRenderer(<ConnectionHistory />, { cachedConnectionsData });
 
-    expect(screen.queryByText('Previous connections')).toBeInTheDocument();
+    expect(screen.getByText('Previous connections')).toBeInTheDocument();
     cachedConnectionsData.cachedConnections.map((conn) => {
-      expect(screen.queryByText(conn)).toBeInTheDocument();
+      expect(screen.getByText(conn)).toBeInTheDocument();
     });
   });
 

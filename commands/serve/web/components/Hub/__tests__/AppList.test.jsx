@@ -29,7 +29,7 @@ describe('<AppList />', () => {
   test('should render `Select an App` heading', () => {
     useAppListMock.mockReturnValue({ loading: false });
     TestRenderer(<AppList />);
-    expect(screen.queryByText('Select an app')).toBeInTheDocument();
+    expect(screen.getByText('Select an app')).toBeInTheDocument();
   });
 
   test('should render loading while getting app list', () => {
@@ -44,7 +44,7 @@ describe('<AppList />', () => {
 
     TestRenderer(<AppList />);
     expect(screen.queryByTestId('loading')).not.toBeInTheDocument();
-    expect(screen.queryByText('No apps found!')).toBeInTheDocument();
+    expect(screen.getByText('No apps found!')).toBeInTheDocument();
   });
 
   test('should render app list if there was any app', () => {
@@ -57,7 +57,7 @@ describe('<AppList />', () => {
 
     TestRenderer(<AppList />);
 
-    expect(screen.queryByText('Select an app')).toBeInTheDocument();
+    expect(screen.getByText('Select an app')).toBeInTheDocument();
     expect(screen.queryByTestId('loading')).not.toBeInTheDocument();
     appList.map(({ qDocId, qTitle }) => {
       expect(screen.getByText(qTitle)).toBeInTheDocument();
