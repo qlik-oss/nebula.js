@@ -1,35 +1,33 @@
-import { defineConfig, globalIgnores } from 'eslint/config';
+import { globalIgnores } from 'eslint/config';
 import prettier from 'eslint-plugin-prettier';
-import jest from 'eslint-plugin-jest';
 import globals from 'globals';
 import mocha from 'eslint-plugin-mocha';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import js from '@eslint/js';
-import { FlatCompat } from '@eslint/eslintrc';
+import qlik from '@qlik/eslint-config';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-});
+// import-x plugin is provided by @qlik/eslint-config; re-use its instance to avoid dual-plugin issues
+const importX = qlik.configs.react[0].plugins['import-x'];
 
-export default defineConfig([
+export default qlik.compose(
   globalIgnores(['**/dist/', '**/coverage/', '**/node_modules/', 'apis/snapshooter/client.js', 'apis/*/core/**/*.js']),
+  ...qlik.configs.react,
   {
-    extends: compat.extends('airbnb', 'prettier'),
-
+    ...qlik.configs.jest[0],
+    files: [
+      '**/__test__/**/*.{js,jsx}',
+      '**/__tests__/**/*.{js,jsx}',
+      '**/*.spec.{js,jsx}',
+      '**/*.test.{js,jsx}',
+    ],
+  },
+  {
     plugins: {
       prettier,
-      jest,
+      'import-x': importX,
     },
 
     languageOptions: {
       globals: {
         ...globals.browser,
-        ...jest.environments.globals.globals,
         __NEBULA_DEV__: false,
       },
 
@@ -38,7 +36,6 @@ export default defineConfig([
     },
 
     rules: {
-      'max-len': 0,
       'no-plusplus': 0,
       'no-bitwise': 0,
       'no-unused-expressions': 0,
@@ -47,19 +44,14 @@ export default defineConfig([
       'react/prop-types': 0,
       'react/no-deprecated': 0,
 
-      'import/no-extraneous-dependencies': [
+      'import-x/no-extraneous-dependencies': [
         2,
         {
           devDependencies: true,
         },
       ],
 
-      'import/no-dynamic-require': 0,
-      'jest/no-disabled-tests': 'warn',
-      'jest/no-focused-tests': 'error',
-      'jest/no-identical-title': 'error',
-      'jest/prefer-to-have-length': 'warn',
-      'jest/valid-expect': 'error',
+      'import-x/no-dynamic-require': 0,
       'no-unused-vars': [
         'error',
         {
@@ -108,7 +100,7 @@ export default defineConfig([
 
     rules: {
       'no-var': 0,
-      'import/no-amd': 0,
+      'import-x/no-amd': 0,
     },
   },
   {
@@ -118,15 +110,15 @@ export default defineConfig([
       'arrow-body-style': 1,
       'no-use-before-define': 1,
       'react/function-component-definition': 0,
-      'import/prefer-default-export': 1,
-      'import/no-cycle': 1,
+      'import-x/prefer-default-export': 1,
+      'import-x/no-cycle': 1,
     },
   },
   {
     files: ['commands/serve/web/**/*.test.{js,jsx}', 'commands/serve/web/utils/testRenderer.jsx'],
 
     rules: {
-      'import/no-extraneous-dependencies': 0,
+      'import-x/no-extraneous-dependencies': 0,
       'array-callback-return': 0,
     },
   },
@@ -166,9 +158,9 @@ export default defineConfig([
     files: ['**/templates/**/*.js'],
 
     rules: {
-      'import/no-unresolved': 0,
-      'import/extensions': 0,
-      'import/no-extraneous-dependencies': 0,
+      'import-x/no-unresolved': 0,
+      'import-x/extensions': 0,
+      'import-x/no-extraneous-dependencies': 0,
     },
   },
   {
@@ -178,8 +170,8 @@ export default defineConfig([
       'react/jsx-filename-extension': 0,
       'react/no-multi-comp': 0,
       'react/prefer-stateless-function': 0,
-      'import/no-extraneous-dependencies': 0,
-      'import/no-unresolved': 0,
+      'import-x/no-extraneous-dependencies': 0,
+      'import-x/no-unresolved': 0,
     },
   },
-]);
+);
