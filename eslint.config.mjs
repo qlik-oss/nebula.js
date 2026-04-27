@@ -76,7 +76,6 @@ const TEST_RULE_OVERRIDES = {
   'testing-library/await-async-queries': 0,
   'testing-library/render-result-naming-convention': 0,
   'testing-library/no-unnecessary-act': 0,
-  'testing-library/prefer-screen-queries': 0,
   'testing-library/no-node-access': 0,
   'testing-library/no-render-in-lifecycle': 0,
   'testing-library/no-await-sync-queries': 0,

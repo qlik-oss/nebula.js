@@ -8,6 +8,11 @@ import { useRootContext } from '../../../contexts/RootContext';
 import { OptionsToConnect } from '../../../constants/optionsToConnect';
 import { detectDefaultConnectionStep, checkIfConnectionOptionDisabled } from '../../../utils';
 
+function TabPanel({ children, tabIdx, idx }) {
+  if (tabIdx === idx) return <Box sx={{ p: 3, pb: 1 }}>{children}</Box>;
+  return null;
+}
+
 export default function ConnectionOptions() {
   const { info, error } = useRootContext();
   const [tabIdx, setTabIdx] = useState(0);
@@ -45,9 +50,4 @@ export default function ConnectionOptions() {
       </Box>
     </Box>
   );
-}
-
-function TabPanel({ children, tabIdx, idx }) {
-  if (tabIdx === idx) return <Box sx={{ p: 3, pb: 1 }}>{children}</Box>;
-  return null;
 }
