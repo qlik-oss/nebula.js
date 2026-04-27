@@ -1,5 +1,4 @@
 import { globalIgnores } from 'eslint/config';
-import prettier from 'eslint-plugin-prettier';
 import globals from 'globals';
 import mocha from 'eslint-plugin-mocha';
 import qlik from '@qlik/eslint-config';
@@ -21,7 +20,6 @@ export default qlik.compose(
   },
   {
     plugins: {
-      prettier,
       'import-x': importX,
     },
 
@@ -39,7 +37,6 @@ export default qlik.compose(
       'no-plusplus': 0,
       'no-bitwise': 0,
       'no-unused-expressions': 0,
-      'prettier/prettier': 2,
       'react/destructuring-assignment': [0, 'always'],
       'react/prop-types': 0,
       'react/no-deprecated': 0,

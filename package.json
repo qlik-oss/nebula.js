@@ -64,7 +64,6 @@
     "enigma.js": "2.14.0",
     "eslint": "9.39.4",
     "eslint-plugin-mocha": "11.2.0",
-    "eslint-plugin-prettier": "5.5.5",
     "express": "5.2.1",
     "globals": "^17.4.0",
     "husky": "9.1.7",
