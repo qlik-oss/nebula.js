@@ -49,6 +49,8 @@ jobs:
         run: yarn run locale:verify
       - name: Lint
         run: yarn run lint
+      - name: Prettier check
+        run: yarn prettier --check '**/*' --ignore-unknown
       - name: Run unit tests and publish to codeclimate
         env:
           JEST_JUNIT_OUTPUT_DIR: ./coverage/junit/

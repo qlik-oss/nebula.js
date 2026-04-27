@@ -1,5 +1,4 @@
 import { defineConfig, globalIgnores } from 'eslint/config';
-import prettier from 'eslint-plugin-prettier';
 import jest from 'eslint-plugin-jest';
 import globals from 'globals';
 import mocha from 'eslint-plugin-mocha';
@@ -22,7 +21,6 @@ export default defineConfig([
     extends: compat.extends('airbnb', 'prettier'),
 
     plugins: {
-      prettier,
       jest,
     },
 
@@ -42,7 +40,6 @@ export default defineConfig([
       'no-plusplus': 0,
       'no-bitwise': 0,
       'no-unused-expressions': 0,
-      'prettier/prettier': 2,
       'react/destructuring-assignment': [0, 'always'],
       'react/prop-types': 0,
       'react/no-deprecated': 0,
