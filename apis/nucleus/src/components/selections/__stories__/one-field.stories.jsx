@@ -1,4 +1,3 @@
-import React from 'react';
 
 import { text, boolean } from '@storybook/addon-knobs'; // eslint-disable-line
 import OneField from '../OneField';

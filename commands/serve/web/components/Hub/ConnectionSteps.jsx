@@ -1,4 +1,3 @@
-import React from 'react';
 import Step from '@mui/material/Step';
 import { useNavigate } from 'react-router';
 import { ThemeWrapper } from '../ThemeWrapper';

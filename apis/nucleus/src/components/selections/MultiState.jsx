@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from 'react';
+import { useState, useContext, useRef } from 'react';
 import { styled } from '@mui/material/styles';
 import { Badge, IconButton, Grid, Typography, Popover, Button, List, ListItem, Box } from '@mui/material';
 import DownArrow from '@nebula.js/ui/icons/down-arrow';

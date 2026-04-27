@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
 
 function getFontSize(size) {
   if (size === 'large') {

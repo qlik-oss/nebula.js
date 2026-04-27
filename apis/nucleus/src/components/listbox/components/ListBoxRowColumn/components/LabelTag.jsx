@@ -1,4 +1,3 @@
-import React from 'react';
 import ValueField from './ValueField';
 
 function LabelTag({ label, color, dense, showGray, checkboxes, cell, valueTextAlign }) {

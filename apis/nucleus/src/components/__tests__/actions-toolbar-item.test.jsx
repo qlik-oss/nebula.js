@@ -1,4 +1,3 @@
-import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { IconButton } from '@mui/material';
 import * as SVGIconModule from '@nebula.js/ui/icons/SvgIcon';

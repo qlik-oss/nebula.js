@@ -1,5 +1,5 @@
 /* eslint no-param-reassign:0 */
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 import { Select, FormControl, MenuItem } from '@mui/material';
 

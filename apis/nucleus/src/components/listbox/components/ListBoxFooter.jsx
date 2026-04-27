@@ -1,7 +1,6 @@
 import { IconButton, Paper } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
-import React from 'react';
 import ListBoxDisclaimer from './ListBoxDisclaimer';
 
 const RootContainer = styled(Paper)(({ theme, left }) => ({

@@ -1,4 +1,4 @@
-/* eslint import/prefer-default-export:0 */
+/* eslint import-x/prefer-default-export:0 */
 
 import { __DO_NOT_USE__ } from '@nebula.js/stardust';
 

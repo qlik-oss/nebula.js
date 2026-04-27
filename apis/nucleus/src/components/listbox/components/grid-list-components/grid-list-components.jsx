@@ -1,5 +1,4 @@
 /* eslint-disable react/function-component-definition */
-import React from 'react';
 import RowColumn from '../ListBoxRowColumn';
 import deriveRenderOptions from './derive-render-options';
 import getStyledComponents, { classes } from './styled-components';

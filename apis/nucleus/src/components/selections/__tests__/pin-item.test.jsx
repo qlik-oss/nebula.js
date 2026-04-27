@@ -1,4 +1,4 @@
-import React, { act } from 'react';
+import { act } from 'react';
 import * as ReactTestRenderer from 'react-test-renderer';
 import { Typography } from '@mui/material';
 import PinItem from '../PinItem';

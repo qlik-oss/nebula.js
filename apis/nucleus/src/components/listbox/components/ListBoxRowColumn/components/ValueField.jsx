@@ -1,4 +1,3 @@
-import React from 'react';
 import { Typography } from '@mui/material';
 import { joinClassNames } from '../helpers/operations';
 import classes from '../helpers/classes';

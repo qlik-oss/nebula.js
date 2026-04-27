@@ -1,4 +1,4 @@
-/* eslint-disable import/prefer-default-export */
+/* eslint-disable import-x/prefer-default-export */
 export async function findAsync(arr, asyncCallback) {
   const promises = arr.map(asyncCallback);
   const results = await Promise.all(promises);

@@ -1,5 +1,5 @@
 import { styled } from '@mui/material';
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 const StyledBorder = styled('div')(({ theme, width, height }) => ({
   position: 'absolute',

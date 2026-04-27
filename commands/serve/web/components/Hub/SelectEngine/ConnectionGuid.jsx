@@ -1,4 +1,3 @@
-import React from 'react';
 import Link from '@mui/material/Link';
 import Collapse from '@mui/material/Collapse';
 import Typography from '@mui/material/Typography';

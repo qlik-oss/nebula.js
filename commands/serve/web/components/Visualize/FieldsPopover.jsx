@@ -1,4 +1,4 @@
-import React, { useContext, useState, useMemo } from 'react';
+import { useContext, useState, useMemo } from 'react';
 
 import { Popover, List, ListSubheader, ListItemButton, ListItemText, ListItemIcon, Divider } from '@mui/material';
 import parse from 'autosuggest-highlight/parse';

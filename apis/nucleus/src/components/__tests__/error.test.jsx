@@ -1,4 +1,3 @@
-import React from 'react';
 import { create, act } from 'react-test-renderer';
 import WarningTriangle from '@nebula.js/ui/icons/warning-triangle-2';
 import Tick from '@nebula.js/ui/icons/tick';

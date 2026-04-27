@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import { useState, useEffect, useCallback, useContext } from 'react';
 import InstanceContext from '../contexts/InstanceContext';
 import useRect from '../hooks/useRect';
 import RenderDebouncer from '../utils/render-debouncer';

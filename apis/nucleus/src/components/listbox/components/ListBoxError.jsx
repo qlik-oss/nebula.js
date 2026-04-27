@@ -1,5 +1,5 @@
 import { styled } from '@mui/material/styles';
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import InstanceContext from '../../../contexts/InstanceContext';
 
 const StyledDiv = styled('div')(() => ({

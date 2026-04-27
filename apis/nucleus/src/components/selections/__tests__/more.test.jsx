@@ -1,6 +1,5 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-import-assign */
-import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { Grid, Typography, ListItem, Box } from '@mui/material';
 import * as NebulaThemeModule from '@nebula.js/ui/theme';

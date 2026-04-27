@@ -1,4 +1,3 @@
-import React from 'react';
 import { screen, act } from '@testing-library/react';
 import { TestRenderer } from '../../../../utils/testRenderer';
 import ConnectionOptions from '../ConnectionOptions';

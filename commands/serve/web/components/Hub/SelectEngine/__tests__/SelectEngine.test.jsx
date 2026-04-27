@@ -1,4 +1,3 @@
-import React from 'react';
 import { screen } from '@testing-library/react';
 import { TestRenderer } from '../../../../utils/testRenderer';
 import SelectEngine from '../SelectEngine';

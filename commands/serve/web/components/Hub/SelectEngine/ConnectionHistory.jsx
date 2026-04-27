@@ -1,4 +1,3 @@
-import React from 'react';
 import Remove from '@nebula.js/ui/icons/remove';
 import { useNavigate } from 'react-router';
 import { ListItemButton, ListItemText, List, Typography, Box, IconButton } from '@mui/material';

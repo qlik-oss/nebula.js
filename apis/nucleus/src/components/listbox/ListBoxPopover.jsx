@@ -1,4 +1,4 @@
-import React, { useContext, useCallback, useRef, useEffect, useState } from 'react';
+import { useContext, useCallback, useRef, useEffect, useState } from 'react';
 
 import Lock from '@nebula.js/ui/icons/lock';
 import Unlock from '@nebula.js/ui/icons/unlock';
