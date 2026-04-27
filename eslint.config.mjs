@@ -19,15 +19,7 @@ export default qlik.compose(
     '.storybook_old/**',
   ]),
   ...qlik.configs.react,
-  {
-    ...qlik.configs.jest[0],
-    files: [
-      '**/__test__/**/*.{js,jsx}',
-      '**/__tests__/**/*.{js,jsx}',
-      '**/*.spec.{js,jsx}',
-      '**/*.test.{js,jsx}',
-    ],
-  },
+  ...qlik.configs.jest,
   {
     plugins: {
       'import-x': importX,
@@ -134,12 +126,7 @@ export default qlik.compose(
   },
   // Add node globals to jest test files (for `global`, `require`, `process` used in mocking)
   {
-    files: [
-      '**/__test__/**/*.{js,jsx}',
-      '**/__tests__/**/*.{js,jsx}',
-      '**/*.spec.{js,jsx}',
-      '**/*.test.{js,jsx}',
-    ],
+    files: ['**/__test__/**/*.{js,jsx}', '**/__tests__/**/*.{js,jsx}', '**/*.spec.{js,jsx}', '**/*.test.{js,jsx}'],
 
     languageOptions: {
       globals: {
@@ -284,5 +271,5 @@ export default qlik.compose(
       'import-x/no-extraneous-dependencies': 0,
       'import-x/no-unresolved': 0,
     },
-  },
+  }
 );
