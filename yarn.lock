@@ -3657,9 +3657,9 @@ __metadata:
     "@nebula.js/theme": "npm:^6.8.0"
     "@nebula.js/ui": "npm:^6.8.0"
     "@qlik/api": "npm:2.7.0"
-    "@scriptappy/cli": "npm:0.10.5"
-    "@scriptappy/from-jsdoc": "npm:0.19.5"
-    "@scriptappy/to-dts": "npm:1.0.3"
+    "@scriptappy/cli": "npm:0.10.6"
+    "@scriptappy/from-jsdoc": "npm:0.19.6"
+    "@scriptappy/to-dts": "npm:1.0.4"
     extend: "npm:3.0.2"
     node-event-emitter: "npm:0.0.1"
     react: "npm:18.3.1"
@@ -4950,36 +4950,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@scriptappy/cli@npm:0.10.5":
-  version: 0.10.5
-  resolution: "@scriptappy/cli@npm:0.10.5"
+"@scriptappy/cli@npm:0.10.6":
+  version: 0.10.6
+  resolution: "@scriptappy/cli@npm:0.10.6"
   dependencies:
-    "@scriptappy/from-jsdoc": "npm:^0.19.5"
+    "@scriptappy/from-jsdoc": "npm:^0.19.6"
     import-cwd: "npm:3.0.0"
     yargs: "npm:18.0.0"
   bin:
     sy: index.js
-  checksum: 10c0/2bd9d33f3e8184b0bd244f15cbcbb5b6c5c7ec87293697698288c063153b16213b24072f2dfe4c7e6f2b3f691fcbbbea659bb03a278734c6a0cdb8345a3c6894
+  checksum: 10c0/c07d5aefca2ac42580d7823961e918b0447a85edde95f838d3c469a4b8c44d14093839d66b00554e5d807c4c0171c0cc086776681c61d0513f589eb9bb77786d
   languageName: node
   linkType: hard
 
-"@scriptappy/from-jsdoc@npm:0.19.5":
-  version: 0.19.5
-  resolution: "@scriptappy/from-jsdoc@npm:0.19.5"
-  dependencies:
-    "@scriptappy/schema": "npm:^1.1.3"
-    "@scriptappy/tools": "npm:^0.7.2"
-    catharsis: "npm:^0.9.0"
-    chokidar: "npm:5.0.0"
-    extend: "npm:3.0.2"
-    fast-glob: "npm:^3.3.0"
-    jsdoc: "npm:4.0.5"
-    yargs: "npm:18.0.0"
-  checksum: 10c0/e9602b34bd226c9b9cbd42971816eef61d6f81dccd253d51536a49c42e64edbdd5dd5dbdecd34f88c0c8ff86dd2e05cd7135007456399423638de999517aa95e
-  languageName: node
-  linkType: hard
-
-"@scriptappy/from-jsdoc@npm:^0.19.5":
+"@scriptappy/from-jsdoc@npm:0.19.6, @scriptappy/from-jsdoc@npm:^0.19.6":
   version: 0.19.6
   resolution: "@scriptappy/from-jsdoc@npm:0.19.6"
   dependencies:
@@ -5002,13 +4986,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@scriptappy/to-dts@npm:1.0.3":
-  version: 1.0.3
-  resolution: "@scriptappy/to-dts@npm:1.0.3"
+"@scriptappy/to-dts@npm:1.0.4":
+  version: 1.0.4
+  resolution: "@scriptappy/to-dts@npm:1.0.4"
   dependencies:
-    dts-dom: "patch:dts-dom@npm%3A3.7.0#~/.yarn/patches/dts-dom-npm-3.7.0-3f6e1b92cd.patch"
+    dts-dom: "npm:3.7.0"
     extend: "npm:3.0.2"
-  checksum: 10c0/b34678db97f68f14ebd82e4d067ff6e45306bb08ced1361e77243c41f504380924ae97e46f509d3d0d60a6da0a47237fbb40b18edf7114c6584c3406d46eaef6
+  checksum: 10c0/f038709a14c16fbad34064fd13766da3722e16dcf69d5194feb999a22ce1ae600699782184cec96e6e09e08610b572ea18b8d7e219099a78bb1bf0495946964f
   languageName: node
   linkType: hard
 
