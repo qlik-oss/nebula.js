@@ -176,19 +176,19 @@ describe('<ListboxInline />', () => {
 
     test('should render with everything included', async () => {
       await render();
-      const actionToolbars = await screen.findAllByText('ActionsToolbar');
+      const actionToolbars = screen.getAllByText('ActionsToolbar');
       expect(actionToolbars).toHaveLength(1);
 
-      const typographs = await screen.findAllByText('title');
+      const typographs = screen.getAllByText('title');
       expect(typographs).toHaveLength(1);
 
-      const autoSizers = await screen.findAllByTestId('virtualized-auto-sizer');
+      const autoSizers = screen.getAllByTestId('virtualized-auto-sizer');
       expect(autoSizers).toHaveLength(1);
 
       expect(ListBoxSearch.mock.calls[0][0]).toMatchObject({
         visible: true,
       });
-      expect(getListboxInlineKeyboardNavigation).toHaveBeenCalledTimes(3);
+      expect(getListboxInlineKeyboardNavigation).toHaveBeenCalledTimes(4);
 
       // TODO: MUIv5
       // expect(renderer.toJSON().props.onKeyDown).toBe('keyboard-navigation');
@@ -204,7 +204,7 @@ describe('<ListboxInline />', () => {
       const options = { search: 'toggle' };
       await render(options);
 
-      const searchToggleBtns = await screen.findAllByTestId('search-toggle-btn');
+      const searchToggleBtns = screen.getAllByTestId('search-toggle-btn');
       expect(searchToggleBtns).toHaveLength(1);
       expect(ListBoxSearch.mock.calls[0][0]).toMatchObject({
         visible: false,
@@ -220,7 +220,7 @@ describe('<ListboxInline />', () => {
       const typographs = screen.queryAllByText('title');
       expect(typographs).toHaveLength(0);
 
-      const listBoxSearches = await screen.findAllByText('ListBoxSearch');
+      const listBoxSearches = screen.getAllByText('ListBoxSearch');
       expect(listBoxSearches).toHaveLength(1);
     });
 
@@ -240,10 +240,10 @@ describe('<ListboxInline />', () => {
     test('should render without search and show search button', async () => {
       const options = { search: false };
       await render(options);
-      const actionToolbars = await screen.findAllByText('ActionsToolbar');
+      const actionToolbars = screen.getAllByText('ActionsToolbar');
       expect(actionToolbars).toHaveLength(1);
 
-      const typographs = await screen.findAllByText('title');
+      const typographs = screen.getAllByText('title');
       expect(typographs).toHaveLength(1);
 
       expect(ListBoxSearch.mock.calls[0][0]).toMatchObject({
@@ -264,10 +264,10 @@ describe('<ListboxInline />', () => {
     test('should show toolbar when opened in a popover', async () => {
       const options = { search: false, isPopover: true };
       await render(options);
-      const actionToolbars = await screen.findAllByText('ActionsToolbar');
+      const actionToolbars = screen.getAllByText('ActionsToolbar');
       expect(actionToolbars).toHaveLength(1);
 
-      const typographs = await screen.findAllByText('title');
+      const typographs = screen.getAllByText('title');
       expect(typographs).toHaveLength(1);
 
       expect(ListBoxSearch.mock.calls[0][0]).toMatchObject({
