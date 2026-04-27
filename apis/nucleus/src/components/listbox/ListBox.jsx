@@ -1,5 +1,7 @@
 /* eslint no-underscore-dangle:0 */
-import { useEffect, useState, useCallback, useRef, useContext } from 'react';
+// React import required for test mocking (jest.spyOn needs React in module scope)
+// eslint-disable-next-line no-unused-vars
+import React, { useEffect, useState, useCallback, useRef, useContext } from 'react';
 import InfiniteLoader from 'react-window-infinite-loader';
 import { styled } from '@mui/material';
 import useSelectionsInteractions from './hooks/selections/useSelectionsInteractions';
