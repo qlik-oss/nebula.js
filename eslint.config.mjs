@@ -5,6 +5,7 @@ import qlik from '@qlik/eslint-config';
 
 // import-x plugin is provided by @qlik/eslint-config; re-use its instance to avoid dual-plugin issues
 const importX = qlik.configs.react[0].plugins['import-x'];
+const reactPlugin = qlik.configs.react[0].plugins['react'];
 
 export default qlik.compose(
   globalIgnores([
@@ -30,6 +31,7 @@ export default qlik.compose(
   {
     plugins: {
       'import-x': importX,
+      react: reactPlugin,
     },
 
     languageOptions: {
@@ -63,6 +65,7 @@ export default qlik.compose(
       'react/no-object-type-as-default-prop': 0,
       'react/display-name': 0,
       'react/hook-use-state': 0,
+      'react/no-array-index-key': 1,
       'require-atomic-updates': 0,
       'prefer-object-has-own': 0,
       'func-names': 0,

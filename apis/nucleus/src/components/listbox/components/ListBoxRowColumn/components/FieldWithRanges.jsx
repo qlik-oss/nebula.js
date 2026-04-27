@@ -4,7 +4,7 @@ import classes from '../helpers/classes';
 
 function LabelsWithRanges({ labels, dense, showGray, checkboxes }) {
   const text = labels.map(([label, highlighted], index) => (
-    <span key={label} id={index} className={highlighted ? classes.highlighted : ''}>
+    <span key={index} id={index} className={highlighted ? classes.highlighted : ''}>
       {label}
     </span>
   ));
