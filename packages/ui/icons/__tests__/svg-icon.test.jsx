@@ -8,7 +8,6 @@ describe('<SvgIcon />', () => {
   beforeEach(() => {
     render = async (props) => {
       await act(async () => {
-        // eslint-disable-next-line react/jsx-props-no-spreading
         renderer = create(<SvgIcon {...props} />);
       });
     };

@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
-
 function getFontSize(size) {
   if (size === 'large') {
     return '20px';

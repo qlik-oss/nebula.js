@@ -37,7 +37,6 @@ describe('<Cell />', () => {
   let useObjectSelections;
 
   beforeEach(() => {
-    // eslint-disable-next-line no-underscore-dangle
     global.__NEBULA_DEV__ = false;
     fakeElement = 'fakeElement';
     Loading = () => 'loading';

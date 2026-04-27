@@ -14,7 +14,12 @@ const ROOT_IGNORES = [
   '.storybook_old/**',
 ];
 
-const TEST_FILES = ['**/__test__/**/*.{js,jsx}', '**/__tests__/**/*.{js,jsx}', '**/*.spec.{js,jsx}', '**/*.test.{js,jsx}'];
+const TEST_FILES = [
+  '**/__test__/**/*.{js,jsx}',
+  '**/__tests__/**/*.{js,jsx}',
+  '**/*.spec.{js,jsx}',
+  '**/*.test.{js,jsx}',
+];
 const NODE_RUNTIME_FILES = [
   'commands/**/*.{js,cjs,mjs}',
   'scripts/**/*',

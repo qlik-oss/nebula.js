@@ -11,7 +11,7 @@ const terser = require('@rollup/plugin-terser');
 async function build(argv) {
   const cwd = process.cwd();
 
-  const supernovaPkg = require(path.resolve(cwd, 'package.json')); // eslint-disable-line
+  const supernovaPkg = require(path.resolve(cwd, 'package.json'));
 
   let extName = supernovaPkg.name.split('/').reverse()[0]; // replace(/\//, '-').replace('@', '');
 
@@ -32,7 +32,7 @@ async function build(argv) {
   const createQextFiles = () => {
     const qext = supernovaPkg.qext || {};
     if (argv.meta) {
-      const meta = require(path.resolve(cwd, argv.meta)); // eslint-disable-line
+      const meta = require(path.resolve(cwd, argv.meta));
       Object.assign(qext, meta);
     }
     const contents = {

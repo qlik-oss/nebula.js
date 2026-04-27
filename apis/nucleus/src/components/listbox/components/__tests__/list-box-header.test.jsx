@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
-
 /* eslint-disable no-import-assign */
 import React from 'react';
 import { create, act } from 'react-test-renderer';

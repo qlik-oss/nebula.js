@@ -76,9 +76,8 @@ describe('<Listbox />', () => {
       with: () => () => {},
     });
 
-    // eslint-disable-next-line react/jsx-props-no-spreading
     FixedSizeList = jest.fn().mockImplementation((props) => <div className="a-value-row" {...props} />);
-    // eslint-disable-next-line react/jsx-props-no-spreading
+
     FixedSizeGrid = jest.fn().mockImplementation((props) => <div className="a-column-row" {...props} />);
 
     jest.spyOn(getScreenReaderAssertiveText, 'default').mockReturnValue('screen-reader-text');

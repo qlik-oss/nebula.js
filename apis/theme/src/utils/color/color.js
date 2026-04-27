@@ -2,8 +2,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-cond-assign */
-/* eslint-disable prefer-destructuring */
-/* eslint-disable no-underscore-dangle */
 
 import CSSColors from './css-colors';
 

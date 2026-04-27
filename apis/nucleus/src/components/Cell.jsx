@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { forwardRef, useImperativeHandle, useEffect, useState, useContext, useReducer, useRef } from 'react';
 import EventEmitter from 'node-event-emitter';
 

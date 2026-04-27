@@ -1,8 +1,5 @@
-/* eslint-disable react/jsx-props-no-spreading */
-
-/* eslint-disable no-use-before-define */
 /* eslint-disable no-import-assign */
-/* eslint-disable no-underscore-dangle */
+
 import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { IconButton, Divider, Grid } from '@mui/material';

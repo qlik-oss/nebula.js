@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 /* eslint-disable no-import-assign */
 import { create, act } from 'react-test-renderer';
 import { Grid, Typography, ListItem, Box } from '@mui/material';

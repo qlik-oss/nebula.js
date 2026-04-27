@@ -1,4 +1,3 @@
-/* eslint-disable import-x/prefer-default-export */
 export const createElement = (levels = 3) => ({
   classList: {
     contains: jest.fn().mockReturnValue(false),

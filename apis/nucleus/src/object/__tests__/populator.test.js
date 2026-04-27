@@ -34,7 +34,7 @@ describe('populator', () => {
     jest.spyOn(loHandlerModule, 'default').mockImplementation(lohandler);
     jest.spyOn(filterpaneHandlerModule, 'default').mockImplementation(filterpaneHandler);
 
-    global.__NEBULA_DEV__ = true; // eslint-disable-line no-underscore-dangle
+    global.__NEBULA_DEV__ = true;
     warn = jest.fn();
     global.console = {
       ...global.console,
@@ -42,7 +42,7 @@ describe('populator', () => {
     };
   });
   afterEach(() => {
-    global.__NEBULA_DEV__ = false; // eslint-disable-line no-underscore-dangle
+    global.__NEBULA_DEV__ = false;
     jest.resetAllMocks();
     jest.restoreAllMocks();
   });

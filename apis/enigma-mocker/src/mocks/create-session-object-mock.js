@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import extend from 'extend';
 
 // To cover test

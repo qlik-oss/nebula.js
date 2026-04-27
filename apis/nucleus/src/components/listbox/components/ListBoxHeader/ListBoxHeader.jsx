@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { useEffect, useRef, useState } from 'react';
 import { Grid, IconButton } from '@mui/material';
 import Lock from '@nebula.js/ui/icons/lock';

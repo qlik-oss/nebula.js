@@ -1,4 +1,4 @@
-/* eslint-disable global-require, no-console */
+/* eslint-disable no-console */
 const path = require('path');
 const fs = require('fs');
 const homedir = require('os').homedir();

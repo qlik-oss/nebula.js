@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { useContext } from 'react';
 import { styled } from '@mui/material/styles';
 import { Grid, Typography, Button } from '@mui/material';
