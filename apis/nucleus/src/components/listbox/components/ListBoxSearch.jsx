@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef, useImperativeHandle, forwardRef } from 'react';
+import { useContext, useState, useEffect, useRef, useImperativeHandle, forwardRef } from 'react';
 import { InputAdornment, OutlinedInput, IconButton } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Search from '@nebula.js/ui/icons/search';

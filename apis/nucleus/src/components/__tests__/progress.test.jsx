@@ -1,4 +1,3 @@
-import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { CircularProgress } from '@mui/material';
 import Progress from '../Progress';

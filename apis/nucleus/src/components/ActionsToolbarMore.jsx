@@ -60,7 +60,6 @@ const More = React.forwardRef(
     return (
       showActions && (
         <StyledPopover
-          // eslint-disable-next-line react/jsx-props-no-spreading
           {...popoverProps}
           onClose={onCloseOrActionClick}
           ref={ref}

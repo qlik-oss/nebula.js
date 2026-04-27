@@ -62,7 +62,7 @@ const OAuthRouter = ({ originUrl }) => {
       // and will notify us about when they got fixed it,
       // but until then, we need to take care of it here!
       authInstance.rest.interceptors.request.use((_req) => {
-        // eslint-disable-next-line no-param-reassign, dot-notation
+        // eslint-disable-next-line no-param-reassign
         _req[1]['headers'] = { origin: originUrl };
         return _req;
       });

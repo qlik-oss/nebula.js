@@ -1,5 +1,4 @@
-/* eslint-disable react/jsx-props-no-spreading */
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { styled } from '@mui/material/styles';
 import { Grid, Typography, Button } from '@mui/material';
 import WarningTriangle from '@nebula.js/ui/icons/warning-triangle-2';

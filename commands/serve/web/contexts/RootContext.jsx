@@ -1,4 +1,4 @@
-import React, { useMemo, createContext, useContext, useEffect } from 'react';
+import { useMemo, createContext, useContext, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { useInfo, useConnection, useCachedConnections } from '../hooks';
 import storageFn from '../storage';

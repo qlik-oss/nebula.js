@@ -139,7 +139,7 @@ function resolveVariables(objTree, variables) {
 styleResolver.resolveRawTheme = (raw) => {
   // TODO - validate format
   const c = extend(true, {}, raw);
-  resolveVariables(c, c._variables); // eslint-disable-line
+  resolveVariables(c, c._variables);
 
   // generate class-pyramid
   if (c.scales) {

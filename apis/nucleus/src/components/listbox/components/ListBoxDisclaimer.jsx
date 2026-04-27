@@ -1,5 +1,5 @@
 import { Tooltip, Typography } from '@mui/material';
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { styled } from '@mui/material/styles';
 import InstanceContext from '../../../contexts/InstanceContext';
 

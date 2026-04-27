@@ -6,7 +6,7 @@ describe('creator', () => {
 
   beforeEach(() => {
     hookMock = jest.fn();
-    /* eslint-disable no-underscore-dangle */
+
     global.__NEBULA_DEV__ = false;
   });
 

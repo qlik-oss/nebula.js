@@ -1,5 +1,3 @@
-/* eslint-disable react/function-component-definition */
-import React from 'react';
 import RowColumn from '../ListBoxRowColumn';
 import deriveRenderOptions from './derive-render-options';
 import getStyledComponents, { classes } from './styled-components';
@@ -101,7 +99,6 @@ export default function getListBoxComponents({
     local.current.listRef = ref;
     return (
       <StyledFixedSizeList
-        // eslint-disable-next-line react/jsx-props-no-spreading
         {...commonComponentOptions}
         dataTestid="fixed-size-list"
         scrollDisabled={constraints?.active}
@@ -169,7 +166,6 @@ export default function getListBoxComponents({
 
     return (
       <StyledFixedSizeGrid
-        // eslint-disable-next-line react/jsx-props-no-spreading
         {...commonComponentOptions}
         dataTestid="fixed-size-grid"
         scrollDisabled={constraints?.active}

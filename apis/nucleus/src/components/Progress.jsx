@@ -1,7 +1,5 @@
 /* eslint react/jsx-props-no-spreading: 0 */
 
-import React from 'react';
-
 import { styled } from '@mui/material/styles';
 
 import { CircularProgress } from '@mui/material';

@@ -13,7 +13,7 @@ const tryAddCommand = (m) => {
   let cmd;
   let error;
   try {
-    cmd = require(`${m}/command`); // eslint-disable-line
+    cmd = require(`${m}/command`);
   } catch (e) {
     error = e;
     cmd = importCwd.silent(`${m}/command`);

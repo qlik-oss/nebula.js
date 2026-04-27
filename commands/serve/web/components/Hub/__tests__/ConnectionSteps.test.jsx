@@ -1,4 +1,3 @@
-import React from 'react';
 import { screen } from '@testing-library/react';
 import * as reactRouterDomModule from 'react-router';
 import { TestRenderer } from '../../../utils';
@@ -33,7 +32,7 @@ describe('<ConnectionSteps />', () => {
     TestRenderer(<ConnectionSteps />);
 
     steps.map((step) => {
-      expect(screen.queryByText(step)).toBeInTheDocument();
+      expect(screen.getByText(step)).toBeInTheDocument();
     });
   });
 

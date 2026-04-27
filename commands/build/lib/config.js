@@ -82,9 +82,9 @@ const config = ({
   const CWD = argv.cwd || cwd;
   const { reactNative, reactNativePath } = setupReactNative(argv);
   let dir = CWD;
-  let pkg = require(path.resolve(CWD, 'package.json')); // eslint-disable-line
-  const corePkg = core ? require(path.resolve(core, 'package.json')) : null; // eslint-disable-line
-  pkg = reactNative ? require(path.resolve(reactNativePath, 'package.json')) : pkg; // eslint-disable-line
+  let pkg = require(path.resolve(CWD, 'package.json'));
+  const corePkg = core ? require(path.resolve(core, 'package.json')) : null;
+  pkg = reactNative ? require(path.resolve(reactNativePath, 'package.json')) : pkg;
   const { sourcemap, replacementStrings = {}, typescript, preferBuiltins, browser } = argv;
   const banner = getBanner({ pkg });
   const outputName = getOutputName({ pkg, config: argv });

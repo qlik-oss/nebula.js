@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react';
+import { useEffect, useContext, useState } from 'react';
 
 import { useAppLayout } from '@nebula.js/nucleus/src/hooks/useLayout';
 

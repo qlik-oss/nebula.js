@@ -1,4 +1,3 @@
-import React from 'react';
 import { render } from '@testing-library/react';
 import userEvents from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router';

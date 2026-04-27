@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import React from 'react';
 import nuked from '../index';
 import * as NebulaAppModule from '../components/NebulaApp';

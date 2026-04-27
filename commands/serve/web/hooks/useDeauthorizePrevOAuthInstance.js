@@ -1,6 +1,5 @@
+import { useEffect } from 'react';
 import { useRootContext } from '../contexts/RootContext';
-
-const { useEffect } = require('react');
 
 export const useDeauthorizePrevOAuthInstance = () => {
   const { cachedConnectionsData } = useRootContext();

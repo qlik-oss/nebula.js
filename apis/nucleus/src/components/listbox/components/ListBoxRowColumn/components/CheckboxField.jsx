@@ -1,4 +1,3 @@
-import React from 'react';
 import { FormControlLabel } from '@mui/material';
 import ListBoxCheckbox from './ListBoxCheckbox';
 import ListBoxRadioButton from './ListBoxRadioButton';

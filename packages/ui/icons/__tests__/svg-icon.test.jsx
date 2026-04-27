@@ -1,5 +1,4 @@
-import React from 'react';
-// eslint-disable-next-line import/no-extraneous-dependencies
+// eslint-disable-next-line import-x/no-extraneous-dependencies
 import { create, act } from 'react-test-renderer';
 import SvgIcon from '../SvgIcon';
 
@@ -9,7 +8,6 @@ describe('<SvgIcon />', () => {
   beforeEach(() => {
     render = async (props) => {
       await act(async () => {
-        // eslint-disable-next-line react/jsx-props-no-spreading
         renderer = create(<SvgIcon {...props} />);
       });
     };

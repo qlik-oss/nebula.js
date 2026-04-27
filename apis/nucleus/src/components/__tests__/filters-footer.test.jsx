@@ -1,4 +1,3 @@
-import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { Typography } from '@mui/material';
 import * as generateFiltersInfo from '../../utils/generateFiltersInfo';

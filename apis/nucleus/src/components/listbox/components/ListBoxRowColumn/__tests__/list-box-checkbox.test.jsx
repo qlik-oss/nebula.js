@@ -1,4 +1,3 @@
-import React from 'react';
 import renderer from 'react-test-renderer';
 import { Checkbox } from '@mui/material';
 import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';

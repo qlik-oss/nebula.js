@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle } from 'react';
+import { forwardRef, useImperativeHandle } from 'react';
 import { create, act } from 'react-test-renderer';
 import initializeStores from '../../stores/new-model-store';
 import initializeSelectionStores from '../../stores/new-selections-store';

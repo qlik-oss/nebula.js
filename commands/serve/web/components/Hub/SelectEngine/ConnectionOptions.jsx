@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
@@ -7,6 +7,11 @@ import FormManager from './FormManager';
 import { useRootContext } from '../../../contexts/RootContext';
 import { OptionsToConnect } from '../../../constants/optionsToConnect';
 import { detectDefaultConnectionStep, checkIfConnectionOptionDisabled } from '../../../utils';
+
+function TabPanel({ children, tabIdx, idx }) {
+  if (tabIdx === idx) return <Box sx={{ p: 3, pb: 1 }}>{children}</Box>;
+  return null;
+}
 
 export default function ConnectionOptions() {
   const { info, error } = useRootContext();
@@ -45,9 +50,4 @@ export default function ConnectionOptions() {
       </Box>
     </Box>
   );
-}
-
-function TabPanel({ children, tabIdx, idx }) {
-  if (tabIdx === idx) return <Box sx={{ p: 3, pb: 1 }}>{children}</Box>;
-  return null;
 }

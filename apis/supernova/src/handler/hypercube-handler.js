@@ -173,7 +173,6 @@ class HyperCubeHandler extends DataPropertyHandler {
     const addedDimensions = [];
     let addedActive = 0;
 
-    // eslint-disable-next-line no-restricted-syntax
     for await (const dimension of dimensions) {
       if (hcUtils.isTotalDimensionsExceeded(this, existingDimensions)) {
         return addedDimensions;
@@ -235,14 +234,14 @@ class HyperCubeHandler extends DataPropertyHandler {
     if (alternative && altDimensions.length > 0) {
       // Keep the original deleted order
       deletedDimensions = hcUtils.getDeletedFields(altDimensions, indexes);
-      // eslint-disable-next-line no-restricted-syntax
+
       for await (const index of sortedIndexes) {
         await removeAlternativeDimension(this, index);
       }
     } else if (dimensions.length > 0) {
       // Keep the original deleted order
       deletedDimensions = hcUtils.getDeletedFields(dimensions, indexes);
-      // eslint-disable-next-line no-restricted-syntax
+
       for await (const index of sortedIndexes) {
         await removeMainDimension(this, index);
       }
@@ -511,7 +510,6 @@ class HyperCubeHandler extends DataPropertyHandler {
       deletedMeasures = hcUtils.getDeletedFields(measures, indexes);
       const sortedIndexes = [...indexes].sort((a, b) => b - a);
 
-      // eslint-disable-next-line no-restricted-syntax
       for await (const index of sortedIndexes) {
         await removeMainMeasure(this, index);
       }

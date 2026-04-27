@@ -1,4 +1,3 @@
-import React from 'react';
 import { screen, act } from '@testing-library/react';
 import { TestRenderer } from '../../../../utils/testRenderer';
 import ConnectionOptions from '../ConnectionOptions';
@@ -26,9 +25,9 @@ describe('<ConnectionOptions />', () => {
   test('should render properly', () => {
     TestRenderer(<ConnectionOptions />, { error: null });
 
-    expect(screen.queryByText('New connection with:')).toBeInTheDocument();
+    expect(screen.getByText('New connection with:')).toBeInTheDocument();
     OptionsToConnect.map((opt) => {
-      expect(screen.queryByText(opt.label)).toBeInTheDocument();
+      expect(screen.getByText(opt.label)).toBeInTheDocument();
     });
     expect(screen.getAllByRole('button')).toHaveLength(1);
     expect(screen.getByPlaceholderText('Engine WebSocket URL')).toBeInTheDocument();
@@ -44,7 +43,7 @@ describe('<ConnectionOptions />', () => {
 
     // integration form inputs
     OptionsToConnect[1].formFields.map((field) => {
-      expect(screen.queryByPlaceholderText(field)).toBeInTheDocument();
+      expect(screen.getByPlaceholderText(field)).toBeInTheDocument();
     });
 
     // no client id inputs
@@ -64,7 +63,7 @@ describe('<ConnectionOptions />', () => {
 
     // client id form inputs
     OptionsToConnect[2].formFields.map((field) => {
-      expect(screen.queryByPlaceholderText(field)).toBeInTheDocument();
+      expect(screen.getByPlaceholderText(field)).toBeInTheDocument();
     });
   });
 

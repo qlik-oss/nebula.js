@@ -21,7 +21,7 @@ test.describe('sn', () => {
   });
 
   test('should render with translation', async ({ page }) => {
-    const url = s.url + '/render?fixture=sn-locale.fix.js&language=sv-SE';
+    const url = `${s.url}/render?fixture=sn-locale.fix.js&language=sv-SE`;
     await page.goto(url);
     await page.waitForSelector(snSelector, { state: 'visible' });
     const text = await page.textContent(snSelector);
@@ -29,7 +29,7 @@ test.describe('sn', () => {
   });
 
   test('should show incomplete visualization', async ({ page }) => {
-    const url = s.url + '/render?fixture=sn-incomplete.fix.js&theme=dark';
+    const url = `${s.url}/render?fixture=sn-incomplete.fix.js&theme=dark`;
     await page.goto(url);
     await page.waitForSelector(errorSelector, { state: 'visible' });
     const text = await page.textContent(errorSelector);
@@ -37,7 +37,7 @@ test.describe('sn', () => {
   });
 
   test('should show error caused during load', async ({ page }) => {
-    const url = s.url + '/render?fixture=sn-error.fix.js';
+    const url = `${s.url}/render?fixture=sn-error.fix.js`;
     await page.goto(url);
     await page.waitForSelector(errorSelector, { state: 'visible' });
     const text = await page.textContent(errorSelector);

@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import Color from '../color';
 
 describe('Color', () => {

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { List, ListItem, Typography } from '@mui/material';
 
 import DataCube from './DataCube';

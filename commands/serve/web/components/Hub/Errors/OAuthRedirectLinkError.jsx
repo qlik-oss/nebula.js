@@ -1,4 +1,3 @@
-import React from 'react';
 import { Typography } from '@mui/material';
 import { ThemeWrapper } from '../../ThemeWrapper';
 import { ContentWrapper } from '../styles';

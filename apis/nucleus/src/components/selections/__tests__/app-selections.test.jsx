@@ -1,5 +1,4 @@
 /* eslint object-property-newline:0 */
-import React from 'react';
 import ReactDOM from 'react-dom';
 import renderer from 'react-test-renderer';
 import * as MUIModule from '@mui/material';

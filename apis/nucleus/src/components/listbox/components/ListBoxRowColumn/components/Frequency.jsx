@@ -1,4 +1,3 @@
-import React from 'react';
 import { Grid, Typography } from '@mui/material';
 import { excludedOrAlternative } from '../helpers/cell-states';
 import classes from '../helpers/classes';

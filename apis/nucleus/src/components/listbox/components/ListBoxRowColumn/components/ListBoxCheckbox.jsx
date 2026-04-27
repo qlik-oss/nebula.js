@@ -1,4 +1,3 @@
-import React from 'react';
 import { styled } from '@mui/material/styles';
 import { Checkbox } from '@mui/material';
 import CheckboxChecked from '../../../assets/CheckboxChecked';

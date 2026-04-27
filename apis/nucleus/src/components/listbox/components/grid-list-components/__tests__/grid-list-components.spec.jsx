@@ -1,4 +1,3 @@
-import React from 'react';
 import * as RowColumn from '../../ListBoxRowColumn';
 import * as getFrequencyAllowed from '../frequency-allowed';
 import * as deriveRenderOptions from '../derive-render-options';

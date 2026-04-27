@@ -1,4 +1,3 @@
-import React from 'react';
 import { screen } from '@testing-library/react';
 import { TestRenderer } from '../../../../utils/testRenderer';
 import Error from '../Error';
@@ -11,9 +10,9 @@ describe('<Error />', () => {
     };
     TestRenderer(<Error error={error} />);
 
-    expect(screen.queryByText(error.message)).toBeInTheDocument();
+    expect(screen.getByText(error.message)).toBeInTheDocument();
     error.hints.map((h) => {
-      expect(screen.queryByText(h)).toBeInTheDocument();
+      expect(screen.getByText(h)).toBeInTheDocument();
     });
   });
 });
