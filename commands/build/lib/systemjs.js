@@ -17,4 +17,4 @@ const systemjsBehaviours = {
   enabled: ({ pkg }) => !!pkg.systemjs,
 };
 
-module.exports = systemjsBehaviours;
+export default systemjsBehaviours;

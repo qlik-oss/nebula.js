@@ -1,22 +1,25 @@
-/* eslint-disable global-require, no-console */
-const path = require('path');
-const fs = require('fs');
-const homedir = require('os').homedir();
-const chalk = require('chalk');
-const express = require('express');
+/* eslint-disable no-console, import/extensions */
+import path from 'path';
+import fs from 'fs';
+import { homedir } from 'os';
+import { fileURLToPath } from 'url';
+import chalk from 'chalk';
+import express from 'express';
 
-const webpack = require('webpack');
-const WebpackDevServer = require('webpack-dev-server');
+import webpack from 'webpack';
+import WebpackDevServer from 'webpack-dev-server';
 
-const snapshooterFn = require('./snapshot-server');
-const snapshotRouter = require('./snapshot-router');
+import snapshooterFn from './snapshot-server.js';
+import snapshotRouter from './snapshot-router.js';
+import { OAuthRouter, getAvailableAuthInstance } from './oauth-router.js';
 
-const { OAuthRouter, getAvailableAuthInstance } = require('./oauth-router');
+const moduleDir = path.dirname(fileURLToPath(import.meta.url));
+const homeDir = homedir();
 
-const httpsKeyPath = path.join(homedir, '.certs/key.pem');
-const httpsCertPath = path.join(homedir, '.certs/cert.pem');
+const httpsKeyPath = path.join(homeDir, '.certs/key.pem');
+const httpsCertPath = path.join(homeDir, '.certs/cert.pem');
 
-module.exports = async ({
+export default async ({
   host,
   port,
   disableHostCheck,
@@ -64,8 +67,8 @@ module.exports = async ({
   const renderConfigs = serveConfig.renderConfigs || [];
 
   if (dev) {
-    const webpackConfig = require('./webpack.build');
-    const srcDir = path.resolve(__dirname, '../web');
+    const webpackConfig = (await import('./webpack.build.js')).default;
+    const srcDir = path.resolve(moduleDir, '../web');
     const distDir = path.resolve(srcDir, '../dist');
     contentBase = distDir;
     config = webpackConfig({
@@ -75,8 +78,8 @@ module.exports = async ({
       serveConfig,
     });
   } else {
-    const webpackConfig = require('./webpack.prod');
-    const srcDir = path.resolve(__dirname, '../dist');
+    const webpackConfig = (await import('./webpack.prod.js')).default;
+    const srcDir = path.resolve(moduleDir, '../dist');
     contentBase = srcDir;
     config = webpackConfig({
       srcDir,
@@ -180,8 +183,7 @@ module.exports = async ({
         app.use('/resources', express.static(serveConfig.resources));
       }
 
-      app.use('/assets', express.static(path.resolve(__dirname, '../assets')));
-
+      app.use('/assets', express.static(path.resolve(moduleDir, '../assets')));
       return middlewares;
     },
     proxy: [
@@ -239,14 +241,31 @@ module.exports = async ({
       if (!initiated) {
         initiated = true;
 
-        console.log(`     _  _________  __  ____   ___
+        const banner = `
+     _  _________  __  ____   ___
     / |/ / __/ _ )/ / / / /  / _ |
    /    / _// _  / /_/ / /__/ __ |
   /_/|_/___/____/\\____/____/_/ |_|
-    / __/ __/ _ \\ | / / __/
-   _\\ \\/ _// , _/ |/ / _/
-  /___/___/_/|_||___/___/
-         `);
+      / __/ __/ _ \\ | / / __/
+     _\\ \\/ _// , _/ |/ / _/
+    /___/___/_/|_||___/___/
+         `;
+
+        const styledBanner = banner
+          .split('\n')
+          .map((line) => {
+            const trimmedLine = line.trimEnd();
+            if (!trimmedLine) {
+              return '';
+            }
+
+            const leadingWhitespace = trimmedLine.match(/^\s*/)[0];
+            const art = trimmedLine.slice(leadingWhitespace.length);
+            return `${leadingWhitespace}${chalk.bgHex('#91298C').white(art)}`;
+          })
+          .join('\n');
+
+        console.log(styledBanner);
 
         if (serveConfig.mfe) {
           const bundleUrl = `${url}/pkg/${encodeURIComponent(snName)}`;

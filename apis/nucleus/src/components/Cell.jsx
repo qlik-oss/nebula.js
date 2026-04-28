@@ -695,8 +695,7 @@ const Cell = forwardRef(
           <Grid
             tabIndex={keyboardNavigation && !externalFocusManagement ? 0 : -1}
             onKeyDown={keyboardNavigation && !externalFocusManagement ? handleKeyDown : null}
-            item
-            xs
+            size="grow"
             className={CellBody.className}
             style={{
               height: '100%',

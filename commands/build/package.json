@@ -2,6 +2,7 @@
   "name": "@nebula.js/cli-build",
   "version": "6.8.0",
   "description": "",
+  "type": "module",
   "license": "MIT",
   "author": "QlikTech International AB",
   "keywords": [],
@@ -38,8 +39,8 @@
     "postcss": "^8.5.9",
     "rollup": "4.60.1",
     "rollup-plugin-postcss": "4.0.2",
-    "rollup-plugin-visualizer": "6.0.11",
-    "yargs": "17.7.2"
+    "rollup-plugin-visualizer": "7.0.1",
+    "yargs": "18.0.0"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "12.3.0",

@@ -2,6 +2,7 @@
   "name": "@nebula.js/cli-sense",
   "version": "6.8.0",
   "description": "Build a supernova as a Qlik Sense extension",
+  "type": "module",
   "license": "MIT",
   "author": "QlikTech International AB",
   "keywords": [
@@ -40,6 +41,6 @@
     "fs-extra": "11.3.4",
     "node-event-emitter": "0.0.1",
     "rollup": "4.60.1",
-    "yargs": "17.7.2"
+    "yargs": "18.0.0"
   }
 }

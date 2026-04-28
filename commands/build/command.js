@@ -1,8 +1,8 @@
-const build = require('./lib/build');
+/* eslint-disable import/extensions */
+import build from './lib/build.js';
+import init from './lib/init-config.js';
 
-const init = require('./lib/init-config');
-
-module.exports = {
+export default {
   command: 'build',
   desc: 'Build visualization',
   builder(yargs) {

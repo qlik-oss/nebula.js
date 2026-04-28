@@ -1,5 +1,5 @@
-const express = require('express');
-const { Auth, AuthType } = require('@qlik/sdk');
+import express from 'express';
+import { Auth, AuthType } from '@qlik/sdk';
 
 let prevHost = null;
 let prevClientId = null;
@@ -22,7 +22,7 @@ const getAuthInstance = (returnToOrigin, host, clientId) => {
   return authInstance;
 };
 
-const OAuthRouter = ({ originUrl }) => {
+export const OAuthRouter = ({ originUrl }) => {
   const router = express.Router();
 
   let cachedHost = null;
@@ -116,6 +116,4 @@ const OAuthRouter = ({ originUrl }) => {
   return router;
 };
 
-const getAvailableAuthInstance = () => authInstance;
-
-module.exports = { OAuthRouter, getAvailableAuthInstance };
+export const getAvailableAuthInstance = () => authInstance;

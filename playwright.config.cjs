@@ -6,4 +6,8 @@ module.exports = {
     headless: true,
   },
   testDir: './test',
+  reporter: [
+    ['html'],
+    ['junit', { outputFile: `./test-results/${process.env.PLAYWRIGHT_JUNIT_OUTPUT_NAME || 'junit.xml'}` }],
+  ],
 };

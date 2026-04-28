@@ -157,8 +157,8 @@ export default function ListBoxPopover({
       direction={direction}
     >
       <Grid container direction="column" gap={0} ref={containerRef}>
-        <Grid item container style={{ direction, padding: theme.spacing(1) }}>
-          <Grid item>
+        <Grid container style={{ direction, padding: theme.spacing(1) }}>
+          <Grid>
             {isLocked ? (
               <IconButton
                 onClick={unlock}
@@ -181,8 +181,8 @@ export default function ListBoxPopover({
               </IconButton>
             )}
           </Grid>
-          <Grid item xs />
-          <Grid item>
+          <Grid size="grow" />
+          <Grid>
             <ActionsToolbar
               layout={layout}
               more={{
@@ -206,9 +206,9 @@ export default function ListBoxPopover({
             />
           </Grid>
         </Grid>
-        <Grid item xs>
+        <Grid size="grow">
           <div ref={moreAlignTo} />
-          <Grid item>
+          <Grid>
             <ListBoxSearch
               ref={searchInputRef}
               popoverOpen={open}

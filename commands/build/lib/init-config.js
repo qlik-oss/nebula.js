@@ -1,5 +1,8 @@
 /* eslint global-require: 0, no-param-reassign: 0 */
-const fs = require('fs');
+import fs from 'fs';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
 
 const defaultFilename = 'nebula.config.js';
 const RX = new RegExp(`${defaultFilename.replace(/\./g, '\\.')}$`);
@@ -86,7 +89,7 @@ const watchMiddleware = (argv) => {
   return argv;
 };
 
-module.exports = (yargs) => {
+export default (yargs) => {
   yargs.parserConfiguration({
     'dot-notation': false, // To avoid parsing "replacementStrings" with dot-notation into objects
   });

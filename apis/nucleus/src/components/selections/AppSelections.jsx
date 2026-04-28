@@ -25,14 +25,13 @@ function AppSelections({ app }) {
       }}
     >
       <Grid
-        item
         style={{
           borderRight: `1px solid ${theme.palette.divider}`,
         }}
       >
         <Nav api={appSelections} app={app} />
       </Grid>
-      <Grid item xs style={{ backgroundColor: theme.palette.background.darker, overflow: 'hidden' }}>
+      <Grid size="grow" style={{ backgroundColor: theme.palette.background.darker, overflow: 'hidden' }}>
         <SelectedFields api={appSelections} app={app} />
       </Grid>
     </Grid>

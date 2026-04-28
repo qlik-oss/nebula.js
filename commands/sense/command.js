@@ -1,7 +1,8 @@
-const init = require('./lib/init-config');
-const sense = require('./lib/sense');
+/* eslint-disable import/extensions */
+import init from './lib/init-config.js';
+import sense from './lib/sense.js';
 
-module.exports = {
+export default {
   command: 'sense',
   desc: 'Build a nebula visualization as a Qlik Sense extension',
   builder(yargs) {

@@ -29,4 +29,4 @@ const options = {
   },
 };
 
-module.exports = (yargs) => yargs.options(options);
+export default (yargs) => yargs.options(options);

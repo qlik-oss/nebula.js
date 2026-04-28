@@ -1,4 +1,5 @@
-const build = require('./build');
+/* eslint-disable import/extensions */
+import build from './build.js';
 
 function sense(argv) {
   if (argv.legacy) {
@@ -7,4 +8,4 @@ function sense(argv) {
   }
   return build(argv);
 }
-module.exports = sense;
+export default sense;
