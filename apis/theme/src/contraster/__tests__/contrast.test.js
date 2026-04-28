@@ -13,7 +13,7 @@ describe('contrast', () => {
     const v = 2.6;
     const lums = [0.2, 0.6];
     expect(contrast(...lums)).toBe(v);
-    expect(contrast(...lums.reverse())).toBe(v);
+    expect(contrast(...lums.toReversed())).toBe(v);
   });
 
   test('should be 1.72727 when luminances are [0.9, 0.5]', () => {

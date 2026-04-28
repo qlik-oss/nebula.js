@@ -130,7 +130,7 @@ export default function theme() {
       /* Added this to support the non-standard ARGB format from engine */
       const colorString = args[0];
       let matches;
-      /* eslint-disable no-cond-assign */
+      /* oxlint-disable no-cond-assign */
       if (
         typeof colorString === 'string' &&
         (matches = /^ARGB\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i.exec(colorString))

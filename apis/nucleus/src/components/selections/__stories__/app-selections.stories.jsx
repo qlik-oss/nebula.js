@@ -1,6 +1,5 @@
 import React from 'react';
 import { Grid } from '@mui/material';
-import { text, boolean } from '@storybook/addon-knobs'; // eslint-disable-line
 import { AppSelections } from '../AppSelections';
 
 export default {

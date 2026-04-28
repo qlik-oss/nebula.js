@@ -84,9 +84,9 @@ describe('snapshooter', () => {
     // first object of first call
     const app = embed.mock.calls[0][0];
     const model = await app.getObject('xyz');
-    expect(model.getLayout instanceof Function).toBe(true);
-    expect(model.on instanceof Function).toBe(true);
-    expect(model.once instanceof Function).toBe(true);
+    expect(model.getLayout).toBeInstanceOf(Function);
+    expect(model.on).toBeInstanceOf(Function);
+    expect(model.once).toBeInstanceOf(Function);
   });
 
   test('the mocked model should return the snapshot as layout', async () => {

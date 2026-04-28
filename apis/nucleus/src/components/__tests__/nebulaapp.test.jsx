@@ -1,4 +1,3 @@
-/* eslint-disable no-import-assign */
 import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { ThemeProvider, StyledEngineProvider, createTheme } from '@nebula.js/ui/theme';
@@ -44,10 +43,10 @@ describe('Boot NebulaApp', () => {
 
   test('should return api', () => {
     const [api] = boot({ app: { id: 'foo' } });
-    expect(api.add instanceof Function).toBe(true);
-    expect(api.remove instanceof Function).toBe(true);
-    expect(api.setMuiThemeName instanceof Function).toBe(true);
-    expect(api.context instanceof Function).toBe(true);
+    expect(api.add).toBeInstanceOf(Function);
+    expect(api.remove).toBeInstanceOf(Function);
+    expect(api.setMuiThemeName).toBeInstanceOf(Function);
+    expect(api.context).toBeInstanceOf(Function);
   });
 
   describe('test api methods', () => {

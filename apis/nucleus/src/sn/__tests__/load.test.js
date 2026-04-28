@@ -2,7 +2,6 @@ import { load, clearFromCache } from '../load';
 
 describe('load', () => {
   let halo = {};
-  // eslint-disable-next-line no-underscore-dangle
   global.__NEBULA_DEV__ = false;
   beforeEach(() => {
     halo = {

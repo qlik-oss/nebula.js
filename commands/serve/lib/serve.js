@@ -60,7 +60,7 @@ const initiateWatch = async ({ snPath = '', snName, host }) => {
           file = cache[name];
         } else if (name === snName) {
           file = snPath;
-        } else if (/\.map$/.test(name)) {
+        } else if (name.endsWith('.map')) {
           const sources = Object.keys(cache);
           for (let i = 0; i < sources.length; i++) {
             const p = cache[sources[i]];

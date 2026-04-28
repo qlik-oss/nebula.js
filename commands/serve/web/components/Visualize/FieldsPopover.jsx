@@ -22,7 +22,6 @@ function Field({ field, onSelect, sub, parts }) {
       <ListItemText>
         {parts.map((part, ix) => (
           <span
-            // eslint-disable-next-line react/no-array-index-key
             key={ix}
             style={part.highlight ? { flex: '0 1 auto', backgroundColor: '#FFC72A' } : { flex: '0 1 auto' }}
           >
@@ -41,7 +40,6 @@ function LibraryItem({ item, onSelect, parts }) {
       <ListItemText>
         {parts.map((part, ix) => (
           <span
-            // eslint-disable-next-line react/no-array-index-key
             key={ix}
             style={part.highlight ? { flex: '0 1 auto', backgroundColor: '#FFC72A' } : { flex: '0 1 auto' }}
           >

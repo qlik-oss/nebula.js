@@ -34,7 +34,7 @@ async function renderWithEngine() {
   const info = await getConnectionInfo();
   await initiateWatch(info);
   if (!info.enigma.appId) {
-    location.href = location.origin; //eslint-disable-line
+    location.href = location.origin; // oxlint-disable-line no-restricted-globals
   }
   const params = getParams();
   const app = await openApp(info.enigma.appId);
@@ -45,7 +45,6 @@ async function renderWithEngine() {
     const rc = await (await fetch(`/render-config/${params['render-config']}`)).json();
     cfg = {
       ...rc,
-      // eslint-disable-next-line no-nested-ternary
       ...(params.object ? { id: params.object } : rc.id ? { id: rc.id } : {}),
       type: rc.type ? rc.type : info.supernova.name,
       fields: params.cols ? params.cols : rc.fields,

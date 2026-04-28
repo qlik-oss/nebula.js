@@ -89,9 +89,7 @@ export default function generateOrdinalScales(scalesDef, nanColor = '#d2d2d2') {
     if (def.type === 'class') {
       // generate pyramid
       const pyramid = createPyramidFromColors(def.scale, Math.max(def.scale.length, 7), nanColor);
-      // eslint-disable-next-line no-param-reassign
       def.scale = pyramid;
-      // eslint-disable-next-line no-param-reassign
       def.type = 'class-pyramid';
     }
   });

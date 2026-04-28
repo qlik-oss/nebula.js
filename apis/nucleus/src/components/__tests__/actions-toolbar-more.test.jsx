@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { MenuItem, ListItemIcon } from '@mui/material';

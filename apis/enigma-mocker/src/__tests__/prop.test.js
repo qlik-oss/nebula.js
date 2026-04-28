@@ -51,7 +51,7 @@ describe('getPropValue', () => {
 describe('getPropFn', () => {
   test('returns a function', () => {
     const fn = getPropFn('result');
-    expect(fn instanceof Function).toBe(true);
+    expect(fn).toBeInstanceOf(Function);
   });
 
   test('forwards arguments', async () => {

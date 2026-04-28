@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+/* oxlint-disable no-unused-vars */
 import EnigmaMocker from '../src';
 
 const genericObject = {

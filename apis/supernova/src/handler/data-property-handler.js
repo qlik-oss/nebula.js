@@ -123,7 +123,6 @@ class DataPropertyHandler {
    * @example
    * DataPropertyHandler.type(); // Throws error
    */
-  // eslint-disable-next-line class-methods-use-this
   type() {
     throw new Error('Must override this method');
   }
@@ -138,7 +137,6 @@ class DataPropertyHandler {
    * @description Returns the default dimension array.
    * @memberof DataPropertyHandler
    */
-  // eslint-disable-next-line class-methods-use-this
   getDimensions() {
     return [];
   }
@@ -166,7 +164,6 @@ class DataPropertyHandler {
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
-  // eslint-disable-next-line class-methods-use-this
   getAlternativeDimensions() {
     throw new Error('Method not implemented.');
   }
@@ -177,7 +174,6 @@ class DataPropertyHandler {
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
-  // eslint-disable-next-line class-methods-use-this
   addDimension() {
     throw notSupportedError;
   }
@@ -188,7 +184,6 @@ class DataPropertyHandler {
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
-  // eslint-disable-next-line class-methods-use-this
   addDimensions() {
     throw notSupportedError;
   }
@@ -199,7 +194,6 @@ class DataPropertyHandler {
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
-  // eslint-disable-next-line class-methods-use-this
   removeDimension() {
     throw notSupportedError;
   }
@@ -210,7 +204,6 @@ class DataPropertyHandler {
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
-  // eslint-disable-next-line class-methods-use-this
   removeDimensions() {
     throw notSupportedError;
   }
@@ -221,7 +214,6 @@ class DataPropertyHandler {
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
-  // eslint-disable-next-line class-methods-use-this
   autoSortDimension() {
     throw notSupportedError;
   }
@@ -232,7 +224,6 @@ class DataPropertyHandler {
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
-  // eslint-disable-next-line class-methods-use-this
   replaceDimension() {
     throw notSupportedError;
   }
@@ -243,7 +234,6 @@ class DataPropertyHandler {
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
-  // eslint-disable-next-line class-methods-use-this
   getSorting() {
     throw notSupportedError;
   }
@@ -491,7 +481,6 @@ class DataPropertyHandler {
    * @description Returns the default measure array.
    * @memberof DataPropertyHandler
    */
-  // eslint-disable-next-line class-methods-use-this
   getMeasures() {
     return [];
   }
@@ -502,7 +491,6 @@ class DataPropertyHandler {
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
-  // eslint-disable-next-line class-methods-use-this
   getAlternativeMeasures() {
     throw new Error('Method not implemented.');
   }
@@ -513,7 +501,6 @@ class DataPropertyHandler {
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
-  // eslint-disable-next-line class-methods-use-this
   addMeasure() {
     throw notSupportedError;
   }
@@ -524,7 +511,6 @@ class DataPropertyHandler {
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
-  // eslint-disable-next-line class-methods-use-this
   addMeasures() {
     throw notSupportedError;
   }
@@ -535,7 +521,6 @@ class DataPropertyHandler {
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
-  // eslint-disable-next-line class-methods-use-this
   removeMeasure() {
     throw notSupportedError;
   }
@@ -546,7 +531,6 @@ class DataPropertyHandler {
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
-  // eslint-disable-next-line class-methods-use-this
   removeMeasures() {
     throw notSupportedError;
   }
@@ -557,7 +541,6 @@ class DataPropertyHandler {
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
-  // eslint-disable-next-line class-methods-use-this
   autoSortMeasure() {
     throw notSupportedError;
   }
@@ -568,7 +551,6 @@ class DataPropertyHandler {
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
-  // eslint-disable-next-line class-methods-use-this
   replaceMeasure() {
     throw notSupportedError;
   }

@@ -57,9 +57,7 @@ export default function viz({
         cellRef.current.setSnOptions({
           ...initialSnOptions,
           ...opts,
-          ...{
-            onInitialRender: createOnInitialRender(override),
-          },
+          onInitialRender: createOnInitialRender(override),
         });
       })();
     } else {
@@ -67,9 +65,7 @@ export default function viz({
       initialSnOptions = {
         ...initialSnOptions,
         ...opts,
-        ...{
-          onInitialRender: createOnInitialRender(override),
-        },
+        onInitialRender: createOnInitialRender(override),
       };
     }
   };

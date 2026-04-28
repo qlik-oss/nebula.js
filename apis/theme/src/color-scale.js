@@ -1,3 +1,4 @@
+/* oxlint-disable no-param-reassign */
 import { color, rgb } from 'd3-color';
 
 /**
@@ -15,7 +16,6 @@ function limitFunction(scaledValue, numParts) {
    */
 
   // The following is done to keep the scaled value above 0 and below 1. This shifts values that hits an exact boundary upwards.
-  // eslint-disable-next-line no-param-reassign
   scaledValue = Math.min(Math.max(scaledValue, 0.000000000001), 0.999999999999);
   return numParts - scaledValue * numParts;
 }
@@ -49,7 +49,6 @@ class ColorScale {
    * @param {Number} level - Which level of the color pyramid to add this part to.
    */
   addColorPart(color1, color2, level) {
-    // eslint-disable-next-line no-param-reassign
     level = level || 0;
     this.startLevel = Math.max(level, this.startLevel);
     if (!this.colorParts[level]) {
@@ -68,7 +67,6 @@ class ColorScale {
     if (Number.isNaN(+value) || Number.isNaN(+scaledValue)) {
       return this.nanColor;
     }
-    // eslint-disable-next-line no-param-reassign
     level = getLevel(this, level);
     const k = limitFunction(scaledValue, this.colorParts[level].length);
     let f = Math.floor(k);

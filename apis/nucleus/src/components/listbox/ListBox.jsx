@@ -76,7 +76,7 @@ export default function ListBox({
   const scrollTimeout = 0;
 
   const { frequencyMax, awaitingFrequencyMax } = useFrequencyMax(app, layout);
-  // eslint-disable-next-line no-unused-vars
+  // oxlint-disable-next-line no-unused-vars
   const { isLoadingData, ...itemsLoader } = useItemsLoader({
     local,
     loaderRef,
@@ -141,9 +141,7 @@ export default function ListBox({
   const isGrid = layoutOptions?.dataLayout === 'grid';
 
   const scrollToIndex = (index) => {
-    const gridIndex = {
-      ...(isRow ? { rowIndex: index } : { columnIndex: index }),
-    };
+    const gridIndex = isRow ? { rowIndex: index } : { columnIndex: index };
     const scrollIndex = isGrid ? gridIndex : index;
     loaderRef.current._listRef.scrollToItem(scrollIndex);
   };
@@ -168,7 +166,7 @@ export default function ListBox({
 
   if (update) {
     // Hand over the update function for manual refresh from hosting application.
-    update.call(null, fetchData);
+    update(fetchData);
   }
 
   useEffect(() => {

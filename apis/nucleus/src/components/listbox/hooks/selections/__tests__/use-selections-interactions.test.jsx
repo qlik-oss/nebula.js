@@ -97,8 +97,8 @@ describe('use-listbox-interactions', () => {
       test('With range', async () => {
         await render();
         const arg0 = ref.current.result;
-        expect(Object.keys(arg0).sort()).toEqual(['interactionEvents', 'select']);
-        expect(Object.keys(arg0.interactionEvents).sort()).toEqual([
+        expect(Object.keys(arg0).toSorted()).toEqual(['interactionEvents', 'select']);
+        expect(Object.keys(arg0.interactionEvents).toSorted()).toEqual([
           'onMouseDown',
           'onMouseEnter',
           'onMouseUp',
@@ -109,8 +109,8 @@ describe('use-listbox-interactions', () => {
       test('With checkboxes', async () => {
         await render({ checkboxes: true });
         const arg0 = ref.current.result;
-        expect(Object.keys(arg0).sort()).toEqual(['interactionEvents', 'select']);
-        expect(Object.keys(arg0.interactionEvents).sort()).toEqual(['onChange']);
+        expect(Object.keys(arg0).toSorted()).toEqual(['interactionEvents', 'select']);
+        expect(Object.keys(arg0.interactionEvents).toSorted()).toEqual(['onChange']);
       });
     });
 
@@ -220,7 +220,7 @@ describe('use-listbox-interactions', () => {
       await render();
       const arg0 = ref.current.result;
       expect(Object.keys(arg0)).toEqual(['interactionEvents', 'select']);
-      expect(Object.keys(arg0.interactionEvents).sort()).toEqual([
+      expect(Object.keys(arg0.interactionEvents).toSorted()).toEqual([
         'onMouseDown',
         'onMouseEnter',
         'onMouseUp',

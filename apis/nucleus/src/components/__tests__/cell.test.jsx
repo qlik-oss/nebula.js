@@ -1,6 +1,4 @@
-/* eslint-disable no-param-reassign */
 
-/* eslint-disable no-import-assign */
 import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { createTheme, ThemeProvider, StyledEngineProvider } from '@nebula.js/ui/theme';
@@ -37,7 +35,6 @@ describe('<Cell />', () => {
   let useObjectSelections;
 
   beforeEach(() => {
-    // eslint-disable-next-line no-underscore-dangle
     global.__NEBULA_DEV__ = false;
     fakeElement = 'fakeElement';
     Loading = () => 'loading';
@@ -757,11 +754,11 @@ describe('<Cell />', () => {
       };
       await render({ model, types, cellRef });
 
-      expect(cellRef.current.setSnOptions instanceof Function).toBe(true);
-      expect(cellRef.current.setSnPlugins instanceof Function).toBe(true);
-      expect(cellRef.current.exportImage instanceof Function).toBe(true);
-      expect(cellRef.current.takeSnapshot instanceof Function).toBe(true);
-      expect(cellRef.current.getQae instanceof Function).toBe(true);
+      expect(cellRef.current.setSnOptions).toBeInstanceOf(Function);
+      expect(cellRef.current.setSnPlugins).toBeInstanceOf(Function);
+      expect(cellRef.current.exportImage).toBeInstanceOf(Function);
+      expect(cellRef.current.takeSnapshot).toBeInstanceOf(Function);
+      expect(cellRef.current.getQae).toBeInstanceOf(Function);
     });
 
     test('should take snapshot', async () => {

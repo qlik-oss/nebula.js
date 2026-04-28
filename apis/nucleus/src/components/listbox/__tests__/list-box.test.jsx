@@ -76,9 +76,7 @@ describe('<Listbox />', () => {
       with: () => () => {},
     });
 
-    // eslint-disable-next-line react/jsx-props-no-spreading
     FixedSizeList = jest.fn().mockImplementation((props) => <div className="a-value-row" {...props} />);
-    // eslint-disable-next-line react/jsx-props-no-spreading
     FixedSizeGrid = jest.fn().mockImplementation((props) => <div className="a-column-row" {...props} />);
 
     jest.spyOn(getScreenReaderAssertiveText, 'default').mockReturnValue('screen-reader-text');
@@ -234,7 +232,7 @@ describe('<Listbox />', () => {
       expect(setTimeoutStub).not.toHaveBeenCalled();
 
       const loadMoreItems = useCallbackMock.mock.lastCall[0];
-      expect(loadMoreItems instanceof Function).toBe(true);
+      expect(loadMoreItems).toBeInstanceOf(Function);
     });
 
     test('should call with checkboxes true', async () => {

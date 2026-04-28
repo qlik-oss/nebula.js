@@ -1,4 +1,3 @@
-/* eslint-disable no-import-assign */
 
 import React, { act } from 'react';
 import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';

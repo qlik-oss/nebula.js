@@ -24,7 +24,7 @@ describe('useDataStore', () => {
 
   it('should expose expected methods', () => {
     const store = useDataStore(model);
-    expect(Object.keys(store).sort()).toEqual(['getStoreValue', 'setStoreValue']);
+    expect(Object.keys(store).toSorted()).toEqual(['getStoreValue', 'setStoreValue']);
   });
 
   it('getStoreValue should prefix the returned value with model id', () => {

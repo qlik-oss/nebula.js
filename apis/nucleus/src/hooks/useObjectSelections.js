@@ -202,7 +202,7 @@ const createObjectSelections = ({ appSelections, appModal, model }) => {
 const getClickOutFuncs = ({ elements, objectSelections, options = {} }) => {
   const handler = createHandler({
     elements,
-    handleClickOutside: () => objectSelections.confirm.call(objectSelections),
+    handleClickOutside: () => objectSelections.confirm(),
   });
 
   return {

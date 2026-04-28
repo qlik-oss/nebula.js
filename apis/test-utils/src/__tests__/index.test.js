@@ -54,10 +54,10 @@ describe('test-utils', () => {
 
   test('should return api', () => {
     const c = create();
-    expect(c.update instanceof Function).toBe(true);
-    expect(c.unmount instanceof Function).toBe(true);
-    expect(c.takeSnapshot instanceof Function).toBe(true);
-    expect(c.actions instanceof Function).toBe(true);
+    expect(c.update).toBeInstanceOf(Function);
+    expect(c.unmount).toBeInstanceOf(Function);
+    expect(c.takeSnapshot).toBeInstanceOf(Function);
+    expect(c.actions).toBeInstanceOf(Function);
   });
 
   test('should update', () => {

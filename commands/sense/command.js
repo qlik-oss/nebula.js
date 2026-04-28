@@ -1,4 +1,3 @@
-/* eslint-disable import/extensions */
 import init from './lib/init-config.js';
 import sense from './lib/sense.js';
 

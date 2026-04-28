@@ -1,4 +1,3 @@
-/* eslint-disable import/extensions */
 import serve from './lib/serve.js';
 import init from './lib/init-config.js';
 

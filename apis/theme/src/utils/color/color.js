@@ -1,9 +1,6 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable camelcase */
-/* eslint-disable no-nested-ternary */
-/* eslint-disable no-cond-assign */
-/* eslint-disable prefer-destructuring */
-/* eslint-disable no-underscore-dangle */
+/* oxlint-disable no-param-reassign */
+/* oxlint-disable no-cond-assign */
+/* oxlint-disable prefer-destructuring */
 
 import CSSColors from './css-colors';
 
@@ -272,7 +269,7 @@ export default class Color {
           g = round(255 * g);
           b = round(255 * b);
           a = 1.0;
-        } else if (Object.prototype.hasOwnProperty.call(CSSColors, colorString.toLowerCase())) {
+        } else if (Object.hasOwn(CSSColors, colorString.toLowerCase())) {
           lcs = colorString.toLowerCase();
           r = CSSColors[lcs].r;
           g = CSSColors[lcs].g;
@@ -876,7 +873,7 @@ export default class Color {
       hexShort.test(color) ||
       hsl.test(color) ||
       hsla.test(color) ||
-      Object.prototype.hasOwnProperty.call(CSSColors, color.toLowerCase())
+      Object.hasOwn(CSSColors, color.toLowerCase())
     );
   }
 

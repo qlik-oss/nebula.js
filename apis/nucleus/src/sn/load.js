@@ -32,7 +32,7 @@ export async function load(name, version, { config }, loader) {
       })
       .catch((e) => {
         if (__NEBULA_DEV__) {
-          console.warn(e); // eslint-disable-line no-console
+          console.warn(e); // oxlint-disable-line no-console
         }
         throw new RenderError(`Failed to load visualization: '${sKey}'`, e);
       });

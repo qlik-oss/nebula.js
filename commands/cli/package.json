@@ -22,9 +22,6 @@
   "bin": {
     "nebula": "lib/index.js"
   },
-  "scripts": {
-    "lint": "eslint src"
-  },
   "peerDependencies": {
     "@nebula.js/cli-build": "5.0.0 - 6",
     "@nebula.js/cli-sense": "5.0.0 - 6",

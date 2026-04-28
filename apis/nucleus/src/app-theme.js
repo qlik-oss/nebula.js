@@ -22,7 +22,7 @@ export default function appTheme({ themes = [], loadTheme, root } = {}) {
         const raw = await Promise.race([found.load(themeId), timed(LOAD_THEME_TIMEOUT, { __timedOut: true })]);
         if (raw.__timedOut) {
           if (__NEBULA_DEV__) {
-            console.warn(`Timeout when loading theme '${themeId}'`); // eslint-disable-line no-console
+            console.warn(`Timeout when loading theme '${themeId}'`); // oxlint-disable-line no-console
           }
         } else {
           muiTheme = raw.type === 'dark' ? 'dark' : 'light';
@@ -31,7 +31,7 @@ export default function appTheme({ themes = [], loadTheme, root } = {}) {
         }
       } catch (e) {
         if (__NEBULA_DEV__) {
-          console.error(e); // eslint-disable-line no-console
+          console.error(e); // oxlint-disable-line no-console
         }
       }
     } else {

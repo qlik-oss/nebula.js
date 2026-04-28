@@ -62,17 +62,18 @@ function isSafeKey(key) {
  * @param {String} The JSON-Pointer string to use when traversing
  * @returns {Object} The parent object
  */
-function getParent(data, str) {
+function getParent(obj, str) {
   const seperator = '/';
   const parts = str.substring(1).split(seperator).slice(0, -1);
   let numPart;
+  let data = obj;
 
   parts.forEach((part) => {
     if (!isSafeKey(part)) {
       throw new Error(`Unsafe key in path: ${part}`);
     }
     numPart = +part;
-    const newPart = !isNaN(numPart) ? [] : {};
+    const newPart = !Number.isNaN(numPart) ? [] : {};
     data[numPart || part] = isUndef(data[numPart || part]) ? newPart : data[part];
     data = data[numPart || part];
   });
@@ -226,13 +227,13 @@ function patchArray(original, newA, basePath) {
  * @returns {Array} An array of patches
  */
 JSONPatch.generate = function generate(original, newData, basePath) {
-  basePath = basePath || '';
+  const base = basePath || '';
   let patches = [];
 
   Object.keys(newData).forEach((key) => {
     const val = generateValue(newData[key]);
     const oldVal = original[key];
-    const tmpPath = `${basePath}/${key}`;
+    const tmpPath = `${base}/${key}`;
 
     if (compare(val, oldVal) || isSpecialProperty(newData, key)) {
       return;
@@ -253,7 +254,7 @@ JSONPatch.generate = function generate(original, newData, basePath) {
       // it's a simple property (bool, string, number)
       patches.push({
         op: 'replace',
-        path: `${basePath}/${key}`,
+        path: `${base}/${key}`,
         value: val,
       });
     }
@@ -264,7 +265,7 @@ JSONPatch.generate = function generate(original, newData, basePath) {
       // this property does not exist anymore
       patches.push({
         op: 'remove',
-        path: `${basePath}/${key}`,
+        path: `${base}/${key}`,
       });
     }
   });
@@ -283,7 +284,7 @@ JSONPatch.apply = function apply(original, patches) {
   patches.forEach((patch) => {
     let parent = getParent(original, patch.path);
     let key = patch.path.split('/').splice(-1)[0];
-    let target = key && isNaN(+key) ? parent[key] : parent[+key] || parent;
+    let target = key && Number.isNaN(+key) ? parent[key] : parent[+key] || parent;
     const from = patch.from ? patch.from.split('/').splice(-1)[0] : null;
 
     if (!isSafeKey(key) || (from !== null && !isSafeKey(from))) {

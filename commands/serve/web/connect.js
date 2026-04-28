@@ -174,7 +174,7 @@ const connect = async () => {
     const url = SenseUtilities.buildUrl({
       secure: false,
       ...enigmaInfo,
-      ...{ urlParams: { 'qlik-csrf-token': csrfToken } },
+      urlParams: { 'qlik-csrf-token': csrfToken },
     });
 
     return enigma.create({ schema: qixSchema, url }).open();

@@ -16,7 +16,7 @@ const getValue = (data, reference, defaultValue) => {
   for (let i = 0; i < steps.length; ++i) {
     const step = steps[i];
     if (step === '') {
-      continue; // eslint-disable-line no-continue
+      continue;
     }
     if (dataContainer[step] === undefined || dataContainer[step] === null) {
       return defaultValue;

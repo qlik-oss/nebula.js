@@ -118,7 +118,7 @@ describe('useAppSelections', () => {
   test('should retry failed beginSelections for error code 6003', async () => {
     await doRender();
     const res = Promise.resolve();
-    // eslint-disable-next-line prefer-promise-reject-errors
+    // oxlint-disable-next-line prefer-promise-reject-errors
     beginSelections.mockResolvedValueOnce(Promise.reject({ code: 6003 })).mockResolvedValueOnce(res);
     await appModal.begin({ model, objectSelections });
     await res;
@@ -129,7 +129,7 @@ describe('useAppSelections', () => {
   test('should not retry failed beginSelections', async () => {
     await doRender();
 
-    // eslint-disable-next-line prefer-promise-reject-errors
+    // oxlint-disable-next-line prefer-promise-reject-errors
     beginSelections.mockResolvedValueOnce(Promise.reject({ code: 9999 }));
     await appModal.begin({ model, objectSelections });
 

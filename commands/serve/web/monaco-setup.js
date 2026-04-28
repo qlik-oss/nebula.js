@@ -2,7 +2,7 @@
 import * as monaco from 'monaco-editor';
 
 // Configure monaco environment with dynamic worker loading
-// eslint-disable-next-line no-restricted-globals
+// oxlint-disable-next-line no-restricted-globals
 self.MonacoEnvironment = {
   getWorker(_, label) {
     if (label === 'json') {

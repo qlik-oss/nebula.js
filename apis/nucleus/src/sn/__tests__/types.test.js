@@ -7,7 +7,6 @@ describe('types', () => {
   let type;
   let clearFromCache;
   beforeEach(() => {
-    // eslint-disable-next-line no-underscore-dangle
     global.__NEBULA_DEV__ = false;
     type = jest.fn().mockReturnValue('t');
     clearFromCache = jest.fn();

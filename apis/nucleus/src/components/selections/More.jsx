@@ -122,7 +122,6 @@ export default function More({ items = [], api }) {
         >
           <List dense>
             {items.map((s, ix) => (
-              // eslint-disable-next-line react/no-array-index-key
               <ListItem key={ix} title={s.name} onClick={(e) => handleShowItem(e, ix)}>
                 <Box border={1} width="100%" borderRadius={1} borderColor="divider">
                   {s.states.length > 1 ? <MultiState field={s} api={api} /> : <OneField field={s} api={api} />}

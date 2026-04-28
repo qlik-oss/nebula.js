@@ -190,7 +190,7 @@ describe('styling', () => {
     it('using not supported or empty components should throw error', () => {
       const inputComponents = ['general', 'selections', 'theme', 'not-supported', undefined].map((key) => ({ key }));
       expect(inputComponents).toHaveLength(5);
-      expect(Object.keys(getOverridesAsObject(inputComponents)).sort()).toEqual(['selections', 'theme']);
+      expect(Object.keys(getOverridesAsObject(inputComponents)).toSorted()).toEqual(['selections', 'theme']);
     });
   });
 

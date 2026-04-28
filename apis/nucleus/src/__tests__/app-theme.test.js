@@ -18,7 +18,7 @@ describe('app-theme', () => {
     jest.spyOn(NebulaThemeModule, 'default').mockImplementation(themeMock);
   });
   afterEach(() => {
-    global.__NEBULA_DEV__ = false; // eslint-disable-line no-underscore-dangle
+    global.__NEBULA_DEV__ = false;
     jest.resetAllMocks();
     jest.restoreAllMocks();
   });
@@ -86,7 +86,7 @@ describe('app-theme', () => {
           },
         ],
       });
-      global.__NEBULA_DEV__ = true; // eslint-disable-line no-underscore-dangle
+      global.__NEBULA_DEV__ = true;
       const prom = at.setTheme('darkish');
       jest.advanceTimersByTime(5500);
       await prom;

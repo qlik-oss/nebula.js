@@ -131,7 +131,7 @@ function resolveVariables(objTree, variables) {
       resolveVariables(objTree[key], variables);
     } else if (typeof objTree[key] === 'string' && objTree[key].charAt(0) === '@') {
       // Resolve variables
-      objTree[key] = variables[objTree[key]]; // eslint-disable-line no-param-reassign
+      objTree[key] = variables[objTree[key]];
     }
   });
 }
@@ -139,7 +139,7 @@ function resolveVariables(objTree, variables) {
 styleResolver.resolveRawTheme = (raw) => {
   // TODO - validate format
   const c = extend(true, {}, raw);
-  resolveVariables(c, c._variables); // eslint-disable-line
+  resolveVariables(c, c._variables);
 
   // generate class-pyramid
   if (c.scales) {

@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 import React, { useEffect, useCallback, useMemo, useState } from 'react';
 
 import { Grid } from '@mui/material';
@@ -153,7 +152,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
 
   let labels;
   if (cell.qHighlightRanges?.qRanges?.length) {
-    const ranges = cell.qHighlightRanges.qRanges.sort((a, b) => a.qCharPos - b.qCharPos) || [];
+    const ranges = cell.qHighlightRanges.qRanges.toSorted((a, b) => a.qCharPos - b.qCharPos) || [];
     labels = getSegmentsFromRanges(label, ranges);
   }
 

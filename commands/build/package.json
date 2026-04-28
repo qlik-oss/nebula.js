@@ -18,9 +18,6 @@
     "lib",
     "command.js"
   ],
-  "scripts": {
-    "lint": "eslint src"
-  },
   "dependencies": {
     "@babel/cli": "7.28.6",
     "@babel/core": "7.29.0",

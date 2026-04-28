@@ -40,7 +40,7 @@ const mixin = (obj) => {
 function createWithHooks(generator, opts, galaxy) {
   if (__NEBULA_DEV__) {
     if (generator.component.run !== run) {
-      // eslint-disable-next-line no-console
+      // oxlint-disable-next-line no-console
       console.warn('Detected multiple supernova modules, this might cause problems.');
     }
   }
@@ -156,7 +156,7 @@ function createWithHooks(generator, opts, galaxy) {
         // do a deep check on 'small' objects
         deepCheck.forEach((key) => {
           const ref = r.context;
-          if (ref && Object.prototype.hasOwnProperty.call(ref, key)) {
+          if (ref && Object.hasOwn(ref, key)) {
             let s = JSON.stringify(ref[key]);
             if (key === 'constraints') {
               s = JSON.stringify({ ...ref[key], ...forcedConstraints });
@@ -252,7 +252,7 @@ function createWithHooks(generator, opts, galaxy) {
 
 function createClassical(generator, opts) {
   if (__NEBULA_DEV__) {
-    // eslint-disable-next-line no-console
+    // oxlint-disable-next-line no-console
     console.warn('Obsolete API - time to get hooked!');
   }
   const componentInstance = {
@@ -332,7 +332,7 @@ export default function create(generator, opts, galaxy) {
         generator.qae.properties.onChange.call({ model: opts.model }, ...args);
       } catch {
         if (__NEBULA_DEV__) {
-          console.warn('Error in chart setProperties interceptor onChange call '); // eslint-disable-line no-console
+          console.warn('Error in chart setProperties interceptor onChange call '); // oxlint-disable-line no-console
         }
       }
       return opts.model.__snInterceptor.setProperties.call(this, ...args);
@@ -349,7 +349,7 @@ export default function create(generator, opts, galaxy) {
           generator.qae.properties.onChange.call({ model: opts.model }, currentProperties);
         } catch {
           if (__NEBULA_DEV__) {
-            console.warn('Error in chart applyPatches interceptor onChange call '); // eslint-disable-line no-console
+            console.warn('Error in chart applyPatches interceptor onChange call '); // oxlint-disable-line no-console
           }
         }
         // calculate new patches from after change

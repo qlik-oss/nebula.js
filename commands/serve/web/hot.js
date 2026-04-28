@@ -50,9 +50,9 @@ export default function initiateWatch(info) {
 
   if (info.sock.port) {
     const ws = new WebSocket(`ws://localhost:${info.sock.port}`);
-    ws.onmessage = () => {
+    ws.addEventListener('message', () => {
       update();
-    };
+    });
   }
   update();
   if (info.types) {

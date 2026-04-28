@@ -42,6 +42,7 @@ import {
 
 describe('hooks', () => {
   let c;
+  // oxlint-disable-next-line no-unassigned-vars -- sandbox referenced in describe.skip block (sinon removed, tests not yet updated)
   let sandbox;
   let DEV;
   let frame;
@@ -669,7 +670,7 @@ describe('hooks', () => {
       let disconnectMock;
 
       if (typeof ResizeObserver !== 'undefined') {
-        // eslint-disable-next-line
+        // oxlint-disable-next-line no-console
         console.error('Existing ResizeObserver is about to be overridden');
       }
       beforeEach(() => {
@@ -800,7 +801,7 @@ describe('hooks', () => {
       let getBoundingClientRectMock;
 
       if (typeof ResizeObserver !== 'undefined') {
-        // eslint-disable-next-line
+        // oxlint-disable-next-line no-console
         console.error('Existing ResizeObserver is about to be overridden');
       }
       beforeEach(() => {

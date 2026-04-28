@@ -9,7 +9,7 @@
     "format": "prettier --write '**/**/*' --ignore-unknown",
     "locale:verify": "node tools/verify-translations.cjs",
     "locale:generate": "node apis/locale/scripts/generate-all.mjs",
-    "lint": "oxlint packages apis commands --ext .js,.jsx",
+    "lint": "oxlint -c oxlint.config.ts packages apis commands",
     "spec": "lerna run spec --stream --concurrency 99 && lerna run ts --stream --concurrency 99 ",
     "mashup": "node scripts/start-mashup.js",
     "test": "yarn run test:unit",

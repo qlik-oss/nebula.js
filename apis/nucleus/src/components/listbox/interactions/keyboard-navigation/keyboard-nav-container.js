@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import KEYS from '../../../../keys';
 import { blur, focusCyclicButton, focusRow, focusSearch } from './keyboard-nav-methods';
 
@@ -30,6 +29,7 @@ export default function getListboxContainerKeyboardNavigation({
       case KEYS.TAB:
         //  Only react to tab after enter/space have been pressed or the target element is inside listbox (mouse case) or target is selection toolbar
         if (document.activeElement === container || (!inSelection && !container.contains(document.activeElement)))
+          // oxlint-disable-next-line no-useless-return -- guard clause before prevent(); without this return, prevent() would run
           return;
         if (shiftKey) {
           const focused = focusRow(container) || focusSearch(container);

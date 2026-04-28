@@ -1,4 +1,3 @@
-/* eslint-disable import/extensions */
 import create from './lib/create.js';
 
 const mashup = {

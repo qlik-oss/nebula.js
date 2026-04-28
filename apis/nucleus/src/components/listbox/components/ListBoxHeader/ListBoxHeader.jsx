@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useRef, useState } from 'react';
 import { Grid, IconButton } from '@mui/material';
 import Lock from '@nebula.js/ui/icons/lock';
@@ -190,7 +189,7 @@ export default function ListBoxHeader({
     titleRef.current,
     showDetachedToolbarOnly,
     Object.entries(containerRect || {})
-      .sort()
+      .toSorted()
       .join(','),
   ]);
 

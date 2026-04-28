@@ -96,7 +96,7 @@ export default async function createSessionObject(
       },
       visualization: type,
     };
-    // console.error(e); // eslint-disable-line
+    // console.error(e);
   }
   const model = await halo.app.createSessionObject(mergedProps);
   if (children.length > 0) {
