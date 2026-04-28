@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.8.0](https://github.com/qlik-oss/nebula.js/compare/v6.7.0...v6.8.0) (2026-03-30)
+
+### Bug Fixes
+
+- overly permissive regex ranges in color.js ([#1951](https://github.com/qlik-oss/nebula.js/issues/1951)) ([8a42eb0](https://github.com/qlik-oss/nebula.js/commit/8a42eb0c2873c2df64f50770e7a29264970ff966))
+- resolve prototype pollution security issues in color.js ([#1944](https://github.com/qlik-oss/nebula.js/issues/1944)) ([9c4f733](https://github.com/qlik-oss/nebula.js/commit/9c4f73323f0078ad1711c78eca8dd5cef2eb3384))
+
 # [6.7.0](https://github.com/qlik-oss/nebula.js/compare/v6.6.0...v6.7.0) (2026-03-12)
 
 **Note:** Version bump only for package @nebula.js/theme

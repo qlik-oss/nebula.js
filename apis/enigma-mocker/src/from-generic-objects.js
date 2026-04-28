@@ -10,6 +10,7 @@ export default function fromGenericObjects(genericObjects, options = {}) {
   const getAppLayout = new GetAppLayoutMock(options);
 
   const app = {
+    ...(options.appMethods || {}),
     id: `app - ${+Date.now()}`,
     session,
     createSessionObject,

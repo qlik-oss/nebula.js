@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.8.0](https://github.com/qlik-oss/nebula.js/compare/v6.7.0...v6.8.0) (2026-03-30)
+
+### Bug Fixes
+
+- prototype pollution vulnerabilities in utils.js and json-patch.js ([#1952](https://github.com/qlik-oss/nebula.js/issues/1952)) ([05eb5aa](https://github.com/qlik-oss/nebula.js/commit/05eb5aa63451ba63ad2a8fabe894276c23e19b87))
+
 # [6.7.0](https://github.com/qlik-oss/nebula.js/compare/v6.6.0...v6.7.0) (2026-03-12)
 
 **Note:** Version bump only for package @nebula.js/conversion

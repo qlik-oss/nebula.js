@@ -3,3 +3,4 @@ dist/
 **/spec.json
 
 /.nx/workspace-data
+**/.github/**

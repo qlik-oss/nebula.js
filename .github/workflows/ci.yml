@@ -13,19 +13,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - name: Enable Corepack
         run: corepack enable
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
-          node-version: 24.14.0
+          node-version: 24.14.1
           cache: 'yarn'
       - name: Install dependencies
         run: yarn install --immutable
       - name: Build
         run: yarn run build
       - name: Upload workspace
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: workspace
           path: .
@@ -38,7 +38,7 @@ jobs:
       contents: read
       checks: write
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - name: Enable Corepack
         run: corepack enable
       - uses: actions/setup-node@v6
@@ -46,7 +46,7 @@ jobs:
           node-version: 24.14.0
           cache: 'yarn'
       - name: Download workspace
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: workspace
           path: .
@@ -61,8 +61,7 @@ jobs:
           JEST_JUNIT_OUTPUT_DIR: ./coverage/junit/
         run: yarn test:unit --coverage
       - name: Store junit results
-        if: always()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: junit
           path: coverage/junit
@@ -82,7 +81,7 @@ jobs:
       contents: read
       checks: write
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - name: Enable Corepack
         run: corepack enable
       - uses: actions/setup-node@v6
@@ -90,7 +89,7 @@ jobs:
           node-version: 24.14.0
           cache: 'yarn'
       - name: Download workspace
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: workspace
           path: .
@@ -114,7 +113,7 @@ jobs:
         run: yarn run test:mashup
       - name: Store mashup artifacts
         if: always()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: mashup
           path: ./test/mashup
@@ -142,7 +141,7 @@ jobs:
         run: yarn run test:rendering
       - name: Store rendering artifacts
         if: always()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: rendering
           path: ./test/rendering
@@ -159,7 +158,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - name: Enable Corepack
         run: corepack enable
       - uses: actions/setup-node@v6
@@ -167,7 +166,7 @@ jobs:
           node-version: 24.14.0
           cache: 'yarn'
       - name: Download workspace
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: workspace
           path: .
@@ -184,13 +183,13 @@ jobs:
         run: .github/scripts/nebula_create.sh generated/hello-mashup none true true true false
       - name: Store barchart screenshots
         if: always()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: barchart-screenshots
           path: generated/barchart/screenshots
       - name: Store mashup artifacts
         if: always()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: mashup-artifacts
           path: test/mashup/__artifacts__
@@ -202,15 +201,15 @@ jobs:
         working-directory: .
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           fetch-depth: 0
       - name: Enable Corepack
         run: corepack enable
       - name: Set up Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
-          node-version: 24.14.0
+          node-version: 24.14.1
           cache: 'yarn'
 
       - name: Install dependencies

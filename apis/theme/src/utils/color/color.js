@@ -90,13 +90,13 @@ export default class Color {
           r = parseInt(matches[2], 10);
           g = parseInt(matches[3], 10);
           b = parseInt(matches[4], 10);
-        } else if ((matches = /^#([A-f0-9]{2})([A-f0-9]{2})([A-f0-9]{2})$/i.exec(colorString))) {
+        } else if ((matches = /^#([A-F0-9]{2})([A-F0-9]{2})([A-F0-9]{2})$/i.exec(colorString))) {
           // #aBc123
           r = parseInt(matches[1], 16);
           g = parseInt(matches[2], 16);
           b = parseInt(matches[3], 16);
           a = 1;
-        } else if ((matches = /^#([A-f0-9])([A-f0-9])([A-f0-9])$/i.exec(colorString))) {
+        } else if ((matches = /^#([A-F0-9])([A-F0-9])([A-F0-9])$/i.exec(colorString))) {
           // #a5F
           r = parseInt(matches[1] + matches[1], 16);
           g = parseInt(matches[2] + matches[2], 16);
@@ -272,7 +272,7 @@ export default class Color {
           g = round(255 * g);
           b = round(255 * b);
           a = 1.0;
-        } else if (CSSColors[colorString.toLowerCase()]) {
+        } else if (Object.prototype.hasOwnProperty.call(CSSColors, colorString.toLowerCase())) {
           lcs = colorString.toLowerCase();
           r = CSSColors[lcs].r;
           g = CSSColors[lcs].g;
@@ -876,7 +876,7 @@ export default class Color {
       hexShort.test(color) ||
       hsl.test(color) ||
       hsla.test(color) ||
-      CSSColors[color.toLowerCase()]
+      Object.prototype.hasOwnProperty.call(CSSColors, color.toLowerCase())
     );
   }
 

@@ -505,43 +505,43 @@ declare namespace stardust {
 
     }
 
-    interface ActionToolbarElement extends HTMLElement{
+    interface ActionToolbarElement extends HTMLElement {
         className: "njs-action-toolbar-popover";
     }
 
-    interface ActionElement extends HTMLElement{
+    interface ActionElement extends HTMLElement {
         className: "njs-cell-action";
     }
 
-    interface CellElement extends HTMLElement{
+    interface CellElement extends HTMLElement {
         className: "njs-cell";
     }
 
-    interface CellBody extends HTMLElement{
+    interface CellBody extends HTMLElement {
         className: "njs-cell-body";
     }
 
-    interface CellFooter extends HTMLElement{
+    interface CellFooter extends HTMLElement {
         className: "njs-cell-footer";
     }
 
-    interface CellTitle extends HTMLElement{
+    interface CellTitle extends HTMLElement {
         className: "njs-cell-title";
     }
 
-    interface CellSubTitle extends HTMLElement{
+    interface CellSubTitle extends HTMLElement {
         className: "njs-cell-sub-title";
     }
 
-    interface SheetElement extends HTMLElement{
+    interface SheetElement extends HTMLElement {
         className: "njs-sheet";
     }
 
-    interface VizElementAttributes extends NamedNodeMap{
+    interface VizElementAttributes extends NamedNodeMap {
         "data-render-count": string;
     }
 
-    interface VizElement extends HTMLElement{
+    interface VizElement extends HTMLElement {
         attributes: stardust.VizElementAttributes;
         className: "njs-viz";
     }
@@ -628,6 +628,16 @@ declare namespace stardust {
 
     }
 
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
+    }
+
     type Field = string | qix.NxDimension | qix.NxMeasure | stardust.LibraryField;
 
     /**
@@ -668,16 +678,6 @@ declare namespace stardust {
     interface LibraryField {
         qLibraryId: string;
         type: "dimension" | "measure";
-    }
-
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
     }
 
     interface LoadType {
@@ -978,6 +978,7 @@ declare namespace stardust {
      * Options for Enigma Mocker
      */
     interface EnigmaMockerOptions {
+        appMethods?: object;
         delay: number;
     }
 
