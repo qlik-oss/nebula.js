@@ -6,7 +6,6 @@
 .cache/
 .DS_Store
 .idea/
-.vscode/
 .npmrc
 *.pem
 
