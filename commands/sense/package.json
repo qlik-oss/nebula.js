@@ -18,6 +18,9 @@
     "type": "git",
     "url": "https://github.com/qlik-oss/nebula.js.git"
   },
+  "scripts": {
+    "lint": "oxlint"
+  },
   "main": "lib/api-entry.js",
   "files": [
     "command.js",

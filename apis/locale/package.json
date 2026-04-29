@@ -4,7 +4,8 @@
   "private": true,
   "main": "src/index.js",
   "scripts": {
-    "build": "node scripts/generate-all.mjs"
+    "build": "node scripts/generate-all.mjs",
+    "lint": "oxlint"
   },
   "devDependencies": {
     "globby": "16.2.0"

@@ -20,7 +20,8 @@
     "lib"
   ],
   "scripts": {
-    "generate": "yo ./generator/index.js"
+    "generate": "yo ./generator/index.js",
+    "lint": "oxlint"
   },
   "dependencies": {
     "@inquirer/prompts": "8.3.2",

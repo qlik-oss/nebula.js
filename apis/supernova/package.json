@@ -3,6 +3,9 @@
   "private": true,
   "version": "6.8.0",
   "main": "src/index.js",
+  "scripts": {
+    "lint": "oxlint"
+  },
   "devDependencies": {
     "@nebula.js/conversion": "^6.8.0",
     "extend": "3.0.2",
