@@ -1,4 +1,3 @@
-// oxlint-disable-next-line import/extensions
 import apis from '../oxlint.apis.ts';
 import { defineConfig } from 'oxlint';
 
