@@ -1,7 +1,8 @@
 // oxlint-disable-next-line import/extensions
-import base from '../../oxlint.base.ts';
+import commands from '../oxlint.commands.ts';
 import { defineConfig } from 'oxlint';
 
 export default defineConfig({
-  extends: [base],
+  extends: [commands],
+  rules: { 'no-var': 'off', 'import/no-amd': 'off' },
 });

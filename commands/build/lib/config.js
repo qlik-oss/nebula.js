@@ -219,18 +219,18 @@ const config = ({
           extensions,
           presets: babelPresets,
         }),
-          mode === 'production'
-            ? terser({
-                output: {
-                  preamble: banner,
-                },
-              })
-            : false,
-          mode === 'development'
-            ? visualizer({
-                filename: 'bundle-analysis.html',
-              })
-            : false,
+        mode === 'production'
+          ? terser({
+              output: {
+                preamble: banner,
+              },
+            })
+          : false,
+        mode === 'development'
+          ? visualizer({
+              filename: 'bundle-analysis.html',
+            })
+          : false,
       ].filter(Boolean),
     },
     output: output(),

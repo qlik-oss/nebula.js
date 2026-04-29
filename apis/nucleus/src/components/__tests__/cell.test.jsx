@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { createTheme, ThemeProvider, StyledEngineProvider } from '@nebula.js/ui/theme';

@@ -109,7 +109,7 @@ describe('snapshooter', () => {
       await app.getObject('unknown');
       expect(1).toBe(0); // should never reach this point
     } catch (e) {
-      expect(e.message).toBe('Could not find an object with id: unknown');
+      expect(e.message).toBe('Could not find an object with id: unknown');
     }
   });
 

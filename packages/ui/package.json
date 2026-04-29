@@ -1,6 +1,7 @@
 {
   "name": "@nebula.js/ui",
   "private": true,
+  "type": "module",
   "version": "6.8.0",
   "description": "",
   "license": "MIT",

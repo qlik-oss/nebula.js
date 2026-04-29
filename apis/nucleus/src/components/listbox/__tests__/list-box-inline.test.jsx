@@ -1,4 +1,3 @@
-
 import React, { act } from 'react';
 import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
 import * as unlockModule from '@nebula.js/ui/icons/unlock';
