@@ -1,8 +1,8 @@
-import qlik from '@qlik/oxlint-config';
+import { recommended } from '@qlik/oxlint-config';
 import { defineConfig } from 'oxlint';
 
 export default defineConfig({
-  extends: [qlik.recommended],
+  extends: [recommended],
   rules: {
     'no-plusplus': 'off',
     'no-bitwise': 'off',
@@ -17,8 +17,11 @@ export default defineConfig({
       plugins: ['jest'],
       env: {
         jest: true,
+        mocha: true,
       },
       rules: {
+        'no-import-assign': 'off',
+        'no-param-reassign': 'off',
         'jest/no-disabled-tests': 'warn',
         'jest/no-focused-tests': 'error',
         'jest/no-identical-title': 'error',

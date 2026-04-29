@@ -182,16 +182,16 @@ describe('<ActionsToolbar />', () => {
   test.skip('should set spacing', async () => {
     const validate = (cnt) => {
       const items = renderer.root.findAllByType(Grid).filter((i) => i.props.className);
-      expect(items).to.have.length(cnt);
+      expect(items).toHaveLength(cnt);
       items.forEach((item, ix) => {
         if (ix === 0) {
-          expect(item.props.className).to.match(/^makeStyles-firstItemSpacing-\d+$/);
+          expect(item.props.className).toMatch(/^makeStyles-firstItemSpacing-\d+$/);
         }
         if (ix === items.length - 1) {
-          expect(item.props.className).to.match(/^makeStyles-lastItemSpacing-\d+$/);
+          expect(item.props.className).toMatch(/^makeStyles-lastItemSpacing-\d+$/);
         }
         if (ix !== 0 && ix !== items.length - 1) {
-          expect(item.props.className).to.match(/^makeStyles-itemSpacing-\d+$/);
+          expect(item.props.className).toMatch(/^makeStyles-itemSpacing-\d+$/);
         }
       });
     };
@@ -213,7 +213,7 @@ describe('<ActionsToolbar />', () => {
 
     // 1 custom action
     await render({ actions: [actions[0]] });
-    expect(renderer.root.findAllByType(Grid).filter((i) => i.props.className)).to.have.length(0);
+    expect(renderer.root.findAllByType(Grid).filter((i) => i.props.className)).toHaveLength(0);
   });
 
   test('should render as popover', async () => {

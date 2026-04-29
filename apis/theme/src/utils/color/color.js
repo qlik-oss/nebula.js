@@ -1,5 +1,4 @@
-/* oxlint-disable no-param-reassign */
-/* oxlint-disable no-cond-assign */
+// oxlint-disable no-nested-ternary
 /* oxlint-disable prefer-destructuring */
 
 import CSSColors from './css-colors';

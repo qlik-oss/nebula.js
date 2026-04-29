@@ -1,4 +1,4 @@
-/* eslint no-underscore-dangle:0 */
+// oxlint-disable import/no-named-as-default-member
 import auth from '@qlik/api/auth';
 import React from 'react';
 import appLocaleFn from './locale/app-locale';

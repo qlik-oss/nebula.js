@@ -36,17 +36,17 @@ describe('initiate api', () => {
     expect(ret).toEqual(api);
   });
 
-  test('should call mount when element is provided ', async () => {
+  test('should call mount when element is provided', async () => {
     await create(model, { element: 'el' }, halo);
     expect(api.__DO_NOT_USE__.mount).toHaveBeenCalledWith('el');
   });
 
-  test('should call options when provided ', async () => {
+  test('should call options when provided', async () => {
     await create(model, { options: 'opts' }, halo);
     expect(api.__DO_NOT_USE__.options).toHaveBeenCalledWith('opts');
   });
 
-  test('should call plugins when provided ', async () => {
+  test('should call plugins when provided', async () => {
     const plugins = [{ info: { name: 'plugino' }, fn() {} }];
     await create(model, { plugins }, halo);
     expect(api.__DO_NOT_USE__.plugins).toHaveBeenCalledWith(plugins);

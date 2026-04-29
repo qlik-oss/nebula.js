@@ -7,7 +7,7 @@ const pie = {
   },
 };
 
-const bar = function (env) {
+const bar = function  bar(env) {
   env.translator.add({
     id: 'hello',
     locale: {

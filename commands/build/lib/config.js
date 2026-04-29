@@ -112,7 +112,7 @@ const config = ({
     try {
       require('@rollup/plugin-typescript'); // oxlint-disable-line no-unassigned-import -- validates it's installed
     } catch (e) {
-      throw new Error(`${e}\n '@rollup/plugin-typescript' is required to build using typescript.`);
+      throw new Error(`${e}\n '@rollup/plugin-typescript' is required to build using typescript.`, { cause: e });
     }
   }
 

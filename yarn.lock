@@ -3757,6 +3757,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@nebula.js/examples@workspace:examples":
+  version: 0.0.0-use.local
+  resolution: "@nebula.js/examples@workspace:examples"
+  languageName: unknown
+  linkType: soft
+
 "@nebula.js/locale@npm:^6.8.0, @nebula.js/locale@workspace:apis/locale":
   version: 0.0.0-use.local
   resolution: "@nebula.js/locale@workspace:apis/locale"
@@ -3847,6 +3853,12 @@ __metadata:
   resolution: "@nebula.js/test-utils@workspace:apis/test-utils"
   peerDependencies:
     "@nebula.js/stardust": ">=5.0.0"
+  languageName: unknown
+  linkType: soft
+
+"@nebula.js/test@workspace:test":
+  version: 0.0.0-use.local
+  resolution: "@nebula.js/test@workspace:test"
   languageName: unknown
   linkType: soft
 

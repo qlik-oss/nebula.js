@@ -15,6 +15,7 @@ describe('load', () => {
   });
 
   test('should throw when load is not a function', async () => {
+    // oxlint-disable-next-line unicorn/no-thenable
     const loader = { then: {} }; // fake promise
     try {
       await load('pie', '1.0.0', halo, loader);
