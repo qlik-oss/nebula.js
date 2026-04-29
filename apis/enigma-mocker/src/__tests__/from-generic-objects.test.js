@@ -29,17 +29,17 @@ describe('enigma-mocker', () => {
 
   test('throws if no generic object is specified', async () => {
     const app = await createEnigmaMocker();
-    expect(() => app.getObject()).toThrow();
+    expect(() => app.getObject()).toThrow('No "genericObjects" specified');
   });
 
   test('throws if generic objects argument is not array', async () => {
     const app = await createEnigmaMocker({});
-    expect(() => app.getObject()).toThrow();
+    expect(() => app.getObject()).toThrow('No "genericObjects" specified');
   });
 
   test('throws if generic objects argument is empty array', async () => {
     const app = await createEnigmaMocker([]);
-    expect(() => app.getObject()).toThrow();
+    expect(() => app.getObject()).toThrow('No "genericObjects" specified');
   });
 
   describe('getObject', () => {
@@ -81,7 +81,7 @@ describe('enigma-mocker', () => {
       };
       await expect(async () => {
         await createEnigmaMocker([genericObjectA]);
-      }).rejects.toThrow();
+      }).rejects.toThrow("Generic object has multiple IDs, qInfo.qId: 112233, id: AABBCC");
     });
 
     describe('getLayout', () => {
@@ -100,7 +100,7 @@ describe('enigma-mocker', () => {
         const layout = await object.getLayout();
 
         expect(layout.qInfo.qId).toEqual('2pz14');
-        expect(getLayoutMock).toHaveBeenCalled;
+        expect(getLayoutMock).toHaveBeenCalled();
       });
 
       test('is asynchronous', async () => {
@@ -112,11 +112,11 @@ describe('enigma-mocker', () => {
       });
 
       test('throws if no getLayout is specified', async () => {
-        expect(() => createEnigmaMocker([{}])).toThrow();
+        expect(() => createEnigmaMocker([{}])).toThrow('Generic object is missing "getLayout"');
       });
 
       test('throws if no qId is specified', async () => {
-        expect(() => createEnigmaMocker([{ getLayout: { qInfo: {} } }])).toThrow();
+        expect(() => createEnigmaMocker([{ getLayout: { qInfo: {} } }])).toThrow('Generic object is missing "qId" for path "getLayout().qInfo.qId"');
       });
     });
 

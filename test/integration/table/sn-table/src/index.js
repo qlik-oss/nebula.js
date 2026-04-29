@@ -1,6 +1,7 @@
 import { useElement, useLayout, useEffect } from '@nebula.js/stardust';
 
 import data from './data.json';
+// oxlint-disable-next-line import/no-unassigned-import - CSS bundler import for component styling
 import './style.css';
 
 export default function v() {

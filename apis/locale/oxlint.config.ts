@@ -3,5 +3,10 @@ import { defineConfig } from 'oxlint';
 
 export default defineConfig({
   extends: [apis],
-  rules: {},
+  rules: {
+    'no-underscore-dangle': [
+      'error',
+      { allow: ['__dirname'] }, // ESM import.meta.url helper
+    ],
+  },
 });

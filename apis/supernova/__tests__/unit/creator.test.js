@@ -335,7 +335,7 @@ describe('creator', () => {
       const c = create(generator, opts, galaxy).component;
       c.render({}); // initial should always run
 
-      const foo = new (class Foo {})();
+      const foo = {};
       const ref = {};
 
       c.render({

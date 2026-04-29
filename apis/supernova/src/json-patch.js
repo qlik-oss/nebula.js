@@ -1,4 +1,3 @@
-/* eslint no-param-reassign: 0, no-restricted-globals: 0 */
 import originalExtend from 'extend';
 
 const extend = originalExtend.bind(null, true);
@@ -93,6 +92,7 @@ function emptyObject(obj) {
     const config = Object.getOwnPropertyDescriptor(obj, key);
 
     if (config.configurable && !isSpecialProperty(obj, key) && isSafeKey(key)) {
+      // oxlint-disable-next-line no-dynamic-delete -- JSON patch remove semantics require dynamic key deletion
       delete obj[key];
     }
   });
@@ -325,12 +325,14 @@ JSONPatch.apply = function apply(original, patches) {
         parent.splice(+key, 0, oldParent.splice(+from, 1)[0]);
       } else {
         parent[key] = oldParent[from];
+        // oxlint-disable-next-line no-dynamic-delete -- JSON patch move semantics require dynamic key deletion
         delete oldParent[from];
       }
     } else if (patch.op === 'remove') {
       if (isArray(parent)) {
         parent.splice(+key, 1);
       } else {
+        // oxlint-disable-next-line no-dynamic-delete -- JSON patch remove semantics require dynamic key deletion
         delete parent[key];
       }
     }

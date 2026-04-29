@@ -3,5 +3,7 @@ import { defineConfig } from 'oxlint';
 
 export default defineConfig({
   extends: [commands],
-  rules: {},
+  rules: {
+    'import/extensions': 'off', // Command entry point uses .js extension
+  },
 });

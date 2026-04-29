@@ -3,5 +3,8 @@ import { defineConfig } from 'oxlint';
 
 export default defineConfig({
   extends: [apis],
-  rules: {},
+  rules: {
+    'no-dynamic-require': 'off', // Rollup config uses dynamic require for package.json
+    'no-param-reassign': 'off', // Renderer mutates element parameter for error display
+  },
 });

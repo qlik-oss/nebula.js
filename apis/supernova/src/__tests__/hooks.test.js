@@ -118,14 +118,10 @@ describe('hooks', () => {
 
     run(c);
 
-    try {
+    expect(() => {
       run(c);
       jest.advanceTimersByTime(60);
-    } catch (error) {
-      expect(error.message).toBe(
-        'Invalid stardust hook call. Hooks can only be called inside a visualization component.'
-      );
-    }
+    }).toThrow('Invalid stardust hook call. Hooks can only be called inside a visualization component.');
     jest.clearAllTimers();
     jest.useRealTimers();
   });
@@ -550,11 +546,7 @@ describe('hooks', () => {
         useImperativeHandle(stub, []);
       };
 
-      try {
-        await run(c);
-      } catch (error) {
-        expect(error.message).toBe('useImperativeHandle already used.');
-      }
+      await expect(run(c)).rejects.toThrow('useImperativeHandle already used.');
     });
 
     test('should return handle', async () => {
@@ -625,7 +617,7 @@ describe('hooks', () => {
       expect(ref.label).toBe('meh');
     });
 
-    test('should observe actions before init ', async () => {
+    test('should observe actions before init', async () => {
       const unitiatedComponent = {};
 
       observeActions(unitiatedComponent, spy);
@@ -731,7 +723,7 @@ describe('hooks', () => {
         expect(RO_.disconnect).toHaveBeenCalledWith(element);
       });
 
-      test('should update rect when size changes ', async () => {
+      test('should update rect when size changes', async () => {
         let r;
         getBoundingClientRectMock.mockReturnValue({ left: 1, top: 2, width: 3, height: 4 });
 
@@ -784,14 +776,14 @@ describe('hooks', () => {
 
         run(c);
         const add = global.window.addEventListener.getCall(0).args;
-        expect(add[0]).to.equal('resize');
-        expect(add[1]).to.be.a('function');
+        expect(add[0]).toEqual('resize');
+        expect(add[1]).toEqual(expect.any(Function));
 
         teardown(c);
 
         const remove = global.window.removeEventListener.getCall(0).args;
-        expect(remove[0]).to.equal('resize');
-        expect(remove[1]).to.equal(add[1]);
+        expect(remove[0]).toEqual('resize');
+        expect(remove[1]).toEqual(add[1]);
       });
     });
 
