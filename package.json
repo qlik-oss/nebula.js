@@ -83,7 +83,7 @@
     "mocha-junit-reporter": "2.2.1",
     "picasso-plugin-q": "2.10.0",
     "picasso.js": "2.10.0",
-    "prettier": "3.8.2",
+    "prettier": "3.8.3",
     "puppeteer": "24.40.0",
     "qix-faker": "0.3.0",
     "react-is": "18.3.1",
