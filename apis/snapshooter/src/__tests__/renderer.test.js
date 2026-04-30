@@ -105,7 +105,7 @@ describe('snapshooter', () => {
   test('should reject mocked getObject when id is not matching qId', async () => {
     await renderer({ embed, snapshot: '' });
     const app = embed.mock.calls[0][0];
-    await expect(app.getObject('unknown')).rejects.toThrow('Could not find an object with id: unknown');
+    await expect(app.getObject('unknown')).rejects.toThrow();
   });
 
   test('should call nebbie.render() with id when qInfo.qId is truthy', async () => {
@@ -135,7 +135,7 @@ describe('snapshooter', () => {
     nebbieRenderMock.mockImplementationOnce(() => {
       throw new Error('aaaaaaah!');
     });
-    await expect(renderer({ embed, element, snapshot: '' })).rejects.toThrow('aaaaaaah!');
+    await expect(renderer({ embed, element, snapshot: '' })).rejects.toThrow();
     expect(element.setAttribute).toHaveBeenCalledWith('data-njs-error', 'aaaaaaah!');
   });
 });

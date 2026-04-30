@@ -398,25 +398,25 @@ describe('use-listbox-interactions', () => {
       expect(setPages).toHaveBeenLastCalledWith(createPageWithSingle(24, 'O'));
     });
 
-    // test('Ctrl or cmd button with click should result in single select behaviour', async () => {
-    //   await render({ checkboxes: true });
-    //   const preventDefault = jest.fn();
-    //   const focus = jest.fn();
-    //   await act(() => {
-    //     ref.current.result.interactionEvents.onChange({
-    //       target: {
-    //         focus,
-    //         getAttribute: jest.fn().mockReturnValue(24),
-    //       },
-    //       nativeEvent: {
-    //         ctrlKey: true,
-    //       },
-    //       preventDefault,
-    //     });
-    //   });
-    //   expect(focus).toHaveBeenCalledTimes(1);
-    //   expect(preventDefault).toHaveBeenCalledTimes(1);
-    // });
+    test.skip('Ctrl or cmd button with click should result in single select behaviour', async () => {
+      await render({ checkboxes: true });
+      const preventDefault = jest.fn();
+      const focus = jest.fn();
+      await act(() => {
+        ref.current.result.interactionEvents.onChange({
+          target: {
+            focus,
+            getAttribute: jest.fn().mockReturnValue(24),
+          },
+          nativeEvent: {
+            ctrlKey: true,
+          },
+          preventDefault,
+        });
+      });
+      expect(focus).toHaveBeenCalledTimes(1);
+      expect(preventDefault).toHaveBeenCalledTimes(1);
+    });
 
     test('Ctrl or cmd button with mousedown should result in single select behaviour', async () => {
       await render({ checkboxes: false });

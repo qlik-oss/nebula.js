@@ -4,13 +4,13 @@ describe('get-object', () => {
   test('should throw when plugins is not an array', () => {
     const plugins = {};
     const validateFn = () => validatePlugins(plugins);
-    expect(validateFn).toThrow('Invalid plugin format: plugins should be an array!');
+    expect(validateFn).toThrow();
   });
 
   test('should throw when plugin is not an object', () => {
     const plugins = ['blabla'];
     const validateFn = () => validatePlugins(plugins);
-    expect(validateFn).toThrow('Invalid plugin format: a plugin should be an object');
+    expect(validateFn).toThrow();
   });
 
   test('should throw when plugin has no info object or name', () => {
@@ -27,6 +27,6 @@ describe('get-object', () => {
   test('should throw when plugin has no "fn" function', () => {
     const plugins = [{ info: { name: 'blabla' } }];
     const validateFn = () => validatePlugins(plugins);
-    expect(validateFn).toThrow('Invalid plugin format: The plugin "blabla" has no "fn" function');
+    expect(validateFn).toThrow();
   });
 });

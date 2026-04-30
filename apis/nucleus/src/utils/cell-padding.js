@@ -1,3 +1,4 @@
+// oxlint-disable no-param-reassign
 import { generateFiltersString } from './generateFiltersInfo';
 
 const NO_BORDER_IN_CARDS = ['action-button', 'sn-nav-menu', 'filterpane', 'sn-shape'];

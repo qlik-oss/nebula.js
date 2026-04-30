@@ -100,21 +100,6 @@ describe('Boot NebulaApp', () => {
 
       expect(appRef.current.setContext).toHaveBeenCalledTimes(1);
     });
-    /*
-    test('should get app selections', async () => {
-      const app = { id: 'foo' };
-      const context = {};
-      const [api, , , appRef] = boot({ app, context });
-      appRef.current = {
-        getAppSelections: jest.fn().mockReturnValue('app-selections'),
-      };
-
-      mockedRoot.render.mock.calls[0][0].props.renderCallback();
-      await api.getAppSelections();
-
-      expect(await appRef.current.getAppSelections()).toBe('app-selections');
-    });
-    */
   });
 });
 

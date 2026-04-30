@@ -151,6 +151,7 @@ const validateInfo = (min, info, getDescription, translatedError, translatedCalc
     const delimiter = ':';
     const calcCondMsg = softError && info[i].qCalcCondMsg;
     const label = `${
+      // oxlint-disable-next-line no-nested-ternary
       error ? translatedError : softError ? calcCondMsg || translatedCalcCond : (exists && info[i].qFallbackTitle) || ''
     }`;
     const customDescription = getDescription(i);
@@ -223,6 +224,7 @@ const validateCubes = (translator, targets, layout) => {
       hasLayoutErrors = true;
       hasLayoutUnfulfilledCalculcationCondition = c.qError.qErrorCode === 7005;
       const title =
+        // oxlint-disable-next-line no-nested-ternary
         hasLayoutUnfulfilledCalculcationCondition && c.qCalcCondMsg
           ? c.qCalcCondMsg
           : hasLayoutUnfulfilledCalculcationCondition

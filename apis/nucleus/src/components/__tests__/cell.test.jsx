@@ -220,7 +220,7 @@ describe('<Cell />', () => {
 
   test('should call useObjectSelection with expected args', async () => {
     await render();
-    expect(useObjectSelections).calledTwice;
+    expect(useObjectSelections).toHaveBeenCalledTimes(2);
     const [, , clickOutElementsFirstRender] = useObjectSelections.mock.calls[0];
     const [app, model, clickOutElements] = useObjectSelections.mock.calls[1];
     expect(app).toEqual(defaultHalo.app);
@@ -878,11 +878,9 @@ describe('<Cell />', () => {
         cellRef,
         config,
       });
-      try {
-        await cellRef.current.exportImage();
-      } catch (error) {
-        expect(error.message).toBe('Stardust embed has not been configured with snapshot.capture callback');
-      }
+      await expect(cellRef.current.exportImage()).rejects.toThrow(
+        'Stardust embed has not been configured with snapshot.capture callback'
+      );
     });
 
     test('should export image', async () => {

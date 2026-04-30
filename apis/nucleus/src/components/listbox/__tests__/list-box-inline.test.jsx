@@ -209,7 +209,7 @@ describe('<ListboxInline />', () => {
       });
     });
 
-    test('should render without toolbar', async () => {
+    test('should hide toolbar and title when toolbar option is false', async () => {
       const options = { toolbar: false };
       await render(options);
       const actionToolbars = await renderer.queryAllByText('ActionsToolbar');
@@ -222,7 +222,7 @@ describe('<ListboxInline />', () => {
       expect(listBoxSearches).toHaveLength(1);
     });
 
-    test('should render without toolbar', async () => {
+    test('should register selection listeners and hide search input when search mode is toggle', async () => {
       const options = { search: 'toggle' };
       await render(options);
 

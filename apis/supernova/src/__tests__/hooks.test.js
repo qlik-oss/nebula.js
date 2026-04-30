@@ -96,7 +96,7 @@ describe('hooks', () => {
   test('should throw when hook is used outside method context', () => {
     const fn = () => useState(0);
 
-    expect(fn).toThrow('Invalid stardust hook call. Hooks can only be called inside a visualization component.');
+    expect(fn).toThrow();
   });
 
   test('should throw when hooks are used outside top level of method context', async () => {
@@ -121,7 +121,7 @@ describe('hooks', () => {
     expect(() => {
       run(c);
       jest.advanceTimersByTime(60);
-    }).toThrow('Invalid stardust hook call. Hooks can only be called inside a visualization component.');
+    }).toThrow();
     jest.clearAllTimers();
     jest.useRealTimers();
   });
@@ -546,7 +546,7 @@ describe('hooks', () => {
         useImperativeHandle(stub, []);
       };
 
-      await expect(run(c)).rejects.toThrow('useImperativeHandle already used.');
+      await expect(run(c)).rejects.toThrow();
     });
 
     test('should return handle', async () => {

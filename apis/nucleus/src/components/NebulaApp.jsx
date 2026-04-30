@@ -1,5 +1,6 @@
 import React, { useState, useMemo, forwardRef, useImperativeHandle, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
+// oxlint-disable-next-line import/no-unassigned-import
 import './ClassNameSetup';
 
 import { createTheme, ThemeProvider, StyledEngineProvider } from '@nebula.js/ui/theme';
@@ -103,6 +104,7 @@ export default function boot({ app, context }) {
         cells[id] = cell;
       },
       removeCell(id) {
+        // oxlint-disable-next-line typescript/no-dynamic-delete - cells should be refactored to use Map
         delete cells[id];
       },
       add(component, unmount) {

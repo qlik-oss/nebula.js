@@ -18,6 +18,8 @@ export default defineConfig({
           '_popover',
           '__timedOut',
           '_divider',
+          '_listRef',
+          '__snInterceptor',
         ],
       },
     ],
