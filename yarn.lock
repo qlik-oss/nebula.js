@@ -3518,7 +3518,7 @@ __metadata:
     rollup-plugin-postcss: "npm:4.0.2"
     rollup-plugin-visualizer: "npm:6.0.11"
     tslib: "npm:*"
-    typescript: "npm:>=6.0.2"
+    typescript: "npm:>=6.0.3"
     yargs: "npm:17.7.2"
   languageName: unknown
   linkType: soft
@@ -18408,7 +18408,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:>=6.0.2":
+"typescript@npm:>=6.0.3":
   version: 6.0.3
   resolution: "typescript@npm:6.0.3"
   bin:
@@ -18428,7 +18428,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A>=6.0.2#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A>=6.0.3#optional!builtin<compat/typescript>":
   version: 6.0.3
   resolution: "typescript@patch:typescript@npm%3A6.0.3#optional!builtin<compat/typescript>::version=6.0.3&hash=5786d5"
   bin:
