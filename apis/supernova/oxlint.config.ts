@@ -1,4 +1,4 @@
-import apis from '../oxlint.apis.ts';
+import apis, { SHARED_APIS_NO_UNDERSCORE_DANGLE_ALLOW } from '../oxlint.apis.ts';
 import { defineConfig } from 'oxlint';
 
 export default defineConfig({
@@ -8,10 +8,9 @@ export default defineConfig({
       'error',
       {
         allow: [
+          ...SHARED_APIS_NO_UNDERSCORE_DANGLE_ALLOW, // Development flag and public API escape hatch
           '__hooks', // Component hooks internal state
           '__actionsDispatch', // Action dispatcher callback
-          '__NEBULA_DEV__', // Development flag
-          '__DO_NOT_USE__', // Public API escape hatch
           '__snInterceptor', // Hooks interceptor internal
           '__hooked', // Hooks tracking internal
           '_config', // Test mock configuration

@@ -1,4 +1,3 @@
-/* eslint react/jsx-no-constructed-context-values: 0 */
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';

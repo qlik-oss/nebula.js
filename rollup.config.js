@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const path = require('path');
 const crypto = require('crypto');
 const babel = require('@rollup/plugin-babel');
@@ -11,12 +10,12 @@ const terser = require('@rollup/plugin-terser');
 const localeStringValidator = require('./tools/locale-string-validator.cjs');
 
 const cwd = process.cwd();
-const pkg = require(path.join(cwd, 'package.json')); // eslint-disable-line
+const pkg = require(path.join(cwd, 'package.json'));
 const { name, version, license } = pkg;
 
 let corePkg;
 try {
-  corePkg = require(path.join(cwd, 'core', 'package.json')); // eslint-disable-line
+  corePkg = require(path.join(cwd, 'core', 'package.json'));
 } catch (e) {
   // do nothing
 }
@@ -110,9 +109,6 @@ const config = ({ format = 'umd', debug = false, file, targetPkg }) => {
     onwarn(warning, warn) {
       // Supress "use client" warnings coming from MUI bundling
       if (warning.code === 'MODULE_LEVEL_DIRECTIVE' && warning.message.includes(`"use client"`)) {
-        return;
-      }
-      if (warning.code === 'INVALID_ANNOTATION' && warning.frame.includes(`// eslint-disable-next-line react`)) {
         return;
       }
       if (warning.code === 'INVALID_ANNOTATION' && warning.message.includes(`@mui/material`)) {

@@ -1,4 +1,3 @@
-/* eslint no-import-assign: 0 */
 import React, { forwardRef, useImperativeHandle } from 'react';
 import { create, act } from 'react-test-renderer';
 

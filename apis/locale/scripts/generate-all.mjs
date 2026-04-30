@@ -1,5 +1,4 @@
 #! /usr/bin/env node
-/* eslint no-underscore-dangle: 0 */
 import { globbySync } from 'globby';
 import { fileURLToPath } from 'url';
 import fs from 'fs';

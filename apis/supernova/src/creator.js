@@ -1,5 +1,3 @@
-/* eslint no-underscore-dangle: 0 */
-
 import EventEmitter from 'node-event-emitter';
 
 import JSONPatch from './json-patch';
@@ -29,7 +27,6 @@ const defaultComponent = {
 const reservedKeys = Object.keys(defaultComponent);
 
 const mixin = (obj) => {
-  /* eslint no-param-reassign: 0 */
   Object.keys(EventEmitter.prototype).forEach((key) => {
     obj[key] = EventEmitter.prototype[key];
   });

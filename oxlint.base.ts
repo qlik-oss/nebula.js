@@ -1,6 +1,8 @@
 import { recommended } from '@qlik/oxlint-config';
 import { defineConfig } from 'oxlint';
 
+export const SHARED_NO_UNDERSCORE_DANGLE_ALLOW = ['__DO_NOT_USE__'];
+
 export default defineConfig({
   extends: [recommended],
   rules: {

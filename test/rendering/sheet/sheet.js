@@ -1,5 +1,3 @@
-/* global configured */
-/* eslint no-underscore-dangle: 0 */
 (() => {
   async function getMocks(EnigmaMocker) {
     const { getSheetLayout, getSheetLayout2, getBarLayout, getPieLayout } = window.getFuncs();

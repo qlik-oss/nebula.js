@@ -1,4 +1,3 @@
-/* eslint no-underscore-dangle:0 */
 import themeFn from '@nebula.js/theme';
 
 const timed = (t, v) =>

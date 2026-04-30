@@ -1,4 +1,3 @@
-/* eslint no-underscore-dangle:0 */
 import vizualizationAPI from '../viz';
 
 export default async function init(model, optional, halo, navigation, initialError, onDestroy = async () => {}) {

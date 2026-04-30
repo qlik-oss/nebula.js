@@ -1,5 +1,3 @@
-/* eslint arrow-body-style: 0 */
-
 window.getFuncs = function getFuncs() {
   return {
     getSheetLayout: () => {

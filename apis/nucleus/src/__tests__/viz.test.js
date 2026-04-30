@@ -1,4 +1,3 @@
-/* eslint no-underscore-dangle:0 */
 import * as ObjectConversionModule from '@nebula.js/conversion';
 import create from '../viz';
 import * as glueModule from '../components/glue';

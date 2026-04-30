@@ -1,7 +1,6 @@
 import EventEmitter from 'node-event-emitter';
 
 const mixin = (obj) => {
-  /* eslint no-param-reassign: 0 */
   Object.keys(EventEmitter.prototype).forEach((key) => {
     obj[key] = EventEmitter.prototype[key];
   });

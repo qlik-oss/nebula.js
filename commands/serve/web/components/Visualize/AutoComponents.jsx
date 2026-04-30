@@ -1,5 +1,3 @@
-/* eslint no-use-before-define:0 */
-
 import React, { useState } from 'react';
 
 import { styled } from '@mui/material/styles';

@@ -4,5 +4,4 @@ import { react } from '@qlik/oxlint-config';
 
 export default defineConfig({
   extends: [base, react],
-  rules: {},
 });

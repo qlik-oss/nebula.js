@@ -1,5 +1,3 @@
-/* eslint import/no-extraneous-dependencies: 0 */
-
 import { useEffect, useElement, useLayout } from '@nebula.js/stardust';
 import picassojs from 'picasso.js';
 import picassoQ from 'picasso-plugin-q';

@@ -47,6 +47,5 @@ export {
 } from '@nebula.js/supernova';
 
 // component internals
-// oxlint-disable-next-line no-underscore-dangle -- intentionally named to discourage external usage
 const __DO_NOT_USE__ = { generator, hook, theme, locale };
 export { __DO_NOT_USE__ };

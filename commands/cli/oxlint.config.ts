@@ -3,5 +3,4 @@ import { defineConfig } from 'oxlint';
 
 export default defineConfig({
   extends: [commands],
-  rules: {},
 });

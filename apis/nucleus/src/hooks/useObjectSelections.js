@@ -1,4 +1,3 @@
-/* eslint no-underscore-dangle: 0 */
 import { useContext, useEffect, useState } from 'react';
 import useAppSelections from './useAppSelections';
 import eventmixin from '../selections/event-mixin';

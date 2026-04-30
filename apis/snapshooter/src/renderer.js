@@ -1,4 +1,3 @@
-/* eslint no-param-reassign: 0 */
 async function renderSnapshot({ embed, element, snapshot: key }) {
   let snapshot = {};
   const renderError = (e) => {

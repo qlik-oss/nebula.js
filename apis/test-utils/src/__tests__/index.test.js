@@ -43,7 +43,6 @@ describe('test-utils', () => {
     };
 
     hookMock = jest.fn().mockReturnValue(hooked);
-    // oxlint-disable-next-line no-underscore-dangle -- accessing intentionally-named internal API for testing
     jest.spyOn(stardustUtils.__DO_NOT_USE__, 'hook').mockImplementation(hookMock);
   });
 

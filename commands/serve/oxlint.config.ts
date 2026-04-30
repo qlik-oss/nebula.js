@@ -1,6 +1,7 @@
 import commands from '../oxlint.commands.ts';
 import { defineConfig } from 'oxlint';
 import { react } from '@qlik/oxlint-config';
+import { SHARED_NO_UNDERSCORE_DANGLE_ALLOW } from '../../oxlint.base.ts';
 
 export default defineConfig({
   extends: [commands, react],
@@ -12,5 +13,6 @@ export default defineConfig({
     'no-async-endpoint-handlers': 'off',
     // chokidar and puppeteer are used via their default export objects (standard API)
     'import/no-named-as-default-member': 'off',
+    'no-underscore-dangle': ['error', { allow: SHARED_NO_UNDERSCORE_DANGLE_ALLOW }],
   },
 });

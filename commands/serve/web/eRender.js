@@ -70,9 +70,7 @@ async function renderWithEngine() {
   window.onHotChange(info.supernova.name, async () => {
     if (viz) {
       viz.close();
-      // oxlint-disable-next-line no-underscore-dangle -- accessing internal stardust types API
       nebbie.__DO_NOT_USE__.types.clearFromCache(info.supernova.name);
-      // oxlint-disable-next-line no-underscore-dangle -- accessing internal stardust types API
       nebbie.__DO_NOT_USE__.types.register(info.supernova);
     }
     viz = await renderViz();

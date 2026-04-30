@@ -1,4 +1,3 @@
-/* eslint no-underscore-dangle:0 */
 import * as vizModule from '../../viz';
 import create from '../initiate';
 

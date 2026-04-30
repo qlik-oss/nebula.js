@@ -1,4 +1,4 @@
-import apis from '../oxlint.apis.ts';
+import apis, { SHARED_APIS_NO_UNDERSCORE_DANGLE_ALLOW } from '../oxlint.apis.ts';
 import { defineConfig } from 'oxlint';
 import { react } from '@qlik/oxlint-config';
 
@@ -11,8 +11,7 @@ export default defineConfig({
         allow: [
           '_ref',
           '_popoverInstance',
-          '__DO_NOT_USE__',
-          '__NEBULA_DEV__',
+          ...SHARED_APIS_NO_UNDERSCORE_DANGLE_ALLOW,
           '_instance',
           '_nuked',
           '_popover',

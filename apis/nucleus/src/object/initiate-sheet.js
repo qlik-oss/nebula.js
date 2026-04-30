@@ -1,4 +1,3 @@
-/* eslint no-underscore-dangle:0 */
 import sheetAPI from '../sheet';
 
 export default async function initSheet(model, optional, halo, navigation, initialError, onDestroy = async () => {}) {
