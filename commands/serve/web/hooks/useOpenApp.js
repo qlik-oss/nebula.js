@@ -39,7 +39,7 @@ export const useOpenApp = ({ info }) => {
       const enigmaGlobal = await enigma.create({ schema: qixSchema, url }).open();
       return enigmaGlobal.openDoc(info?.enigma.appId);
     } catch (error) {
-      throw new Error('Failed to open app!');
+      throw new Error('Failed to open app!', { cause: error });
     }
   };
 

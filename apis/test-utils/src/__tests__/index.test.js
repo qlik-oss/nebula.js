@@ -1,4 +1,3 @@
-/* eslint no-underscore-dangle:0 */
 import * as stardustUtils from '@nebula.js/stardust';
 import { create } from '../index';
 
@@ -44,6 +43,7 @@ describe('test-utils', () => {
     };
 
     hookMock = jest.fn().mockReturnValue(hooked);
+    // oxlint-disable-next-line no-underscore-dangle -- accessing intentionally-named internal API for testing
     jest.spyOn(stardustUtils.__DO_NOT_USE__, 'hook').mockImplementation(hookMock);
   });
 
@@ -77,7 +77,7 @@ describe('test-utils', () => {
     );
   });
 
-  test('should update', () => {
+  test('should unmount', () => {
     const c = create();
     c.unmount();
     expect(teardownMock).toHaveBeenCalledTimes(1);

@@ -1,5 +1,3 @@
-/* eslint no-param-reassign: 0 */
-
 import puppeteer from 'puppeteer';
 
 function snapshooter({ snapshotUrl, chrome = {} } = {}) {
@@ -11,6 +9,7 @@ function snapshooter({ snapshotUrl, chrome = {} } = {}) {
 
   const hasConnectOptions = chrome.browserWSEndpoint || chrome.browserURL;
 
+  // oxlint-disable-next-line import/no-named-as-default-member -- puppeteer default export is the standard API object
   const createBrowser = () => (hasConnectOptions ? puppeteer.connect(chrome) : puppeteer.launch(chrome));
 
   const doIt = async (snapshot, runCached) => {
@@ -58,6 +57,7 @@ function snapshooter({ snapshotUrl, chrome = {} } = {}) {
         throw new Error('Empty snapshot');
       }
       if (!snapshot.key) {
+        // oxlint-disable-next-line no-param-reassign -- assigns key if missing
         snapshot.key = String(+Date.now());
       }
       snapshots[snapshot.key] = snapshot;

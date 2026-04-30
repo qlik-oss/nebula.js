@@ -1,4 +1,3 @@
-/* eslint no-underscore-dangle: 0 */
 import { useContext, useEffect } from 'react';
 import InstanceContext from '../contexts/InstanceContext';
 
@@ -82,22 +81,22 @@ function createAppSelections({ app, selectionStore }) {
   return appSelections;
 }
 export default function useAppSelections(app) {
-  if (!app.session) {
-    // assume the app is mocked if session is undefined
-    return [];
-  }
   const { selectionStore } = useContext(InstanceContext);
-
   const [appSelectionsStore] = selectionStore.useAppSelectionsStore();
   const key = app ? app.id : null;
   let appSelections = appSelectionsStore.get(key);
 
   useEffect(() => {
-    if (!app || appSelections) return;
+    if (!app?.session || !app || appSelections) return;
     appSelections = createAppSelections({ app, selectionStore });
     appSelectionsStore.set(key, appSelections);
     appSelectionsStore.dispatch(true);
   }, [app]);
+
+  if (!app?.session) {
+    // assume the app is mocked if session is undefined
+    return [];
+  }
 
   return [appSelections];
 }

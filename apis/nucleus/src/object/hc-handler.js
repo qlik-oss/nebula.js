@@ -1,4 +1,3 @@
-// oxlint-disable no-param-reassign
 import uid from './uid';
 
 function addIndex(array, index) {

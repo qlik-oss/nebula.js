@@ -34,7 +34,8 @@ export default function MultiState({ field, api, moreAlignTo = null, onClose = (
   const [showStateIx, setShowStateIx] = useState(-1);
   // If originated from the `more` item align it
   const [anchorEl, setAnchorEl] = useState(moreAlignTo ? moreAlignTo.current : null);
-  const alignTo = moreAlignTo || useRef();
+  const fallbackRef = useRef();
+  const alignTo = moreAlignTo || fallbackRef;
   const { translator } = useContext(InstanceContext);
   const clearAllStates = translator.get('Selection.ClearAllStates');
 

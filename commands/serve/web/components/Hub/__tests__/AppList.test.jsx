@@ -60,7 +60,7 @@ describe('<AppList />', () => {
 
     expect(screen.queryByText('Select an app')).toBeInTheDocument();
     expect(screen.queryByTestId('loading')).not.toBeInTheDocument();
-    appList.map(({ qDocId, qTitle }) => {
+    appList.forEach(({ qDocId, qTitle }) => {
       expect(screen.getByText(qTitle)).toBeInTheDocument();
       expect(screen.getByText(qDocId)).toBeInTheDocument();
     });

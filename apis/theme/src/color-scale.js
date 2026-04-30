@@ -1,4 +1,3 @@
-/* oxlint-disable no-param-reassign */
 import { color, rgb } from 'd3-color';
 
 /**

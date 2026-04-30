@@ -14,8 +14,8 @@ window.serveFixtures = {
         recursive: true,
         regExp: /\.fix\.js$/,
       });
-    } catch (_) {
-      throw new Error('Specified "--fixturePath" does not exist');
+    } catch (err) {
+      throw new Error('Specified "--fixturePath" does not exist', { cause: err });
     }
 
     if (context.keys().includes(k)) {

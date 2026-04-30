@@ -38,7 +38,7 @@ describe('<FormManager />', () => {
     TestRenderer(<FormManager {...{ info, error, fields, isCredentialProvided }} />);
 
     expect(screen.getAllByRole('button')).toHaveLength(1);
-    fields.map((fld) => {
+    fields.forEach((fld) => {
       expect(screen.getByPlaceholderText(fld)).toBeInTheDocument();
     });
   });

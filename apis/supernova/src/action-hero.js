@@ -35,7 +35,7 @@ const actionWrapper = (component) => (item) => {
   return wrapped;
 };
 
-export default function ({ sn, component }) {
+export default function createActionHero({ sn, component }) {
   const actions = {};
   const selectionToolbarItems = [];
   const w = actionWrapper(component);

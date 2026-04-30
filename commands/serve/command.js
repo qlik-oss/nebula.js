@@ -1,5 +1,5 @@
-import serve from './lib/serve.js';
-import init from './lib/init-config.js';
+import serve from './lib/serve';
+import init from './lib/init-config';
 
 export default {
   command: 'serve',

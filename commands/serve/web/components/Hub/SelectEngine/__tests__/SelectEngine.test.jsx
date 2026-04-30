@@ -10,7 +10,7 @@ describe('<SelectEngine />', () => {
 
     expect(1).toBe(1);
     expect(screen.queryByText('Connect to an engine')).toBeInTheDocument();
-    OptionsToConnect.map((opt) => {
+    OptionsToConnect.forEach((opt) => {
       expect(screen.queryByText(opt.label)).toBeInTheDocument();
     });
   });
@@ -26,7 +26,7 @@ describe('<SelectEngine />', () => {
       'Qlik Cloud Services',
       'Qlik Sense on Windows',
       'Qlik Sense Desktop',
-    ].map((title) => {
+    ].forEach((title) => {
       expect(screen.queryByText(title)).toBeVisible();
     });
   });
@@ -45,7 +45,7 @@ describe('<SelectEngine />', () => {
       'Qlik Cloud Services',
       'Qlik Sense on Windows',
       'Qlik Sense Desktop',
-    ].map((title) => {
+    ].forEach((title) => {
       expect(screen.queryByText(title)).not.toBeVisible();
     });
   });

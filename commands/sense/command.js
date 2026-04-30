@@ -1,5 +1,5 @@
-import init from './lib/init-config.js';
-import sense from './lib/sense.js';
+import init from './lib/init-config';
+import sense from './lib/sense';
 
 export default {
   command: 'sense',

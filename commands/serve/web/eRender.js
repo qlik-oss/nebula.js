@@ -1,4 +1,3 @@
-/* eslint no-underscore-dangle:0 */
 import { embed } from '@nebula.js/stardust';
 import snapshooter from '@nebula.js/snapshooter/client';
 
@@ -45,7 +44,7 @@ async function renderWithEngine() {
     const rc = await (await fetch(`/render-config/${params['render-config']}`)).json();
     cfg = {
       ...rc,
-      ...(params.object ? { id: params.object } : rc.id ? { id: rc.id } : {}),
+      ...(params.object ? { id: params.object } : {}),
       type: rc.type ? rc.type : info.supernova.name,
       fields: params.cols ? params.cols : rc.fields,
       element,
@@ -71,7 +70,9 @@ async function renderWithEngine() {
   window.onHotChange(info.supernova.name, async () => {
     if (viz) {
       viz.close();
+      // oxlint-disable-next-line no-underscore-dangle -- accessing internal stardust types API
       nebbie.__DO_NOT_USE__.types.clearFromCache(info.supernova.name);
+      // oxlint-disable-next-line no-underscore-dangle -- accessing internal stardust types API
       nebbie.__DO_NOT_USE__.types.register(info.supernova);
     }
     viz = await renderViz();

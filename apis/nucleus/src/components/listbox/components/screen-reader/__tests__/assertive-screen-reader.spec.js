@@ -1,5 +1,5 @@
 import React from 'react';
-import getScreenReaderAssertiveText from '../assertive-screen-reader';
+import useScreenReaderAssertiveText from '../assertive-screen-reader';
 
 jest.mock('react', () => ({
   ...jest.requireActual('react'),
@@ -22,7 +22,7 @@ const getLayout = ({ qSelected = 0, qSelectedExcluded = 0, qLocked = 0, qLockedE
   return layout;
 };
 
-describe('getScreenReaderAssertiveText', () => {
+describe('useScreenReaderAssertiveText', () => {
   beforeEach(() => {
     const translator = {
       get: jest.fn().mockImplementation((v) => v),
@@ -36,7 +36,7 @@ describe('getScreenReaderAssertiveText', () => {
   });
 
   it('should state "zero" selected', () => {
-    const text = getScreenReaderAssertiveText({
+    const text = useScreenReaderAssertiveText({
       layout: getLayout({ qSelected: 0, qSelectedExcluded: 0 }),
       searchInputText: '',
       listCount: 0,
@@ -45,7 +45,7 @@ describe('getScreenReaderAssertiveText', () => {
   });
 
   it('should state "one" selected', () => {
-    const text = getScreenReaderAssertiveText({
+    const text = useScreenReaderAssertiveText({
       layout: getLayout({ qSelected: 0, qSelectedExcluded: 1 }),
       searchInputText: '',
       listCount: 0,
@@ -54,7 +54,7 @@ describe('getScreenReaderAssertiveText', () => {
   });
 
   it('should state "many" selected', () => {
-    const text = getScreenReaderAssertiveText({
+    const text = useScreenReaderAssertiveText({
       layout: getLayout({ qSelected: 1, qSelectedExcluded: 1 }),
       searchInputText: '',
       listCount: 0,
@@ -63,7 +63,7 @@ describe('getScreenReaderAssertiveText', () => {
   });
 
   it('should state "many" selected and "no search matches"', () => {
-    const text = getScreenReaderAssertiveText({
+    const text = useScreenReaderAssertiveText({
       layout: getLayout({ qSelected: 1, qSelectedExcluded: 1 }),
       searchInputText: 'hey hey',
       listCount: 0,
@@ -72,7 +72,7 @@ describe('getScreenReaderAssertiveText', () => {
   });
 
   it('should state "many" selected and "one search match"', () => {
-    const text = getScreenReaderAssertiveText({
+    const text = useScreenReaderAssertiveText({
       layout: getLayout({ qSelected: 1, qSelectedExcluded: 1 }),
       searchInputText: 'hey hey',
       listCount: 1,
@@ -81,7 +81,7 @@ describe('getScreenReaderAssertiveText', () => {
   });
 
   it('should state "many" selected and "many search matches"', () => {
-    const text = getScreenReaderAssertiveText({
+    const text = useScreenReaderAssertiveText({
       layout: getLayout({ qSelected: 1, qSelectedExcluded: 1 }),
       searchInputText: 'hey hey',
       listCount: 2,

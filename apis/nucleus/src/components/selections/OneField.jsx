@@ -83,7 +83,7 @@ export default function OneField({
       { color: theme.palette.selected.excluded, ratio: grey },
     ];
     segments.forEach((s, i) => {
-      s.offset = i ? segments[i - 1].offset + segments[i - 1].ratio : 0; // oxlint-disable-line no-param-reassign
+      s.offset = i ? segments[i - 1].offset + segments[i - 1].ratio : 0;
     });
 
     let Header = null;

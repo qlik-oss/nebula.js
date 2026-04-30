@@ -179,7 +179,7 @@ const connect = async () => {
 
     return enigma.create({ schema: qixSchema, url }).open();
   } catch (error) {
-    throw new Error('Failed to return enigma instance');
+    throw new Error('Failed to return enigma instance', { cause: error });
   }
 };
 
@@ -206,7 +206,7 @@ const openApp = async (id) => {
     const enigmaGlobal = await enigma.create({ schema: qixSchema, url }).open();
     return enigmaGlobal.openDoc(id);
   } catch (error) {
-    throw new Error('Failed to open app!');
+    throw new Error('Failed to open app!', { cause: error });
   }
 };
 

@@ -32,7 +32,7 @@ describe('<ConnectionSteps />', () => {
   test('should render all steps correctly', () => {
     TestRenderer(<ConnectionSteps />);
 
-    steps.map((step) => {
+    steps.forEach((step) => {
       expect(screen.queryByText(step)).toBeInTheDocument();
     });
   });

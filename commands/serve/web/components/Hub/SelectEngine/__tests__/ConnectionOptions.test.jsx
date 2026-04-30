@@ -27,7 +27,7 @@ describe('<ConnectionOptions />', () => {
     TestRenderer(<ConnectionOptions />, { error: null });
 
     expect(screen.queryByText('New connection with:')).toBeInTheDocument();
-    OptionsToConnect.map((opt) => {
+    OptionsToConnect.forEach((opt) => {
       expect(screen.queryByText(opt.label)).toBeInTheDocument();
     });
     expect(screen.getAllByRole('button')).toHaveLength(1);
@@ -43,7 +43,7 @@ describe('<ConnectionOptions />', () => {
     expect(screen.queryAllByPlaceholderText(OptionsToConnect[0].formFields[0])).toHaveLength(1);
 
     // integration form inputs
-    OptionsToConnect[1].formFields.map((field) => {
+    OptionsToConnect[1].formFields.forEach((field) => {
       expect(screen.queryByPlaceholderText(field)).toBeInTheDocument();
     });
 
@@ -63,7 +63,7 @@ describe('<ConnectionOptions />', () => {
     expect(screen.queryByPlaceholderText(OptionsToConnect[1].formFields[1])).not.toBeInTheDocument();
 
     // client id form inputs
-    OptionsToConnect[2].formFields.map((field) => {
+    OptionsToConnect[2].formFields.forEach((field) => {
       expect(screen.queryByPlaceholderText(field)).toBeInTheDocument();
     });
   });

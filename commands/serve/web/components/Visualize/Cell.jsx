@@ -1,4 +1,3 @@
-/* eslint no-underscore-dangle:0 */
 import React, { useContext, useEffect, useState, useCallback, useRef } from 'react';
 
 import { styled } from '@mui/material/styles';
@@ -90,6 +89,7 @@ export default function ({ id, expandable, minHeight }) {
       }
       if (doExport) {
         setExporting(true);
+        // oxlint-disable-next-line no-underscore-dangle -- accessing internal stardust viz API
         vizRef.current.viz.__DO_NOT_USE__.exportImage().then((res) => {
           if (res && res.url) {
             window.open(res.url);
@@ -98,6 +98,7 @@ export default function ({ id, expandable, minHeight }) {
         });
       } else {
         const containerSize = vizRef.current.el.getBoundingClientRect();
+        // oxlint-disable-next-line no-underscore-dangle -- accessing internal stardust viz API
         vizRef.current.viz.__DO_NOT_USE__.takeSnapshot().then((snapshot) => {
           fetch('/njs/snapshot', {
             method: 'POST',

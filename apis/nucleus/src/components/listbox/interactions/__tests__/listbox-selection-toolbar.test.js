@@ -119,10 +119,12 @@ describe('getScrollIndex', () => {
       const actions = create();
       [all, possible, alternative, excluded] = actions;
 
+      // oxlint-disable-next-line jest/no-standalone-expect -- intentional precondition/postcondition assertion in lifecycle hook
       expect(selectionState.clearItemStates).not.toHaveBeenCalled();
     });
 
     afterEach(() => {
+      // oxlint-disable-next-line jest/no-standalone-expect -- intentional precondition/postcondition assertion in lifecycle hook
       expect(selectionState.clearItemStates).toHaveBeenCalledTimes(1);
     });
 

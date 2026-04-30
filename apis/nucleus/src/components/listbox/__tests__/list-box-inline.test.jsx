@@ -130,6 +130,7 @@ describe('<ListboxInline />', () => {
 
     useEffect
       .mockImplementationOnce((effectFunc, watchArr) => {
+        // oxlint-disable-next-line jest/no-standalone-expect -- intentional assertion while verifying hook dependency setup in beforeEach
         expect(watchArr[1].key).toBe('selections');
         effectFunc();
       })
@@ -139,10 +140,12 @@ describe('<ListboxInline />', () => {
 
     useCallback
       .mockImplementationOnce((effectFunc, watchArr) => {
+        // oxlint-disable-next-line jest/no-standalone-expect -- intentional assertion while verifying hook dependency setup in beforeEach
         expect(watchArr).toHaveLength(0);
         return effectFunc;
       })
       .mockImplementationOnce((effectFunc, watchArr) => {
+        // oxlint-disable-next-line jest/no-standalone-expect -- intentional assertion while verifying hook dependency setup in beforeEach
         expect(watchArr).toHaveLength(0);
         return effectFunc;
       });

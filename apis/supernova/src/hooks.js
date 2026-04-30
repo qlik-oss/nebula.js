@@ -1261,7 +1261,7 @@ export function useKeyboard() {
   const focusHandler = useInternalContext('focusHandler');
 
   if (!currentComponent.__hooks.accessibility.exitFunction) {
-    const exitFunction = function (resetFocus = false) {
+    const exitFunction = function exitFn(resetFocus = false) {
       const acc = this.__hooks.accessibility;
       if (acc && acc.enabled && acc.active) {
         blur(this);
@@ -1271,7 +1271,7 @@ export function useKeyboard() {
 
     currentComponent.__hooks.accessibility.exitFunction = exitFunction;
 
-    const focusFunction = function () {
+    const focusFunction = function focusFn() {
       const acc = this.__hooks.accessibility;
       if (acc && acc.enabled && !acc.active) {
         focusHandler && focusHandler.blurCallback && focusHandler.blurCallback(false);
@@ -1281,7 +1281,7 @@ export function useKeyboard() {
 
     currentComponent.__hooks.accessibility.focusFunction = focusFunction;
 
-    const focusSelectionFunction = function (focusLast = false) {
+    const focusSelectionFunction = function focusSelectionFn(focusLast = false) {
       const acc = this.__hooks.accessibility;
       if (acc && acc.enabled) {
         focusHandler && focusHandler.focusToolbarButton && focusHandler.focusToolbarButton(focusLast);

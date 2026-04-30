@@ -66,11 +66,7 @@ describe('connect.js', () => {
 
     test('should throw error if fails to get enigma instance', async () => {
       jsonResponseMock.mockImplementation(() => Promise.reject(new Error('failed')));
-      try {
-        await connect();
-      } catch (err) {
-        expect(err.message).toBe('Failed to return enigma instance');
-      }
+      await expect(connect()).rejects.toThrow('Failed to return enigma instance');
     });
 
     describe('connectiong with `webIntegrationId` flow', () => {
@@ -170,11 +166,7 @@ describe('connect.js', () => {
   describe('openApp()', () => {
     test('should throw error if fails to open app', async () => {
       jsonResponseMock.mockImplementation(() => Promise.reject(new Error('failed')));
-      try {
-        await openApp();
-      } catch (err) {
-        expect(err.message).toBe('Failed to open app!');
-      }
+      await expect(openApp()).rejects.toThrow('Failed to open app!');
     });
 
     describe('Open app flows', () => {

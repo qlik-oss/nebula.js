@@ -37,7 +37,7 @@ export const handleConnectionSuccess = async ({ result, setGlobal, setTreatAsDes
     const config = await result.getConfiguration();
     if (config && config.qFeatures && config.qFeatures.qIsDesktop) setTreatAsDesktop(true);
   } catch (error) {
-    throw new Error('Failed to get configuration');
+    throw new Error('Failed to get configuration', { cause: error });
   }
 };
 

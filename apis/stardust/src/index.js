@@ -1,4 +1,4 @@
-/* eslint no-underscore-dangle: 0 */
+// oxlint-disable-next-line import/no-unassigned-import -- regenerator-runtime is a side-effect polyfill
 import 'regenerator-runtime/runtime'; // Polyfill for using async/await
 import embed from '@nebula.js/nucleus';
 import { generator, hook } from '@nebula.js/supernova';
@@ -47,5 +47,6 @@ export {
 } from '@nebula.js/supernova';
 
 // component internals
+// oxlint-disable-next-line no-underscore-dangle -- intentionally named to discourage external usage
 const __DO_NOT_USE__ = { generator, hook, theme, locale };
 export { __DO_NOT_USE__ };

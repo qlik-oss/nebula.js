@@ -14,7 +14,7 @@ import ListBoxFooter from './components/ListBoxFooter';
 import getScrollIndex from './interactions/listbox-get-scroll-index';
 import getFrequencyAllowed from './components/grid-list-components/frequency-allowed';
 import useFrequencyMax from './hooks/useFrequencyMax';
-import getScreenReaderAssertiveText from './components/screen-reader/assertive-screen-reader';
+import useScreenReaderAssertiveText from './components/screen-reader/assertive-screen-reader';
 import InstanceContext from '../../contexts/InstanceContext';
 import deduceFrequencyMode from './utils/deduce-frequency-mode';
 
@@ -216,7 +216,7 @@ export default function ListBox({
   setStoreValue('listCount', listCount);
 
   const searchInputText = getStoreValue('inputText');
-  const screenReaderText = getScreenReaderAssertiveText({ layout, searchInputText, listCount });
+  const screenReaderText = useScreenReaderAssertiveText({ layout, searchInputText, listCount });
 
   const setScrollPosition = (position) => {
     const { scrollIndex, offset, triggerRerender } = getScrollIndex({

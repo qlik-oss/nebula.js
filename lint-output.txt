@@ -1,0 +1,1364 @@
+lerna notice cli v9.0.7
+
+ Lerna (powered by Nx)   Running target lint for 17 projects:
+
+- @nebula.js/conversion
+- @nebula.js/enigma-mocker
+- @nebula.js/locale
+- @nebula.js/nucleus
+- @nebula.js/snapshooter
+- @nebula.js/stardust
+- @nebula.js/supernova
+- @nebula.js/test-utils
+- @nebula.js/theme
+- @nebula.js/cli-build
+- @nebula.js/cli
+- @nebula.js/cli-create
+- @nebula.js/cli-sense
+- @nebula.js/cli-serve
+- @nebula.js/examples
+- @nebula.js/ui
+- @nebula.js/test
+
+
+
+> @nebula.js/conversion:lint
+
+
+> @nebula.js/ui:lint
+
+
+> @nebula.js/theme:lint
+
+
+> @nebula.js/locale:lint
+
+
+> @nebula.js/enigma-mocker:lint
+
+
+> @nebula.js/cli-build:lint
+
+
+> @nebula.js/snapshooter:lint
+
+
+> @nebula.js/cli-create:lint
+
+
+> @nebula.js/test:lint
+
+
+> @nebula.js/examples:lint
+
+@nebula.js/conversion: Found 0 warnings and 0 errors.
+@nebula.js/conversion: Finished in 39ms on 15 files with 194 rules using 16 threads.
+@nebula.js/locale: Found 0 warnings and 0 errors.
+@nebula.js/locale: Finished in 45ms on 6 files with 195 rules using 16 threads.
+@nebula.js/test: (node:74918) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/jnl/dev/nebula.js/test/oxlint.config.ts?cache=1777547956821 is not specified and it doesn't parse as CommonJS.
+@nebula.js/test: Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+@nebula.js/test: To eliminate this warning, add "type": "module" to /Users/jnl/dev/nebula.js/test/package.json.
+@nebula.js/test: (Use `node --trace-warnings ...` to show where the warning was created)
+@nebula.js/cli-create: Found 0 warnings and 0 errors.
+@nebula.js/cli-create: Finished in 52ms on 25 files with 194 rules using 16 threads.
+@nebula.js/examples: (node:74914) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/jnl/dev/nebula.js/examples/oxlint.config.ts?cache=1777547956830 is not specified and it doesn't parse as CommonJS.
+@nebula.js/examples: Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+@nebula.js/examples: To eliminate this warning, add "type": "module" to /Users/jnl/dev/nebula.js/examples/package.json.
+@nebula.js/examples: (Use `node --trace-warnings ...` to show where the warning was created)
+@nebula.js/examples: Found 0 warnings and 0 errors.
+@nebula.js/examples: Finished in 34ms on 13 files with 194 rules using 16 threads.
+
+> @nebula.js/supernova:lint
+
+@nebula.js/cli-build: Found 0 warnings and 0 errors.
+@nebula.js/cli-build: Finished in 50ms on 8 files with 192 rules using 16 threads.
+@nebula.js/snapshooter: Found 0 warnings and 0 errors.
+@nebula.js/snapshooter: Finished in 42ms on 4 files with 193 rules using 16 threads.
+@nebula.js/enigma-mocker: Found 0 warnings and 0 errors.
+@nebula.js/enigma-mocker: Finished in 48ms on 13 files with 195 rules using 16 threads.
+@nebula.js/theme: Found 0 warnings and 0 errors.
+@nebula.js/theme: Finished in 49ms on 22 files with 194 rules using 16 threads.
+@nebula.js/ui: Found 0 warnings and 0 errors.
+@nebula.js/ui: Finished in 56ms on 31 files with 222 rules using 16 threads.
+@nebula.js/test: Found 0 warnings and 0 errors.
+@nebula.js/test: Finished in 69ms on 91 files with 194 rules using 16 threads.
+@nebula.js/supernova: (node:74939) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/jnl/dev/nebula.js/apis/supernova/oxlint.config.ts?cache=1777547957264 is not specified and it doesn't parse as CommonJS.
+@nebula.js/supernova: Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+@nebula.js/supernova: To eliminate this warning, add "type": "module" to /Users/jnl/dev/nebula.js/apis/supernova/package.json.
+@nebula.js/supernova: (Use `node --trace-warnings ...` to show where the warning was created)
+@nebula.js/supernova:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-jest(no-disabled-tests): Disabled test suite[0m
+@nebula.js/supernova:      ╭─[[38;2;92;157;255;1msrc/__tests__/hooks.test.js[0m:744:5]
+@nebula.js/supernova:  [2m743[0m │ 
+@nebula.js/supernova:  [2m744[0m │     describe.skip('without ResizeObserver', () => {
+@nebula.js/supernova:      · [38;2;246;87;248m    ─────────────[0m
+@nebula.js/supernova:  [2m745[0m │       const originalW = global.window;
+@nebula.js/supernova:      ╰────
+@nebula.js/supernova: [38;2;106;159;181m  help: [0mRemove the appending `.skip`
+@nebula.js/supernova: Found 1 warning and 0 errors.
+@nebula.js/supernova: Finished in 30ms on 50 files with 194 rules using 16 threads.
+
+> @nebula.js/nucleus:lint
+
+@nebula.js/nucleus: (node:74943) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/jnl/dev/nebula.js/apis/nucleus/oxlint.config.ts?cache=1777547957697 is not specified and it doesn't parse as CommonJS.
+@nebula.js/nucleus: Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+@nebula.js/nucleus: To eliminate this warning, add "type": "module" to /Users/jnl/dev/nebula.js/apis/nucleus/package.json.
+@nebula.js/nucleus: (Use `node --trace-warnings ...` to show where the warning was created)
+@nebula.js/nucleus:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-jest(no-disabled-tests): Disabled test[0m
+@nebula.js/nucleus:      ╭─[[38;2;92;157;255;1msrc/components/listbox/components/__tests__/list-box-header.test.jsx[0m:157:3]
+@nebula.js/nucleus:  [2m156[0m │ 
+@nebula.js/nucleus:  [2m157[0m │   test.skip('should render a detached toolbar when space is limited', async () => {
+@nebula.js/nucleus:      · [38;2;246;87;248m  ─────────[0m
+@nebula.js/nucleus:  [2m158[0m │     const containerRect = { width: 20 };
+@nebula.js/nucleus:      ╰────
+@nebula.js/nucleus: [38;2;106;159;181m  help: [0mRemove the appending `.skip`
+@nebula.js/nucleus:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-jest(no-disabled-tests): Disabled test[0m
+@nebula.js/nucleus:      ╭─[[38;2;92;157;255;1msrc/components/listbox/hooks/selections/__tests__/use-selections-interactions.test.jsx[0m:401:5]
+@nebula.js/nucleus:  [2m400[0m │ 
+@nebula.js/nucleus:  [2m401[0m │     test.skip('Ctrl or cmd button with click should result in single select behaviour', async () => {
+@nebula.js/nucleus:      · [38;2;246;87;248m    ─────────[0m
+@nebula.js/nucleus:  [2m402[0m │       await render({ checkboxes: true });
+@nebula.js/nucleus:      ╰────
+@nebula.js/nucleus: [38;2;106;159;181m  help: [0mRemove the appending `.skip`
+@nebula.js/nucleus:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-jest(no-disabled-tests): Disabled test[0m
+@nebula.js/nucleus:      ╭─[[38;2;92;157;255;1msrc/components/__tests__/supernova.test.jsx[0m:137:3]
+@nebula.js/nucleus:  [2m136[0m │   });
+@nebula.js/nucleus:  [2m137[0m │   test.skip('should re-render', async () => {
+@nebula.js/nucleus:      · [38;2;246;87;248m  ─────────[0m
+@nebula.js/nucleus:  [2m138[0m │     jest.useFakeTimers();
+@nebula.js/nucleus:      ╰────
+@nebula.js/nucleus: [38;2;106;159;181m  help: [0mRemove the appending `.skip`
+@nebula.js/nucleus:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint(func-names): Unexpected unnamed function.[0m
+@nebula.js/nucleus:    ╭─[[38;2;92;157;255;1msrc/selections/event-mixin.js[0m:3:16]
+@nebula.js/nucleus:  [2m2[0m │ 
+@nebula.js/nucleus:  [2m3[0m │ export default function (obj) {
+@nebula.js/nucleus:    · [38;2;246;87;248m               ─────────[0m
+@nebula.js/nucleus:  [2m4[0m │   Object.keys(EventEmitter.prototype).forEach((key) => {
+@nebula.js/nucleus:    ╰────
+@nebula.js/nucleus: [38;2;106;159;181m  help: [0mConsider giving this function expression a name.
+@nebula.js/nucleus:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-jest(no-disabled-tests): Disabled test[0m
+@nebula.js/nucleus:      ╭─[[38;2;92;157;255;1msrc/__tests__/viz.test.js[0m:165:5]
+@nebula.js/nucleus:  [2m164[0m │     // that needs to be cleared by calling the actual method!
+@nebula.js/nucleus:  [2m165[0m │     test.skip('should not apply patches when there is no diff', async () => {
+@nebula.js/nucleus:      · [38;2;246;87;248m    ─────────[0m
+@nebula.js/nucleus:  [2m166[0m │       model.getEffectiveProperties.resetHistory();
+@nebula.js/nucleus:      ╰────
+@nebula.js/nucleus: [38;2;106;159;181m  help: [0mRemove the appending `.skip`
+@nebula.js/nucleus: Found 5 warnings and 0 errors.
+@nebula.js/nucleus: Finished in 67ms on 272 files with 220 rules using 16 threads.
+
+> @nebula.js/stardust:lint
+
+@nebula.js/stardust: (node:74947) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/jnl/dev/nebula.js/apis/stardust/oxlint.config.ts?cache=1777547958175 is not specified and it doesn't parse as CommonJS.
+@nebula.js/stardust: Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+@nebula.js/stardust: To eliminate this warning, add "type": "module" to /Users/jnl/dev/nebula.js/apis/stardust/package.json.
+@nebula.js/stardust: (Use `node --trace-warnings ...` to show where the warning was created)
+@nebula.js/stardust: Found 0 warnings and 0 errors.
+@nebula.js/stardust: Finished in 57ms on 5 files with 222 rules using 16 threads.
+
+> @nebula.js/cli-serve:lint
+
+
+> @nebula.js/cli-sense:lint
+
+
+> @nebula.js/test-utils:lint
+
+@nebula.js/test-utils: (node:74955) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/jnl/dev/nebula.js/apis/test-utils/oxlint.config.ts?cache=1777547958688 is not specified and it doesn't parse as CommonJS.
+@nebula.js/test-utils: Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+@nebula.js/test-utils: To eliminate this warning, add "type": "module" to /Users/jnl/dev/nebula.js/apis/test-utils/package.json.
+@nebula.js/test-utils: (Use `node --trace-warnings ...` to show where the warning was created)
+@nebula.js/test-utils:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-jest(no-disabled-tests): Disabled test[0m
+@nebula.js/test-utils:     ╭─[[38;2;92;157;255;1msrc/__tests__/index.test.js[0m:92:3]
+@nebula.js/test-utils:  [2m91[0m │ 
+@nebula.js/test-utils:  [2m92[0m │   test.skip('should do actions', () => {
+@nebula.js/test-utils:     · [38;2;246;87;248m  ─────────[0m
+@nebula.js/test-utils:  [2m93[0m │     // hooked.observeActions.callsArgWith(1, ['action']);
+@nebula.js/test-utils:     ╰────
+@nebula.js/test-utils: [38;2;106;159;181m  help: [0mRemove the appending `.skip`
+@nebula.js/test-utils:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint-plugin-jest(no-identical-title): Test title is used multiple times in the same describe block.[0m
+@nebula.js/test-utils:     ╭─[[38;2;92;157;255;1msrc/__tests__/index.test.js[0m:80:8]
+@nebula.js/test-utils:  [2m79[0m │ 
+@nebula.js/test-utils:  [2m80[0m │   test('should update', () => {
+@nebula.js/test-utils:     · [38;2;246;87;248m       ───────────────[0m
+@nebula.js/test-utils:  [2m81[0m │     const c = create();
+@nebula.js/test-utils:     ╰────
+@nebula.js/test-utils: [38;2;106;159;181m  help: [0mChange the title of test.
+@nebula.js/test-utils:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(no-underscore-dangle): Unexpected dangling '_' in '`__DO_NOT_USE__`'.[0m
+@nebula.js/test-utils:     ╭─[[38;2;92;157;255;1msrc/__tests__/index.test.js[0m:47:30]
+@nebula.js/test-utils:  [2m46[0m │     hookMock = jest.fn().mockReturnValue(hooked);
+@nebula.js/test-utils:  [2m47[0m │     jest.spyOn(stardustUtils.__DO_NOT_USE__, 'hook').mockImplementation(hookMock);
+@nebula.js/test-utils:     · [38;2;246;87;248m                             ──────────────[0m
+@nebula.js/test-utils:  [2m48[0m │   });
+@nebula.js/test-utils:     ╰────
+@nebula.js/test-utils: [38;2;106;159;181m  help: [0mRemove the dangling '_' or add `__DO_NOT_USE__` to the 'allow' configuration.
+@nebula.js/test-utils: Found 1 warning and 2 errors.
+@nebula.js/test-utils: Finished in 29ms on 4 files with 195 rules using 16 threads.
+@nebula.js/cli-sense:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(no-underscore-dangle): Unexpected dangling '_' in '`__esmodule`'.[0m
+@nebula.js/cli-sense:    ╭─[[38;2;92;157;255;1msrc/ext.js[0m:6:13]
+@nebula.js/cli-sense:  [2m5[0m │     /* eslint no-underscore-dangle:0 */
+@nebula.js/cli-sense:  [2m6[0m │     if (ext.__esmodule === true) {
+@nebula.js/cli-sense:    · [38;2;246;87;248m            ──────────[0m
+@nebula.js/cli-sense:  [2m7[0m │       // Handles es modules with multiple exports
+@nebula.js/cli-sense:    ╰────
+@nebula.js/cli-sense: [38;2;106;159;181m  help: [0mRemove the dangling '_' or add `__esmodule` to the 'allow' configuration.
+@nebula.js/cli-sense:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint-plugin-import(extensions): File extension "js" should not be included in the import declaration.[0m
+@nebula.js/cli-sense:    ╭─[[38;2;92;157;255;1mcommand.js[0m:1:1]
+@nebula.js/cli-sense:  [2m1[0m │ import init from './lib/init-config.js';
+@nebula.js/cli-sense:    · [38;2;246;87;248m────────────────────────────────────────[0m
+@nebula.js/cli-sense:  [2m2[0m │ import sense from './lib/sense.js';
+@nebula.js/cli-sense:    ╰────
+@nebula.js/cli-sense: [38;2;106;159;181m  help: [0mRemove the file extension from this import.
+@nebula.js/cli-sense:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint-plugin-import(extensions): File extension "js" should not be included in the import declaration.[0m
+@nebula.js/cli-sense:    ╭─[[38;2;92;157;255;1mcommand.js[0m:2:1]
+@nebula.js/cli-sense:  [2m1[0m │ import init from './lib/init-config.js';
+@nebula.js/cli-sense:  [2m2[0m │ import sense from './lib/sense.js';
+@nebula.js/cli-sense:    · [38;2;246;87;248m───────────────────────────────────[0m
+@nebula.js/cli-sense:  [2m3[0m │ 
+@nebula.js/cli-sense:    ╰────
+@nebula.js/cli-sense: [38;2;106;159;181m  help: [0mRemove the file extension from this import.
+@nebula.js/cli-sense:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-import(no-dynamic-require): Expected a literal string or immutable template literal[0m
+@nebula.js/cli-sense:     ╭─[[38;2;92;157;255;1mlib/build.js[0m:19:24]
+@nebula.js/cli-sense:  [2m18[0m │ 
+@nebula.js/cli-sense:  [2m19[0m │   const supernovaPkg = require(path.resolve(cwd, 'package.json'));
+@nebula.js/cli-sense:     · [38;2;246;87;248m                       ───────[0m
+@nebula.js/cli-sense:  [2m20[0m │ 
+@nebula.js/cli-sense:     ╰────
+@nebula.js/cli-sense: [38;2;106;159;181m  help: [0mReplace the argument with a literal string or immutable template literal
+@nebula.js/cli-sense:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-import(no-dynamic-require): Expected a literal string or immutable template literal[0m
+@nebula.js/cli-sense:     ╭─[[38;2;92;157;255;1mlib/build.js[0m:40:20]
+@nebula.js/cli-sense:  [2m39[0m │     if (argv.meta) {
+@nebula.js/cli-sense:  [2m40[0m │       const meta = require(path.resolve(cwd, argv.meta));
+@nebula.js/cli-sense:     · [38;2;246;87;248m                   ───────[0m
+@nebula.js/cli-sense:  [2m41[0m │       Object.assign(qext, meta);
+@nebula.js/cli-sense:     ╰────
+@nebula.js/cli-sense: [38;2;106;159;181m  help: [0mReplace the argument with a literal string or immutable template literal
+@nebula.js/cli-sense: Found 2 warnings and 3 errors.
+@nebula.js/cli-sense: Finished in 53ms on 8 files with 193 rules using 16 threads.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(array-callback-return): Callback for array method "Array.prototype.map" does not return on all code paths[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Hub/SelectEngine/__tests__/ConnectionGuid.test.jsx[0m:16:22]
+@nebula.js/cli-serve:  [2m15[0m │           'Qlik Sense Desktop',
+@nebula.js/cli-serve:  [2m16[0m │ [38;2;246;87;248m╭[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m     ].map((title) => {
+@nebula.js/cli-serve:  [2m17[0m │ [38;2;246;87;248m│[0m         expect(screen.queryByText(title)).toBeInTheDocument();
+@nebula.js/cli-serve:  [2m18[0m │ [38;2;246;87;248m╰[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m     });
+@nebula.js/cli-serve:  [2m19[0m │       });
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0m"Array.prototype.map" uses the callback's return value. Add a `return` on every possible code path.
+@nebula.js/cli-serve: [38;2;106;159;181m  note: [0mWith `allowImplicit`, callbacks that don't explicitly return a value are considered to return `undefined`.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(array-callback-return): Callback for array method "Array.prototype.map" does not return on all code paths[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Hub/SelectEngine/__tests__/ConnectionGuid.test.jsx[0m:27:24]
+@nebula.js/cli-serve:  [2m26[0m │           'wss://mycompany.com/bi',
+@nebula.js/cli-serve:  [2m27[0m │ [38;2;246;87;248m╭[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m     ].map((example) => {
+@nebula.js/cli-serve:  [2m28[0m │ [38;2;246;87;248m│[0m         expect(screen.queryByText(example)).toBeInTheDocument();
+@nebula.js/cli-serve:  [2m29[0m │ [38;2;246;87;248m╰[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m     });
+@nebula.js/cli-serve:  [2m30[0m │       });
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0m"Array.prototype.map" uses the callback's return value. Add a `return` on every possible code path.
+@nebula.js/cli-serve: [38;2;106;159;181m  note: [0mWith `allowImplicit`, callbacks that don't explicitly return a value are considered to return `undefined`.
+@nebula.js/cli-serve:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-react-hooks(exhaustive-deps): React Hook useMemo has a missing dependency: 'createHandler'[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Visualize/property-panel/DataCube.jsx[0m:48:5]
+@nebula.js/cli-serve:  [2m41[0m │     () =>
+@nebula.js/cli-serve:  [2m42[0m │       createHandler({
+@nebula.js/cli-serve:     · [38;2;246;87;248m      ──────┬──────[0m
+@nebula.js/cli-serve:     ·             [38;2;246;87;248m╰── [38;2;246;87;248museMemo uses `createHandler` here[0m[0m
+@nebula.js/cli-serve:  [2m43[0m │         def: target,
+@nebula.js/cli-serve:  [2m44[0m │         dc,
+@nebula.js/cli-serve:  [2m45[0m │         properties,
+@nebula.js/cli-serve:  [2m46[0m │         dimensions,
+@nebula.js/cli-serve:  [2m47[0m │       }),
+@nebula.js/cli-serve:  [2m48[0m │     [dc, target, properties, dimensions]
+@nebula.js/cli-serve:     · [38;2;30;201;212m    ────────────────────────────────────[0m
+@nebula.js/cli-serve:  [2m49[0m │   );
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mEither include it or remove the dependency array.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(no-param-reassign): Assignment to property of function parameter 'target'.[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Visualize/property-panel/Variable.jsx[0m:45:5]
+@nebula.js/cli-serve:  [2m44[0m │     setS(e.target.value);
+@nebula.js/cli-serve:  [2m45[0m │     target[property].name = e.target.value;
+@nebula.js/cli-serve:     · [38;2;246;87;248m    ──────[0m
+@nebula.js/cli-serve:  [2m46[0m │     target[property].value = { qStringExpression: { qExpr: `[${e.target.value}]` } };
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mConsider using a different variable to avoid unintended side effects on the parameter's properties.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(no-param-reassign): Assignment to property of function parameter 'target'.[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Visualize/property-panel/Variable.jsx[0m:46:5]
+@nebula.js/cli-serve:  [2m45[0m │     target[property].name = e.target.value;
+@nebula.js/cli-serve:  [2m46[0m │     target[property].value = { qStringExpression: { qExpr: `[${e.target.value}]` } };
+@nebula.js/cli-serve:     · [38;2;246;87;248m    ──────[0m
+@nebula.js/cli-serve:  [2m47[0m │     changed();
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mConsider using a different variable to avoid unintended side effects on the parameter's properties.
+@nebula.js/cli-serve:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-react-hooks(exhaustive-deps): React Hook useEffect has a missing dependency: 'app'[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Visualize/property-panel/Variable.jsx[0m:41:6]
+@nebula.js/cli-serve:  [2m36[0m │     async function fetchData() {
+@nebula.js/cli-serve:  [2m37[0m │       const list = await getVariables(app);
+@nebula.js/cli-serve:     · [38;2;246;87;248m                                      ─┬─[0m
+@nebula.js/cli-serve:     ·                                        [38;2;246;87;248m╰── [38;2;246;87;248museEffect uses `app` here[0m[0m
+@nebula.js/cli-serve:  [2m38[0m │       setL(list);
+@nebula.js/cli-serve:  [2m39[0m │     }
+@nebula.js/cli-serve:  [2m40[0m │     fetchData();
+@nebula.js/cli-serve:  [2m41[0m │   }, []);
+@nebula.js/cli-serve:     · [38;2;30;201;212m     ──[0m
+@nebula.js/cli-serve:  [2m42[0m │ 
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mEither include it or remove the dependency array.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint-plugin-import(no-cycle): Dependency cycle detected[0m
+@nebula.js/cli-serve:    ╭─[[38;2;92;157;255;1mweb/hooks/useDeauthorizePrevOAuthInstance.js[0m:2:32]
+@nebula.js/cli-serve:  [2m1[0m │ import { useEffect } from 'react';
+@nebula.js/cli-serve:  [2m2[0m │ import { useRootContext } from '../contexts/RootContext';
+@nebula.js/cli-serve:    · [38;2;246;87;248m                               ─────────────────────────[0m
+@nebula.js/cli-serve:  [2m3[0m │ 
+@nebula.js/cli-serve:    ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mRefactor to remove the cycle. Consider extracting shared code into a separate module that both files can import.
+@nebula.js/cli-serve: [38;2;106;159;181m  note: [0mThese paths form a cycle:
+@nebula.js/cli-serve:            ╭──▶ ../contexts/RootContext (web/contexts/RootContext.jsx)
+@nebula.js/cli-serve:            │         ⬇ imports
+@nebula.js/cli-serve:            │    ../hooks (web/hooks/index.js)
+@nebula.js/cli-serve:            │         ⬇ imports
+@nebula.js/cli-serve:            │    ./useDeauthorizePrevOAuthInstance (web/hooks/useDeauthorizePrevOAuthInstance.js)
+@nebula.js/cli-serve:            ╰─────────╯ imports the current file
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(array-callback-return): Callback for array method "Array.prototype.map" does not return on all code paths[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Layouts/__tests__/HubLayout.test.jsx[0m:26:25]
+@nebula.js/cli-serve:  [2m25[0m │     
+@nebula.js/cli-serve:  [2m26[0m │ [38;2;246;87;248m╭[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m     steps.map((step) => {
+@nebula.js/cli-serve:  [2m27[0m │ [38;2;246;87;248m│[0m         expect(screen.getByText(step)).toBeInTheDocument();
+@nebula.js/cli-serve:  [2m28[0m │ [38;2;246;87;248m╰[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m     });
+@nebula.js/cli-serve:  [2m29[0m │       });
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0m"Array.prototype.map" uses the callback's return value. Add a `return` on every possible code path.
+@nebula.js/cli-serve: [38;2;106;159;181m  note: [0mWith `allowImplicit`, callbacks that don't explicitly return a value are considered to return `undefined`.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(array-callback-return): Callback for array method "Array.prototype.map" does not return on all code paths[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Hub/SelectEngine/__tests__/FormManager.test.jsx[0m:41:25]
+@nebula.js/cli-serve:  [2m40[0m │         expect(screen.getAllByRole('button')).toHaveLength(1);
+@nebula.js/cli-serve:  [2m41[0m │ [38;2;246;87;248m╭[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m     fields.map((fld) => {
+@nebula.js/cli-serve:  [2m42[0m │ [38;2;246;87;248m│[0m         expect(screen.getByPlaceholderText(fld)).toBeInTheDocument();
+@nebula.js/cli-serve:  [2m43[0m │ [38;2;246;87;248m╰[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m     });
+@nebula.js/cli-serve:  [2m44[0m │       });
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0m"Array.prototype.map" uses the callback's return value. Add a `return` on every possible code path.
+@nebula.js/cli-serve: [38;2;106;159;181m  note: [0mWith `allowImplicit`, callbacks that don't explicitly return a value are considered to return `undefined`.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint-plugin-import(no-cycle): Dependency cycle detected[0m
+@nebula.js/cli-serve:    ╭─[[38;2;92;157;255;1mweb/utils/testRenderer.jsx[0m:7:29]
+@nebula.js/cli-serve:  [2m6[0m │ 
+@nebula.js/cli-serve:  [2m7[0m │ import { RootContext } from '../contexts/RootContext';
+@nebula.js/cli-serve:    · [38;2;246;87;248m                            ─────────────────────────[0m
+@nebula.js/cli-serve:  [2m8[0m │ 
+@nebula.js/cli-serve:    ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mRefactor to remove the cycle. Consider extracting shared code into a separate module that both files can import.
+@nebula.js/cli-serve: [38;2;106;159;181m  note: [0mThese paths form a cycle:
+@nebula.js/cli-serve:            ╭──▶ ../contexts/RootContext (web/contexts/RootContext.jsx)
+@nebula.js/cli-serve:            │         ⬇ imports
+@nebula.js/cli-serve:            │    ../hooks (web/hooks/index.js)
+@nebula.js/cli-serve:            │         ⬇ imports
+@nebula.js/cli-serve:            │    ./useAppList (web/hooks/useAppList.js)
+@nebula.js/cli-serve:            │         ⬇ imports
+@nebula.js/cli-serve:            │    ../utils (web/utils/index.js)
+@nebula.js/cli-serve:            │         ⬇ imports
+@nebula.js/cli-serve:            │    ./testRenderer (web/utils/testRenderer.jsx)
+@nebula.js/cli-serve:            ╰─────────╯ imports the current file
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(array-callback-return): Callback for array method "Array.prototype.map" does not return on all code paths[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Hub/SelectEngine/__tests__/Error.test.jsx[0m:15:28]
+@nebula.js/cli-serve:  [2m14[0m │         expect(screen.queryByText(error.message)).toBeInTheDocument();
+@nebula.js/cli-serve:  [2m15[0m │ [38;2;246;87;248m╭[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m     error.hints.map((h) => {
+@nebula.js/cli-serve:  [2m16[0m │ [38;2;246;87;248m│[0m         expect(screen.queryByText(h)).toBeInTheDocument();
+@nebula.js/cli-serve:  [2m17[0m │ [38;2;246;87;248m╰[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m     });
+@nebula.js/cli-serve:  [2m18[0m │       });
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0m"Array.prototype.map" uses the callback's return value. Add a `return` on every possible code path.
+@nebula.js/cli-serve: [38;2;106;159;181m  note: [0mWith `allowImplicit`, callbacks that don't explicitly return a value are considered to return `undefined`.
+@nebula.js/cli-serve:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-react-hooks(exhaustive-deps): React Hook useEffect has a complex expression in the dependency array.[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Visualize/Collection.jsx[0m:30:15]
+@nebula.js/cli-serve:  [2m29[0m │       });
+@nebula.js/cli-serve:  [2m30[0m │   }, [layout, types.join(':')]);
+@nebula.js/cli-serve:     · [38;2;246;87;248m              ───────────────[0m
+@nebula.js/cli-serve:  [2m31[0m │ 
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mExtract the expression to a separate variable so it can be statically checked.
+@nebula.js/cli-serve:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-react-hooks(exhaustive-deps): React Hook useEffect has missing dependencies: 'types', and 'app'[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Visualize/Collection.jsx[0m:30:6]
+@nebula.js/cli-serve:  [2m18[0m │   useEffect(() => {
+@nebula.js/cli-serve:  [2m19[0m │     app
+@nebula.js/cli-serve:     · [38;2;246;87;248m    ───[0m
+@nebula.js/cli-serve:  [2m20[0m │       .getObjects({
+@nebula.js/cli-serve:  [2m21[0m │         qTypes: types,
+@nebula.js/cli-serve:     · [38;2;30;201;212m                ─────[0m
+@nebula.js/cli-serve:  [2m22[0m │         // qIncludeSessionObjects: true,
+@nebula.js/cli-serve:  [2m23[0m │         qData: {
+@nebula.js/cli-serve:  [2m24[0m │           title: '/qMetaDef/title',
+@nebula.js/cli-serve:  [2m25[0m │         },
+@nebula.js/cli-serve:  [2m26[0m │       })
+@nebula.js/cli-serve:  [2m27[0m │       .then((list) => {
+@nebula.js/cli-serve:  [2m28[0m │         setObjects(list.slice(0, 20)); // don't show too many to avoid slow UI
+@nebula.js/cli-serve:  [2m29[0m │       });
+@nebula.js/cli-serve:  [2m30[0m │   }, [layout, types.join(':')]);
+@nebula.js/cli-serve:     · [38;2;145;246;111m     ─────────────────────────[0m
+@nebula.js/cli-serve:  [2m31[0m │ 
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mEither include it or remove the dependency array.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(array-callback-return): Callback for array method "Array.prototype.map" does not return on all code paths[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Hub/__tests__/ConnectionSteps.test.jsx[0m:35:25]
+@nebula.js/cli-serve:  [2m34[0m │     
+@nebula.js/cli-serve:  [2m35[0m │ [38;2;246;87;248m╭[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m     steps.map((step) => {
+@nebula.js/cli-serve:  [2m36[0m │ [38;2;246;87;248m│[0m         expect(screen.queryByText(step)).toBeInTheDocument();
+@nebula.js/cli-serve:  [2m37[0m │ [38;2;246;87;248m╰[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m     });
+@nebula.js/cli-serve:  [2m38[0m │       });
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0m"Array.prototype.map" uses the callback's return value. Add a `return` on every possible code path.
+@nebula.js/cli-serve: [38;2;106;159;181m  note: [0mWith `allowImplicit`, callbacks that don't explicitly return a value are considered to return `undefined`.
+@nebula.js/cli-serve:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-react-hooks(exhaustive-deps): React Hook useEffect has missing dependencies: 'onLoad', and 'nebbie'[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Visualize/Chart.jsx[0m:26:6]
+@nebula.js/cli-serve:  [2m13[0m │   useEffect(() => {
+@nebula.js/cli-serve:  [2m14[0m │     const n = nebbie.render({
+@nebula.js/cli-serve:     · [38;2;246;87;248m              ──────[0m
+@nebula.js/cli-serve:  [2m15[0m │       id,
+@nebula.js/cli-serve:  [2m16[0m │       element: el.current,
+@nebula.js/cli-serve:  [2m17[0m │     });
+@nebula.js/cli-serve:  [2m18[0m │     n.then((viz) => {
+@nebula.js/cli-serve:  [2m19[0m │       onLoad(viz, el.current);
+@nebula.js/cli-serve:     · [38;2;30;201;212m      ──────[0m
+@nebula.js/cli-serve:  [2m20[0m │     });
+@nebula.js/cli-serve:  [2m21[0m │     return () => {
+@nebula.js/cli-serve:  [2m22[0m │       n.then((v) => {
+@nebula.js/cli-serve:  [2m23[0m │         v.destroy();
+@nebula.js/cli-serve:  [2m24[0m │       });
+@nebula.js/cli-serve:  [2m25[0m │     };
+@nebula.js/cli-serve:  [2m26[0m │   }, [id]);
+@nebula.js/cli-serve:     · [38;2;145;246;111m     ────[0m
+@nebula.js/cli-serve:  [2m27[0m │ 
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mEither include it or remove the dependency array.
+@nebula.js/cli-serve:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-react-hooks(exhaustive-deps): React Hook useCallback does nothing when called with only one argument.[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Visualize/PropertiesDialog.jsx[0m:15:21]
+@nebula.js/cli-serve:  [2m14[0m │     
+@nebula.js/cli-serve:  [2m15[0m │ [38;2;246;87;248m╭[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m   const onConfirm = useCallback(() => {
+@nebula.js/cli-serve:  [2m16[0m │ [38;2;246;87;248m│[0m       if (monacoEditorMarkers.length) {
+@nebula.js/cli-serve:  [2m17[0m │ [38;2;246;87;248m│[0m         return;
+@nebula.js/cli-serve:  [2m18[0m │ [38;2;246;87;248m│[0m       }
+@nebula.js/cli-serve:  [2m19[0m │ [38;2;246;87;248m│[0m       model.setProperties(JSON.parse(monacoEditor.getValue())).then(close);
+@nebula.js/cli-serve:  [2m20[0m │ [38;2;246;87;248m╰[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m   });
+@nebula.js/cli-serve:  [2m21[0m │     
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mDid you forget to pass an array of dependencies?
+@nebula.js/cli-serve:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-react-hooks(exhaustive-deps): React Hook useEffect has a complex expression in the dependency array.[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Visualize/PropertiesDialog.jsx[0m:39:7]
+@nebula.js/cli-serve:  [2m38[0m │     };
+@nebula.js/cli-serve:  [2m39[0m │   }, [model && model.id, show]);
+@nebula.js/cli-serve:     · [38;2;246;87;248m      ─────────────────[0m
+@nebula.js/cli-serve:  [2m40[0m │ 
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mExtract the expression to a separate variable so it can be statically checked.
+@nebula.js/cli-serve:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-react-hooks(exhaustive-deps): React Hook useEffect has a missing dependency: 'model'[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Visualize/PropertiesDialog.jsx[0m:39:6]
+@nebula.js/cli-serve:  [2m26[0m │     const onChanged = () => {
+@nebula.js/cli-serve:  [2m27[0m │       model &&
+@nebula.js/cli-serve:     · [38;2;246;87;248m      ──┬──[0m
+@nebula.js/cli-serve:     ·         [38;2;246;87;248m╰── [38;2;246;87;248museEffect uses `model` here[0m[0m
+@nebula.js/cli-serve:  [2m28[0m │         show &&
+@nebula.js/cli-serve:  [2m29[0m │         model.getProperties().then((props) => {
+@nebula.js/cli-serve:  [2m30[0m │           show && setObjectProps(JSON.stringify(props || {}, null, 2));
+@nebula.js/cli-serve:  [2m31[0m │         });
+@nebula.js/cli-serve:  [2m32[0m │     };
+@nebula.js/cli-serve:  [2m33[0m │ 
+@nebula.js/cli-serve:  [2m34[0m │     model.on('changed', onChanged);
+@nebula.js/cli-serve:  [2m35[0m │     onChanged();
+@nebula.js/cli-serve:  [2m36[0m │     return () => {
+@nebula.js/cli-serve:  [2m37[0m │       model && model.removeListener('changed', onChanged);
+@nebula.js/cli-serve:  [2m38[0m │     };
+@nebula.js/cli-serve:  [2m39[0m │   }, [model && model.id, show]);
+@nebula.js/cli-serve:     · [38;2;30;201;212m     ─────────────────────────[0m
+@nebula.js/cli-serve:  [2m40[0m │ 
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mEither include it or remove the dependency array.
+@nebula.js/cli-serve:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-react-hooks(exhaustive-deps): React Hook useEffect has missing dependencies: 'monacoRef', and 'theme.palette.mode'[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Visualize/PropertiesDialog.jsx[0m:70:6]
+@nebula.js/cli-serve:  [2m41[0m │   useEffect(() => {
+@nebula.js/cli-serve:  [2m42[0m │     if (!monacoRef || !monacoNode || !monacoRect || !objectProps) {
+@nebula.js/cli-serve:     · [38;2;246;87;248m         ─────────[0m
+@nebula.js/cli-serve:  [2m43[0m │       return undefined;
+@nebula.js/cli-serve:  [2m44[0m │     }
+@nebula.js/cli-serve:  [2m45[0m │     const { left, top, width, height } = monacoRect;
+@nebula.js/cli-serve:  [2m46[0m │     if (left === 0 && top === 0 && width === 0 && height === 0) {
+@nebula.js/cli-serve:  [2m47[0m │       return undefined;
+@nebula.js/cli-serve:  [2m48[0m │     }
+@nebula.js/cli-serve:  [2m49[0m │     const editor = monaco.editor.create(monacoNode, {
+@nebula.js/cli-serve:  [2m50[0m │       value: objectProps,
+@nebula.js/cli-serve:  [2m51[0m │       language: 'json',
+@nebula.js/cli-serve:  [2m52[0m │       scrollBeyondLastLine: false,
+@nebula.js/cli-serve:  [2m53[0m │       theme: theme.palette.mode === 'dark' ? 'vs-dark' : 'vs-light',
+@nebula.js/cli-serve:     · [38;2;30;201;212m             ─────────────[0m
+@nebula.js/cli-serve:  [2m54[0m │     });
+@nebula.js/cli-serve:  [2m55[0m │     editor.layout({ width: monacoRect.width, height: monacoRect.height });
+@nebula.js/cli-serve:  [2m56[0m │     const subscription = editor.onDidChangeModelDecorations(() => {
+@nebula.js/cli-serve:  [2m57[0m │       const m = monaco.editor.getModelMarkers();
+@nebula.js/cli-serve:  [2m58[0m │       setMonacoEditorMarkers(m);
+@nebula.js/cli-serve:  [2m59[0m │     });
+@nebula.js/cli-serve:  [2m60[0m │     editor.focus();
+@nebula.js/cli-serve:  [2m61[0m │     setMonacoEditor(editor);
+@nebula.js/cli-serve:  [2m62[0m │     return () => {
+@nebula.js/cli-serve:  [2m63[0m │       subscription.dispose();
+@nebula.js/cli-serve:  [2m64[0m │       const editorModel = editor.getModel();
+@nebula.js/cli-serve:  [2m65[0m │       if (editorModel) {
+@nebula.js/cli-serve:  [2m66[0m │         editorModel.dispose();
+@nebula.js/cli-serve:  [2m67[0m │       }
+@nebula.js/cli-serve:  [2m68[0m │       editor.dispose();
+@nebula.js/cli-serve:  [2m69[0m │     };
+@nebula.js/cli-serve:  [2m70[0m │   }, [monacoNode, monacoRect, objectProps]);
+@nebula.js/cli-serve:     · [38;2;145;246;111m     ─────────────────────────────────────[0m
+@nebula.js/cli-serve:  [2m71[0m │ 
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mEither include it or remove the dependency array.
+@nebula.js/cli-serve:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-react-hooks(exhaustive-deps): React Hook useCallback has a missing dependency: 'setProperties'[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Visualize/Properties.jsx[0m:24:6]
+@nebula.js/cli-serve:  [2m22[0m │   const changed = useCallback(() => {
+@nebula.js/cli-serve:  [2m23[0m │     setProperties(properties);
+@nebula.js/cli-serve:     · [38;2;246;87;248m    ──────┬──────[0m
+@nebula.js/cli-serve:     ·           [38;2;246;87;248m╰── [38;2;246;87;248museCallback uses `setProperties` here[0m[0m
+@nebula.js/cli-serve:  [2m24[0m │   }, [viz, sn, properties]);
+@nebula.js/cli-serve:     · [38;2;30;201;212m     ─────────────────────[0m
+@nebula.js/cli-serve:  [2m25[0m │ 
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mEither include it or remove the dependency array.
+@nebula.js/cli-serve:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-react-hooks(exhaustive-deps): React Hook useCallback has unnecessary dependency: viz[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Visualize/Properties.jsx[0m:24:6]
+@nebula.js/cli-serve:  [2m23[0m │     setProperties(properties);
+@nebula.js/cli-serve:  [2m24[0m │   }, [viz, sn, properties]);
+@nebula.js/cli-serve:     · [38;2;246;87;248m     ─────────────────────[0m
+@nebula.js/cli-serve:  [2m25[0m │ 
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mEither include it or remove the dependency array.
+@nebula.js/cli-serve:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-react-hooks(exhaustive-deps): React Hook useCallback has unnecessary dependency: sn[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Visualize/Properties.jsx[0m:24:6]
+@nebula.js/cli-serve:  [2m23[0m │     setProperties(properties);
+@nebula.js/cli-serve:  [2m24[0m │   }, [viz, sn, properties]);
+@nebula.js/cli-serve:     · [38;2;246;87;248m     ─────────────────────[0m
+@nebula.js/cli-serve:  [2m25[0m │ 
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mEither include it or remove the dependency array.
+@nebula.js/cli-serve:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-react-hooks(exhaustive-deps): React Hook useEffect has missing dependencies: 'storage', 'info.supernova.name', 'nebbie', and 'setActiveViz'[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Visualize/Stage.jsx[0m:36:6]
+@nebula.js/cli-serve:  [2m19[0m │     }
+@nebula.js/cli-serve:  [2m20[0m │     const res = nebbie.render({
+@nebula.js/cli-serve:     · [38;2;246;87;248m                ──────[0m
+@nebula.js/cli-serve:  [2m21[0m │       type: info.supernova.name,
+@nebula.js/cli-serve:     · [38;2;30;201;212m            ──────────────[0m
+@nebula.js/cli-serve:  [2m22[0m │       properties: {
+@nebula.js/cli-serve:  [2m23[0m │         ...(storage.get('readFromCache') !== false ? storage.props(info.supernova.name) : {}),
+@nebula.js/cli-serve:     · [38;2;145;246;111m            ───────[0m
+@nebula.js/cli-serve:  [2m24[0m │         qInfo: {
+@nebula.js/cli-serve:  [2m25[0m │           qId: uid,
+@nebula.js/cli-serve:  [2m26[0m │           qType: info.supernova.name,
+@nebula.js/cli-serve:  [2m27[0m │         },
+@nebula.js/cli-serve:  [2m28[0m │       },
+@nebula.js/cli-serve:  [2m29[0m │     });
+@nebula.js/cli-serve:  [2m30[0m │     res.then((v) => {
+@nebula.js/cli-serve:  [2m31[0m │       setActiveViz(v);
+@nebula.js/cli-serve:     · [38;2;246;87;248m      ────────────[0m
+@nebula.js/cli-serve:  [2m32[0m │     });
+@nebula.js/cli-serve:  [2m33[0m │     return () => {
+@nebula.js/cli-serve:  [2m34[0m │       res.then((v) => v.destroy());
+@nebula.js/cli-serve:  [2m35[0m │     };
+@nebula.js/cli-serve:  [2m36[0m │   }, [uid]);
+@nebula.js/cli-serve:     · [38;2;30;201;212m     ─────[0m
+@nebula.js/cli-serve:  [2m37[0m │ 
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mEither include it or remove the dependency array.
+@nebula.js/cli-serve:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-react-hooks(exhaustive-deps): React Hook useEffect has missing dependencies: 'info.supernova.name', and 'storage'[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Visualize/Stage.jsx[0m:41:6]
+@nebula.js/cli-serve:  [2m39[0m │     if (!properties) return;
+@nebula.js/cli-serve:  [2m40[0m │     storage.props(info.supernova.name, properties);
+@nebula.js/cli-serve:     · [38;2;246;87;248m    ───────[0m[38;2;30;201;212m       ──────────────[0m
+@nebula.js/cli-serve:  [2m41[0m │   }, [properties]);
+@nebula.js/cli-serve:     · [38;2;145;246;111m     ────────────[0m
+@nebula.js/cli-serve:  [2m42[0m │ 
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mEither include it or remove the dependency array.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint-plugin-react-hooks(rules-of-hooks): React Hook "useSessionModel" is called in function "list" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word "use".[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/hooks/useLibraryList.js[0m:35:19]
+@nebula.js/cli-serve:  [2m31[0m │ 
+@nebula.js/cli-serve:  [2m32[0m │ export default function list(app, type = 'dimension') {
+@nebula.js/cli-serve:     · [38;2;246;87;248m                        ──┬─[0m
+@nebula.js/cli-serve:     ·                           [38;2;246;87;248m╰── [38;2;246;87;248mOuter function[0m[0m
+@nebula.js/cli-serve:  [2m33[0m │   const def = type === 'dimension' ? D : M;
+@nebula.js/cli-serve:  [2m34[0m │ 
+@nebula.js/cli-serve:  [2m35[0m │   const [model] = useSessionModel(def, app);
+@nebula.js/cli-serve:     · [38;2;30;201;212m                  ───────┬───────[0m
+@nebula.js/cli-serve:     ·                          [38;2;30;201;212m╰── [38;2;30;201;212mHook is called here[0m[0m
+@nebula.js/cli-serve:  [2m36[0m │   const [layout] = useLayout(model);
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint-plugin-react-hooks(rules-of-hooks): React Hook "useLayout" is called in function "list" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word "use".[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/hooks/useLibraryList.js[0m:36:20]
+@nebula.js/cli-serve:  [2m31[0m │ 
+@nebula.js/cli-serve:  [2m32[0m │ export default function list(app, type = 'dimension') {
+@nebula.js/cli-serve:     · [38;2;246;87;248m                        ──┬─[0m
+@nebula.js/cli-serve:     ·                           [38;2;246;87;248m╰── [38;2;246;87;248mOuter function[0m[0m
+@nebula.js/cli-serve:  [2m33[0m │   const def = type === 'dimension' ? D : M;
+@nebula.js/cli-serve:  [2m34[0m │ 
+@nebula.js/cli-serve:  [2m35[0m │   const [model] = useSessionModel(def, app);
+@nebula.js/cli-serve:  [2m36[0m │   const [layout] = useLayout(model);
+@nebula.js/cli-serve:     · [38;2;30;201;212m                   ────┬────[0m
+@nebula.js/cli-serve:     ·                        [38;2;30;201;212m╰── [38;2;30;201;212mHook is called here[0m[0m
+@nebula.js/cli-serve:  [2m37[0m │   return [layout ? (layout.qDimensionList || layout.qMeasureList).qItems || [] : []];
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(preserve-caught-error): There is no cause error attached to this new thrown error.[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/hooks/useOpenApp.js[0m:42:7]
+@nebula.js/cli-serve:  [2m41[0m │     } catch (error) {
+@nebula.js/cli-serve:  [2m42[0m │       throw new Error('Failed to open app!');
+@nebula.js/cli-serve:     · [38;2;246;87;248m      ───────────────────────────────────────[0m
+@nebula.js/cli-serve:  [2m43[0m │     }
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mPreserve the original error by using the `cause` property when re-throwing errors.
+@nebula.js/cli-serve:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-react-hooks(exhaustive-deps): React Hook useEffect has a missing dependency: 'handleOpenApp'[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/hooks/useOpenApp.js[0m:19:6]
+@nebula.js/cli-serve:  [2m14[0m │     if (!info) return;
+@nebula.js/cli-serve:  [2m15[0m │     handleOpenApp()
+@nebula.js/cli-serve:     · [38;2;246;87;248m    ──────┬──────[0m
+@nebula.js/cli-serve:     ·           [38;2;246;87;248m╰── [38;2;246;87;248museEffect uses `handleOpenApp` here[0m[0m
+@nebula.js/cli-serve:  [2m16[0m │       .then((resultApp) => setApp(resultApp))
+@nebula.js/cli-serve:  [2m17[0m │       .catch((err) => console.log(err))
+@nebula.js/cli-serve:  [2m18[0m │       .finally(() => setWaiting(false));
+@nebula.js/cli-serve:  [2m19[0m │   }, [info]);
+@nebula.js/cli-serve:     · [38;2;30;201;212m     ──────[0m
+@nebula.js/cli-serve:  [2m20[0m │ 
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mEither include it or remove the dependency array.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint-plugin-import(no-cycle): Dependency cycle detected[0m
+@nebula.js/cli-serve:    ╭─[[38;2;92;157;255;1mweb/contexts/RootContext.jsx[0m:3:62]
+@nebula.js/cli-serve:  [2m2[0m │ import { useLocation, useNavigate } from 'react-router';
+@nebula.js/cli-serve:  [2m3[0m │ import { useInfo, useConnection, useCachedConnections } from '../hooks';
+@nebula.js/cli-serve:    · [38;2;246;87;248m                                                             ──────────[0m
+@nebula.js/cli-serve:  [2m4[0m │ import storageFn from '../storage';
+@nebula.js/cli-serve:    ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mRefactor to remove the cycle. Consider extracting shared code into a separate module that both files can import.
+@nebula.js/cli-serve: [38;2;106;159;181m  note: [0mThese paths form a cycle:
+@nebula.js/cli-serve:            ╭──▶ ../hooks (web/hooks/index.js)
+@nebula.js/cli-serve:            │         ⬇ imports
+@nebula.js/cli-serve:            │    ./useAppList (web/hooks/useAppList.js)
+@nebula.js/cli-serve:            │         ⬇ imports
+@nebula.js/cli-serve:            │    ../contexts/RootContext (web/contexts/RootContext.jsx)
+@nebula.js/cli-serve:            ╰─────────╯ imports the current file
+@nebula.js/cli-serve:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-react-hooks(exhaustive-deps): React Hook useEffect has missing dependencies: 'navigate', and 'connectionData'[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/contexts/RootContext.jsx[0m:34:6]
+@nebula.js/cli-serve:  [2m26[0m │   useEffect(() => {
+@nebula.js/cli-serve:  [2m27[0m │     if (connectionData.error) navigate('/');
+@nebula.js/cli-serve:     · [38;2;246;87;248m                              ────────[0m
+@nebula.js/cli-serve:  [2m28[0m │ 
+@nebula.js/cli-serve:  [2m29[0m │     if (location.pathname === '/') {
+@nebula.js/cli-serve:  [2m30[0m │       connectionData.setActiveStep(0);
+@nebula.js/cli-serve:     · [38;2;30;201;212m      ──────────────[0m
+@nebula.js/cli-serve:  [2m31[0m │       connectionData.setGlobal();
+@nebula.js/cli-serve:  [2m32[0m │       connectionData.setTreatAsDesktop(false);
+@nebula.js/cli-serve:  [2m33[0m │     }
+@nebula.js/cli-serve:  [2m34[0m │   }, [location.pathname, connectionData.error]);
+@nebula.js/cli-serve:     · [38;2;145;246;111m     ─────────────────────────────────────────[0m
+@nebula.js/cli-serve:  [2m35[0m │ 
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mEither include it or remove the dependency array.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(no-param-reassign): Assignment to property of function parameter 'target'.[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Visualize/AutoComponents.jsx[0m:85:5]
+@nebula.js/cli-serve:  [2m84[0m │   const handleChange = (e) => {
+@nebula.js/cli-serve:  [2m85[0m │     target[property] = e.target.checked;
+@nebula.js/cli-serve:     · [38;2;246;87;248m    ──────[0m
+@nebula.js/cli-serve:  [2m86[0m │     changed();
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mConsider using a different variable to avoid unintended side effects on the parameter's properties.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(no-param-reassign): Assignment to property of function parameter 'target'.[0m
+@nebula.js/cli-serve:      ╭─[[38;2;92;157;255;1mweb/components/Visualize/AutoComponents.jsx[0m:104:7]
+@nebula.js/cli-serve:  [2m103[0m │     if (s !== value) {
+@nebula.js/cli-serve:  [2m104[0m │       target[property] = s;
+@nebula.js/cli-serve:      · [38;2;246;87;248m      ──────[0m
+@nebula.js/cli-serve:  [2m105[0m │       changed();
+@nebula.js/cli-serve:      ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mConsider using a different variable to avoid unintended side effects on the parameter's properties.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(no-param-reassign): Assignment to property of function parameter 'target'.[0m
+@nebula.js/cli-serve:      ╭─[[38;2;92;157;255;1mweb/components/Visualize/AutoComponents.jsx[0m:119:7]
+@nebula.js/cli-serve:  [2m118[0m │     if (s !== value) {
+@nebula.js/cli-serve:  [2m119[0m │       target[property] = +s;
+@nebula.js/cli-serve:      · [38;2;246;87;248m      ──────[0m
+@nebula.js/cli-serve:  [2m120[0m │       changed();
+@nebula.js/cli-serve:      ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mConsider using a different variable to avoid unintended side effects on the parameter's properties.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(no-param-reassign): Assignment to property of function parameter 'target'.[0m
+@nebula.js/cli-serve:      ╭─[[38;2;92;157;255;1mweb/components/Visualize/AutoComponents.jsx[0m:135:7]
+@nebula.js/cli-serve:  [2m134[0m │     if (s !== value) {
+@nebula.js/cli-serve:  [2m135[0m │       target[property].qStringExpression = { qExpr: `=${s}` };
+@nebula.js/cli-serve:      · [38;2;246;87;248m      ──────[0m
+@nebula.js/cli-serve:  [2m136[0m │       changed();
+@nebula.js/cli-serve:      ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mConsider using a different variable to avoid unintended side effects on the parameter's properties.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(array-callback-return): Callback for array method "Array.prototype.map" does not return on all code paths[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Hub/__tests__/AppList.test.jsx[0m:63:41]
+@nebula.js/cli-serve:  [2m62[0m │         expect(screen.queryByTestId('loading')).not.toBeInTheDocument();
+@nebula.js/cli-serve:  [2m63[0m │ [38;2;246;87;248m╭[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m     appList.map(({ qDocId, qTitle }) => {
+@nebula.js/cli-serve:  [2m64[0m │ [38;2;246;87;248m│[0m         expect(screen.getByText(qTitle)).toBeInTheDocument();
+@nebula.js/cli-serve:  [2m65[0m │ [38;2;246;87;248m│[0m         expect(screen.getByText(qDocId)).toBeInTheDocument();
+@nebula.js/cli-serve:  [2m66[0m │ [38;2;246;87;248m╰[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m     });
+@nebula.js/cli-serve:  [2m67[0m │       });
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0m"Array.prototype.map" uses the callback's return value. Add a `return` on every possible code path.
+@nebula.js/cli-serve: [38;2;106;159;181m  note: [0mWith `allowImplicit`, callbacks that don't explicitly return a value are considered to return `undefined`.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint-plugin-import(no-cycle): Dependency cycle detected[0m
+@nebula.js/cli-serve:    ╭─[[38;2;92;157;255;1mweb/utils/index.js[0m:6:15]
+@nebula.js/cli-serve:  [2m5[0m │ export * from './detectDefaultConnectionStep';
+@nebula.js/cli-serve:  [2m6[0m │ export * from './testRenderer';
+@nebula.js/cli-serve:    · [38;2;246;87;248m              ────────────────[0m
+@nebula.js/cli-serve:  [2m7[0m │ export * from './formUtils';
+@nebula.js/cli-serve:    ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mRefactor to remove the cycle. Consider extracting shared code into a separate module that both files can import.
+@nebula.js/cli-serve: [38;2;106;159;181m  note: [0mThese paths form a cycle:
+@nebula.js/cli-serve:            ╭──▶ ./testRenderer (web/utils/testRenderer.jsx)
+@nebula.js/cli-serve:            │         ⬇ imports
+@nebula.js/cli-serve:            │    ../contexts/RootContext (web/contexts/RootContext.jsx)
+@nebula.js/cli-serve:            │         ⬇ imports
+@nebula.js/cli-serve:            │    ../hooks (web/hooks/index.js)
+@nebula.js/cli-serve:            │         ⬇ imports
+@nebula.js/cli-serve:            │    ./useAppList (web/hooks/useAppList.js)
+@nebula.js/cli-serve:            │         ⬇ imports
+@nebula.js/cli-serve:            │    ../utils (web/utils/index.js)
+@nebula.js/cli-serve:            ╰─────────╯ imports the current file
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(preserve-caught-error): There is no cause error attached to this new thrown error.[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/hooks/useConnection.js[0m:40:5]
+@nebula.js/cli-serve:  [2m39[0m │   } catch (error) {
+@nebula.js/cli-serve:  [2m40[0m │     throw new Error('Failed to get configuration');
+@nebula.js/cli-serve:     · [38;2;246;87;248m    ───────────────────────────────────────────────[0m
+@nebula.js/cli-serve:  [2m41[0m │   }
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mPreserve the original error by using the `cause` property when re-throwing errors.
+@nebula.js/cli-serve:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-react-hooks(exhaustive-deps): React Hook useEffect has a missing dependency: 'cachedConnectionsData'[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/hooks/useConnection.js[0m:27:6]
+@nebula.js/cli-serve:  [2m24[0m │       .then((result) => handleConnectionSuccess({ result, setGlobal, setError, setTreatAsDesktop }))
+@nebula.js/cli-serve:  [2m25[0m │       .then(() => cachedConnectionsData.addCachedConnections({ info }))
+@nebula.js/cli-serve:     · [38;2;246;87;248m                  ──────────┬──────────[0m
+@nebula.js/cli-serve:     ·                             [38;2;246;87;248m╰── [38;2;246;87;248museEffect uses `cachedConnectionsData` here[0m[0m
+@nebula.js/cli-serve:  [2m26[0m │       .catch((err) => handleConnectionFailure({ error: err, info, setError }));
+@nebula.js/cli-serve:  [2m27[0m │   }, [info, location.pathname]);
+@nebula.js/cli-serve:     · [38;2;30;201;212m     ─────────────────────────[0m
+@nebula.js/cli-serve:  [2m28[0m │ 
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mEither include it or remove the dependency array.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(array-callback-return): Callback for array method "Array.prototype.map" does not return on all code paths[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Hub/SelectEngine/__tests__/ConnectionOptions.test.jsx[0m:30:35]
+@nebula.js/cli-serve:  [2m29[0m │         expect(screen.queryByText('New connection with:')).toBeInTheDocument();
+@nebula.js/cli-serve:  [2m30[0m │ [38;2;246;87;248m╭[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m     OptionsToConnect.map((opt) => {
+@nebula.js/cli-serve:  [2m31[0m │ [38;2;246;87;248m│[0m         expect(screen.queryByText(opt.label)).toBeInTheDocument();
+@nebula.js/cli-serve:  [2m32[0m │ [38;2;246;87;248m╰[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m     });
+@nebula.js/cli-serve:  [2m33[0m │         expect(screen.getAllByRole('button')).toHaveLength(1);
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0m"Array.prototype.map" uses the callback's return value. Add a `return` on every possible code path.
+@nebula.js/cli-serve: [38;2;106;159;181m  note: [0mWith `allowImplicit`, callbacks that don't explicitly return a value are considered to return `undefined`.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(array-callback-return): Callback for array method "Array.prototype.map" does not return on all code paths[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Hub/SelectEngine/__tests__/ConnectionOptions.test.jsx[0m:46:51]
+@nebula.js/cli-serve:  [2m45[0m │         // integration form inputs
+@nebula.js/cli-serve:  [2m46[0m │ [38;2;246;87;248m╭[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m     OptionsToConnect[1].formFields.map((field) => {
+@nebula.js/cli-serve:  [2m47[0m │ [38;2;246;87;248m│[0m         expect(screen.queryByPlaceholderText(field)).toBeInTheDocument();
+@nebula.js/cli-serve:  [2m48[0m │ [38;2;246;87;248m╰[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m     });
+@nebula.js/cli-serve:  [2m49[0m │     
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0m"Array.prototype.map" uses the callback's return value. Add a `return` on every possible code path.
+@nebula.js/cli-serve: [38;2;106;159;181m  note: [0mWith `allowImplicit`, callbacks that don't explicitly return a value are considered to return `undefined`.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(array-callback-return): Callback for array method "Array.prototype.map" does not return on all code paths[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Hub/SelectEngine/__tests__/ConnectionOptions.test.jsx[0m:66:51]
+@nebula.js/cli-serve:  [2m65[0m │         // client id form inputs
+@nebula.js/cli-serve:  [2m66[0m │ [38;2;246;87;248m╭[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m     OptionsToConnect[2].formFields.map((field) => {
+@nebula.js/cli-serve:  [2m67[0m │ [38;2;246;87;248m│[0m         expect(screen.queryByPlaceholderText(field)).toBeInTheDocument();
+@nebula.js/cli-serve:  [2m68[0m │ [38;2;246;87;248m╰[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m     });
+@nebula.js/cli-serve:  [2m69[0m │       });
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0m"Array.prototype.map" uses the callback's return value. Add a `return` on every possible code path.
+@nebula.js/cli-serve: [38;2;106;159;181m  note: [0mWith `allowImplicit`, callbacks that don't explicitly return a value are considered to return `undefined`.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint-plugin-import(no-cycle): Dependency cycle detected[0m
+@nebula.js/cli-serve:    ╭─[[38;2;92;157;255;1mweb/hooks/index.js[0m:3:28]
+@nebula.js/cli-serve:  [2m2[0m │ export { useConnection } from './useConnection';
+@nebula.js/cli-serve:  [2m3[0m │ export { useAppList } from './useAppList';
+@nebula.js/cli-serve:    · [38;2;246;87;248m                           ──────────────[0m
+@nebula.js/cli-serve:  [2m4[0m │ export { useOpenApp } from './useOpenApp';
+@nebula.js/cli-serve:    ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mRefactor to remove the cycle. Consider extracting shared code into a separate module that both files can import.
+@nebula.js/cli-serve: [38;2;106;159;181m  note: [0mThese paths form a cycle:
+@nebula.js/cli-serve:            ╭──▶ ./useAppList (web/hooks/useAppList.js)
+@nebula.js/cli-serve:            │         ⬇ imports
+@nebula.js/cli-serve:            │    ../contexts/RootContext (web/contexts/RootContext.jsx)
+@nebula.js/cli-serve:            │         ⬇ imports
+@nebula.js/cli-serve:            │    ../hooks (web/hooks/index.js)
+@nebula.js/cli-serve:            ╰─────────╯ imports the current file
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint-plugin-import(no-cycle): Dependency cycle detected[0m
+@nebula.js/cli-serve:    ╭─[[38;2;92;157;255;1mweb/hooks/index.js[0m:6:49]
+@nebula.js/cli-serve:  [2m5[0m │ export { useCachedConnections } from './useCachedConnections';
+@nebula.js/cli-serve:  [2m6[0m │ export { useDeauthorizePrevOAuthInstance } from './useDeauthorizePrevOAuthInstance';
+@nebula.js/cli-serve:    · [38;2;246;87;248m                                                ───────────────────────────────────[0m
+@nebula.js/cli-serve:    ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mRefactor to remove the cycle. Consider extracting shared code into a separate module that both files can import.
+@nebula.js/cli-serve: [38;2;106;159;181m  note: [0mThese paths form a cycle:
+@nebula.js/cli-serve:            ╭──▶ ./useDeauthorizePrevOAuthInstance (web/hooks/useDeauthorizePrevOAuthInstance.js)
+@nebula.js/cli-serve:            │         ⬇ imports
+@nebula.js/cli-serve:            │    ../contexts/RootContext (web/contexts/RootContext.jsx)
+@nebula.js/cli-serve:            │         ⬇ imports
+@nebula.js/cli-serve:            │    ../hooks (web/hooks/index.js)
+@nebula.js/cli-serve:            ╰─────────╯ imports the current file
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint-plugin-import(no-cycle): Dependency cycle detected[0m
+@nebula.js/cli-serve:    ╭─[[38;2;92;157;255;1mweb/hooks/useAppList.js[0m:3:32]
+@nebula.js/cli-serve:  [2m2[0m │ import { useNavigate } from 'react-router';
+@nebula.js/cli-serve:  [2m3[0m │ import { useRootContext } from '../contexts/RootContext';
+@nebula.js/cli-serve:    · [38;2;246;87;248m                               ─────────────────────────[0m
+@nebula.js/cli-serve:  [2m4[0m │ import { getConnectionInfo } from '../connect';
+@nebula.js/cli-serve:    ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mRefactor to remove the cycle. Consider extracting shared code into a separate module that both files can import.
+@nebula.js/cli-serve: [38;2;106;159;181m  note: [0mThese paths form a cycle:
+@nebula.js/cli-serve:            ╭──▶ ../contexts/RootContext (web/contexts/RootContext.jsx)
+@nebula.js/cli-serve:            │         ⬇ imports
+@nebula.js/cli-serve:            │    ../hooks (web/hooks/index.js)
+@nebula.js/cli-serve:            │         ⬇ imports
+@nebula.js/cli-serve:            │    ./useAppList (web/hooks/useAppList.js)
+@nebula.js/cli-serve:            ╰─────────╯ imports the current file
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint-plugin-import(no-cycle): Dependency cycle detected[0m
+@nebula.js/cli-serve:    ╭─[[38;2;92;157;255;1mweb/hooks/useAppList.js[0m:5:47]
+@nebula.js/cli-serve:  [2m4[0m │ import { getConnectionInfo } from '../connect';
+@nebula.js/cli-serve:  [2m5[0m │ import { checkIfAuthorized, getAppList } from '../utils';
+@nebula.js/cli-serve:    · [38;2;246;87;248m                                              ──────────[0m
+@nebula.js/cli-serve:  [2m6[0m │ 
+@nebula.js/cli-serve:    ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mRefactor to remove the cycle. Consider extracting shared code into a separate module that both files can import.
+@nebula.js/cli-serve: [38;2;106;159;181m  note: [0mThese paths form a cycle:
+@nebula.js/cli-serve:            ╭──▶ ../utils (web/utils/index.js)
+@nebula.js/cli-serve:            │         ⬇ imports
+@nebula.js/cli-serve:            │    ./testRenderer (web/utils/testRenderer.jsx)
+@nebula.js/cli-serve:            │         ⬇ imports
+@nebula.js/cli-serve:            │    ../contexts/RootContext (web/contexts/RootContext.jsx)
+@nebula.js/cli-serve:            │         ⬇ imports
+@nebula.js/cli-serve:            │    ../hooks (web/hooks/index.js)
+@nebula.js/cli-serve:            │         ⬇ imports
+@nebula.js/cli-serve:            │    ./useAppList (web/hooks/useAppList.js)
+@nebula.js/cli-serve:            ╰─────────╯ imports the current file
+@nebula.js/cli-serve:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-react-hooks(exhaustive-deps): React Hook useEffect has missing dependencies: 'setInfo', and 'setActiveStep'[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/hooks/useAppList.js[0m:18:6]
+@nebula.js/cli-serve:  [2m13[0m │   useEffect(() => {
+@nebula.js/cli-serve:  [2m14[0m │     setActiveStep(1);
+@nebula.js/cli-serve:     · [38;2;246;87;248m    ─────────────[0m
+@nebula.js/cli-serve:  [2m15[0m │     getConnectionInfo().then((i) => {
+@nebula.js/cli-serve:  [2m16[0m │       setInfo(i);
+@nebula.js/cli-serve:     · [38;2;30;201;212m      ───────[0m
+@nebula.js/cli-serve:  [2m17[0m │     });
+@nebula.js/cli-serve:  [2m18[0m │   }, []);
+@nebula.js/cli-serve:     · [38;2;145;246;111m     ──[0m
+@nebula.js/cli-serve:  [2m19[0m │ 
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mEither include it or remove the dependency array.
+@nebula.js/cli-serve:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-react-hooks(exhaustive-deps): React Hook useEffect has an unnecessary dependency: window.[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/hooks/useAppList.js[0m:42:7]
+@nebula.js/cli-serve:  [2m41[0m │     });
+@nebula.js/cli-serve:  [2m42[0m │   }, [window.location.search, setLoading, info, glob]);
+@nebula.js/cli-serve:     · [38;2;246;87;248m      ──────────────────────[0m
+@nebula.js/cli-serve:  [2m43[0m │ 
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mConsider removing it from the dependency array. Outer scope values aren't valid dependencies because mutating them doesn't re-render the component.
+@nebula.js/cli-serve:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-react-hooks(exhaustive-deps): React Hook useEffect has missing dependencies: 'navigate', and 'appList.length'[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/hooks/useAppList.js[0m:42:6]
+@nebula.js/cli-serve:  [2m20[0m │   useEffect(() => {
+@nebula.js/cli-serve:  [2m21[0m │     if (appList?.length) return;
+@nebula.js/cli-serve:     · [38;2;246;87;248m        ───────[0m
+@nebula.js/cli-serve:  [2m22[0m │     setLoading(true);
+@nebula.js/cli-serve:  [2m23[0m │     const searchParam = new URLSearchParams(window.location.search);
+@nebula.js/cli-serve:  [2m24[0m │ 
+@nebula.js/cli-serve:  [2m25[0m │     // if is already authorized and does not have "shouldFetchAppList" -> append it to the url
+@nebula.js/cli-serve:  [2m26[0m │     if (searchParam.get('qlik-client-id') && !searchParam.get('shouldFetchAppList')) {
+@nebula.js/cli-serve:  [2m27[0m │       checkIfAuthorized().then(({ isAuthorized }) => {
+@nebula.js/cli-serve:  [2m28[0m │         if (isAuthorized) {
+@nebula.js/cli-serve:  [2m29[0m │           const url = new URL(window.location.href);
+@nebula.js/cli-serve:  [2m30[0m │           if (!url.search.includes('shouldFetchAppList')) {
+@nebula.js/cli-serve:  [2m31[0m │             url.searchParams.append('shouldFetchAppList', true);
+@nebula.js/cli-serve:  [2m32[0m │           }
+@nebula.js/cli-serve:  [2m33[0m │           navigate(decodeURIComponent(`${url.pathname}${url.search}`));
+@nebula.js/cli-serve:     · [38;2;30;201;212m          ────────[0m
+@nebula.js/cli-serve:  [2m34[0m │         }
+@nebula.js/cli-serve:  [2m35[0m │       });
+@nebula.js/cli-serve:  [2m36[0m │     }
+@nebula.js/cli-serve:  [2m37[0m │ 
+@nebula.js/cli-serve:  [2m38[0m │     (searchParam.get('shouldFetchAppList') ? getAppList() : glob?.getDocList())?.then((apps) => {
+@nebula.js/cli-serve:  [2m39[0m │       setAppList(apps);
+@nebula.js/cli-serve:  [2m40[0m │       if (apps) setLoading(false);
+@nebula.js/cli-serve:  [2m41[0m │     });
+@nebula.js/cli-serve:  [2m42[0m │   }, [window.location.search, setLoading, info, glob]);
+@nebula.js/cli-serve:     · [38;2;145;246;111m     ────────────────────────────────────────────────[0m
+@nebula.js/cli-serve:  [2m43[0m │ 
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mEither include it or remove the dependency array.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(preserve-caught-error): There is no cause error attached to this new thrown error.[0m
+@nebula.js/cli-serve:      ╭─[[38;2;92;157;255;1mweb/connect.js[0m:182:5]
+@nebula.js/cli-serve:  [2m181[0m │   } catch (error) {
+@nebula.js/cli-serve:  [2m182[0m │     throw new Error('Failed to return enigma instance');
+@nebula.js/cli-serve:      · [38;2;246;87;248m    ────────────────────────────────────────────────────[0m
+@nebula.js/cli-serve:  [2m183[0m │   }
+@nebula.js/cli-serve:      ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mPreserve the original error by using the `cause` property when re-throwing errors.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(preserve-caught-error): There is no cause error attached to this new thrown error.[0m
+@nebula.js/cli-serve:      ╭─[[38;2;92;157;255;1mweb/connect.js[0m:209:5]
+@nebula.js/cli-serve:  [2m208[0m │   } catch (error) {
+@nebula.js/cli-serve:  [2m209[0m │     throw new Error('Failed to open app!');
+@nebula.js/cli-serve:      · [38;2;246;87;248m    ───────────────────────────────────────[0m
+@nebula.js/cli-serve:  [2m210[0m │   }
+@nebula.js/cli-serve:      ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mPreserve the original error by using the `cause` property when re-throwing errors.
+@nebula.js/cli-serve:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint(func-names): Unexpected unnamed function.[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Visualize/Cell.jsx[0m:36:16]
+@nebula.js/cli-serve:  [2m35[0m │ 
+@nebula.js/cli-serve:  [2m36[0m │ export default function ({ id, expandable, minHeight }) {
+@nebula.js/cli-serve:     · [38;2;246;87;248m               ─────────[0m
+@nebula.js/cli-serve:  [2m37[0m │   const language = 'en-US'; // TODO - useLocale
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mConsider giving this function expression a name.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(no-underscore-dangle): Unexpected dangling '_' in '`__DO_NOT_USE__`'.[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Visualize/Cell.jsx[0m:93:28]
+@nebula.js/cli-serve:  [2m92[0m │         setExporting(true);
+@nebula.js/cli-serve:  [2m93[0m │         vizRef.current.viz.__DO_NOT_USE__.exportImage().then((res) => {
+@nebula.js/cli-serve:     · [38;2;246;87;248m                           ──────────────[0m
+@nebula.js/cli-serve:  [2m94[0m │           if (res && res.url) {
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mRemove the dangling '_' or add `__DO_NOT_USE__` to the 'allow' configuration.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(no-underscore-dangle): Unexpected dangling '_' in '`__DO_NOT_USE__`'.[0m
+@nebula.js/cli-serve:      ╭─[[38;2;92;157;255;1mweb/components/Visualize/Cell.jsx[0m:101:28]
+@nebula.js/cli-serve:  [2m100[0m │         const containerSize = vizRef.current.el.getBoundingClientRect();
+@nebula.js/cli-serve:  [2m101[0m │         vizRef.current.viz.__DO_NOT_USE__.takeSnapshot().then((snapshot) => {
+@nebula.js/cli-serve:      · [38;2;246;87;248m                           ──────────────[0m
+@nebula.js/cli-serve:  [2m102[0m │           fetch('/njs/snapshot', {
+@nebula.js/cli-serve:      ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mRemove the dangling '_' or add `__DO_NOT_USE__` to the 'allow' configuration.
+@nebula.js/cli-serve:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-react-hooks(exhaustive-deps): React Hook useEffect has missing dependencies: 'modelStore', and 'app'[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Visualize/Cell.jsx[0m:59:6]
+@nebula.js/cli-serve:  [2m49[0m │   useEffect(() => {
+@nebula.js/cli-serve:  [2m50[0m │     const v = app.getObject(id).then((m) => {
+@nebula.js/cli-serve:     · [38;2;246;87;248m              ───[0m
+@nebula.js/cli-serve:  [2m51[0m │       setModel(m);
+@nebula.js/cli-serve:  [2m52[0m │       modelStore.set(`${id}`, m);
+@nebula.js/cli-serve:     · [38;2;30;201;212m      ──────────[0m
+@nebula.js/cli-serve:  [2m53[0m │       return m;
+@nebula.js/cli-serve:  [2m54[0m │     });
+@nebula.js/cli-serve:  [2m55[0m │ 
+@nebula.js/cli-serve:  [2m56[0m │     return () => {
+@nebula.js/cli-serve:  [2m57[0m │       v.then((m) => m.emit('close'));
+@nebula.js/cli-serve:  [2m58[0m │     };
+@nebula.js/cli-serve:  [2m59[0m │   }, [id]);
+@nebula.js/cli-serve:     · [38;2;145;246;111m     ────[0m
+@nebula.js/cli-serve:  [2m60[0m │ 
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mEither include it or remove the dependency array.
+@nebula.js/cli-serve:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-react-hooks(exhaustive-deps): React Hook useCallback has unnecessary dependency: id[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Visualize/Cell.jsx[0m:74:5]
+@nebula.js/cli-serve:  [2m73[0m │     },
+@nebula.js/cli-serve:  [2m74[0m │     [id]
+@nebula.js/cli-serve:     · [38;2;246;87;248m    ────[0m
+@nebula.js/cli-serve:  [2m75[0m │   );
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mEither include it or remove the dependency array.
+@nebula.js/cli-serve:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-react-hooks(exhaustive-deps): React Hook useCallback has unnecessary dependency: model[0m
+@nebula.js/cli-serve:      ╭─[[38;2;92;157;255;1mweb/components/Visualize/Cell.jsx[0m:117:5]
+@nebula.js/cli-serve:  [2m116[0m │     },
+@nebula.js/cli-serve:  [2m117[0m │     [model, currentThemeName]
+@nebula.js/cli-serve:      · [38;2;246;87;248m    ─────────────────────────[0m
+@nebula.js/cli-serve:  [2m118[0m │   );
+@nebula.js/cli-serve:      ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mEither include it or remove the dependency array.
+@nebula.js/cli-serve:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-react-hooks(exhaustive-deps): React Hook useCallback has unnecessary dependency: currentThemeName[0m
+@nebula.js/cli-serve:      ╭─[[38;2;92;157;255;1mweb/components/Visualize/Cell.jsx[0m:117:5]
+@nebula.js/cli-serve:  [2m116[0m │     },
+@nebula.js/cli-serve:  [2m117[0m │     [model, currentThemeName]
+@nebula.js/cli-serve:      · [38;2;246;87;248m    ─────────────────────────[0m
+@nebula.js/cli-serve:  [2m118[0m │   );
+@nebula.js/cli-serve:      ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mEither include it or remove the dependency array.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(array-callback-return): Callback for array method "Array.prototype.map" does not return on all code paths[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Hub/SelectEngine/__tests__/SelectEngine.test.jsx[0m:13:35]
+@nebula.js/cli-serve:  [2m12[0m │         expect(screen.queryByText('Connect to an engine')).toBeInTheDocument();
+@nebula.js/cli-serve:  [2m13[0m │ [38;2;246;87;248m╭[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m     OptionsToConnect.map((opt) => {
+@nebula.js/cli-serve:  [2m14[0m │ [38;2;246;87;248m│[0m         expect(screen.queryByText(opt.label)).toBeInTheDocument();
+@nebula.js/cli-serve:  [2m15[0m │ [38;2;246;87;248m╰[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m     });
+@nebula.js/cli-serve:  [2m16[0m │       });
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0m"Array.prototype.map" uses the callback's return value. Add a `return` on every possible code path.
+@nebula.js/cli-serve: [38;2;106;159;181m  note: [0mWith `allowImplicit`, callbacks that don't explicitly return a value are considered to return `undefined`.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(array-callback-return): Callback for array method "Array.prototype.map" does not return on all code paths[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Hub/SelectEngine/__tests__/SelectEngine.test.jsx[0m:29:22]
+@nebula.js/cli-serve:  [2m28[0m │           'Qlik Sense Desktop',
+@nebula.js/cli-serve:  [2m29[0m │ [38;2;246;87;248m╭[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m     ].map((title) => {
+@nebula.js/cli-serve:  [2m30[0m │ [38;2;246;87;248m│[0m         expect(screen.queryByText(title)).toBeVisible();
+@nebula.js/cli-serve:  [2m31[0m │ [38;2;246;87;248m╰[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m     });
+@nebula.js/cli-serve:  [2m32[0m │       });
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0m"Array.prototype.map" uses the callback's return value. Add a `return` on every possible code path.
+@nebula.js/cli-serve: [38;2;106;159;181m  note: [0mWith `allowImplicit`, callbacks that don't explicitly return a value are considered to return `undefined`.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(array-callback-return): Callback for array method "Array.prototype.map" does not return on all code paths[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Hub/SelectEngine/__tests__/SelectEngine.test.jsx[0m:48:22]
+@nebula.js/cli-serve:  [2m47[0m │           'Qlik Sense Desktop',
+@nebula.js/cli-serve:  [2m48[0m │ [38;2;246;87;248m╭[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m     ].map((title) => {
+@nebula.js/cli-serve:  [2m49[0m │ [38;2;246;87;248m│[0m         expect(screen.queryByText(title)).not.toBeVisible();
+@nebula.js/cli-serve:  [2m50[0m │ [38;2;246;87;248m╰[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m     });
+@nebula.js/cli-serve:  [2m51[0m │       });
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0m"Array.prototype.map" uses the callback's return value. Add a `return` on every possible code path.
+@nebula.js/cli-serve: [38;2;106;159;181m  note: [0mWith `allowImplicit`, callbacks that don't explicitly return a value are considered to return `undefined`.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint-plugin-jest(no-conditional-expect): Unexpected conditional expect[0m
+@nebula.js/cli-serve:      ╭─[[38;2;92;157;255;1mweb/hooks/__tests__/useConnection.test.js[0m:232:11]
+@nebula.js/cli-serve:  [2m231[0m │         } catch (error) {
+@nebula.js/cli-serve:  [2m232[0m │           expect(error.message).toBe('Failed to get configuration');
+@nebula.js/cli-serve:      · [38;2;246;87;248m          ──────[0m
+@nebula.js/cli-serve:  [2m233[0m │         }
+@nebula.js/cli-serve:      ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mAvoid calling `expect` conditionally
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(array-callback-return): Callback for array method "Array.prototype.map" does not return on all code paths[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Hub/SelectEngine/__tests__/ConnectionHistory.test.jsx[0m:44:59]
+@nebula.js/cli-serve:  [2m43[0m │         expect(screen.queryByText('Previous connections')).toBeInTheDocument();
+@nebula.js/cli-serve:  [2m44[0m │ [38;2;246;87;248m╭[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m     cachedConnectionsData.cachedConnections.map((conn) => {
+@nebula.js/cli-serve:  [2m45[0m │ [38;2;246;87;248m│[0m         expect(screen.queryByText(conn)).toBeInTheDocument();
+@nebula.js/cli-serve:  [2m46[0m │ [38;2;246;87;248m╰[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m     });
+@nebula.js/cli-serve:  [2m47[0m │       });
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0m"Array.prototype.map" uses the callback's return value. Add a `return` on every possible code path.
+@nebula.js/cli-serve: [38;2;106;159;181m  note: [0mWith `allowImplicit`, callbacks that don't explicitly return a value are considered to return `undefined`.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(array-callback-return): Callback for array method "Array.prototype.map" does not return on all code paths[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Hub/SelectEngine/__tests__/ConnectionHistory.test.jsx[0m:60:108]
+@nebula.js/cli-serve:  [2m59[0m │         // disabled items
+@nebula.js/cli-serve:  [2m60[0m │ [38;2;246;87;248m╭[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m     [cachedConnectionsData.cachedConnections[0], cachedConnectionsData.cachedConnections[2]].map((conn) => {
+@nebula.js/cli-serve:  [2m61[0m │ [38;2;246;87;248m│[0m         expect(screen.queryByText(conn).closest('a')).toHaveAttribute('aria-disabled', 'true');
+@nebula.js/cli-serve:  [2m62[0m │ [38;2;246;87;248m╰[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m     });
+@nebula.js/cli-serve:  [2m63[0m │     
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0m"Array.prototype.map" uses the callback's return value. Add a `return` on every possible code path.
+@nebula.js/cli-serve: [38;2;106;159;181m  note: [0mWith `allowImplicit`, callbacks that don't explicitly return a value are considered to return `undefined`.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(array-callback-return): Callback for array method "Array.prototype.map" does not return on all code paths[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/components/Hub/SelectEngine/__tests__/ConnectionHistory.test.jsx[0m:82:110]
+@nebula.js/cli-serve:  [2m81[0m │         // disabled items
+@nebula.js/cli-serve:  [2m82[0m │ [38;2;246;87;248m╭[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m     [(cachedConnectionsData.cachedConnections[0], cachedConnectionsData.cachedConnections[1])].map((conn) => {
+@nebula.js/cli-serve:  [2m83[0m │ [38;2;246;87;248m│[0m         expect(screen.queryByText(conn).closest('a')).toHaveAttribute('aria-disabled', 'true');
+@nebula.js/cli-serve:  [2m84[0m │ [38;2;246;87;248m╰[0m[38;2;246;87;248m─[0m[38;2;246;87;248m▶[0m     });
+@nebula.js/cli-serve:  [2m85[0m │     
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0m"Array.prototype.map" uses the callback's return value. Add a `return` on every possible code path.
+@nebula.js/cli-serve: [38;2;106;159;181m  note: [0mWith `allowImplicit`, callbacks that don't explicitly return a value are considered to return `undefined`.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(no-underscore-dangle): Unexpected dangling '_' in '`__DO_NOT_USE__`'.[0m
+@nebula.js/cli-serve:      ╭─[[38;2;92;157;255;1mweb/components/Visualize/Visualize.jsx[0m:138:7]
+@nebula.js/cli-serve:  [2m137[0m │     });
+@nebula.js/cli-serve:  [2m138[0m │     n.__DO_NOT_USE__.types.register(info?.supernova);
+@nebula.js/cli-serve:      · [38;2;246;87;248m      ──────────────[0m
+@nebula.js/cli-serve:  [2m139[0m │     if (info?.types) {
+@nebula.js/cli-serve:      ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mRemove the dangling '_' or add `__DO_NOT_USE__` to the 'allow' configuration.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(no-underscore-dangle): Unexpected dangling '_' in '`__DO_NOT_USE__`'.[0m
+@nebula.js/cli-serve:      ╭─[[38;2;92;157;255;1mweb/components/Visualize/Visualize.jsx[0m:141:11]
+@nebula.js/cli-serve:  [2m140[0m │       info?.types.forEach((t) => {
+@nebula.js/cli-serve:  [2m141[0m │         n.__DO_NOT_USE__.types.register(t);
+@nebula.js/cli-serve:      · [38;2;246;87;248m          ──────────────[0m
+@nebula.js/cli-serve:  [2m142[0m │       });
+@nebula.js/cli-serve:      ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mRemove the dangling '_' or add `__DO_NOT_USE__` to the 'allow' configuration.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(no-underscore-dangle): Unexpected dangling '_' in '`__DO_NOT_USE__`'.[0m
+@nebula.js/cli-serve:      ╭─[[38;2;92;157;255;1mweb/components/Visualize/Visualize.jsx[0m:169:14]
+@nebula.js/cli-serve:  [2m168[0m │     window.onHotChange(info?.supernova.name, () => {
+@nebula.js/cli-serve:  [2m169[0m │       nebbie.__DO_NOT_USE__.types.clearFromCache(info?.supernova.name);
+@nebula.js/cli-serve:      · [38;2;246;87;248m             ──────────────[0m
+@nebula.js/cli-serve:  [2m170[0m │       nebbie.__DO_NOT_USE__.types.register(info?.supernova);
+@nebula.js/cli-serve:      ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mRemove the dangling '_' or add `__DO_NOT_USE__` to the 'allow' configuration.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(no-underscore-dangle): Unexpected dangling '_' in '`__DO_NOT_USE__`'.[0m
+@nebula.js/cli-serve:      ╭─[[38;2;92;157;255;1mweb/components/Visualize/Visualize.jsx[0m:170:14]
+@nebula.js/cli-serve:  [2m169[0m │       nebbie.__DO_NOT_USE__.types.clearFromCache(info?.supernova.name);
+@nebula.js/cli-serve:  [2m170[0m │       nebbie.__DO_NOT_USE__.types.register(info?.supernova);
+@nebula.js/cli-serve:      · [38;2;246;87;248m             ──────────────[0m
+@nebula.js/cli-serve:  [2m171[0m │ 
+@nebula.js/cli-serve:      ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mRemove the dangling '_' or add `__DO_NOT_USE__` to the 'allow' configuration.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(no-underscore-dangle): Unexpected dangling '_' in '`__DO_NOT_USE__`'.[0m
+@nebula.js/cli-serve:      ╭─[[38;2;92;157;255;1mweb/components/Visualize/Visualize.jsx[0m:174:14]
+@nebula.js/cli-serve:  [2m173[0m │ 
+@nebula.js/cli-serve:  [2m174[0m │       nebbie.__DO_NOT_USE__.types
+@nebula.js/cli-serve:      · [38;2;246;87;248m             ──────────────[0m
+@nebula.js/cli-serve:  [2m175[0m │         .get({
+@nebula.js/cli-serve:      ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mRemove the dangling '_' or add `__DO_NOT_USE__` to the 'allow' configuration.
+@nebula.js/cli-serve:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-react-hooks(exhaustive-deps): React Hook useEffect has missing dependencies: 'currentLanguage', 'currentThemeName', and 'currentInteractions'[0m
+@nebula.js/cli-serve:      ╭─[[38;2;92;157;255;1mweb/components/Visualize/Visualize.jsx[0m:146:6]
+@nebula.js/cli-serve:  [2m117[0m │       context: {
+@nebula.js/cli-serve:  [2m118[0m │         theme: currentThemeName,
+@nebula.js/cli-serve:      · [38;2;246;87;248m               ────────────────[0m
+@nebula.js/cli-serve:  [2m119[0m │         language: currentLanguage,
+@nebula.js/cli-serve:      · [38;2;30;201;212m                  ───────────────[0m
+@nebula.js/cli-serve:  [2m120[0m │         interactions: getInteractions(currentInteractions),
+@nebula.js/cli-serve:      · [38;2;145;246;111m                                      ───────────────────[0m
+@nebula.js/cli-serve:  [2m121[0m │         keyboardNavigation: info?.keyboardNavigation,
+@nebula.js/cli-serve:  [2m122[0m │       },
+@nebula.js/cli-serve:  [2m123[0m │       load: (type) => Promise.resolve(window[type.name]),
+@nebula.js/cli-serve:  [2m124[0m │       flags: info?.flags,
+@nebula.js/cli-serve:  [2m125[0m │       themes: info?.themes
+@nebula.js/cli-serve:  [2m126[0m │         ? info?.themes.map((t) => ({
+@nebula.js/cli-serve:  [2m127[0m │             id: t,
+@nebula.js/cli-serve:  [2m128[0m │             load: () =>
+@nebula.js/cli-serve:  [2m129[0m │               fetch(`/theme/${t}`)
+@nebula.js/cli-serve:  [2m130[0m │                 .then((response) => response.json())
+@nebula.js/cli-serve:  [2m131[0m │                 .then((raw) => {
+@nebula.js/cli-serve:  [2m132[0m │                   setCurrentMuiThemeName(raw.type === 'dark' ? 'dark' : 'light');
+@nebula.js/cli-serve:  [2m133[0m │                   return raw;
+@nebula.js/cli-serve:  [2m134[0m │                 }),
+@nebula.js/cli-serve:  [2m135[0m │           }))
+@nebula.js/cli-serve:  [2m136[0m │         : null,
+@nebula.js/cli-serve:  [2m137[0m │     });
+@nebula.js/cli-serve:  [2m138[0m │     n.__DO_NOT_USE__.types.register(info?.supernova);
+@nebula.js/cli-serve:  [2m139[0m │     if (info?.types) {
+@nebula.js/cli-serve:  [2m140[0m │       info?.types.forEach((t) => {
+@nebula.js/cli-serve:  [2m141[0m │         n.__DO_NOT_USE__.types.register(t);
+@nebula.js/cli-serve:  [2m142[0m │       });
+@nebula.js/cli-serve:  [2m143[0m │     }
+@nebula.js/cli-serve:  [2m144[0m │ 
+@nebula.js/cli-serve:  [2m145[0m │     setNebbie(n);
+@nebula.js/cli-serve:  [2m146[0m │   }, [app, info, waiting, initialized]);
+@nebula.js/cli-serve:      · [38;2;246;87;248m     ─────────────────────────────────[0m
+@nebula.js/cli-serve:  [2m147[0m │ 
+@nebula.js/cli-serve:      ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mEither include it or remove the dependency array.
+@nebula.js/cli-serve:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-react-hooks(exhaustive-deps): React Hook useEffect has a missing dependency: 'create'[0m
+@nebula.js/cli-serve:      ╭─[[38;2;92;157;255;1mweb/components/Visualize/Visualize.jsx[0m:183:6]
+@nebula.js/cli-serve:  [2m171[0m │ 
+@nebula.js/cli-serve:  [2m172[0m │       create();
+@nebula.js/cli-serve:      · [38;2;246;87;248m      ───┬──[0m
+@nebula.js/cli-serve:      ·          [38;2;246;87;248m╰── [38;2;246;87;248museEffect uses `create` here[0m[0m
+@nebula.js/cli-serve:  [2m173[0m │ 
+@nebula.js/cli-serve:  [2m174[0m │       nebbie.__DO_NOT_USE__.types
+@nebula.js/cli-serve:  [2m175[0m │         .get({
+@nebula.js/cli-serve:  [2m176[0m │           name: info?.supernova.name,
+@nebula.js/cli-serve:  [2m177[0m │         })
+@nebula.js/cli-serve:  [2m178[0m │         .supernova()
+@nebula.js/cli-serve:  [2m179[0m │         .then(setSupernova);
+@nebula.js/cli-serve:  [2m180[0m │     });
+@nebula.js/cli-serve:  [2m181[0m │ 
+@nebula.js/cli-serve:  [2m182[0m │     create();
+@nebula.js/cli-serve:  [2m183[0m │   }, [nebbie, info]);
+@nebula.js/cli-serve:      · [38;2;30;201;212m     ──────────────[0m
+@nebula.js/cli-serve:  [2m184[0m │ 
+@nebula.js/cli-serve:      ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mEither include it or remove the dependency array.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint-plugin-jest(no-conditional-expect): Unexpected conditional expect[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/__tests__/connect.test.js[0m:72:9]
+@nebula.js/cli-serve:  [2m71[0m │       } catch (err) {
+@nebula.js/cli-serve:  [2m72[0m │         expect(err.message).toBe('Failed to return enigma instance');
+@nebula.js/cli-serve:     · [38;2;246;87;248m        ──────[0m
+@nebula.js/cli-serve:  [2m73[0m │       }
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mAvoid calling `expect` conditionally
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint-plugin-jest(no-conditional-expect): Unexpected conditional expect[0m
+@nebula.js/cli-serve:      ╭─[[38;2;92;157;255;1mweb/__tests__/connect.test.js[0m:176:9]
+@nebula.js/cli-serve:  [2m175[0m │       } catch (err) {
+@nebula.js/cli-serve:  [2m176[0m │         expect(err.message).toBe('Failed to open app!');
+@nebula.js/cli-serve:      · [38;2;246;87;248m        ──────[0m
+@nebula.js/cli-serve:  [2m177[0m │       }
+@nebula.js/cli-serve:      ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mAvoid calling `expect` conditionally
+@nebula.js/cli-serve:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-jest(no-disabled-tests): Disabled test[0m
+@nebula.js/cli-serve:      ╭─[[38;2;92;157;255;1mweb/hooks/__tests__/useAppList.test.js[0m:99:3]
+@nebula.js/cli-serve:  [2m 98[0m │   // which happens to work. To properly test this, the hook should use useLocation() from react-router.
+@nebula.js/cli-serve:  [2m 99[0m │   test.skip('should call `getAppList()` from utils to get list of apps, if there was `shouldFetchAppList` in url', async () => {
+@nebula.js/cli-serve:      · [38;2;246;87;248m  ─────────[0m
+@nebula.js/cli-serve:  [2m100[0m │     // This test is skipped due to incompatibility between jest-location-mock v3,
+@nebula.js/cli-serve:      ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mRemove the appending `.skip`
+@nebula.js/cli-serve:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-jest(no-disabled-tests): Disabled test[0m
+@nebula.js/cli-serve:      ╭─[[38;2;92;157;255;1mweb/hooks/__tests__/useAppList.test.js[0m:155:3]
+@nebula.js/cli-serve:  [2m154[0m │ 
+@nebula.js/cli-serve:  [2m155[0m │   test.skip('should append `shouldFetchAppList` to the url and reload in case if ther was no `shouldFetchAppList` and user was already authorized', async () => {
+@nebula.js/cli-serve:      · [38;2;246;87;248m  ─────────[0m
+@nebula.js/cli-serve:  [2m156[0m │     // This test is skipped due to the same BrowserRouter/window.location incompatibility.
+@nebula.js/cli-serve:      ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mRemove the appending `.skip`
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint-plugin-import(extensions): File extension "js" should not be included in the import declaration.[0m
+@nebula.js/cli-serve:    ╭─[[38;2;92;157;255;1mcommand.js[0m:2:1]
+@nebula.js/cli-serve:  [2m1[0m │ import serve from './lib/serve.js';
+@nebula.js/cli-serve:  [2m2[0m │ import init from './lib/init-config.js';
+@nebula.js/cli-serve:    · [38;2;246;87;248m────────────────────────────────────────[0m
+@nebula.js/cli-serve:  [2m3[0m │ 
+@nebula.js/cli-serve:    ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mRemove the file extension from this import.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint-plugin-import(extensions): File extension "js" should not be included in the import declaration.[0m
+@nebula.js/cli-serve:    ╭─[[38;2;92;157;255;1mcommand.js[0m:1:1]
+@nebula.js/cli-serve:  [2m1[0m │ import serve from './lib/serve.js';
+@nebula.js/cli-serve:    · [38;2;246;87;248m───────────────────────────────────[0m
+@nebula.js/cli-serve:  [2m2[0m │ import init from './lib/init-config.js';
+@nebula.js/cli-serve:    ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mRemove the file extension from this import.
+@nebula.js/cli-serve:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-import(no-dynamic-require): Expected a literal string or immutable template literal[0m
+@nebula.js/cli-serve:      ╭─[[38;2;92;157;255;1mlib/init-config.js[0m:114:12]
+@nebula.js/cli-serve:  [2m113[0m │     }
+@nebula.js/cli-serve:  [2m114[0m │     return require(configPath).serve || {};
+@nebula.js/cli-serve:      · [38;2;246;87;248m           ───────[0m
+@nebula.js/cli-serve:  [2m115[0m │   });
+@nebula.js/cli-serve:      ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mReplace the argument with a literal string or immutable template literal
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1moxc(no-async-endpoint-handlers): Express endpoint handler for `/capture` should not be `async`.[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mlib/snapshot-router.js[0m:24:22]
+@nebula.js/cli-serve:  [2m23[0m │ 
+@nebula.js/cli-serve:  [2m24[0m │   r.post('/capture', async (req, res) => {
+@nebula.js/cli-serve:     · [38;2;246;87;248m                     ──┬──[0m
+@nebula.js/cli-serve:     ·                        [38;2;246;87;248m╰── [38;2;246;87;248mAsync handler is used here[0m[0m
+@nebula.js/cli-serve:  [2m25[0m │     try {
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mWrap the async handler and forward errors to `next()` (e.g. `(req, res, next) => Promise.resolve(handler(req, res, next)).catch(next)`).
+@nebula.js/cli-serve:         Express does not automatically handle rejected promises from async handlers, which results in unhandled promise rejections and server crashes.
+@nebula.js/cli-serve: [38;2;106;159;181m  note: [0mIf you're on Express 5, disable this rule. To allow specific functions, add their names to `allowedNames`.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(preserve-caught-error): There is no cause error attached to this new thrown error.[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mlib/fixtures.js[0m:18:7]
+@nebula.js/cli-serve:  [2m17[0m │     } catch (_) {
+@nebula.js/cli-serve:  [2m18[0m │       throw new Error('Specified "--fixturePath" does not exist');
+@nebula.js/cli-serve:     · [38;2;246;87;248m      ────────────────────────────────────────────────────────────[0m
+@nebula.js/cli-serve:  [2m19[0m │     }
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mPreserve the original error by using the `cause` property when re-throwing errors.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint-plugin-import(no-named-as-default-member): "puppeteer" also has a named export "connect"[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mlib/snapshot-server.js[0m:14:52]
+@nebula.js/cli-serve:  [2m13[0m │ 
+@nebula.js/cli-serve:  [2m14[0m │   const createBrowser = () => (hasConnectOptions ? puppeteer.connect(chrome) : puppeteer.launch(chrome));
+@nebula.js/cli-serve:     · [38;2;246;87;248m                                                   ─────────────────[0m
+@nebula.js/cli-serve:  [2m15[0m │ 
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mCheck if you meant to write `import { connect } from "puppeteer"`
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint-plugin-import(no-named-as-default-member): "puppeteer" also has a named export "launch"[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mlib/snapshot-server.js[0m:14:80]
+@nebula.js/cli-serve:  [2m13[0m │ 
+@nebula.js/cli-serve:  [2m14[0m │   const createBrowser = () => (hasConnectOptions ? puppeteer.connect(chrome) : puppeteer.launch(chrome));
+@nebula.js/cli-serve:     · [38;2;246;87;248m                                                                               ────────────────[0m
+@nebula.js/cli-serve:  [2m15[0m │ 
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mCheck if you meant to write `import { launch } from "puppeteer"`
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(no-param-reassign): Assignment to property of function parameter 'snapshot'.[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mlib/snapshot-server.js[0m:61:9]
+@nebula.js/cli-serve:  [2m60[0m │       if (!snapshot.key) {
+@nebula.js/cli-serve:  [2m61[0m │         snapshot.key = String(+Date.now());
+@nebula.js/cli-serve:     · [38;2;246;87;248m        ────────[0m
+@nebula.js/cli-serve:  [2m62[0m │       }
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mConsider using a different variable to avoid unintended side effects on the parameter's properties.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1moxc(no-async-endpoint-handlers): Express endpoint handler for `/oauth` should not be `async`.[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mlib/oauth-router.js[0m:31:24]
+@nebula.js/cli-serve:  [2m30[0m │ 
+@nebula.js/cli-serve:  [2m31[0m │   router.get('/oauth', async (req, res) => {
+@nebula.js/cli-serve:     · [38;2;246;87;248m                       ──┬──[0m
+@nebula.js/cli-serve:     ·                          [38;2;246;87;248m╰── [38;2;246;87;248mAsync handler is used here[0m[0m
+@nebula.js/cli-serve:  [2m32[0m │     const { host: qHost, clientId: qClientId } = req.query;
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mWrap the async handler and forward errors to `next()` (e.g. `(req, res, next) => Promise.resolve(handler(req, res, next)).catch(next)`).
+@nebula.js/cli-serve:         Express does not automatically handle rejected promises from async handlers, which results in unhandled promise rejections and server crashes.
+@nebula.js/cli-serve: [38;2;106;159;181m  note: [0mIf you're on Express 5, disable this rule. To allow specific functions, add their names to `allowedNames`.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1moxc(no-async-endpoint-handlers): Express endpoint handler for `/login/callback` should not be `async`.[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mlib/oauth-router.js[0m:55:33]
+@nebula.js/cli-serve:  [2m54[0m │ 
+@nebula.js/cli-serve:  [2m55[0m │   router.get('/login/callback', async (req, res) => {
+@nebula.js/cli-serve:     · [38;2;246;87;248m                                ──┬──[0m
+@nebula.js/cli-serve:     ·                                   [38;2;246;87;248m╰── [38;2;246;87;248mAsync handler is used here[0m[0m
+@nebula.js/cli-serve:  [2m56[0m │     const authLink = new URL(req.url, `http://${req.headers.host}`).href;
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mWrap the async handler and forward errors to `next()` (e.g. `(req, res, next) => Promise.resolve(handler(req, res, next)).catch(next)`).
+@nebula.js/cli-serve:         Express does not automatically handle rejected promises from async handlers, which results in unhandled promise rejections and server crashes.
+@nebula.js/cli-serve: [38;2;106;159;181m  note: [0mIf you're on Express 5, disable this rule. To allow specific functions, add their names to `allowedNames`.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1moxc(no-async-endpoint-handlers): Express endpoint handler for `/deauthorize` should not be `async`.[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mlib/oauth-router.js[0m:79:30]
+@nebula.js/cli-serve:  [2m78[0m │ 
+@nebula.js/cli-serve:  [2m79[0m │   router.get('/deauthorize', async (req, res) => {
+@nebula.js/cli-serve:     · [38;2;246;87;248m                             ──┬──[0m
+@nebula.js/cli-serve:     ·                                [38;2;246;87;248m╰── [38;2;246;87;248mAsync handler is used here[0m[0m
+@nebula.js/cli-serve:  [2m80[0m │     try {
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mWrap the async handler and forward errors to `next()` (e.g. `(req, res, next) => Promise.resolve(handler(req, res, next)).catch(next)`).
+@nebula.js/cli-serve:         Express does not automatically handle rejected promises from async handlers, which results in unhandled promise rejections and server crashes.
+@nebula.js/cli-serve: [38;2;106;159;181m  note: [0mIf you're on Express 5, disable this rule. To allow specific functions, add their names to `allowedNames`.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1moxc(no-async-endpoint-handlers): Express endpoint handler for `/isAuthorized` should not be `async`.[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mlib/oauth-router.js[0m:97:31]
+@nebula.js/cli-serve:  [2m96[0m │ 
+@nebula.js/cli-serve:  [2m97[0m │   router.get('/isAuthorized', async (req, res) => {
+@nebula.js/cli-serve:     · [38;2;246;87;248m                              ──┬──[0m
+@nebula.js/cli-serve:     ·                                 [38;2;246;87;248m╰── [38;2;246;87;248mAsync handler is used here[0m[0m
+@nebula.js/cli-serve:  [2m98[0m │     if (!authInstance) {
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mWrap the async handler and forward errors to `next()` (e.g. `(req, res, next) => Promise.resolve(handler(req, res, next)).catch(next)`).
+@nebula.js/cli-serve:         Express does not automatically handle rejected promises from async handlers, which results in unhandled promise rejections and server crashes.
+@nebula.js/cli-serve: [38;2;106;159;181m  note: [0mIf you're on Express 5, disable this rule. To allow specific functions, add their names to `allowedNames`.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1moxc(no-async-endpoint-handlers): Express endpoint handler for `/getSocketUrl/:appId` should not be `async`.[0m
+@nebula.js/cli-serve:      ╭─[[38;2;92;157;255;1mlib/oauth-router.js[0m:110:38]
+@nebula.js/cli-serve:  [2m109[0m │ 
+@nebula.js/cli-serve:  [2m110[0m │   router.get('/getSocketUrl/:appId', async (req, res) => {
+@nebula.js/cli-serve:      · [38;2;246;87;248m                                     ──┬──[0m
+@nebula.js/cli-serve:      ·                                        [38;2;246;87;248m╰── [38;2;246;87;248mAsync handler is used here[0m[0m
+@nebula.js/cli-serve:  [2m111[0m │     const { appId } = req.params;
+@nebula.js/cli-serve:      ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mWrap the async handler and forward errors to `next()` (e.g. `(req, res, next) => Promise.resolve(handler(req, res, next)).catch(next)`).
+@nebula.js/cli-serve:         Express does not automatically handle rejected promises from async handlers, which results in unhandled promise rejections and server crashes.
+@nebula.js/cli-serve: [38;2;106;159;181m  note: [0mIf you're on Express 5, disable this rule. To allow specific functions, add their names to `allowedNames`.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(no-nested-ternary): Do not nest ternary expressions.[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/eRender.js[0m:48:11]
+@nebula.js/cli-serve:  [2m47[0m │       ...rc,
+@nebula.js/cli-serve:  [2m48[0m │       ...(params.object ? { id: params.object } : rc.id ? { id: rc.id } : {}),
+@nebula.js/cli-serve:     · [38;2;246;87;248m          ──────────────────────────────────────────────────────────────────[0m
+@nebula.js/cli-serve:  [2m49[0m │       type: rc.type ? rc.type : info.supernova.name,
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mRefactor nested ternary expressions into if-else statements for better readability.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(no-underscore-dangle): Unexpected dangling '_' in '`__DO_NOT_USE__`'.[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/eRender.js[0m:74:14]
+@nebula.js/cli-serve:  [2m73[0m │       viz.close();
+@nebula.js/cli-serve:  [2m74[0m │       nebbie.__DO_NOT_USE__.types.clearFromCache(info.supernova.name);
+@nebula.js/cli-serve:     · [38;2;246;87;248m             ──────────────[0m
+@nebula.js/cli-serve:  [2m75[0m │       nebbie.__DO_NOT_USE__.types.register(info.supernova);
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mRemove the dangling '_' or add `__DO_NOT_USE__` to the 'allow' configuration.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint(no-underscore-dangle): Unexpected dangling '_' in '`__DO_NOT_USE__`'.[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mweb/eRender.js[0m:75:14]
+@nebula.js/cli-serve:  [2m74[0m │       nebbie.__DO_NOT_USE__.types.clearFromCache(info.supernova.name);
+@nebula.js/cli-serve:  [2m75[0m │       nebbie.__DO_NOT_USE__.types.register(info.supernova);
+@nebula.js/cli-serve:     · [38;2;246;87;248m             ──────────────[0m
+@nebula.js/cli-serve:  [2m76[0m │     }
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mRemove the dangling '_' or add `__DO_NOT_USE__` to the 'allow' configuration.
+@nebula.js/cli-serve:   [38;2;244;191;117;1m⚠[0m [38;2;244;191;117;1meslint-plugin-import(no-dynamic-require): Expected a literal string or immutable template literal[0m
+@nebula.js/cli-serve:      ╭─[[38;2;92;157;255;1mlib/serve.js[0m:143:27]
+@nebula.js/cli-serve:  [2m142[0m │     try {
+@nebula.js/cli-serve:  [2m143[0m │       const externalPkg = require(path.resolve(context, 'package.json')); // eslint-disable-line global-require
+@nebula.js/cli-serve:      · [38;2;246;87;248m                          ───────[0m
+@nebula.js/cli-serve:  [2m144[0m │       const externalEntry = serveConfig.mfe ? externalPkg.systemjs : externalPkg.main;
+@nebula.js/cli-serve:      ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mReplace the argument with a literal string or immutable template literal
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1meslint-plugin-import(no-named-as-default-member): "chokidar" also has a named export "watch"[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mlib/serve.js[0m:31:18]
+@nebula.js/cli-serve:  [2m30[0m │ 
+@nebula.js/cli-serve:  [2m31[0m │   const choker = chokidar.watch(snPath, {
+@nebula.js/cli-serve:     · [38;2;246;87;248m                 ──────────────[0m
+@nebula.js/cli-serve:  [2m32[0m │     ignoreInitial: false,
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mCheck if you meant to write `import { watch } from "chokidar"`
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1moxc(no-async-endpoint-handlers): Express endpoint handler for `/pkg/:name` should not be `async`.[0m
+@nebula.js/cli-serve:     ╭─[[38;2;92;157;255;1mlib/serve.js[0m:54:29]
+@nebula.js/cli-serve:  [2m53[0m │     addRoutes(app, options) {
+@nebula.js/cli-serve:  [2m54[0m │       app.get('/pkg/:name', async (req, res) => {
+@nebula.js/cli-serve:     · [38;2;246;87;248m                            ──┬──[0m
+@nebula.js/cli-serve:     ·                               [38;2;246;87;248m╰── [38;2;246;87;248mAsync handler is used here[0m[0m
+@nebula.js/cli-serve:  [2m55[0m │         const { name } = req.params;
+@nebula.js/cli-serve:     ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mWrap the async handler and forward errors to `next()` (e.g. `(req, res, next) => Promise.resolve(handler(req, res, next)).catch(next)`).
+@nebula.js/cli-serve:         Express does not automatically handle rejected promises from async handlers, which results in unhandled promise rejections and server crashes.
+@nebula.js/cli-serve: [38;2;106;159;181m  note: [0mIf you're on Express 5, disable this rule. To allow specific functions, add their names to `allowedNames`.
+@nebula.js/cli-serve:   [38;2;225;80;80;1m×[0m [38;2;225;80;80;1moxc(no-async-endpoint-handlers): Express endpoint handler for `/apps` should not be `async`.[0m
+@nebula.js/cli-serve:      ╭─[[38;2;92;157;255;1mlib/webpack.serve.js[0m:171:24]
+@nebula.js/cli-serve:  [2m170[0m │ 
+@nebula.js/cli-serve:  [2m171[0m │       app.get('/apps', async (req, res) => {
+@nebula.js/cli-serve:      · [38;2;246;87;248m                       ──┬──[0m
+@nebula.js/cli-serve:      ·                          [38;2;246;87;248m╰── [38;2;246;87;248mAsync handler is used here[0m[0m
+@nebula.js/cli-serve:  [2m172[0m │         const appsListUrl = `/items?resourceType=app&limit=30&sort=-updatedAt`;
+@nebula.js/cli-serve:      ╰────
+@nebula.js/cli-serve: [38;2;106;159;181m  help: [0mWrap the async handler and forward errors to `next()` (e.g. `(req, res, next) => Promise.resolve(handler(req, res, next)).catch(next)`).
+@nebula.js/cli-serve:         Express does not automatically handle rejected promises from async handlers, which results in unhandled promise rejections and server crashes.
+@nebula.js/cli-serve: [38;2;106;159;181m  note: [0mIf you're on Express 5, disable this rule. To allow specific functions, add their names to `allowedNames`.
+@nebula.js/cli-serve: Found 31 warnings and 64 errors.
+@nebula.js/cli-serve: Finished in 99ms on 92 files with 222 rules using 16 threads.
+
+
+
+ Lerna (powered by Nx)   Running target lint for 17 projects failed
+
+Tasks not run because their dependencies failed or --nx-bail=true:
+
+- @nebula.js/cli:lint
+
+Failed tasks:
+
+- @nebula.js/test-utils:lint
+- @nebula.js/cli-sense:lint
+- @nebula.js/cli-serve:lint
+

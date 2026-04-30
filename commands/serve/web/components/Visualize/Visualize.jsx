@@ -1,4 +1,3 @@
-/* eslint no-underscore-dangle:0 */
 import React, { useEffect, useLayoutEffect, useState, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import { embed } from '@nebula.js/stardust';
@@ -135,9 +134,11 @@ export default function Visualize() {
           }))
         : null,
     });
+    // oxlint-disable-next-line no-underscore-dangle -- accessing internal stardust types API
     n.__DO_NOT_USE__.types.register(info?.supernova);
     if (info?.types) {
       info?.types.forEach((t) => {
+        // oxlint-disable-next-line no-underscore-dangle -- accessing internal stardust types API
         n.__DO_NOT_USE__.types.register(t);
       });
     }
@@ -166,11 +167,14 @@ export default function Visualize() {
 
     nebbie.selections().then((s) => s.mount(currentSelectionsRef.current));
     window.onHotChange(info?.supernova.name, () => {
+      // oxlint-disable-next-line no-underscore-dangle -- accessing internal stardust types API
       nebbie.__DO_NOT_USE__.types.clearFromCache(info?.supernova.name);
+      // oxlint-disable-next-line no-underscore-dangle -- accessing internal stardust types API
       nebbie.__DO_NOT_USE__.types.register(info?.supernova);
 
       create();
 
+      // oxlint-disable-next-line no-underscore-dangle -- accessing internal stardust types API
       nebbie.__DO_NOT_USE__.types
         .get({
           name: info?.supernova.name,

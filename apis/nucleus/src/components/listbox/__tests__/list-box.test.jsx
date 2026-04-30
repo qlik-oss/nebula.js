@@ -10,7 +10,7 @@ import ListBoxDisclaimer from '../components/ListBoxDisclaimer';
 import InstanceContext from '../../../contexts/InstanceContext';
 import initializeStores from '../../../stores/new-model-store';
 import initializeSelectionStores from '../../../stores/new-selections-store';
-import * as getScreenReaderAssertiveText from '../components/screen-reader/assertive-screen-reader';
+import * as useScreenReaderAssertiveText from '../components/screen-reader/assertive-screen-reader';
 
 jest.mock('react-window-infinite-loader', () => ({
   __esModule: true,
@@ -79,7 +79,7 @@ describe('<Listbox />', () => {
     FixedSizeList = jest.fn().mockImplementation((props) => <div className="a-value-row" {...props} />);
     FixedSizeGrid = jest.fn().mockImplementation((props) => <div className="a-column-row" {...props} />);
 
-    jest.spyOn(getScreenReaderAssertiveText, 'default').mockReturnValue('screen-reader-text');
+    jest.spyOn(useScreenReaderAssertiveText, 'default').mockReturnValue('screen-reader-text');
     jest.spyOn(React, 'useCallback').mockImplementation(useCallbackMock);
     jest.spyOn(useSelectionsInteractionsModule, 'default').mockImplementation(useSelectionsInteractions);
     jest.spyOn(useTextWidth, 'default').mockImplementation(() => 50);

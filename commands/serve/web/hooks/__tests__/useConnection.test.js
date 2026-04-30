@@ -226,11 +226,9 @@ describe('useConnection Module', () => {
           getDocList: jest.fn(),
         };
 
-        try {
-          await handleConnectionSuccess({ result: info, setGlobal, setError, setTreatAsDesktop });
-        } catch (error) {
-          expect(error.message).toBe('Failed to get configuration');
-        }
+        await expect(handleConnectionSuccess({ result: info, setGlobal, setError, setTreatAsDesktop })).rejects.toThrow(
+          'Failed to get configuration'
+        );
       });
     });
 

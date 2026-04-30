@@ -47,7 +47,7 @@ function getSearchTranslationString(listCount) {
   return t;
 }
 
-export default function getScreenReaderAssertiveText({ layout, searchInputText, listCount }) {
+export default function useScreenReaderAssertiveText({ layout, searchInputText, listCount }) {
   const { translator: translatorDynamic } = useContext(InstanceContext);
   const finalStringArr = [];
   if (searchInputText?.length) {

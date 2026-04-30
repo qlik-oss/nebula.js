@@ -42,7 +42,7 @@ const removeListeners = (emitter, listeners) => {
   });
 };
 
-export default function ({ selections, brush, picassoQ } = {}, { path = '/qHyperCubeDef' } = {}) {
+export default function createPicSelections({ selections, brush, picassoQ } = {}, { path = '/qHyperCubeDef' } = {}) {
   if (!selections) {
     return {
       layout: () => {},
