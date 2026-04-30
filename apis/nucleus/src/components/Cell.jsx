@@ -553,6 +553,9 @@ const Cell = forwardRef(
           // clone layout to avoid mutation
           let clonedLayout = JSON.parse(JSON.stringify(layout));
           if (typeof state.sn.component.setSnapshotData === 'function') {
+            if (!clonedLayout.snapshotData) {
+              clonedLayout.snapshotData = {};
+            }
             clonedLayout = (await state.sn.component.setSnapshotData(clonedLayout)) || clonedLayout;
           }
           return {
