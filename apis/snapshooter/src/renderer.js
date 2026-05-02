@@ -1,4 +1,3 @@
-/* eslint no-param-reassign: 0 */
 async function renderSnapshot({ embed, element, snapshot: key }) {
   let snapshot = {};
   const renderError = (e) => {
@@ -33,7 +32,7 @@ async function renderSnapshot({ embed, element, snapshot: key }) {
       if (id === layout.qInfo.qId) {
         return objectModel(layout);
       }
-      return Promise.reject(new Error(`Could not find an object with id: ${id}`));
+      return Promise.reject(new Error(`Could not find an object with id: ${id}`));
     },
     getAppLayout: async () => appLayout || {},
   };

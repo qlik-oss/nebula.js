@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-/* eslint-disable no-param-reassign */
 export default function useItemsLoader({
   local,
   loaderRef,
@@ -22,8 +21,7 @@ export default function useItemsLoader({
     });
 
     const isScrolling = loaderRef.current
-      ? // eslint-disable-next-line no-underscore-dangle
-        loaderRef.current._listRef && loaderRef.current._listRef.state.isScrolling
+      ? loaderRef.current._listRef && loaderRef.current._listRef.state.isScrolling
       : false;
 
     if (local.current.queue.length > 10) {

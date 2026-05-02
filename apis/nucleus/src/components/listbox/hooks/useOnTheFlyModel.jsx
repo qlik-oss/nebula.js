@@ -33,7 +33,7 @@ export default function useOnTheFlyModel({ app, fieldIdentifier, stateName, opti
       } catch (e) {
         setIsFetching(false);
         setFieldDef({ failedToFetchFieldDef: true });
-        throw new Error(`Disabling frequency count and histogram: ${e && e.message}`);
+        throw new Error(`Disabling frequency count and histogram: ${e?.message}`, { cause: e });
       }
     }
 

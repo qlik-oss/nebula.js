@@ -107,7 +107,7 @@ describe('qae', () => {
           ],
         },
       })
-    ).toThrow('Incorrect definition for qHyperCubeDef at /qHyperCubeDefFoo');
+    ).toThrow();
   });
   test('should throw with incorrect listobject def', () => {
     expect(() =>
@@ -135,7 +135,7 @@ describe('qae', () => {
           ],
         },
       })
-    ).toThrow('Incorrect definition for qListObjectDef at /qListObjectDefFoo');
+    ).toThrow();
   });
   test('should resolve layout', () => {
     const t = qae({

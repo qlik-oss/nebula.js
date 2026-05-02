@@ -1,5 +1,4 @@
-/* eslint-disable no-prototype-builtins */
-/* eslint-disable no-param-reassign */
+/* oxlint-disable no-prototype-builtins */
 import extend from 'extend';
 import utils from '../utils';
 import arrayUtils from '../array-util';

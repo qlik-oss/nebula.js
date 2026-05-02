@@ -1,4 +1,3 @@
-/* eslint-disable no-import-assign */
 import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { ThemeProvider, StyledEngineProvider, createTheme } from '@nebula.js/ui/theme';
@@ -44,10 +43,10 @@ describe('Boot NebulaApp', () => {
 
   test('should return api', () => {
     const [api] = boot({ app: { id: 'foo' } });
-    expect(api.add instanceof Function).toBe(true);
-    expect(api.remove instanceof Function).toBe(true);
-    expect(api.setMuiThemeName instanceof Function).toBe(true);
-    expect(api.context instanceof Function).toBe(true);
+    expect(api.add).toBeInstanceOf(Function);
+    expect(api.remove).toBeInstanceOf(Function);
+    expect(api.setMuiThemeName).toBeInstanceOf(Function);
+    expect(api.context).toBeInstanceOf(Function);
   });
 
   describe('test api methods', () => {
@@ -101,21 +100,6 @@ describe('Boot NebulaApp', () => {
 
       expect(appRef.current.setContext).toHaveBeenCalledTimes(1);
     });
-    /*
-    test('should get app selections', async () => {
-      const app = { id: 'foo' };
-      const context = {};
-      const [api, , , appRef] = boot({ app, context });
-      appRef.current = {
-        getAppSelections: jest.fn().mockReturnValue('app-selections'),
-      };
-
-      mockedRoot.render.mock.calls[0][0].props.renderCallback();
-      await api.getAppSelections();
-
-      expect(await appRef.current.getAppSelections()).toBe('app-selections');
-    });
-    */
   });
 });
 

@@ -1,4 +1,3 @@
-/* eslint no-param-reassign:0 */
 import React, { useState, useEffect } from 'react';
 
 import { Select, FormControl, MenuItem } from '@mui/material';
@@ -42,7 +41,9 @@ export default function Variable({ property, value, target, changed, app }) {
 
   const handleChange = (e) => {
     setS(e.target.value);
+    // oxlint-disable-next-line no-param-reassign -- intentional mutation of property panel target object
     target[property].name = e.target.value;
+    // oxlint-disable-next-line no-param-reassign -- intentional mutation of property panel target object
     target[property].value = { qStringExpression: { qExpr: `[${e.target.value}]` } };
     changed();
   };

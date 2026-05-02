@@ -1,3 +1,4 @@
+// oxlint-disable eslint-plugin-react-hooks/rules-of-hooks
 import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import ListBoxInline from './ListBoxInline';

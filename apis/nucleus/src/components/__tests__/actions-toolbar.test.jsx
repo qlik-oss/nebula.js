@@ -1,8 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
-
-/* eslint-disable no-use-before-define */
-/* eslint-disable no-import-assign */
-/* eslint-disable no-underscore-dangle */
 import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { IconButton, Divider, Grid } from '@mui/material';
@@ -184,41 +179,22 @@ describe('<ActionsToolbar />', () => {
     expect(_popover).not.toBeNull();
   });
 
-  test.skip('should set spacing', async () => {
-    const validate = (cnt) => {
-      const items = renderer.root.findAllByType(Grid).filter((i) => i.props.className);
-      expect(items).to.have.length(cnt);
-      items.forEach((item, ix) => {
-        if (ix === 0) {
-          expect(item.props.className).to.match(/^makeStyles-firstItemSpacing-\d+$/);
-        }
-        if (ix === items.length - 1) {
-          expect(item.props.className).to.match(/^makeStyles-lastItemSpacing-\d+$/);
-        }
-        if (ix !== 0 && ix !== items.length - 1) {
-          expect(item.props.className).to.match(/^makeStyles-itemSpacing-\d+$/);
-        }
-      });
-    };
-
+  test('should add spacing wrappers for visible actions and divider', async () => {
     const actions = [1, 2, 3, 4, 5].map((key) => ({
       key,
-      label: key,
       enabled: true,
       action: jest.fn(),
     }));
-    await render({ actions, selections });
-    // 2 custom actions + more
-    validate(3);
-
     selections.show = true;
-    await render({ actions, selections });
-    // 2 custom actions + more + divider + 3 selection actions
-    validate(7);
 
-    // 1 custom action
-    await render({ actions: [actions[0]] });
-    expect(renderer.root.findAllByType(Grid).filter((i) => i.props.className)).to.have.length(0);
+    await render({ actions, selections });
+
+    const spacingItems = renderer.root
+      .findAllByType(Grid)
+      .filter((i) => i.props.className && i.props.className.includes('ActionsToolbar-itemSpacing'));
+
+    // 2 visible custom actions + more + divider + 3 selection actions
+    expect(spacingItems).toHaveLength(7);
   });
 
   test('should render as popover', async () => {

@@ -1,4 +1,3 @@
-/* eslint no-underscore-dangle:0 */
 import React, { useEffect, useState, useCallback, useRef, useContext } from 'react';
 import InfiniteLoader from 'react-window-infinite-loader';
 import { styled } from '@mui/material';
@@ -14,7 +13,7 @@ import ListBoxFooter from './components/ListBoxFooter';
 import getScrollIndex from './interactions/listbox-get-scroll-index';
 import getFrequencyAllowed from './components/grid-list-components/frequency-allowed';
 import useFrequencyMax from './hooks/useFrequencyMax';
-import getScreenReaderAssertiveText from './components/screen-reader/assertive-screen-reader';
+import useScreenReaderAssertiveText from './components/screen-reader/assertive-screen-reader';
 import InstanceContext from '../../contexts/InstanceContext';
 import deduceFrequencyMode from './utils/deduce-frequency-mode';
 
@@ -76,7 +75,7 @@ export default function ListBox({
   const scrollTimeout = 0;
 
   const { frequencyMax, awaitingFrequencyMax } = useFrequencyMax(app, layout);
-  // eslint-disable-next-line no-unused-vars
+  // oxlint-disable-next-line no-unused-vars
   const { isLoadingData, ...itemsLoader } = useItemsLoader({
     local,
     loaderRef,
@@ -141,9 +140,7 @@ export default function ListBox({
   const isGrid = layoutOptions?.dataLayout === 'grid';
 
   const scrollToIndex = (index) => {
-    const gridIndex = {
-      ...(isRow ? { rowIndex: index } : { columnIndex: index }),
-    };
+    const gridIndex = isRow ? { rowIndex: index } : { columnIndex: index };
     const scrollIndex = isGrid ? gridIndex : index;
     loaderRef.current._listRef.scrollToItem(scrollIndex);
   };
@@ -168,7 +165,7 @@ export default function ListBox({
 
   if (update) {
     // Hand over the update function for manual refresh from hosting application.
-    update.call(null, fetchData);
+    update(fetchData);
   }
 
   useEffect(() => {
@@ -218,7 +215,7 @@ export default function ListBox({
   setStoreValue('listCount', listCount);
 
   const searchInputText = getStoreValue('inputText');
-  const screenReaderText = getScreenReaderAssertiveText({ layout, searchInputText, listCount });
+  const screenReaderText = useScreenReaderAssertiveText({ layout, searchInputText, listCount });
 
   const setScrollPosition = (position) => {
     const { scrollIndex, offset, triggerRerender } = getScrollIndex({

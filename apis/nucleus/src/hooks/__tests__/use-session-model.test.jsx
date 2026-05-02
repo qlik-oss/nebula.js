@@ -1,4 +1,3 @@
-/* eslint no-import-assign: 0 */
 import React from 'react';
 import useSessionModel from '../useSessionModel';
 import render from './test-hook';

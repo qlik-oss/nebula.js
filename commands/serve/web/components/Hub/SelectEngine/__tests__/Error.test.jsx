@@ -12,7 +12,7 @@ describe('<Error />', () => {
     TestRenderer(<Error error={error} />);
 
     expect(screen.queryByText(error.message)).toBeInTheDocument();
-    error.hints.map((h) => {
+    error.hints.forEach((h) => {
       expect(screen.queryByText(h)).toBeInTheDocument();
     });
   });

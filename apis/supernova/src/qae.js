@@ -103,7 +103,7 @@ const resolveValue = (data, reference, defaultValue) => {
   }
   for (let i = 0; i < steps.length; ++i) {
     if (steps[i] === '') {
-      continue; // eslint-disable-line no-continue
+      continue;
     }
     if (typeof dataContainer[steps[i]] === 'undefined') {
       return defaultValue;

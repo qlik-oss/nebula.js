@@ -1,4 +1,3 @@
-/* eslint no-cond-assign: 0 */
 import luminance from './luminance';
 import contrast from './contrast';
 

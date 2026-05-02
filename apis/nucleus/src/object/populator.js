@@ -39,7 +39,7 @@ export default async function populateData({ sn, properties, fields, children },
   const target = sn.qae.data.targets[0];
   if (!target) {
     if (__NEBULA_DEV__) {
-      console.warn('Attempting to add fields to an object without a specified data target'); // eslint-disable-line no-console
+      console.warn('Attempting to add fields to an object without a specified data target'); // oxlint-disable-line no-console
     }
     return;
   }
@@ -67,10 +67,10 @@ export default async function populateData({ sn, properties, fields, children },
     const type = fieldType(f);
 
     if (type === 'measure') {
-      // eslint-disable-next-line no-await-in-loop
+      // oxlint-disable-next-line no-await-in-loop
       await handler.addMeasure(f);
     } else {
-      // eslint-disable-next-line no-await-in-loop
+      // oxlint-disable-next-line no-await-in-loop
       await handler.addDimension(f);
     }
   }

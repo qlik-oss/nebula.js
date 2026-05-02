@@ -55,7 +55,7 @@ export default async function createObject(
     } else {
       mergedProps = null;
     }
-    // console.error(e); // eslint-disable-line
+    // console.error(e);
   }
   if (!generateOnly) {
     const model = await halo.app.createObject(mergedProps);

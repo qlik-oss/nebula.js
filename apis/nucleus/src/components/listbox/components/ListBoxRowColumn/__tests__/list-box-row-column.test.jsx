@@ -82,7 +82,7 @@ describe('<ListBoxRowColumn />', () => {
         },
         focusListItems: () => ({ first: false, last: false }),
       };
-      expect(getRowsKeyboardNavigation).not.called;
+      expect(getRowsKeyboardNavigation).not.toHaveBeenCalled();
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
           <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
@@ -109,7 +109,7 @@ describe('<ListBoxRowColumn />', () => {
         styles,
         focusListItems: () => ({ first: false, last: false }),
       };
-      expect(getRowsKeyboardNavigation).not.called;
+      expect(getRowsKeyboardNavigation).not.toHaveBeenCalled();
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
           <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
@@ -609,7 +609,7 @@ describe('<ListBoxRowColumn />', () => {
       await testRenderer.unmount();
     });
 
-    test('should highlight ranges', async () => {
+    test('should highlight ranges at the beginning of the value', async () => {
       const index = 0;
       const style = {};
       const data = {
@@ -661,7 +661,7 @@ describe('<ListBoxRowColumn />', () => {
       await testRenderer.unmount();
     });
 
-    test('should highlight ranges', async () => {
+    test('should highlight ranges at the end of the value', async () => {
       const index = 0;
       const style = {};
       const data = {
@@ -716,7 +716,7 @@ describe('<ListBoxRowColumn />', () => {
       await testRenderer.unmount();
     });
 
-    test('should highlight ranges', async () => {
+    test('should highlight ranges in the middle of the value', async () => {
       const index = 0;
       const style = {};
       const data = {

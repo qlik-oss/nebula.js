@@ -7,7 +7,7 @@ import fs from 'fs-extra';
 import * as rollup from 'rollup';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import common from '@rollup/plugin-commonjs';
-import babel from '@rollup/plugin-babel';
+import { babel } from '@rollup/plugin-babel';
 import terser from '@rollup/plugin-terser';
 
 const require = createRequire(import.meta.url);
@@ -18,7 +18,7 @@ async function build(argv) {
 
   const supernovaPkg = require(path.resolve(cwd, 'package.json'));
 
-  let extName = supernovaPkg.name.split('/').reverse()[0];
+  let extName = supernovaPkg.name.split('/').toReversed()[0];
 
   const { main } = supernovaPkg;
 

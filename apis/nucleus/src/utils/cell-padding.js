@@ -45,19 +45,15 @@ const getPadding = ({ layout, isError, isCardTheme, titleStyles, translator }) =
     const showFootnote = layout?.showTitles && (!!layout?.footnote || showFilters);
 
     if (showTitle) {
-      // eslint-disable-next-line no-param-reassign
       titleStyles.main.padding = getTitlePadding(visualization);
     }
     if (showSubtitle) {
-      // eslint-disable-next-line no-param-reassign
       titleStyles.subTitle.padding = getSubtitlePadding(visualization, showTitle);
     }
     if (showFootnote) {
       if (NO_BORDER_IN_CARDS.indexOf(visualization) === -1) {
-        // eslint-disable-next-line no-param-reassign
         titleStyles.footer.borderTop = '1px solid #d9d9d9';
       }
-      // eslint-disable-next-line no-param-reassign
       titleStyles.footer.padding = '6px 10px';
     }
 

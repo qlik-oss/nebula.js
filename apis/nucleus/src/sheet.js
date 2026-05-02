@@ -44,9 +44,7 @@ export default function sheet({
         sheetRef.current.setSnOptions({
           ...initialSnOptions,
           ...opts,
-          ...{
-            onInitialRender: createOnInitialRender(override),
-          },
+          onInitialRender: createOnInitialRender(override),
         });
       })();
     } else {
@@ -54,9 +52,7 @@ export default function sheet({
       initialSnOptions = {
         ...initialSnOptions,
         ...opts,
-        ...{
-          onInitialRender: createOnInitialRender(override),
-        },
+        onInitialRender: createOnInitialRender(override),
       };
     }
   };

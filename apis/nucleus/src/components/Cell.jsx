@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { forwardRef, useImperativeHandle, useEffect, useState, useContext, useReducer, useRef } from 'react';
 import EventEmitter from 'node-event-emitter';
 
@@ -44,7 +43,7 @@ const CellBody = {
 function support(prop, supportObject, layout) {
   const value = supportObject[prop];
   if (typeof value === 'function') {
-    return value.call(null, layout);
+    return value(layout);
   }
   if (typeof value === 'boolean') {
     return value;
@@ -152,7 +151,7 @@ const validateInfo = (min, info, getDescription, translatedError, translatedCalc
     const delimiter = ':';
     const calcCondMsg = softError && info[i].qCalcCondMsg;
     const label = `${
-      // eslint-disable-next-line no-nested-ternary
+      // oxlint-disable-next-line no-nested-ternary
       error ? translatedError : softError ? calcCondMsg || translatedCalcCond : (exists && info[i].qFallbackTitle) || ''
     }`;
     const customDescription = getDescription(i);
@@ -225,7 +224,7 @@ const validateCubes = (translator, targets, layout) => {
       hasLayoutErrors = true;
       hasLayoutUnfulfilledCalculcationCondition = c.qError.qErrorCode === 7005;
       const title =
-        // eslint-disable-next-line no-nested-ternary
+        // oxlint-disable-next-line no-nested-ternary
         hasLayoutUnfulfilledCalculcationCondition && c.qCalcCondMsg
           ? c.qCalcCondMsg
           : hasLayoutUnfulfilledCalculcationCondition
@@ -259,7 +258,7 @@ const validateTargets = async (translator, layout, { targets }, model) => {
   for (let i = 0; i < targets.length; ++i) {
     const def = targets[i];
     if (!hasLayoutErrors && hasUnfulfilledErrors) {
-      // eslint-disable-next-line no-await-in-loop
+      // oxlint-disable-next-line no-await-in-loop
       const properties = loopCacheProperties || (await model.getProperties());
       loopCacheProperties = properties;
       const res = validateTarget(translator, layout, properties, def);
@@ -396,7 +395,6 @@ const Cell = forwardRef(
 
     const focusHandler = useRef({
       focusToolbarButton(last) {
-        // eslint-disable-next-line react/no-this-in-sfc
         this.emit(last ? 'focus_toolbar_last' : 'focus_toolbar_first');
       },
     });
@@ -575,7 +573,7 @@ const Cell = forwardRef(
           if (typeof halo.config.snapshot.capture !== 'function') {
             throw new Error('Stardust embed has not been configured with snapshot.capture callback');
           }
-          const snapshot = await this.takeSnapshot(); // eslint-disable-line
+          const snapshot = await this.takeSnapshot(); // oxlint-disable-line no-invalid-this
           return halo.config.snapshot.capture(snapshot);
         },
         getHypercubePath() {

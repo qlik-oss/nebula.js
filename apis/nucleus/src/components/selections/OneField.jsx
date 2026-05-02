@@ -1,3 +1,4 @@
+// oxlint-disable eslint-plugin-react-hooks/rules-of-hooks
 import React, { useRef, useState, useContext } from 'react';
 import Remove from '@nebula.js/ui/icons/remove';
 import Lock from '@nebula.js/ui/icons/lock';
@@ -82,7 +83,7 @@ export default function OneField({
       { color: theme.palette.selected.excluded, ratio: grey },
     ];
     segments.forEach((s, i) => {
-      s.offset = i ? segments[i - 1].offset + segments[i - 1].ratio : 0; // eslint-disable-line
+      s.offset = i ? segments[i - 1].offset + segments[i - 1].ratio : 0;
     });
 
     let Header = null;

@@ -1,7 +1,6 @@
 import EventEmitter from 'node-event-emitter';
 
 const mixin = (obj) => {
-  /* eslint no-param-reassign: 0 */
   Object.keys(EventEmitter.prototype).forEach((key) => {
     obj[key] = EventEmitter.prototype[key];
   });
@@ -35,7 +34,7 @@ const actionWrapper = (component) => (item) => {
   return wrapped;
 };
 
-export default function ({ sn, component }) {
+export default function createActionHero({ sn, component }) {
   const actions = {};
   const selectionToolbarItems = [];
   const w = actionWrapper(component);

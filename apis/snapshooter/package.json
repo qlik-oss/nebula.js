@@ -2,6 +2,7 @@
   "name": "@nebula.js/snapshooter",
   "version": "6.8.0",
   "private": true,
+  "type": "module",
   "description": "",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -23,6 +24,7 @@
   ],
   "scripts": {
     "build": "cross-env NODE_ENV=production rollup --bundleConfigAsCjs --config ./rollup.config.js",
-    "prepublishOnly": "rm -rf dist && yarn run build"
+    "prepublishOnly": "rm -rf dist && yarn run build",
+    "lint": "oxlint"
   }
 }

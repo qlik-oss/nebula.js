@@ -1,4 +1,3 @@
-/* eslint-disable no-import-assign */
 import React from 'react';
 import renderer, { act } from 'react-test-renderer';
 import { OutlinedInput, IconButton } from '@mui/material';
@@ -114,8 +113,8 @@ describe('<ListBoxSearch />', () => {
     expect(types[0].props.fullWidth).toBe(true);
     expect(types[0].props.placeholder).toBe('Search');
     expect(types[0].props.value).toBe('');
-    expect(types[0].props.onChange instanceof Function).toBe(true);
-    expect(types[0].props.onKeyDown instanceof Function).toBe(true);
+    expect(types[0].props.onChange).toBeInstanceOf(Function);
+    expect(types[0].props.onKeyDown).toBeInstanceOf(Function);
     expect(types[0].props.inputProps.tabIndex).toBe(0);
   });
 

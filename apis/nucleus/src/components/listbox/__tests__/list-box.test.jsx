@@ -10,7 +10,7 @@ import ListBoxDisclaimer from '../components/ListBoxDisclaimer';
 import InstanceContext from '../../../contexts/InstanceContext';
 import initializeStores from '../../../stores/new-model-store';
 import initializeSelectionStores from '../../../stores/new-selections-store';
-import * as getScreenReaderAssertiveText from '../components/screen-reader/assertive-screen-reader';
+import * as useScreenReaderAssertiveText from '../components/screen-reader/assertive-screen-reader';
 
 jest.mock('react-window-infinite-loader', () => ({
   __esModule: true,
@@ -76,12 +76,10 @@ describe('<Listbox />', () => {
       with: () => () => {},
     });
 
-    // eslint-disable-next-line react/jsx-props-no-spreading
     FixedSizeList = jest.fn().mockImplementation((props) => <div className="a-value-row" {...props} />);
-    // eslint-disable-next-line react/jsx-props-no-spreading
     FixedSizeGrid = jest.fn().mockImplementation((props) => <div className="a-column-row" {...props} />);
 
-    jest.spyOn(getScreenReaderAssertiveText, 'default').mockReturnValue('screen-reader-text');
+    jest.spyOn(useScreenReaderAssertiveText, 'default').mockReturnValue('screen-reader-text');
     jest.spyOn(React, 'useCallback').mockImplementation(useCallbackMock);
     jest.spyOn(useSelectionsInteractionsModule, 'default').mockImplementation(useSelectionsInteractions);
     jest.spyOn(useTextWidth, 'default').mockImplementation(() => 50);
@@ -234,7 +232,7 @@ describe('<Listbox />', () => {
       expect(setTimeoutStub).not.toHaveBeenCalled();
 
       const loadMoreItems = useCallbackMock.mock.lastCall[0];
-      expect(loadMoreItems instanceof Function).toBe(true);
+      expect(loadMoreItems).toBeInstanceOf(Function);
     });
 
     test('should call with checkboxes true', async () => {

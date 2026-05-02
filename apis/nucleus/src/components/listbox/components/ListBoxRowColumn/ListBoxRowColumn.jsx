@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 import React, { useEffect, useCallback, useMemo, useState } from 'react';
 
 import { Grid } from '@mui/material';
@@ -153,7 +152,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
 
   let labels;
   if (cell.qHighlightRanges?.qRanges?.length) {
-    const ranges = cell.qHighlightRanges.qRanges.sort((a, b) => a.qCharPos - b.qCharPos) || [];
+    const ranges = cell.qHighlightRanges.qRanges.toSorted((a, b) => a.qCharPos - b.qCharPos) || [];
     labels = getSegmentsFromRanges(label, ranges);
   }
 
@@ -164,13 +163,28 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   };
 
   const isRtl = direction === 'rtl';
+  let paddingLeft;
+  if (isRtl) {
+    paddingLeft = 8;
+  } else if (checkboxes) {
+    paddingLeft = 0;
+  }
+
+  let paddingRight;
+  if (checkboxes) {
+    paddingRight = 0;
+  } else if (isRtl) {
+    paddingRight = 8;
+  } else {
+    paddingRight = 0;
+  }
 
   const cellStyle = {
     display: 'flex',
     alignItems: 'center',
     flexGrow: 1,
-    paddingLeft: isRtl ? 8 : checkboxes ? 0 : undefined,
-    paddingRight: checkboxes ? 0 : isRtl ? 8 : 0,
+    paddingLeft,
+    paddingRight,
     justifyContent: valueTextAlign,
     textAlign: valueTextAlign,
   };

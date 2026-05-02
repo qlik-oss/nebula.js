@@ -13,14 +13,14 @@
     "type": "git",
     "url": "https://github.com/qlik-oss/nebula.js.git"
   },
+  "scripts": {
+    "lint": "oxlint"
+  },
   "main": "lib/build.js",
   "files": [
     "lib",
     "command.js"
   ],
-  "scripts": {
-    "lint": "eslint src"
-  },
   "dependencies": {
     "@babel/cli": "7.28.6",
     "@babel/core": "7.29.0",

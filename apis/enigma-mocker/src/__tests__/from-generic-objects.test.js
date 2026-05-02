@@ -81,7 +81,7 @@ describe('enigma-mocker', () => {
       };
       await expect(async () => {
         await createEnigmaMocker([genericObjectA]);
-      }).rejects.toThrow();
+      }).rejects.toThrow('Generic object has multiple IDs, qInfo.qId: 112233, id: AABBCC');
     });
 
     describe('getLayout', () => {
@@ -100,7 +100,7 @@ describe('enigma-mocker', () => {
         const layout = await object.getLayout();
 
         expect(layout.qInfo.qId).toEqual('2pz14');
-        expect(getLayoutMock).toHaveBeenCalled;
+        expect(getLayoutMock).toHaveBeenCalled();
       });
 
       test('is asynchronous', async () => {
@@ -126,7 +126,7 @@ describe('enigma-mocker', () => {
         const object = await app.getObject('b488pz');
         const hypercubeData = await object.getHyperCubeData();
 
-        expect(hypercubeData instanceof Array).toBe(true);
+        expect(hypercubeData).toBeInstanceOf(Array);
         expect(hypercubeData).toHaveLength(1);
         expect(hypercubeData[0].foo).toBe('bar');
       });
@@ -143,7 +143,7 @@ describe('enigma-mocker', () => {
           left: 4,
         });
 
-        expect(hypercubeData instanceof Array).toBe(true);
+        expect(hypercubeData).toBeInstanceOf(Array);
         expect(hypercubeData).toHaveLength(1);
         expect(hypercubeData[0]).toEqual({ foo: 'baz' });
         expect(getHyperCubeData).toHaveBeenCalledWith('/qHyperCubeDef', {

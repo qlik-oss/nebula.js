@@ -1,4 +1,3 @@
-/* eslint no-underscore-dangle:0 */
 import extend from 'extend';
 
 import baseRawJSON from './themes/base.json';

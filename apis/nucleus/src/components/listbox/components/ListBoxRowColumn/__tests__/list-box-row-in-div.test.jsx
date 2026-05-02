@@ -14,6 +14,7 @@ describe('check keyboard navigation rendering with multiple rows in the in-built
   let data;
   let theme;
   let actions;
+  // oxlint-disable-next-line no-unassigned-vars -- undefined is intentional; tests a component that works without containerRef
   let containerRef;
 
   beforeEach(() => {

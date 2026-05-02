@@ -28,6 +28,7 @@ const initiateWatch = async ({ snPath = '', snName, host }) => {
     clientTracking: true,
   });
 
+  // oxlint-disable-next-line import/no-named-as-default-member -- chokidar default export is the standard API object
   const choker = chokidar.watch(snPath, {
     ignoreInitial: false,
     disableGlobbing: true,
@@ -60,7 +61,7 @@ const initiateWatch = async ({ snPath = '', snName, host }) => {
           file = cache[name];
         } else if (name === snName) {
           file = snPath;
-        } else if (/\.map$/.test(name)) {
+        } else if (name.endsWith('.map')) {
           const sources = Object.keys(cache);
           for (let i = 0; i < sources.length; i++) {
             const p = cache[sources[i]];

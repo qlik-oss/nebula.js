@@ -1,4 +1,4 @@
-export default function (flags = {}) {
+export default function createFlagsApi(flags = {}) {
   /**
    * @interface Flags
    */

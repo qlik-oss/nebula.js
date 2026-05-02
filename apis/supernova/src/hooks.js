@@ -1,8 +1,3 @@
-/* eslint no-underscore-dangle: 0 */
-/* eslint no-param-reassign: 0 */
-/* eslint no-console: 0 */
-/* eslint no-use-before-define: 0 */
-
 // Hooks implementation heavily inspired by preact hooks
 
 let currentComponent;
@@ -89,6 +84,7 @@ export async function run(component) {
   try {
     currentComponent.fn.call(null);
   } catch (e) {
+    // oxlint-disable-next-line no-console
     console.error(e);
   }
 
@@ -96,6 +92,7 @@ export async function run(component) {
 
   if (__NEBULA_DEV__) {
     if (num > -1 && num !== currentComponent.__hooks.list.length) {
+      // oxlint-disable-next-line no-console
       console.error('Detected a change in the order of hooks called.');
     }
   }
@@ -130,6 +127,7 @@ function flushPending(list, skipUpdate) {
       }
     });
   } catch (e) {
+    // oxlint-disable-next-line no-console
     console.error(e);
   }
 
@@ -160,6 +158,7 @@ export function runSnaps(component, layout) {
       (snaps) => snaps[snaps.length - 1]
     );
   } catch (e) {
+    // oxlint-disable-next-line no-console
     console.error(e);
   }
   return Promise.resolve();
@@ -171,6 +170,7 @@ export function runMenu(component, menu, event, menuBuilder) {
       (menus) => menus[menus.length - 1]
     );
   } catch (e) {
+    // oxlint-disable-next-line no-console
     console.error(e);
   }
   return Promise.resolve();
@@ -388,6 +388,7 @@ function useLayoutEffect(cb, deps) {
 export function useMemo(fn, deps) {
   if (__NEBULA_DEV__) {
     if (!deps) {
+      // oxlint-disable-next-line no-console
       console.warn('useMemo called without dependencies.');
     }
   }
@@ -957,6 +958,7 @@ export function useAction(fn, deps) {
 export function useConstraints() {
   if (__NEBULA_DEV__) {
     if (currentComponent.__hooks.contraintsWarning) {
+      // oxlint-disable-next-line no-console
       console.warn(
         'useContraints has been deprecated, please change to useInteractions instead. Note that interactions uses inverted values compared to contraints.'
       );
@@ -1254,7 +1256,7 @@ export function useKeyboard() {
   const focusHandler = useInternalContext('focusHandler');
 
   if (!currentComponent.__hooks.accessibility.exitFunction) {
-    const exitFunction = function (resetFocus = false) {
+    const exitFunction = function exitFn(resetFocus = false) {
       const acc = this.__hooks.accessibility;
       if (acc && acc.enabled && acc.active) {
         blur(this);
@@ -1264,7 +1266,7 @@ export function useKeyboard() {
 
     currentComponent.__hooks.accessibility.exitFunction = exitFunction;
 
-    const focusFunction = function () {
+    const focusFunction = function focusFn() {
       const acc = this.__hooks.accessibility;
       if (acc && acc.enabled && !acc.active) {
         focusHandler && focusHandler.blurCallback && focusHandler.blurCallback(false);
@@ -1274,7 +1276,7 @@ export function useKeyboard() {
 
     currentComponent.__hooks.accessibility.focusFunction = focusFunction;
 
-    const focusSelectionFunction = function (focusLast = false) {
+    const focusSelectionFunction = function focusSelectionFn(focusLast = false) {
       const acc = this.__hooks.accessibility;
       if (acc && acc.enabled) {
         focusHandler && focusHandler.focusToolbarButton && focusHandler.focusToolbarButton(focusLast);

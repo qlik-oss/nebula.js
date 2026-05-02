@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import extend from 'extend';
 import { JSONPatch } from '@nebula.js/supernova';
 

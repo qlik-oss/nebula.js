@@ -38,7 +38,7 @@ describe('updateDimensionOrders', () => {
     expect(self.hcProperties.qInterColumnSortOrder).toEqual([2, 0, 1]);
   });
 
-  test('should handle adding dimension to the default order when index is not defined ', async () => {
+  test('should handle adding dimension to the default order when index is not defined', async () => {
     index = undefined;
     const result = await updateDimensionOrders(self, newDimension, index);
 

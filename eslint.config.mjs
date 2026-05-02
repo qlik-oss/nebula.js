@@ -86,9 +86,7 @@ export default defineConfig([
   {
     files: ['apis/**/*'],
 
-    rules: {
-      'no-console': 'error',
-    },
+    rules: {},
   },
   {
     files: ['apis/*/index.js'],

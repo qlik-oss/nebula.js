@@ -1,5 +1,3 @@
-/* global configured */
-/* eslint no-underscore-dangle: 0 */
 (() => {
   document.querySelectorAll('.object').forEach((element) => {
     const type = element.getAttribute('data-type');

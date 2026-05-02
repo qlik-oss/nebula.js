@@ -1,4 +1,3 @@
-/* eslint no-underscore-dangle:0 */
 import React, { useEffect, useLayoutEffect, useState, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import { embed } from '@nebula.js/stardust';

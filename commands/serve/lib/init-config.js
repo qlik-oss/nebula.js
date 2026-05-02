@@ -1,5 +1,3 @@
-/* eslint global-require: 0 */
-
 import fs from 'fs';
 import { createRequire } from 'module';
 

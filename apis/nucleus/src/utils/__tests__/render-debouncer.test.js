@@ -19,7 +19,7 @@ describe('RenderDebouncer', () => {
   async function tick(time) {
     for (let i = 0; i < time / 10; ++i) {
       jest.advanceTimersByTime(Math.min(time - i * 10, 10));
-      // eslint-disable-next-line no-await-in-loop
+      // oxlint-disable-next-line no-await-in-loop
       await waitForPromise();
     }
   }

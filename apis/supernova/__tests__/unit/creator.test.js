@@ -6,7 +6,6 @@ describe('creator', () => {
 
   beforeEach(() => {
     hookMock = jest.fn();
-    /* eslint-disable no-underscore-dangle */
     global.__NEBULA_DEV__ = false;
   });
 
@@ -336,7 +335,7 @@ describe('creator', () => {
       const c = create(generator, opts, galaxy).component;
       c.render({}); // initial should always run
 
-      const foo = new (class Foo {})();
+      const foo = {};
       const ref = {};
 
       c.render({
@@ -469,7 +468,7 @@ describe('creator', () => {
     const c = create(generator, params, galaxy).component;
 
     ['created', 'mounted', 'render', 'resize', 'willUnmount', 'destroy'].forEach((key) =>
-      expect(c[key] instanceof Function).toBe(true)
+      expect(c[key]).toBeInstanceOf(Function)
     );
 
     expect(c.model).toEqual(params.model);

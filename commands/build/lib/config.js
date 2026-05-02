@@ -67,7 +67,7 @@ const getExternalCore = ({ pkg }) => {
 
 const getOutputFileDefault = ({ pkg }) => pkg.main;
 
-const getOutputNameDefault = ({ pkg }) => pkg.name.split('/').reverse()[0];
+const getOutputNameDefault = ({ pkg }) => pkg.name.split('/').toReversed()[0];
 
 const config = ({
   mode = 'production',
@@ -107,13 +107,12 @@ const config = ({
 
   const extensions = ['.mjs', '.js', '.jsx', '.json', '.node'];
 
-  let typescriptPlugin;
   if (typescript) {
     extensions.push('.tsx', '.ts');
     try {
-      typescriptPlugin = require('@rollup/plugin-typescript'); // eslint-disable-line
+      require('@rollup/plugin-typescript'); // oxlint-disable-line no-unassigned-import -- validates it's installed
     } catch (e) {
-      throw new Error(`${e}\n '@rollup/plugin-typescript' is required to build using typescript.`);
+      throw new Error(`${e}\n '@rollup/plugin-typescript' is required to build using typescript.`, { cause: e });
     }
   }
 
@@ -220,22 +219,18 @@ const config = ({
           extensions,
           presets: babelPresets,
         }),
-        ...[
-          mode === 'production'
-            ? terser({
-                output: {
-                  preamble: banner,
-                },
-              })
-            : false,
-        ],
-        ...[
-          mode === 'development'
-            ? visualizer({
-                filename: 'bundle-analysis.html',
-              })
-            : false,
-        ],
+        mode === 'production'
+          ? terser({
+              output: {
+                preamble: banner,
+              },
+            })
+          : false,
+        mode === 'development'
+          ? visualizer({
+              filename: 'bundle-analysis.html',
+            })
+          : false,
       ].filter(Boolean),
     },
     output: output(),

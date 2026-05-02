@@ -23,8 +23,8 @@ describe('styled-components', () => {
     it('should return a renderable base component for List', async () => {
       await render();
       const rootElement = renderer.root;
-      expect(rootElement.props).toMatchSnapshot();
-      expect(renderer.toTree()[0].props.cache.registered).toMatchSnapshot();
+      expect(rootElement.props).toMatchSnapshot('StyledFixedSizeList root props');
+      expect(renderer.toTree()[0].props.cache.registered).toMatchSnapshot('StyledFixedSizeList emotion cache');
     });
   });
 
@@ -45,8 +45,8 @@ describe('styled-components', () => {
     it('should return a renderable base component for Grid', async () => {
       await render();
       const rootElement = renderer.root;
-      expect(rootElement.props).toMatchSnapshot();
-      expect(renderer.toTree()[0].props.cache.registered).toMatchSnapshot();
+      expect(rootElement.props).toMatchSnapshot('StyledFixedSizeGrid root props');
+      expect(renderer.toTree()[0].props.cache.registered).toMatchSnapshot('StyledFixedSizeGrid emotion cache');
     });
   });
 });

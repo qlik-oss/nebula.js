@@ -1,4 +1,4 @@
-/* eslint-disable no-prototype-builtins */
+/* oxlint-disable no-prototype-builtins */
 import createExportFormat from '../export-format';
 import utils from '../utils';
 import arrayUtils from '../array-util';

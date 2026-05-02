@@ -41,7 +41,7 @@ describe('<ConnectionHistory />', () => {
     TestRenderer(<ConnectionHistory />, { cachedConnectionsData });
 
     expect(screen.queryByText('Previous connections')).toBeInTheDocument();
-    cachedConnectionsData.cachedConnections.map((conn) => {
+    cachedConnectionsData.cachedConnections.forEach((conn) => {
       expect(screen.queryByText(conn)).toBeInTheDocument();
     });
   });
@@ -57,7 +57,7 @@ describe('<ConnectionHistory />', () => {
     TestRenderer(<ConnectionHistory />, { cachedConnectionsData, info: { isClientIdProvided: true } });
 
     // disabled items
-    [cachedConnectionsData.cachedConnections[0], cachedConnectionsData.cachedConnections[2]].map((conn) => {
+    [cachedConnectionsData.cachedConnections[0], cachedConnectionsData.cachedConnections[2]].forEach((conn) => {
       expect(screen.queryByText(conn).closest('a')).toHaveAttribute('aria-disabled', 'true');
     });
 
@@ -79,7 +79,7 @@ describe('<ConnectionHistory />', () => {
     TestRenderer(<ConnectionHistory />, { cachedConnectionsData, info: { isWebIntegrationIdProvided: true } });
 
     // disabled items
-    [(cachedConnectionsData.cachedConnections[0], cachedConnectionsData.cachedConnections[1])].map((conn) => {
+    [(cachedConnectionsData.cachedConnections[0], cachedConnectionsData.cachedConnections[1])].forEach((conn) => {
       expect(screen.queryByText(conn).closest('a')).toHaveAttribute('aria-disabled', 'true');
     });
 

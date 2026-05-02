@@ -34,7 +34,8 @@ export default function MultiState({ field, api, moreAlignTo = null, onClose = (
   const [showStateIx, setShowStateIx] = useState(-1);
   // If originated from the `more` item align it
   const [anchorEl, setAnchorEl] = useState(moreAlignTo ? moreAlignTo.current : null);
-  const alignTo = moreAlignTo || useRef();
+  const fallbackRef = useRef();
+  const alignTo = moreAlignTo || fallbackRef;
   const { translator } = useContext(InstanceContext);
   const clearAllStates = translator.get('Selection.ClearAllStates');
 
@@ -97,7 +98,6 @@ export default function MultiState({ field, api, moreAlignTo = null, onClose = (
         </Button>
       </ListItem>
       {field.states.map((s, ix) => (
-        // eslint-disable-next-line react/no-array-index-key
         <ListItem key={ix} title={field.label} onClick={(e) => handleShowState(e, ix)}>
           <Box border={1} width="100%" borderRadius={1} borderColor="divider">
             <OneField field={field} api={api} stateIx={ix} skipHandleShowListBoxPopover />

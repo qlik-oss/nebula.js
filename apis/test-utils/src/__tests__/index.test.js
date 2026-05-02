@@ -1,4 +1,3 @@
-/* eslint no-underscore-dangle:0 */
 import * as stardustUtils from '@nebula.js/stardust';
 import { create } from '../index';
 
@@ -54,10 +53,10 @@ describe('test-utils', () => {
 
   test('should return api', () => {
     const c = create();
-    expect(c.update instanceof Function).toBe(true);
-    expect(c.unmount instanceof Function).toBe(true);
-    expect(c.takeSnapshot instanceof Function).toBe(true);
-    expect(c.actions instanceof Function).toBe(true);
+    expect(c.update).toBeInstanceOf(Function);
+    expect(c.unmount).toBeInstanceOf(Function);
+    expect(c.takeSnapshot).toBeInstanceOf(Function);
+    expect(c.actions).toBeInstanceOf(Function);
   });
 
   test('should update', () => {
@@ -77,7 +76,7 @@ describe('test-utils', () => {
     );
   });
 
-  test('should update', () => {
+  test('should unmount', () => {
     const c = create();
     c.unmount();
     expect(teardownMock).toHaveBeenCalledTimes(1);

@@ -51,7 +51,7 @@ describe('create-object', () => {
 
   test('should call initialProperties on returned type', () => {
     const t = { initialProperties: jest.fn() };
-    t.initialProperties.mockReturnValue({ then: () => {} });
+    t.initialProperties.mockReturnValue(Promise.resolve({}));
     types.get.mockReturnValue(t);
     create(
       { type: 't', version: 'v', fields: 'f', properties: 'props', extendProperties: false },

@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 /**
  * Returns true if the second array is a ordered subset of the first.
  *

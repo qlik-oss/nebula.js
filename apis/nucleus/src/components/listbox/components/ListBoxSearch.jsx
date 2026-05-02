@@ -180,7 +180,6 @@ function ListBoxSearch(
     }
     if (success && searchValue.length && hasHits()) {
       response = model.acceptListObjectSearch(TREE_PATH, true);
-      // eslint-disable-next-line no-param-reassign
       selections.selectionsMade = true;
       selectionState.clearItemStates(false);
       setValue('');

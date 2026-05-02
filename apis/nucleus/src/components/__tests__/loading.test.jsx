@@ -1,4 +1,3 @@
-/* eslint-disable no-import-assign */
 import React from 'react';
 import { create, act } from 'react-test-renderer';
 import Loading from '../Loading';

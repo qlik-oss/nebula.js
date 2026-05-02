@@ -6,13 +6,14 @@ import createKeyStore from '../create-key-store';
 const TestHook = forwardRef(({ hook, hookProps = [], storeKey }, ref) => {
   const [store] = hook(...hookProps);
   const [count, setCount] = useState(0);
+  const storeValue = store.get(storeKey);
 
   useEffect(() => {
     setCount((c) => {
       const newCount = c + 1;
       return newCount;
     });
-  }, [store.get(storeKey)]);
+  }, [storeValue]);
 
   useImperativeHandle(ref, () => ({
     store,
@@ -21,7 +22,7 @@ const TestHook = forwardRef(({ hook, hookProps = [], storeKey }, ref) => {
   return null;
 });
 
-describe('', () => {
+describe('create-key-store', () => {
   let renderer;
   let render;
   let ref;

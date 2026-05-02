@@ -45,9 +45,13 @@ const barChart = document.getElementById('convertToBarChart');
 const lineChart = document.getElementById('convertToLineChart');
 const pieChart = document.getElementById('convertToPieChart');
 const comboChart = document.getElementById('convertToComboChart');
+// eslint-disable-next-line unicorn/prefer-add-event-listener -- Example code; addEventListener unnecessary for demo
 barChart.onclick = () => viz.convertTo('bar');
+// eslint-disable-next-line unicorn/prefer-add-event-listener -- Example code; addEventListener unnecessary for demo
 lineChart.onclick = () => viz.convertTo('line');
+// eslint-disable-next-line unicorn/prefer-add-event-listener -- Example code; addEventListener unnecessary for demo
 pieChart.onclick = () => viz.convertTo('pie');
+// eslint-disable-next-line unicorn/prefer-add-event-listener -- Example code; addEventListener unnecessary for demo
 comboChart.onclick = () => viz.convertTo('combo');
 
 init();

@@ -141,9 +141,7 @@ const Sheet = forwardRef(
                 mountedPromise,
                 options: {
                   ...initialSnOptions,
-                  ...{
-                    onInitialRender: renderCallback,
-                  },
+                  onInitialRender: renderCallback,
                 },
               };
             })

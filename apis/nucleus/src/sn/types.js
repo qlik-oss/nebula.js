@@ -8,7 +8,7 @@ export function semverSort(arr) {
     ...arr
       .filter((v) => v !== 'undefined')
       .map((v) => v.split('.').map((n) => parseInt(n, 10)))
-      .sort((a, b) => a[0] - b[0] || a[1] - b[1] || a[2] - b[2])
+      .toSorted((a, b) => a[0] - b[0] || a[1] - b[1] || a[2] - b[2])
       .map((n) => n.join('.')),
   ];
 }
@@ -76,14 +76,14 @@ export function create({ halo, parent }) {
       if (!tc[name]) {
         // Chart not registered, so we'll do that now.
         if (__NEBULA_DEV__) {
-          console.warn(`Visualization ${name} is not registered. Adding it now.`); // eslint-disable-line no-console
+          console.warn(`Visualization ${name} is not registered. Adding it now.`); // oxlint-disable-line no-console
         }
         this.register({ name, version });
       } else if (!tc[name].versions[version]) {
         // Fall back to existing version
         const versionToUse = Object.keys(tc[name].versions)[0];
         if (__NEBULA_DEV__) {
-          console.warn(`Version ${version} of ${name} is not registered. Falling back to version ${versionToUse}`); // eslint-disable-line no-console
+          console.warn(`Version ${version} of ${name} is not registered. Falling back to version ${versionToUse}`); // oxlint-disable-line no-console
         }
         version = versionToUse;
       }

@@ -1,6 +1,3 @@
-/* eslint-disable no-param-reassign */
-
-/* eslint-disable no-import-assign */
 import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { createTheme, ThemeProvider, StyledEngineProvider } from '@nebula.js/ui/theme';
@@ -37,7 +34,6 @@ describe('<Cell />', () => {
   let useObjectSelections;
 
   beforeEach(() => {
-    // eslint-disable-next-line no-underscore-dangle
     global.__NEBULA_DEV__ = false;
     fakeElement = 'fakeElement';
     Loading = () => 'loading';
@@ -224,7 +220,7 @@ describe('<Cell />', () => {
 
   test('should call useObjectSelection with expected args', async () => {
     await render();
-    expect(useObjectSelections).calledTwice;
+    expect(useObjectSelections).toHaveBeenCalledTimes(2);
     const [, , clickOutElementsFirstRender] = useObjectSelections.mock.calls[0];
     const [app, model, clickOutElements] = useObjectSelections.mock.calls[1];
     expect(app).toEqual(defaultHalo.app);
@@ -757,11 +753,11 @@ describe('<Cell />', () => {
       };
       await render({ model, types, cellRef });
 
-      expect(cellRef.current.setSnOptions instanceof Function).toBe(true);
-      expect(cellRef.current.setSnPlugins instanceof Function).toBe(true);
-      expect(cellRef.current.exportImage instanceof Function).toBe(true);
-      expect(cellRef.current.takeSnapshot instanceof Function).toBe(true);
-      expect(cellRef.current.getQae instanceof Function).toBe(true);
+      expect(cellRef.current.setSnOptions).toBeInstanceOf(Function);
+      expect(cellRef.current.setSnPlugins).toBeInstanceOf(Function);
+      expect(cellRef.current.exportImage).toBeInstanceOf(Function);
+      expect(cellRef.current.takeSnapshot).toBeInstanceOf(Function);
+      expect(cellRef.current.getQae).toBeInstanceOf(Function);
     });
 
     test('should take snapshot', async () => {
@@ -882,11 +878,9 @@ describe('<Cell />', () => {
         cellRef,
         config,
       });
-      try {
-        await cellRef.current.exportImage();
-      } catch (error) {
-        expect(error.message).toBe('Stardust embed has not been configured with snapshot.capture callback');
-      }
+      await expect(cellRef.current.exportImage()).rejects.toThrow(
+        'Stardust embed has not been configured with snapshot.capture callback'
+      );
     });
 
     test('should export image', async () => {

@@ -1,5 +1,3 @@
-/* eslint-disable no-import-assign */
-
 import React, { act } from 'react';
 import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
 import * as unlockModule from '@nebula.js/ui/icons/unlock';
@@ -132,6 +130,7 @@ describe('<ListboxInline />', () => {
 
     useEffect
       .mockImplementationOnce((effectFunc, watchArr) => {
+        // oxlint-disable-next-line jest/no-standalone-expect -- intentional assertion while verifying hook dependency setup in beforeEach
         expect(watchArr[1].key).toBe('selections');
         effectFunc();
       })
@@ -141,10 +140,12 @@ describe('<ListboxInline />', () => {
 
     useCallback
       .mockImplementationOnce((effectFunc, watchArr) => {
+        // oxlint-disable-next-line jest/no-standalone-expect -- intentional assertion while verifying hook dependency setup in beforeEach
         expect(watchArr).toHaveLength(0);
         return effectFunc;
       })
       .mockImplementationOnce((effectFunc, watchArr) => {
+        // oxlint-disable-next-line jest/no-standalone-expect -- intentional assertion while verifying hook dependency setup in beforeEach
         expect(watchArr).toHaveLength(0);
         return effectFunc;
       });
@@ -211,7 +212,7 @@ describe('<ListboxInline />', () => {
       });
     });
 
-    test('should render without toolbar', async () => {
+    test('should hide toolbar and title when toolbar option is false', async () => {
       const options = { toolbar: false };
       await render(options);
       const actionToolbars = await renderer.queryAllByText('ActionsToolbar');
@@ -224,7 +225,7 @@ describe('<ListboxInline />', () => {
       expect(listBoxSearches).toHaveLength(1);
     });
 
-    test('should render without toolbar', async () => {
+    test('should register selection listeners and hide search input when search mode is toggle', async () => {
       const options = { search: 'toggle' };
       await render(options);
 

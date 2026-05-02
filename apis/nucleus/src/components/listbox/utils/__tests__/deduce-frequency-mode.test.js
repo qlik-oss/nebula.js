@@ -53,13 +53,13 @@ describe('deduceFrequencyMode', () => {
     expect(mode).toEqual('-');
   });
 
-  test('should deduce unknown (-) when only undefined values are present', () => {
+  test('should deduce unknown (-) when decimal values are present without percent sign', () => {
     const pages = generatePages('R');
     const mode = deduceFrequencyMode(pages);
     expect(mode).toEqual('-');
   });
 
-  test('should deduce unknown (-) when only undefined values are present', () => {
+  test('should deduce unknown (-) when all frequency values are undefined', () => {
     const pages = generatePages('N');
     const mode = deduceFrequencyMode(pages);
     expect(mode).toEqual('-');

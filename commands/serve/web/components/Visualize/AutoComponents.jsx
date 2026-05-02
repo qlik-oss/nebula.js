@@ -1,6 +1,3 @@
-/* eslint no-param-reassign:0 */
-/* eslint no-use-before-define:0 */
-
 import React, { useState } from 'react';
 
 import { styled } from '@mui/material/styles';
@@ -82,6 +79,7 @@ const getType = (value, key) => {
 
 function Bool({ property, value, target, changed }) {
   const handleChange = (e) => {
+    // oxlint-disable-next-line no-param-reassign -- intentional mutation of property panel target object
     target[property] = e.target.checked;
     changed();
   };
@@ -101,6 +99,7 @@ function Str({ property, value, target, changed }) {
   };
   const onBlur = () => {
     if (s !== value) {
+      // oxlint-disable-next-line no-param-reassign -- intentional mutation of property panel target object
       target[property] = s;
       changed();
     }
@@ -116,6 +115,7 @@ function Num({ property, value, target, changed }) {
   };
   const onBlur = () => {
     if (s !== value) {
+      // oxlint-disable-next-line no-param-reassign -- intentional mutation of property panel target object
       target[property] = +s;
       changed();
     }
@@ -132,6 +132,7 @@ function Expression({ property, value, target, changed }) {
   };
   const onBlur = () => {
     if (s !== value) {
+      // oxlint-disable-next-line no-param-reassign -- intentional mutation of property panel target object
       target[property].qStringExpression = { qExpr: `=${s}` };
       changed();
     }

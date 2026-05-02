@@ -55,7 +55,7 @@ describe('useItemsLoader', () => {
     const resp = await prom;
     expect(resp).toBeUndefined();
     expect(args.listData.current.pages).toEqual(['page1_I_was_here', 'page2_I_was_here']);
-    expect(args.fetchStart).calledOnce;
+    expect(args.fetchStart).toHaveBeenCalledTimes(1);
     expect(typeof args.fetchStart.mock.calls[0][0].then).toEqual('function');
 
     const fetchArgs = args.model.getListObjectData.mock.calls[0];

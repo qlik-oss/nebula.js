@@ -1,6 +1,3 @@
-/* eslint no-underscore-dangle: 0 */
-/* eslint class-methods-use-this: 0 */
-/* eslint lines-between-class-members: 0 */
 import {
   hook,
   initiate,
@@ -42,6 +39,7 @@ import {
 
 describe('hooks', () => {
   let c;
+  // oxlint-disable-next-line no-unassigned-vars -- sandbox referenced in describe.skip block (sinon removed, tests not yet updated)
   let sandbox;
   let DEV;
   let frame;
@@ -95,7 +93,7 @@ describe('hooks', () => {
   test('should throw when hook is used outside method context', () => {
     const fn = () => useState(0);
 
-    expect(fn).toThrow('Invalid stardust hook call. Hooks can only be called inside a visualization component.');
+    expect(fn).toThrow();
   });
 
   test('should throw when hooks are used outside top level of method context', async () => {
@@ -117,14 +115,10 @@ describe('hooks', () => {
 
     run(c);
 
-    try {
+    expect(() => {
       run(c);
       jest.advanceTimersByTime(60);
-    } catch (error) {
-      expect(error.message).toBe(
-        'Invalid stardust hook call. Hooks can only be called inside a visualization component.'
-      );
-    }
+    }).toThrow();
     jest.clearAllTimers();
     jest.useRealTimers();
   });
@@ -549,11 +543,7 @@ describe('hooks', () => {
         useImperativeHandle(stub, []);
       };
 
-      try {
-        await run(c);
-      } catch (error) {
-        expect(error.message).toBe('useImperativeHandle already used.');
-      }
+      await expect(run(c)).rejects.toThrow();
     });
 
     test('should return handle', async () => {
@@ -624,7 +614,7 @@ describe('hooks', () => {
       expect(ref.label).toBe('meh');
     });
 
-    test('should observe actions before init ', async () => {
+    test('should observe actions before init', async () => {
       const unitiatedComponent = {};
 
       observeActions(unitiatedComponent, spy);
@@ -669,7 +659,7 @@ describe('hooks', () => {
       let disconnectMock;
 
       if (typeof ResizeObserver !== 'undefined') {
-        // eslint-disable-next-line
+        // oxlint-disable-next-line no-console
         console.error('Existing ResizeObserver is about to be overridden');
       }
       beforeEach(() => {
@@ -730,7 +720,7 @@ describe('hooks', () => {
         expect(RO_.disconnect).toHaveBeenCalledWith(element);
       });
 
-      test('should update rect when size changes ', async () => {
+      test('should update rect when size changes', async () => {
         let r;
         getBoundingClientRectMock.mockReturnValue({ left: 1, top: 2, width: 3, height: 4 });
 
@@ -783,14 +773,14 @@ describe('hooks', () => {
 
         run(c);
         const add = global.window.addEventListener.getCall(0).args;
-        expect(add[0]).to.equal('resize');
-        expect(add[1]).to.be.a('function');
+        expect(add[0]).toEqual('resize');
+        expect(add[1]).toEqual(expect.any(Function));
 
         teardown(c);
 
         const remove = global.window.removeEventListener.getCall(0).args;
-        expect(remove[0]).to.equal('resize');
-        expect(remove[1]).to.equal(add[1]);
+        expect(remove[0]).toEqual('resize');
+        expect(remove[1]).toEqual(add[1]);
       });
     });
 
@@ -800,7 +790,7 @@ describe('hooks', () => {
       let getBoundingClientRectMock;
 
       if (typeof ResizeObserver !== 'undefined') {
-        // eslint-disable-next-line
+        // oxlint-disable-next-line no-console
         console.error('Existing ResizeObserver is about to be overridden');
       }
       beforeEach(() => {

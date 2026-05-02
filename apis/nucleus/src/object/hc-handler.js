@@ -1,5 +1,3 @@
-/* eslint no-param-reassign:0 */
-
 import uid from './uid';
 
 function addIndex(array, index) {

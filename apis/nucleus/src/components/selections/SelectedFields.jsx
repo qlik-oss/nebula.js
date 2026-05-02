@@ -88,7 +88,6 @@ const getItemsAndMore = ({ currentItems, containerRef, maxItems, isInListboxPopo
   if (maxItems < newItems.length) {
     newMoreItems = newItems.splice(0, newItems.length - maxItems);
   }
-  /* eslint-disable no-param-reassign */
   containerRef.items = newItems;
   return {
     items: newItems,
@@ -107,7 +106,7 @@ export default function SelectedFields({ api, app }) {
   const { modalObjectStore } = useContext(InstanceContext).selectionStore;
   const [containerRef, containerRect] = useRect();
   const currentItems = useMemo(() => {
-    const items = getItems(layout).sort(sortSelections);
+    const items = getItems(layout).toSorted(sortSelections);
     return sortAllFields(fieldList, pinnedItems, items, masterDimList);
   }, [layout, fieldList, pinnedItems, masterDimList]);
   const maxItems = getMaxItems(containerRect);
@@ -141,7 +140,6 @@ export default function SelectedFields({ api, app }) {
       )}
       {items.map((s, index) => (
         <Grid
-          // eslint-disable-next-line react/no-array-index-key
           key={`${s.states.join('::')}::${s.qField ?? s.name}${index}`}
           style={{
             position: 'relative',

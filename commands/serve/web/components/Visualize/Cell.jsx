@@ -1,4 +1,3 @@
-/* eslint no-underscore-dangle:0 */
 import React, { useContext, useEffect, useState, useCallback, useRef } from 'react';
 
 import { styled } from '@mui/material/styles';

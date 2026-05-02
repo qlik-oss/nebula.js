@@ -1,8 +1,12 @@
 {
   "name": "@nebula.js/theme",
   "version": "6.8.0",
+  "type": "module",
   "private": true,
   "main": "src/index.js",
+  "scripts": {
+    "lint": "oxlint"
+  },
   "devDependencies": {
     "d3-color": "3.1.0",
     "extend": "3.0.2",

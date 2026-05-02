@@ -1,4 +1,4 @@
-/* eslint no-underscore-dangle:0 */
+// oxlint-disable import/no-named-as-default-member
 import auth from '@qlik/api/auth';
 import React from 'react';
 import appLocaleFn from './locale/app-locale';
@@ -420,7 +420,7 @@ function nuked(configuration = {}) {
         // filter valid values to avoid triggering unnecessary rerender
         let changes;
         ['theme', 'language', 'constraints', 'interactions', 'keyboardNavigation'].forEach((key) => {
-          if (Object.prototype.hasOwnProperty.call(ctx, key) && ctx[key] !== currentContext[key]) {
+          if (Object.hasOwn(ctx, key) && ctx[key] !== currentContext[key]) {
             if (!changes) {
               changes = {};
             }
@@ -467,7 +467,7 @@ function nuked(configuration = {}) {
             mount(element) {
               if (selectionsComponentReference) {
                 if (__NEBULA_DEV__) {
-                  console.error('Already mounted'); // eslint-disable-line no-console
+                  console.error('Already mounted'); // oxlint-disable-line no-console
                 }
                 return;
               }

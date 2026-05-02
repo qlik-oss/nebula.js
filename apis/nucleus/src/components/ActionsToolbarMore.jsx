@@ -60,7 +60,6 @@ const More = React.forwardRef(
     return (
       showActions && (
         <StyledPopover
-          // eslint-disable-next-line react/jsx-props-no-spreading
           {...popoverProps}
           onClose={onCloseOrActionClick}
           ref={ref}
@@ -94,7 +93,6 @@ const More = React.forwardRef(
         >
           <MenuList id="moreMenuList">
             {actions.map((item, ix) => (
-              // eslint-disable-next-line react/no-array-index-key
               <MoreItem key={ix} item={item} autoFocus={ix === autoFocusIndex} onActionClick={onCloseOrActionClick} />
             ))}
           </MenuList>

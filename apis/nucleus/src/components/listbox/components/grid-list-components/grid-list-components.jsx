@@ -1,4 +1,3 @@
-/* eslint-disable react/function-component-definition */
 import React from 'react';
 import RowColumn from '../ListBoxRowColumn';
 import deriveRenderOptions from './derive-render-options';
@@ -75,8 +74,8 @@ export default function getListBoxComponents({
     sizes,
     actions: {
       select,
-      confirm: () => selections?.confirm.call(selections),
-      cancel: () => selections?.cancel.call(selections),
+      confirm: () => selections?.confirm(),
+      cancel: () => selections?.cancel(),
       setScrollPosition,
       selectAll,
       onCtrlF,
@@ -97,11 +96,9 @@ export default function getListBoxComponents({
   };
 
   const List = ({ onItemsRendered, ref }) => {
-    // eslint-disable-next-line no-param-reassign
     local.current.listRef = ref;
     return (
       <StyledFixedSizeList
-        // eslint-disable-next-line react/jsx-props-no-spreading
         {...commonComponentOptions}
         dataTestid="fixed-size-list"
         scrollDisabled={constraints?.active}
@@ -138,7 +135,6 @@ export default function getListBoxComponents({
     const { overflowStyling, scrollBarWidth } = sizes;
     const { layoutOrder } = layoutOptions || {};
     const gridHeight = Math.min(listHeight, rowCount * itemHeight + scrollBarWidth);
-    // eslint-disable-next-line no-param-reassign
     local.current.listRef = ref;
 
     const handleGridItemsRendered = (renderProps) => {
@@ -169,7 +165,6 @@ export default function getListBoxComponents({
 
     return (
       <StyledFixedSizeGrid
-        // eslint-disable-next-line react/jsx-props-no-spreading
         {...commonComponentOptions}
         dataTestid="fixed-size-grid"
         scrollDisabled={constraints?.active}

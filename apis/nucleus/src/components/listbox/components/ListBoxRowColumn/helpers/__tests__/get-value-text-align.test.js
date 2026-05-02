@@ -13,7 +13,7 @@ describe('getValueTextAlign', () => {
       expect(align).toEqual('left');
     });
 
-    test('should return left with LTR', () => {
+    test('should return right with LTR for text values', () => {
       const align = getValueTextAlign({ direction: 'ltr', cell, textAlign: { auto: true } });
       expect(align).toEqual('right');
     });
@@ -30,27 +30,27 @@ describe('getValueTextAlign', () => {
   });
 
   describe('manual', () => {
-    test('should return right with LTR', () => {
+    test('should return right with LTR when manual align is right for text values', () => {
       const align = getValueTextAlign({ direction: 'ltr', cell, textAlign: { auto: false, align: 'right' } });
       expect(align).toEqual('right');
     });
 
-    test('should return left with LTR', () => {
+    test('should return left with LTR when manual align is left for text values', () => {
       const align = getValueTextAlign({ direction: 'ltr', cell, textAlign: { auto: false, align: 'left' } });
       expect(align).toEqual('left');
     });
 
-    test('should return right with RTL', () => {
+    test('should return right with RTL when manual align is right for text values', () => {
       const align = getValueTextAlign({ direction: 'rtl', cell, textAlign: { auto: false, align: 'right' } });
       expect(align).toEqual('right');
     });
 
-    test('should return right with RTL', () => {
+    test('should return right with RTL when manual align is right for text values (duplicate scenario)', () => {
       const align = getValueTextAlign({ direction: 'rtl', cell, textAlign: { auto: false, align: 'right' } });
       expect(align).toEqual('right');
     });
 
-    test('should return left with LTR', () => {
+    test('should return left with LTR when manual align is left for numeric values', () => {
       const align = getValueTextAlign({
         direction: 'ltr',
         cell: { qNum: 1 },
@@ -59,7 +59,7 @@ describe('getValueTextAlign', () => {
       expect(align).toEqual('left');
     });
 
-    test('should return right with LTR', () => {
+    test('should return right with LTR when manual align is right for numeric values', () => {
       const align = getValueTextAlign({
         direction: 'ltr',
         cell: { qNum: 1 },
@@ -68,7 +68,7 @@ describe('getValueTextAlign', () => {
       expect(align).toEqual('right');
     });
 
-    test('should return right with RTL', () => {
+    test('should return left with RTL when manual align is left for numeric values', () => {
       const align = getValueTextAlign({
         direction: 'rtl',
         cell: { qNum: 1 },
@@ -77,7 +77,7 @@ describe('getValueTextAlign', () => {
       expect(align).toEqual('left');
     });
 
-    test('should return right with RTL', () => {
+    test('should return right with RTL when manual align is right for numeric values', () => {
       const align = getValueTextAlign({
         direction: 'rtl',
         cell: { qNum: 1 },

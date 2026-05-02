@@ -23,7 +23,7 @@ describe('Should render layout', () => {
   test('should render connection steps', () => {
     TestRenderer(<HubLayout />);
 
-    steps.map((step) => {
+    steps.forEach((step) => {
       expect(screen.getByText(step)).toBeInTheDocument();
     });
   });

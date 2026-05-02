@@ -1,4 +1,3 @@
-/* eslint-disable import/extensions */
 import build from './lib/build.js';
 import init from './lib/init-config.js';
 

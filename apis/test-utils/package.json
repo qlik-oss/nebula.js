@@ -22,7 +22,8 @@
     "build": "cross-env NODE_ENV=production rollup --bundleConfigAsCjs --config ../../rollup.config.js",
     "build:dev": "rollup --bundleConfigAsCjs --config ../../rollup.config.js",
     "build:watch": "rollup --bundleConfigAsCjs --config ../../rollup.config.js -w",
-    "prepublishOnly": "rm -rf dist && yarn run build"
+    "prepublishOnly": "rm -rf dist && yarn run build",
+    "lint": "oxlint"
   },
   "peerDependencies": {
     "@nebula.js/stardust": ">=5.0.0"

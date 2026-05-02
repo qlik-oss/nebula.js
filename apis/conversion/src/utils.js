@@ -16,7 +16,7 @@ const getValue = (data, reference, defaultValue) => {
   for (let i = 0; i < steps.length; ++i) {
     const step = steps[i];
     if (step === '') {
-      continue; // eslint-disable-line no-continue
+      continue;
     }
     if (dataContainer[step] === undefined || dataContainer[step] === null) {
       return defaultValue;
@@ -65,6 +65,7 @@ const setValue = (data, reference, value) => {
   if (typeof value !== 'undefined') {
     dataContainer[propertyName] = value;
   } else {
+    // oxlint-disable-next-line typescript/no-dynamic-delete -- Property deletion is keyed by data; necessary for cleanup
     delete dataContainer[propertyName];
   }
 };

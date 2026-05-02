@@ -1,4 +1,3 @@
-/* eslint-disable no-import-assign */
 import * as ReactDOM from 'react-dom';
 import glue from '../glue';
 import * as CellModule from '../Cell';

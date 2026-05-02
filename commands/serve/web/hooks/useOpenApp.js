@@ -33,13 +33,13 @@ export const useOpenApp = ({ info }) => {
         const csrfToken = await getCsrfToken(
           `https://${enigmaInfo.host}${enigmaInfo.prefix ? `/${enigmaInfo.prefix}` : ''}`
         );
-        url = SenseUtilities.buildUrl({ ...enigmaInfo, ...{ urlParams: { 'qlik-csrf-token': csrfToken } } });
+        url = SenseUtilities.buildUrl({ ...enigmaInfo, urlParams: { 'qlik-csrf-token': csrfToken } });
       }
 
       const enigmaGlobal = await enigma.create({ schema: qixSchema, url }).open();
       return enigmaGlobal.openDoc(info?.enigma.appId);
     } catch (error) {
-      throw new Error('Failed to open app!');
+      throw new Error('Failed to open app!', { cause: error });
     }
   };
 

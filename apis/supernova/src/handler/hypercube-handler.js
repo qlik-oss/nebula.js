@@ -173,7 +173,6 @@ class HyperCubeHandler extends DataPropertyHandler {
     const addedDimensions = [];
     let addedActive = 0;
 
-    // eslint-disable-next-line no-restricted-syntax
     for await (const dimension of dimensions) {
       if (hcUtils.isTotalDimensionsExceeded(this, existingDimensions)) {
         return addedDimensions;
@@ -230,19 +229,17 @@ class HyperCubeHandler extends DataPropertyHandler {
     if (indexes.length === 0) return [];
     let deletedDimensions = [];
     // Start deleting from the end of the list first otherwise the idx is messed up
-    const sortedIndexes = [...indexes].sort((a, b) => b - a);
+    const sortedIndexes = indexes.toSorted((a, b) => b - a);
 
     if (alternative && altDimensions.length > 0) {
       // Keep the original deleted order
       deletedDimensions = hcUtils.getDeletedFields(altDimensions, indexes);
-      // eslint-disable-next-line no-restricted-syntax
       for await (const index of sortedIndexes) {
         await removeAlternativeDimension(this, index);
       }
     } else if (dimensions.length > 0) {
       // Keep the original deleted order
       deletedDimensions = hcUtils.getDeletedFields(dimensions, indexes);
-      // eslint-disable-next-line no-restricted-syntax
       for await (const index of sortedIndexes) {
         await removeMainDimension(this, index);
       }
@@ -420,7 +417,6 @@ class HyperCubeHandler extends DataPropertyHandler {
    * @example
    * const sortedMeasure = hyperCubeHandler.autoSortMeasure({qDef :{ cId: 'id'}});
    */
-  // eslint-disable-next-line class-methods-use-this
   autoSortMeasure(measure) {
     const meas = measure;
     meas.qSortBy = {
@@ -509,9 +505,8 @@ class HyperCubeHandler extends DataPropertyHandler {
     } else if (measures.length > 0) {
       // Keep the original deleted order
       deletedMeasures = hcUtils.getDeletedFields(measures, indexes);
-      const sortedIndexes = [...indexes].sort((a, b) => b - a);
+      const sortedIndexes = indexes.toSorted((a, b) => b - a);
 
-      // eslint-disable-next-line no-restricted-syntax
       for await (const index of sortedIndexes) {
         await removeMainMeasure(this, index);
       }

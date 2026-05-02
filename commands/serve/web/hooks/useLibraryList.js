@@ -29,7 +29,7 @@ const M = {
   },
 };
 
-export default function list(app, type = 'dimension') {
+export default function useList(app, type = 'dimension') {
   const def = type === 'dimension' ? D : M;
 
   const [model] = useSessionModel(def, app);

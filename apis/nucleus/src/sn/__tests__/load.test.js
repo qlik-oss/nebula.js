@@ -2,7 +2,6 @@ import { load, clearFromCache } from '../load';
 
 describe('load', () => {
   let halo = {};
-  // eslint-disable-next-line no-underscore-dangle
   global.__NEBULA_DEV__ = false;
   beforeEach(() => {
     halo = {
@@ -16,23 +15,16 @@ describe('load', () => {
   });
 
   test('should throw when load is not a function', async () => {
+    // oxlint-disable-next-line unicorn/no-thenable
     const loader = { then: {} }; // fake promise
-    try {
-      await load('pie', '1.0.0', halo, loader);
-      expect(0).toBe(1);
-    } catch (e) {
-      expect(e.message).toBe(`load of visualization 'pie v1.0.0' is not a fuction, wrap load promise in function`);
-    }
+    await expect(load('pie', '1.0.0', halo, loader)).rejects.toThrow(
+      `load of visualization 'pie v1.0.0' is not a fuction, wrap load promise in function`
+    );
   });
 
   test('should throw when resolving to a falsy value', async () => {
     const loader = () => false;
-    try {
-      await load('pie', '1.0.0', halo, loader);
-      expect(0).toBe(1);
-    } catch (e) {
-      expect(e.message).toBe("Failed to load visualization: 'pie v1.0.0'");
-    }
+    await expect(load('pie', '1.0.0', halo, loader)).rejects.toThrow("Failed to load visualization: 'pie v1.0.0'");
   });
 
   test('should call load() with name and version', async () => {

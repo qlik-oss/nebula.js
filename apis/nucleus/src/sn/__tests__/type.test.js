@@ -43,7 +43,7 @@ describe('type', () => {
       expect(c3.supportsPropertiesVersion()).toBe(true);
     });
 
-    test('should return semver satisfaction when version and semver range is provided ', () => {
+    test('should return semver satisfaction when version and semver range is provided', () => {
       const cc = create({}, 'c', { meta: { deps: { properties: '^1.0.0' } } });
       expect(cc.supportsPropertiesVersion('1.2.0')).toBe(true);
     });

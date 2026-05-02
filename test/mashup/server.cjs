@@ -5,16 +5,19 @@ const yargs = require('yargs/yargs');
 
 module.exports = async () => {
   let server;
-  let snapshooter;
   const app = express();
   const port = 8050;
+  const withErrorHandling = (handler) => (req, res, next) =>
+    Promise.resolve()
+      .then(() => handler(req, res, next))
+      .catch(next);
 
   const url = `http://localhost:${port}`;
 
   const args = yargs(process.argv.slice(2)).argv;
 
   const { default: createSnapshooter } = await import('@nebula.js/cli-serve/lib/snapshot-server');
-  snapshooter = createSnapshooter({
+  const snapshooter = createSnapshooter({
     snapshotUrl: `${url}/snaps/single.html`,
     chrome: args.chrome || {},
   });
@@ -40,17 +43,15 @@ module.exports = async () => {
     }
   });
 
-  app.post('/njs/capture', async (req, res) => {
-    try {
+  app.post(
+    '/njs/capture',
+    withErrorHandling(async (req, res) => {
       const key = await snapshooter.captureImageOfSnapshot(req.body);
       res.send({
         url: `/njs/image/${key}`,
       });
-    } catch (e) {
-      console.error(e);
-      res.sendStatus('500');
-    }
-  });
+    })
+  );
 
   app.get('/njs/snapshot/:id', (req, res) => {
     const p = snapshooter.getStoredSnapshot(req.params.id);
@@ -59,6 +60,16 @@ module.exports = async () => {
     } else {
       res.sendStatus('404');
     }
+  });
+
+  app.use((err, req, res, next) => {
+    console.error(`Mashup server error on ${req.method} ${req.url}:`, err);
+
+    if (res.headersSent) {
+      return next(err);
+    }
+
+    res.sendStatus(500);
   });
 
   await new Promise((resolve) => {
