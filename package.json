@@ -41,7 +41,7 @@
     "@babel/plugin-transform-react-jsx": "7.28.6",
     "@babel/preset-env": "7.29.2",
     "@babel/preset-react": "7.28.5",
-    "@commitlint/cli": "20.5.0",
+    "@commitlint/cli": "20.5.2",
     "@commitlint/config-conventional": "20.5.0",
     "@jest/globals": "^30.3.0",
     "@playwright/test": "1.59.1",
