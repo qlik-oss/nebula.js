@@ -35,7 +35,7 @@
     "@rollup/plugin-terser": "1.0.0",
     "chalk": "4.1.2",
     "extend": "3.0.2",
-    "postcss": "^8.5.9",
+    "postcss": "^8.5.12",
     "rollup": "4.60.1",
     "rollup-plugin-postcss": "4.0.2",
     "rollup-plugin-visualizer": "6.0.11",
