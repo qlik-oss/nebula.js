@@ -2,13 +2,18 @@ import { renderHook, act } from '@testing-library/react';
 import * as ENIGMA from 'enigma.js';
 import * as SenseUtilities from 'enigma.js/sense-utilities';
 import qixSchema from 'enigma.js/schemas/12.2015.0.json';
+import { openAppSession } from '@qlik/api/qix';
 import { useOpenApp } from '../useOpenApp';
-import * as getAuthInstanceModule from '../../connect';
+import * as connectModule from '../../connect';
 import * as getCsrfToken from '../../utils/getCsrfToken';
 
 jest.mock('enigma.js');
 jest.mock('enigma.js/sense-utilities');
 jest.mock('../../utils/getCsrfToken', () => jest.fn());
+
+jest.mock('@qlik/api/qix', () => ({
+  openAppSession: jest.fn(),
+}));
 
 describe('useOpenApp()', () => {
   let renderResult;
@@ -20,14 +25,14 @@ describe('useOpenApp()', () => {
   let enigmaOpenMock;
   let enigmaCreateMock;
 
-  let getAuthInstanceMock;
-  let generateWebsocketUrlMock;
+  let setHostConfigMock;
+  let getDocMock;
+  let appSessionMock;
 
-  let clientId;
-  let webIntegrationId;
   let host;
   let appId;
-  let windowFetchSpy;
+  let clientId;
+  let webIntegrationId;
 
   beforeEach(() => {
     host = 'some.host.in.eu.qlikdev.com';
@@ -48,16 +53,12 @@ describe('useOpenApp()', () => {
     });
     jest.spyOn(ENIGMA, 'create').mockImplementation(enigmaCreateMock);
 
-    generateWebsocketUrlMock = jest
-      .fn()
-      .mockResolvedValue(
-        `wss://${host}/app=${appId}&qlik-csrf-token=SOME_CSRF_TOKEN&qlik-web-integration-id=${webIntegrationId}`
-      );
-    getAuthInstanceMock = jest.fn().mockResolvedValue({
-      generateWebsocketUrl: generateWebsocketUrlMock,
-    });
-    jest.spyOn(getAuthInstanceModule, 'getAuthInstance').mockImplementation(getAuthInstanceMock);
-    windowFetchSpy = jest.spyOn(window, 'fetch');
+    setHostConfigMock = jest.fn();
+    jest.spyOn(connectModule, 'setHostConfig').mockImplementation(setHostConfigMock);
+
+    getDocMock = jest.fn().mockResolvedValue(undefined);
+    appSessionMock = { getDoc: getDocMock };
+    openAppSession.mockReturnValue(appSessionMock);
 
     getCsrfToken.mockResolvedValue('A-CSRF-TOKEN');
   });
@@ -80,7 +81,7 @@ describe('useOpenApp()', () => {
     expect(enigmaOpenDocMock).not.toHaveBeenCalled();
   });
 
-  test('should return expected result from hook when tring to connect with localhost', async () => {
+  test('should return expected result from hook when trying to connect with localhost', async () => {
     app = { isLocalApp: true };
     enigmaOpenDocMock.mockReturnValue(app);
     info = {
@@ -104,22 +105,18 @@ describe('useOpenApp()', () => {
     });
   });
 
-  test('should return expected result from hook when tring to connect with web integration id', async () => {
+  test('should call setHostConfig and openAppSession when connecting with web integration id', async () => {
     app = { isSDEwithIntegrationId: true };
-    enigmaOpenDocMock.mockReturnValue(app);
+    getDocMock.mockResolvedValue(app);
     info = { webIntegrationId, enigma: { appId, host } };
+
     await act(async () => {
       renderResult = renderHook(() => useOpenApp({ info }));
     });
 
-    expect(enigmaCreateMock).toHaveBeenCalledTimes(1);
-    expect(enigmaCreateMock).toHaveBeenCalledWith({
-      schema: qixSchema,
-      url: `wss://${host}/app=${appId}&qlik-csrf-token=SOME_CSRF_TOKEN&qlik-web-integration-id=${webIntegrationId}`,
-    });
-    expect(enigmaOpenMock).toHaveBeenCalledTimes(1);
-    expect(enigmaOpenDocMock).toHaveBeenCalledTimes(1);
-    expect(enigmaOpenDocMock).toHaveBeenCalledWith(info.enigma.appId);
+    expect(setHostConfigMock).toHaveBeenCalledWith({ webIntegrationId, clientId: undefined, host });
+    expect(openAppSession).toHaveBeenCalledWith({ appId });
+    expect(getDocMock).toHaveBeenCalledTimes(1);
     expect(renderResult.result.current).toEqual({
       waiting: false,
       setApp: expect.any(Function),
@@ -127,27 +124,18 @@ describe('useOpenApp()', () => {
     });
   });
 
-  test('should return expected result from hook when tring to connect with client id', async () => {
-    const webSocketUrl = `wss://${host}/app=${appId}&qlik-csrf-token=SOME_CSRF_TOKEN&qlik-client-id=${clientId}`;
-    windowFetchSpy.mockResolvedValue({
-      ok: true,
-      json: async () => ({ webSocketUrl }),
-    });
+  test('should call setHostConfig and openAppSession when connecting with client id', async () => {
     app = { isSDEwithClientId: true };
-    enigmaOpenDocMock.mockReturnValue(app);
+    getDocMock.mockResolvedValue(app);
     info = { clientId, enigma: { appId, host } };
+
     await act(async () => {
       renderResult = renderHook(() => useOpenApp({ info }));
     });
 
-    expect(enigmaCreateMock).toHaveBeenCalledTimes(1);
-    expect(enigmaCreateMock).toHaveBeenCalledWith({
-      schema: qixSchema,
-      url: webSocketUrl,
-    });
-    expect(enigmaOpenMock).toHaveBeenCalledTimes(1);
-    expect(enigmaOpenDocMock).toHaveBeenCalledTimes(1);
-    expect(enigmaOpenDocMock).toHaveBeenCalledWith(info.enigma.appId);
+    expect(setHostConfigMock).toHaveBeenCalledWith({ webIntegrationId: undefined, clientId, host });
+    expect(openAppSession).toHaveBeenCalledWith({ appId });
+    expect(getDocMock).toHaveBeenCalledTimes(1);
     expect(renderResult.result.current).toEqual({
       waiting: false,
       setApp: expect.any(Function),

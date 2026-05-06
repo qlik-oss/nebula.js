@@ -10,7 +10,7 @@ import systemjsBehaviours from './systemjs.js';
 
 const require = createRequire(import.meta.url);
 
-const getPackage = (argv, cwd = process.cwd()) => require(path.resolve(argv.cwd || cwd, 'package.json')); // eslint-disable-line
+const getPackage = (argv, cwd = process.cwd()) => require(path.resolve(argv.cwd || cwd, 'package.json'));
 
 const validateWatchInput = (argv) => {
   if (argv.watch === 'systemjs') {

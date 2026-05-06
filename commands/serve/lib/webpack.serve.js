@@ -11,7 +11,6 @@ import WebpackDevServer from 'webpack-dev-server';
 
 import snapshooterFn from './snapshot-server.js';
 import snapshotRouter from './snapshot-router.js';
-import { OAuthRouter, getAvailableAuthInstance } from './oauth-router.js';
 
 const moduleDir = path.dirname(fileURLToPath(import.meta.url));
 const homeDir = homedir();
@@ -56,7 +55,6 @@ export default async ({
     snapshooter.storeSnapshot(s);
   });
 
-  const authRouter = OAuthRouter({ originUrl: url });
   const snapRouter = snapshotRouter({
     base: `${url}${snapshotRoute}`,
     snapshotUrl: `${url}/eRender.html`,
@@ -111,7 +109,6 @@ export default async ({
     setupMiddlewares(middlewares, devServer) {
       const { app } = devServer;
 
-      app.use('/auth', authRouter);
       app.use(snapshotRoute, snapRouter);
 
       if (entryWatcher) {
@@ -166,17 +163,6 @@ export default async ({
           types: serveConfig.types,
           keyboardNavigation: serveConfig.keyboardNavigation,
         });
-      });
-
-      app.get('/apps', async (req, res) => {
-        const appsListUrl = `/items?resourceType=app&limit=30&sort=-updatedAt`;
-        const { data = [] } = await (await getAvailableAuthInstance().rest(appsListUrl)).json();
-        res.status(200).json(
-          data.map((d) => ({
-            qDocId: d.resourceId,
-            qTitle: d.name,
-          }))
-        );
       });
 
       if (serveConfig.resources) {
