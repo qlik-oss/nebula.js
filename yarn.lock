@@ -15027,17 +15027,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"picasso-plugin-q@npm:2.10.0":
-  version: 2.10.0
-  resolution: "picasso-plugin-q@npm:2.10.0"
-  checksum: 10c0/e416eee48b5e545223aa2335c4132c8d3abb17f83c35e8fb5fbe72d3f37b55139d7c5703609c7f43801aec869d4e06761bf2b01b2321deb7d0e199914e12d11c
+"picasso-plugin-q@npm:2.11.3":
+  version: 2.11.3
+  resolution: "picasso-plugin-q@npm:2.11.3"
+  checksum: 10c0/cf76281951fd6477fd0b50a693dbecc3144ebad579e7e5f8f0dfff7580a833351817b421256691809bb8fe59cd3756c2380c3ee8b2ff6ef70c6bf97907becca1
   languageName: node
   linkType: hard
 
-"picasso.js@npm:2.10.0":
-  version: 2.10.0
-  resolution: "picasso.js@npm:2.10.0"
-  checksum: 10c0/44ec14e37977c0bcd2d59cc1aa7247600721b2ea59f4b953d0c059c318d3a8f990edc42eb5950dfc2676dc0f08d5de7655aaaba75291b9082ce59bd3be07aadd
+"picasso.js@npm:2.11.3":
+  version: 2.11.3
+  resolution: "picasso.js@npm:2.11.3"
+  checksum: 10c0/02fd5a2804fdb0b9b8b36a6a3016dd00b8e05e1ee8aa3c2799ff3b000c92dcdaa6abad180c003fc7609b6f866711a0ba5d9739fd6cf58601a4f219e183cf780b
   languageName: node
   linkType: hard
 
@@ -16707,8 +16707,8 @@ __metadata:
     lerna: "npm:9.0.7"
     lint-staged: "npm:^16.4.0"
     mocha-junit-reporter: "npm:2.2.1"
-    picasso-plugin-q: "npm:2.10.0"
-    picasso.js: "npm:2.10.0"
+    picasso-plugin-q: "npm:2.11.3"
+    picasso.js: "npm:2.11.3"
     prettier: "npm:3.8.2"
     puppeteer: "npm:24.40.0"
     qix-faker: "npm:0.3.0"
