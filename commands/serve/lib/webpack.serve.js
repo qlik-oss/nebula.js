@@ -247,7 +247,7 @@ export default async ({
 
             const leadingWhitespace = trimmedLine.match(/^\s*/)[0];
             const art = trimmedLine.slice(leadingWhitespace.length);
-            return `${leadingWhitespace}${chalk.bgHex('#91298C').white(art)}`;
+            return `${leadingWhitespace}${chalk.bgHex('#57e2ba').white(art)}`;
           })
           .join('\n');
 
