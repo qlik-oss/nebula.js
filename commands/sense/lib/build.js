@@ -1,4 +1,4 @@
-/* eslint-disable no-console, import/extensions */
+/* eslint-disable no-console */
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { createRequire } from 'module';

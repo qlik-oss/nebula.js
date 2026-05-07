@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import enigma from 'enigma.js';
 import qixSchema from 'enigma.js/schemas/12.2015.0.json';
 import SenseUtilities from 'enigma.js/sense-utilities';
-import { getAuthInstance } from '../connect';
+import { openAppSession } from '@qlik/api/qix';
+import { setHostConfig } from '../connect';
 import getCsrfToken from '../utils/getCsrfToken';
 
 export const useOpenApp = ({ info }) => {
@@ -22,20 +23,15 @@ export const useOpenApp = ({ info }) => {
     try {
       const { clientId, webIntegrationId, enigma: enigmaInfo = null, enigma: { host } = {} } = info;
 
-      let url = '';
-      if (webIntegrationId) {
-        const authInstance = await getAuthInstance({ webIntegrationId, host });
-        url = await authInstance.generateWebsocketUrl(info?.enigma.appId);
-      } else if (clientId) {
-        const { webSocketUrl } = await (await fetch(`/auth/getSocketUrl/${info?.enigma.appId}`)).json();
-        url = webSocketUrl;
-      } else {
-        const csrfToken = await getCsrfToken(
-          `https://${enigmaInfo.host}${enigmaInfo.prefix ? `/${enigmaInfo.prefix}` : ''}`
-        );
-        url = SenseUtilities.buildUrl({ ...enigmaInfo, ...{ urlParams: { 'qlik-csrf-token': csrfToken } } });
+      if (webIntegrationId || clientId) {
+        setHostConfig({ webIntegrationId, clientId, host });
+        return openAppSession({ appId: info?.enigma.appId }).getDoc();
       }
 
+      const csrfToken = await getCsrfToken(
+        `https://${enigmaInfo.host}${enigmaInfo.prefix ? `/${enigmaInfo.prefix}` : ''}`
+      );
+      const url = SenseUtilities.buildUrl({ ...enigmaInfo, ...{ urlParams: { 'qlik-csrf-token': csrfToken } } });
       const enigmaGlobal = await enigma.create({ schema: qixSchema, url }).open();
       return enigmaGlobal.openDoc(info?.enigma.appId);
     } catch (error) {

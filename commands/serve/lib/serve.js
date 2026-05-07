@@ -140,7 +140,7 @@ export default async (argv) => {
       });
     }
     try {
-      const externalPkg = require(path.resolve(context, 'package.json')); // eslint-disable-line global-require
+      const externalPkg = require(path.resolve(context, 'package.json'));
       const externalEntry = serveConfig.mfe ? externalPkg.systemjs : externalPkg.main;
       snName = externalPkg.name;
       snPath = path.resolve(context, externalEntry);

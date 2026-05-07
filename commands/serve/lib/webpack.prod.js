@@ -1,4 +1,3 @@
-/* eslint-disable import/extensions */
 import path from 'path';
 import { fileURLToPath } from 'url';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
