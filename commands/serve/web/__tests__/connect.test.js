@@ -13,7 +13,6 @@ jest.mock('../utils/getCsrfToken', () => jest.fn());
 jest.mock('@qlik/api/auth', () => ({
   __esModule: true,
   default: { setDefaultHostConfig: jest.fn() },
-  logout: jest.fn(),
 }));
 
 jest.mock('@qlik/api/items', () => ({

@@ -369,6 +369,8 @@ export default function Visualize() {
                   item
                   xs
                   style={{
+                    flex: 1,
+                    minHeight: 0,
                     overflowX: 'hidden',
                     overflowY: 'auto',
                     padding: theme.spacing(0, SPACING / 2, SPACING / 2, SPACING / 2),
@@ -377,7 +379,7 @@ export default function Visualize() {
                   <VizContext.Provider value={vizContext}>
                     {sn ? (
                       <Grid container wrap="nowrap" style={{ height: '100%' }} gap={SPACING / 2}>
-                        <Grid item xs zeroMinWidth>
+                        <Grid item xs style={{ flex: 1, minWidth: 0 }}>
                           {objectListMode ? (
                             <Collection cache={currentId} types={[info?.supernova.name]} />
                           ) : (

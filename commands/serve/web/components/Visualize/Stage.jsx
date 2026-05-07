@@ -51,7 +51,7 @@ export default function Stage({ info, storage, uid }) {
         height: '100%',
       }}
     >
-      <Grid item xs>
+      <Grid item xs style={{ flex: 1, minWidth: 0 }}>
         <Cell id={uid} />
       </Grid>
     </Grid>

@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
-import { logout } from '@qlik/api/auth';
+import auth from '@qlik/api/auth';
 import { useRootContext } from '../contexts/RootContext';
 
 export const useDeauthorizePrevOAuthInstance = () => {
   const { cachedConnectionsData } = useRootContext();
 
   useEffect(() => {
-    logout();
+    // Clear any previously set host config so a fresh one is applied for the new connection.
+    // Using setDefaultHostConfig(undefined) instead of logout() to avoid redirecting the browser.
+    auth.setDefaultHostConfig(undefined);
   }, [cachedConnectionsData.cachedConnections.length]);
 };
