@@ -7,7 +7,6 @@ import { OptionsToConnect } from '../../../../constants/optionsToConnect';
 jest.mock('@qlik/api/auth', () => ({
   __esModule: true,
   default: { setDefaultHostConfig: jest.fn() },
-  logout: jest.fn(),
 }));
 
 describe('<SelectEngine />', () => {
