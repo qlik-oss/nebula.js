@@ -28,7 +28,7 @@ export const useAppList = ({ glob, info }) => {
         console.error('Failed to fetch app list:', err);
         setLoading(false);
       });
-  }, [window.location.search, setLoading, info, glob]);
+  }, [info, glob]);
 
   return { appList, loading };
 };
