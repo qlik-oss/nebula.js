@@ -23,7 +23,7 @@ const SelectEngine = () => {
   return (
     <ContentWrapper>
       <Grid container>
-        <Grid item xs>
+        <Grid sx={{ flex: 1 }}>
           <Typography variant="h5" gutterBottom>
             Connect to an engine
           </Typography>
