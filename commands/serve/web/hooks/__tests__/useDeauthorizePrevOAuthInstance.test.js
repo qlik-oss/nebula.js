@@ -9,17 +9,16 @@ jest.mock('@qlik/api/auth', () => ({
 }));
 
 describe('useDeauthorizePrevOAuthInstance', () => {
-  let cachedConnections;
+  let useRootContextSpy;
 
   beforeEach(() => {
-    cachedConnections = [];
-    jest.spyOn(RootContextModule, 'useRootContext').mockReturnValue({
-      cachedConnectionsData: { cachedConnections },
+    useRootContextSpy = jest.spyOn(RootContextModule, 'useRootContext').mockReturnValue({
+      cachedConnectionsData: { cachedConnections: [] },
     });
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    jest.restoreAllMocks();
   });
 
   test('should call auth.setDefaultHostConfig(undefined) on mount', () => {
@@ -30,14 +29,15 @@ describe('useDeauthorizePrevOAuthInstance', () => {
 
   test('should call auth.setDefaultHostConfig(undefined) again when cachedConnections length changes', () => {
     let connections = [];
-    jest.spyOn(RootContextModule, 'useRootContext').mockReturnValue({
+    useRootContextSpy.mockReturnValue({
       cachedConnectionsData: { cachedConnections: connections },
     });
+
     const { rerender } = renderHook(() => useDeauthorizePrevOAuthInstance());
     expect(auth.setDefaultHostConfig).toHaveBeenCalledTimes(1);
 
     connections = ['ws://localhost:9000/new-connection'];
-    jest.spyOn(RootContextModule, 'useRootContext').mockReturnValue({
+    useRootContextSpy.mockReturnValue({
       cachedConnectionsData: { cachedConnections: connections },
     });
     rerender();
