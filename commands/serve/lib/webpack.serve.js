@@ -98,6 +98,9 @@ export default async ({
     port,
     allowedHosts: disableHostCheck ? 'all' : 'auto',
     open,
+    // NOTE: historyApiFallback intentionally handles the @qlik/api OAuth2 callback at
+    // /auth/login/callback — the SPA is served for all paths and @qlik/api detects
+    // the authorization code in the URL to complete the token exchange client-side.
     historyApiFallback: true,
     // Disable nebula serve dev env when in MFE mode
     static: !serveConfig.mfe && {
