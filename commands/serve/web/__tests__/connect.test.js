@@ -106,6 +106,12 @@ describe('connect.js', () => {
         expect(getItems).toHaveBeenCalledWith(expect.objectContaining({ resourceType: 'app', limit: 30 }));
         expect(docList).toEqual([{ qDocId: 'app-1', qTitle: 'My App' }]);
       });
+
+      test('getDocList should propagate errors from getItems', async () => {
+        getItems.mockRejectedValue(new Error('network error'));
+        const result = await connect();
+        await expect(result.getDocList()).rejects.toThrow();
+      });
     });
 
     describe('connecting with `clientId` (OAuth2) flow', () => {
