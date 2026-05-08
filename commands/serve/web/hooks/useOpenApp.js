@@ -25,7 +25,9 @@ export const useOpenApp = ({ info }) => {
 
       if (webIntegrationId || clientId) {
         setHostConfig({ webIntegrationId, clientId, host });
-        return openAppSession({ appId: info?.enigma.appId }).getDoc();
+        const appId = info?.enigma?.appId;
+        if (!appId) throw new Error('Missing appId in connection info');
+        return openAppSession({ appId }).getDoc();
       }
 
       const csrfToken = await getCsrfToken(
@@ -35,7 +37,7 @@ export const useOpenApp = ({ info }) => {
       const enigmaGlobal = await enigma.create({ schema: qixSchema, url }).open();
       return enigmaGlobal.openDoc(info?.enigma.appId);
     } catch (error) {
-      throw new Error('Failed to open app!');
+      throw new Error('Failed to open app!', { cause: error });
     }
   };
 
