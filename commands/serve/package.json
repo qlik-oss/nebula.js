@@ -21,6 +21,7 @@
   },
   "files": [
     "assets",
+    "BREAKING.md",
     "command.js",
     "data",
     "dist",

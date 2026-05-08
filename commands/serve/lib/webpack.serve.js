@@ -98,6 +98,9 @@ export default async ({
     port,
     allowedHosts: disableHostCheck ? 'all' : 'auto',
     open,
+    // NOTE: historyApiFallback intentionally handles the @qlik/api OAuth2 callback at
+    // /auth/login/callback — the SPA is served for all paths and @qlik/api detects
+    // the authorization code in the URL to complete the token exchange client-side.
     historyApiFallback: true,
     // Disable nebula serve dev env when in MFE mode
     static: !serveConfig.mfe && {
@@ -247,6 +250,7 @@ export default async ({
 
             const leadingWhitespace = trimmedLine.match(/^\s*/)[0];
             const art = trimmedLine.slice(leadingWhitespace.length);
+            // Brand color for the nebula serve startup banner
             return `${leadingWhitespace}${chalk.bgHex('#305be7').white(art)}`;
           })
           .join('\n');
