@@ -106,6 +106,12 @@ describe('connect.js', () => {
         expect(getItems).toHaveBeenCalledWith(expect.objectContaining({ resourceType: 'app', limit: 30 }));
         expect(docList).toEqual([{ qDocId: 'app-1', qTitle: 'My App' }]);
       });
+
+      test('getDocList should propagate errors from getItems', async () => {
+        getItems.mockRejectedValue(new Error('network error'));
+        const result = await connect();
+        await expect(result.getDocList()).rejects.toThrow('network error');
+      });
     });
 
     describe('connecting with `clientId` (OAuth2) flow', () => {
@@ -247,6 +253,44 @@ describe('connect.js', () => {
         test('should call `auth.setDefaultHostConfig` with cookie authType', async () => {
           await openApp(appId);
           expect(auth.setDefaultHostConfig).toHaveBeenCalledWith(expect.objectContaining({ authType: 'cookie' }));
+        });
+
+        test('should call `openAppSession` with the app id', async () => {
+          await openApp(appId);
+          expect(openAppSession).toHaveBeenCalledWith({ appId });
+        });
+
+        test('should call `getDoc` and return the document', async () => {
+          const result = await openApp(appId);
+          expect(getDocMock).toHaveBeenCalledTimes(1);
+          expect(result).toEqual({ id: appId });
+        });
+      });
+
+      describe('open app with clientId (OAuth2) flow', () => {
+        let getDocMock;
+        let appSessionMock;
+
+        beforeEach(() => {
+          jsonResponseMock.mockImplementation(() =>
+            Promise.resolve({
+              clientId: 'someClientId',
+              enigma: {
+                secure: true,
+                host: 'some.eu.tenant.pte.qlikdev.com',
+              },
+            })
+          );
+          getDocMock = jest.fn().mockResolvedValue({ id: appId });
+          appSessionMock = { getDoc: getDocMock };
+          openAppSession.mockReturnValue(appSessionMock);
+        });
+
+        test('should call `auth.setDefaultHostConfig` with oauth2 authType', async () => {
+          await openApp(appId);
+          expect(auth.setDefaultHostConfig).toHaveBeenCalledWith(
+            expect.objectContaining({ authType: 'oauth2', clientId: 'someClientId' })
+          );
         });
 
         test('should call `openAppSession` with the app id', async () => {
