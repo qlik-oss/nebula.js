@@ -222,7 +222,7 @@ export default function ({ id, expandable, minHeight }) {
               })}
             </IconButton>
           )}
-          <Grid item xs />
+          <Grid sx={{ flex: 1 }} />
           {expandable && (
             <IconButton
               title="Edit"
