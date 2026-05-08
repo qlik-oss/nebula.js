@@ -250,6 +250,7 @@ export default async ({
 
             const leadingWhitespace = trimmedLine.match(/^\s*/)[0];
             const art = trimmedLine.slice(leadingWhitespace.length);
+            // Brand color for the nebula serve startup banner
             return `${leadingWhitespace}${chalk.bgHex('#305be7').white(art)}`;
           })
           .join('\n');
