@@ -110,7 +110,7 @@ describe('connect.js', () => {
       test('getDocList should propagate errors from getItems', async () => {
         getItems.mockRejectedValue(new Error('network error'));
         const result = await connect();
-        await expect(result.getDocList()).rejects.toThrow('network error');
+        await expect(result.getDocList()).rejects.toThrow('Failed to fetch app list');
       });
     });
 
