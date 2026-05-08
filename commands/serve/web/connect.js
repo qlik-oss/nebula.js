@@ -131,6 +131,16 @@ const setHostConfig = ({ webIntegrationId, clientId, host }) => {
   }
 };
 
+const buildDocList = async () => {
+  try {
+    const response = await getItems({ resourceType: 'app', limit: 30, sort: '-updatedAt' });
+    const { data = [] } = response.data;
+    return data.map((d) => ({ qDocId: d.resourceId, qTitle: d.name }));
+  } catch (error) {
+    throw new Error('Failed to fetch app list', { cause: error });
+  }
+};
+
 const connect = async () => {
   try {
     const {
@@ -143,14 +153,7 @@ const connect = async () => {
     if (webIntegrationId) {
       setHostConfig({ webIntegrationId, host });
       return {
-        getDocList: async () => {
-          const response = await getItems({ resourceType: 'app', limit: 30, sort: '-updatedAt' });
-          const { data = [] } = response.data;
-          return data.map((d) => ({
-            qDocId: d.resourceId,
-            qTitle: d.name,
-          }));
-        },
+        getDocList: buildDocList,
         getConfiguration: async () => ({}),
       };
     }
@@ -158,14 +161,7 @@ const connect = async () => {
     if (clientId) {
       setHostConfig({ clientId, host });
       return {
-        getDocList: async () => {
-          const response = await getItems({ resourceType: 'app', limit: 30, sort: '-updatedAt' });
-          const { data = [] } = response.data;
-          return data.map((d) => ({
-            qDocId: d.resourceId,
-            qTitle: d.name,
-          }));
-        },
+        getDocList: buildDocList,
         getConfiguration: async () => ({}),
       };
     }
@@ -181,7 +177,7 @@ const connect = async () => {
 
     return enigma.create({ schema: qixSchema, url }).open();
   } catch (error) {
-    throw new Error('Failed to return enigma instance');
+    throw new Error('Failed to return enigma instance', { cause: error });
   }
 };
 
@@ -203,7 +199,7 @@ const openApp = async (id) => {
     const enigmaGlobal = await enigma.create({ schema: qixSchema, url }).open();
     return enigmaGlobal.openDoc(id);
   } catch (error) {
-    throw new Error('Failed to open app!');
+    throw new Error('Failed to open app!', { cause: error });
   }
 };
 
