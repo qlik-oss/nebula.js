@@ -261,6 +261,44 @@ describe('connect.js', () => {
         });
       });
 
+      describe('open app with clientId (OAuth2) flow', () => {
+        let getDocMock;
+        let appSessionMock;
+
+        beforeEach(() => {
+          jsonResponseMock.mockImplementation(() =>
+            Promise.resolve({
+              clientId: 'someClientId',
+              enigma: {
+                secure: true,
+                host: 'some.eu.tenant.pte.qlikdev.com',
+              },
+            })
+          );
+          getDocMock = jest.fn().mockResolvedValue({ id: appId });
+          appSessionMock = { getDoc: getDocMock };
+          openAppSession.mockReturnValue(appSessionMock);
+        });
+
+        test('should call `auth.setDefaultHostConfig` with oauth2 authType', async () => {
+          await openApp(appId);
+          expect(auth.setDefaultHostConfig).toHaveBeenCalledWith(
+            expect.objectContaining({ authType: 'oauth2', clientId: 'someClientId' })
+          );
+        });
+
+        test('should call `openAppSession` with the app id', async () => {
+          await openApp(appId);
+          expect(openAppSession).toHaveBeenCalledWith({ appId });
+        });
+
+        test('should call `getDoc` and return the document', async () => {
+          const result = await openApp(appId);
+          expect(getDocMock).toHaveBeenCalledTimes(1);
+          expect(result).toEqual({ id: appId });
+        });
+      });
+
       describe('with Local engine flow', () => {
         beforeEach(() => {
           connectionResponse = {
