@@ -132,9 +132,13 @@ const setHostConfig = ({ webIntegrationId, clientId, host }) => {
 };
 
 const buildDocList = async () => {
-  const response = await getItems({ resourceType: 'app', limit: 30, sort: '-updatedAt' });
-  const { data = [] } = response.data;
-  return data.map((d) => ({ qDocId: d.resourceId, qTitle: d.name }));
+  try {
+    const response = await getItems({ resourceType: 'app', limit: 30, sort: '-updatedAt' });
+    const { data = [] } = response.data;
+    return data.map((d) => ({ qDocId: d.resourceId, qTitle: d.name }));
+  } catch (error) {
+    throw new Error('Failed to fetch app list', { cause: error });
+  }
 };
 
 const connect = async () => {
