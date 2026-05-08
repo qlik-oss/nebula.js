@@ -131,6 +131,12 @@ const setHostConfig = ({ webIntegrationId, clientId, host }) => {
   }
 };
 
+const buildDocList = async () => {
+  const response = await getItems({ resourceType: 'app', limit: 30, sort: '-updatedAt' });
+  const { data = [] } = response.data;
+  return data.map((d) => ({ qDocId: d.resourceId, qTitle: d.name }));
+};
+
 const connect = async () => {
   try {
     const {
@@ -143,14 +149,7 @@ const connect = async () => {
     if (webIntegrationId) {
       setHostConfig({ webIntegrationId, host });
       return {
-        getDocList: async () => {
-          const response = await getItems({ resourceType: 'app', limit: 30, sort: '-updatedAt' });
-          const { data = [] } = response.data;
-          return data.map((d) => ({
-            qDocId: d.resourceId,
-            qTitle: d.name,
-          }));
-        },
+        getDocList: buildDocList,
         getConfiguration: async () => ({}),
       };
     }
@@ -158,14 +157,7 @@ const connect = async () => {
     if (clientId) {
       setHostConfig({ clientId, host });
       return {
-        getDocList: async () => {
-          const response = await getItems({ resourceType: 'app', limit: 30, sort: '-updatedAt' });
-          const { data = [] } = response.data;
-          return data.map((d) => ({
-            qDocId: d.resourceId,
-            qTitle: d.name,
-          }));
-        },
+        getDocList: buildDocList,
         getConfiguration: async () => ({}),
       };
     }
