@@ -18,10 +18,16 @@ export const useAppList = ({ glob, info }) => {
     if (appList?.length) return;
     setLoading(true);
 
-    glob?.getDocList()?.then((apps) => {
-      setAppList(apps);
-      if (apps) setLoading(false);
-    });
+    glob
+      ?.getDocList()
+      ?.then((apps) => {
+        setAppList(apps);
+        if (apps) setLoading(false);
+      })
+      ?.catch((err) => {
+        console.error('Failed to fetch app list:', err);
+        setLoading(false);
+      });
   }, [window.location.search, setLoading, info, glob]);
 
   return { appList, loading };
