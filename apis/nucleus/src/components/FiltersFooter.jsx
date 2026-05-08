@@ -33,13 +33,13 @@ function FiltersFooter({ layout, translator, filtersFootnoteString, footerStyle,
         data-testid="filters-footnote"
         justifyContent={isRtl ? 'flex-end' : 'flex-start'}
       >
-        <Grid item display="flex">
+        <Grid sx={{ display: 'flex' }}>
           <FilterIcon style={{ fontSize: '12px', color: footerStyle.color, margin: 'auto' }} />
           <ItalicText styles={{ ...styles, marginLeft: '2px' }}>
             {translator.get('Object.FiltersApplied')} &nbsp;
           </ItalicText>
         </Grid>
-        <Grid item display="flex">
+        <Grid sx={{ display: 'flex' }}>
           {filtersFootnoteLabels.map((filter) => (
             <Grid container wrap="nowrap" key={`${filter.field}-${filter.label}`}>
               <ItalicText styles={{ ...styles, fontWeight: 'bold' }}>{`${filter.field}:`}</ItalicText>
