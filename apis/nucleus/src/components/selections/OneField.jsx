@@ -90,7 +90,7 @@ export default function OneField({
     let SegmentsIndicator = null;
     if (!moreAlignTo) {
       Header = (
-        <Grid style={{ minWidth: 0, flexGrow: 1, opacity: selection.qLocked ? '0.3' : '' }}>
+        <Grid sx={{ flex: 1, minWidth: 0, opacity: selection.qLocked ? '0.3' : '' }}>
           <Typography noWrap style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 600 }}>
             {field.label}
           </Typography>

@@ -55,11 +55,11 @@ export default function Search({ onChange = () => {}, onEnter = () => {}, onEsca
   const placeholder = 'Search';
 
   return (
-    <StyledGrid className={classes.gridContainer} item container direction="row" alignItems="center">
-      <Grid item>
+    <StyledGrid className={classes.gridContainer} container direction="row" alignItems="center">
+      <Grid>
         <SearchIcon />
       </Grid>
-      <Grid className={classes.gridItem} item xs>
+      <Grid className={classes.gridItem} sx={{ flex: 1 }}>
         <TextField
           fullWidth
           autoFocus

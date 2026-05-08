@@ -208,7 +208,7 @@ export default function generateComponents(properties, changed, app, flags) {
   return (
     <StyledGrid container direction="column" gap={0} alignItems="stretch">
       {components.map((c) => (
-        <Grid item xs key={c.key} style={{ width: '100%' }}>
+        <Grid key={c.key} style={{ width: '100%' }}>
           <c.Component
             key={c.key}
             app={app}
