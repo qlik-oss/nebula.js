@@ -1,15 +1,6 @@
 import { renderHook, act } from '@testing-library/react';
-import * as ENIGMA from 'enigma.js';
-import * as SenseUtilities from 'enigma.js/sense-utilities';
-import qixSchema from 'enigma.js/schemas/12.2015.0.json';
 import { openAppSession } from '@qlik/api/qix';
 import { useOpenApp } from '../useOpenApp';
-import * as connectModule from '../../connect';
-import * as getCsrfToken from '../../utils/getCsrfToken';
-
-jest.mock('enigma.js');
-jest.mock('enigma.js/sense-utilities');
-jest.mock('../../utils/getCsrfToken', () => jest.fn());
 
 jest.mock('@qlik/api/qix', () => ({
   openAppSession: jest.fn(),
@@ -19,13 +10,7 @@ describe('useOpenApp()', () => {
   let renderResult;
   let app;
   let info;
-  let buildUrlMock;
 
-  let enigmaOpenDocMock;
-  let enigmaOpenMock;
-  let enigmaCreateMock;
-
-  let setHostConfigMock;
   let getDocMock;
   let appSessionMock;
 
@@ -41,26 +26,10 @@ describe('useOpenApp()', () => {
     appId = 'SOME_APP_ID';
 
     info = {};
-    buildUrlMock = jest.fn().mockReturnValue('ws://someGeneratedUrl:withPort');
-    jest.spyOn(SenseUtilities, 'buildUrl').mockImplementation(buildUrlMock);
-
-    enigmaOpenDocMock = jest.fn().mockReturnValue();
-    enigmaOpenMock = jest.fn().mockReturnValue({
-      openDoc: enigmaOpenDocMock,
-    });
-    enigmaCreateMock = jest.fn().mockReturnValue({
-      open: enigmaOpenMock,
-    });
-    jest.spyOn(ENIGMA, 'create').mockImplementation(enigmaCreateMock);
-
-    setHostConfigMock = jest.fn();
-    jest.spyOn(connectModule, 'setHostConfig').mockImplementation(setHostConfigMock);
 
     getDocMock = jest.fn().mockResolvedValue(undefined);
     appSessionMock = { getDoc: getDocMock };
     openAppSession.mockReturnValue(appSessionMock);
-
-    getCsrfToken.mockResolvedValue('A-CSRF-TOKEN');
   });
 
   afterEach(() => {
@@ -69,35 +38,40 @@ describe('useOpenApp()', () => {
   });
 
   test('should not try to open app if there was no info', async () => {
-    app = { isLocalApp: true };
-    enigmaOpenDocMock.mockReturnValue(app);
-
     await act(async () => {
       renderResult = renderHook(() => useOpenApp({ info: null }));
     });
 
-    expect(enigmaCreateMock).not.toHaveBeenCalled();
-    expect(enigmaOpenMock).not.toHaveBeenCalled();
-    expect(enigmaOpenDocMock).not.toHaveBeenCalled();
+    expect(openAppSession).not.toHaveBeenCalled();
+    expect(renderResult.result.current).toEqual({
+      waiting: true,
+      setApp: expect.any(Function),
+      app: null,
+    });
   });
 
-  test('should return expected result from hook when trying to connect with localhost', async () => {
+  test('should call openAppSession with noauth hostConfig when connecting with local engine', async () => {
     app = { isLocalApp: true };
-    enigmaOpenDocMock.mockReturnValue(app);
+    getDocMock.mockResolvedValue(app);
     info = {
-      enigma: {
-        appId: 'someAppID',
+      engine: {
+        appId,
+        host: 'localhost',
+        port: 9076,
+        secure: false,
       },
     };
+
     await act(async () => {
       renderResult = renderHook(() => useOpenApp({ info }));
     });
 
-    expect(enigmaCreateMock).toHaveBeenCalledTimes(1);
-    expect(enigmaCreateMock).toHaveBeenCalledWith({ schema: qixSchema, url: 'ws://someGeneratedUrl:withPort' });
-    expect(enigmaOpenMock).toHaveBeenCalledTimes(1);
-    expect(enigmaOpenDocMock).toHaveBeenCalledTimes(1);
-    expect(enigmaOpenDocMock).toHaveBeenCalledWith(info.enigma.appId);
+    expect(openAppSession).toHaveBeenCalledTimes(1);
+    expect(openAppSession).toHaveBeenCalledWith({
+      appId,
+      hostConfig: { authType: 'noauth', host: 'http://localhost:9076' },
+    });
+    expect(getDocMock).toHaveBeenCalledTimes(1);
     expect(renderResult.result.current).toEqual({
       waiting: false,
       setApp: expect.any(Function),
@@ -105,17 +79,40 @@ describe('useOpenApp()', () => {
     });
   });
 
-  test('should call setHostConfig and openAppSession when connecting with web integration id', async () => {
+  test('should call openAppSession with noauth hostConfig when connecting with secure local engine', async () => {
+    app = { isLocalApp: true };
+    getDocMock.mockResolvedValue(app);
+    info = {
+      engine: {
+        appId,
+        host: 'myengine.internal',
+      },
+    };
+
+    await act(async () => {
+      renderResult = renderHook(() => useOpenApp({ info }));
+    });
+
+    expect(openAppSession).toHaveBeenCalledWith({
+      appId,
+      hostConfig: { authType: 'noauth', host: 'https://myengine.internal' },
+    });
+  });
+
+  test('should call openAppSession with cookie hostConfig when connecting with web integration id', async () => {
     app = { isSDEwithIntegrationId: true };
     getDocMock.mockResolvedValue(app);
-    info = { webIntegrationId, enigma: { appId, host } };
+    info = { webIntegrationId, engine: { appId, host } };
 
     await act(async () => {
       renderResult = renderHook(() => useOpenApp({ info }));
     });
 
-    expect(setHostConfigMock).toHaveBeenCalledWith({ webIntegrationId, clientId: undefined, host });
-    expect(openAppSession).toHaveBeenCalledWith({ appId });
+    expect(openAppSession).toHaveBeenCalledTimes(1);
+    expect(openAppSession).toHaveBeenCalledWith({
+      appId,
+      hostConfig: { authType: 'cookie', webIntegrationId, host },
+    });
     expect(getDocMock).toHaveBeenCalledTimes(1);
     expect(renderResult.result.current).toEqual({
       waiting: false,
@@ -124,22 +121,45 @@ describe('useOpenApp()', () => {
     });
   });
 
-  test('should call setHostConfig and openAppSession when connecting with client id', async () => {
+  test('should call openAppSession with oauth2 hostConfig when connecting with client id', async () => {
     app = { isSDEwithClientId: true };
     getDocMock.mockResolvedValue(app);
-    info = { clientId, enigma: { appId, host } };
+    info = { clientId, engine: { appId, host } };
 
     await act(async () => {
       renderResult = renderHook(() => useOpenApp({ info }));
     });
 
-    expect(setHostConfigMock).toHaveBeenCalledWith({ webIntegrationId: undefined, clientId, host });
-    expect(openAppSession).toHaveBeenCalledWith({ appId });
+    expect(openAppSession).toHaveBeenCalledTimes(1);
+    expect(openAppSession).toHaveBeenCalledWith({
+      appId,
+      hostConfig: {
+        authType: 'oauth2',
+        clientId,
+        host,
+        redirectUri: `${window.location.origin}/auth/login/callback`,
+        accessTokenStorage: 'session',
+      },
+    });
     expect(getDocMock).toHaveBeenCalledTimes(1);
     expect(renderResult.result.current).toEqual({
       waiting: false,
       setApp: expect.any(Function),
       app,
     });
+  });
+
+  test('should throw if appId is missing', async () => {
+    info = { engine: { host } };
+    const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+
+    await act(async () => {
+      renderResult = renderHook(() => useOpenApp({ info }));
+    });
+
+    expect(openAppSession).not.toHaveBeenCalled();
+    expect(consoleSpy).toHaveBeenCalled();
+    expect(renderResult.result.current.app).toBeNull();
+    consoleSpy.mockRestore();
   });
 });

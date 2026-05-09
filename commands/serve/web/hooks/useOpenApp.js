@@ -1,10 +1,5 @@
 import { useState, useEffect } from 'react';
-import enigma from 'enigma.js';
-import qixSchema from 'enigma.js/schemas/12.2015.0.json';
-import SenseUtilities from 'enigma.js/sense-utilities';
 import { openAppSession } from '@qlik/api/qix';
-import { setHostConfig } from '../connect';
-import getCsrfToken from '../utils/getCsrfToken';
 
 export const useOpenApp = ({ info }) => {
   const [app, setApp] = useState(null);
@@ -21,21 +16,37 @@ export const useOpenApp = ({ info }) => {
 
   const handleOpenApp = async () => {
     try {
-      const { clientId, webIntegrationId, enigma: enigmaInfo = null, enigma: { host } = {} } = info;
+      const { clientId, webIntegrationId, engine: engineConfig = null, engine: { host } = {} } = info;
+      const appId = info?.engine?.appId;
+      if (!appId) throw new Error('Missing appId in connection info');
 
-      if (webIntegrationId || clientId) {
-        setHostConfig({ webIntegrationId, clientId, host });
-        const appId = info?.enigma?.appId;
-        if (!appId) throw new Error('Missing appId in connection info');
-        return openAppSession({ appId }).getDoc();
+      if (webIntegrationId) {
+        return openAppSession({
+          appId,
+          hostConfig: { authType: 'cookie', webIntegrationId, host },
+        }).getDoc();
       }
 
-      const csrfToken = await getCsrfToken(
-        `https://${enigmaInfo.host}${enigmaInfo.prefix ? `/${enigmaInfo.prefix}` : ''}`
-      );
-      const url = SenseUtilities.buildUrl({ ...enigmaInfo, ...{ urlParams: { 'qlik-csrf-token': csrfToken } } });
-      const enigmaGlobal = await enigma.create({ schema: qixSchema, url }).open();
-      return enigmaGlobal.openDoc(info?.enigma.appId);
+      if (clientId) {
+        return openAppSession({
+          appId,
+          hostConfig: {
+            authType: 'oauth2',
+            clientId,
+            host,
+            redirectUri: `${window.location.origin}/auth/login/callback`,
+            accessTokenStorage: 'session',
+          },
+        }).getDoc();
+      }
+
+      // Local / no-auth engine (e.g. qlik-core, docker engine)
+      const scheme = engineConfig.secure !== false ? 'https' : 'http';
+      const localHost = `${scheme}://${engineConfig.host}${engineConfig.port ? `:${engineConfig.port}` : ''}`;
+      return openAppSession({
+        appId,
+        hostConfig: { authType: 'noauth', host: localHost },
+      }).getDoc();
     } catch (error) {
       throw new Error('Failed to open app!', { cause: error });
     }

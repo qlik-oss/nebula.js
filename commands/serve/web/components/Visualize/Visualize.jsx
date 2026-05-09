@@ -273,7 +273,7 @@ export default function Visualize() {
                           <Home style={{ verticalAlign: 'middle' }} />
                         </IconButton>
                       </Grid>
-                      <Grid sx={{ minWidth: 0 }}>
+                      <Grid sx={{ minWidth: 0, flex: 1 }}>
                         <Tabs value={objectListMode ? 1 : 0} onChange={handleCreateEditChange} aria-label="Navigation">
                           <Tab label={<Typography>Create</Typography>} value={0} />
                           <Tab label={<Typography>Edit</Typography>} value={1} />

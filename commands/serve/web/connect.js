@@ -1,6 +1,5 @@
 import enigma from 'enigma.js';
 import qixSchema from 'enigma.js/schemas/12.2015.0.json';
-import SenseUtilities from 'enigma.js/sense-utilities';
 import auth from '@qlik/api/auth';
 import { getItems } from '@qlik/api/items';
 import { openAppSession } from '@qlik/api/qix';
@@ -66,7 +65,7 @@ const parseEngineURL = (url) => {
     };
   }
   return {
-    enigma: {
+    engine: {
       secure: match[1] === 'wss',
       host: match[2],
       port: match[3] || undefined,
@@ -95,8 +94,8 @@ const getConnectionInfo = () =>
       } else if (params.app) {
         info = {
           ...info,
-          enigma: {
-            ...info.enigma,
+          engine: {
+            ...info.engine,
             appId: params.app,
           },
         };
@@ -110,7 +109,7 @@ const getConnectionInfo = () =>
       if (info.invalid) {
         return info;
       }
-      const rootPath = `${info.enigma.secure ? 'https' : 'http'}://${info.enigma.host}`;
+      const rootPath = `${info.engine.secure ? 'https' : 'http'}://${info.engine.host}`;
       return {
         ...info,
         rootPath,
@@ -146,8 +145,8 @@ const connect = async () => {
     const {
       clientId,
       webIntegrationId,
-      enigma: enigmaInfo,
-      enigma: { host },
+      engine: engineConfig,
+      engine: { host },
     } = await getConnectionInfo();
 
     if (webIntegrationId) {
@@ -167,13 +166,12 @@ const connect = async () => {
     }
 
     const csrfToken = await getCsrfToken(
-      `https://${enigmaInfo.host}${enigmaInfo.prefix ? `/${enigmaInfo.prefix}` : ''}`
+      `https://${engineConfig.host}${engineConfig.prefix ? `/${engineConfig.prefix}` : ''}`
     );
-    const url = SenseUtilities.buildUrl({
-      secure: false,
-      ...enigmaInfo,
-      ...{ urlParams: { 'qlik-csrf-token': csrfToken } },
-    });
+    const scheme = engineConfig.secure !== false ? 'wss' : 'ws';
+    const port = engineConfig.port ? `:${engineConfig.port}` : '';
+    const prefix = engineConfig.prefix ? `/${engineConfig.prefix}` : '';
+    const url = `${scheme}://${engineConfig.host}${port}${prefix}?qlik-csrf-token=${csrfToken}`;
 
     return enigma.create({ schema: qixSchema, url }).open();
   } catch (error) {
@@ -186,18 +184,37 @@ const openApp = async (id) => {
     const {
       clientId,
       webIntegrationId,
-      enigma: enigmaInfo,
-      enigma: { host },
+      engine: engineConfig,
+      engine: { host },
     } = await getConnectionInfo();
 
-    if (webIntegrationId || clientId) {
-      setHostConfig({ webIntegrationId, clientId, host });
-      return openAppSession({ appId: id }).getDoc();
+    if (webIntegrationId) {
+      return openAppSession({
+        appId: id,
+        hostConfig: { authType: 'cookie', webIntegrationId, host },
+      }).getDoc();
     }
 
-    const url = SenseUtilities.buildUrl(enigmaInfo);
-    const enigmaGlobal = await enigma.create({ schema: qixSchema, url }).open();
-    return enigmaGlobal.openDoc(id);
+    if (clientId) {
+      return openAppSession({
+        appId: id,
+        hostConfig: {
+          authType: 'oauth2',
+          clientId,
+          host,
+          redirectUri: `${window.location.origin}/auth/login/callback`,
+          accessTokenStorage: 'session',
+        },
+      }).getDoc();
+    }
+
+    // Local / no-auth engine (e.g. qlik-core, docker engine)
+    const scheme = engineConfig.secure !== false ? 'https' : 'http';
+    const localHost = `${scheme}://${engineConfig.host}${engineConfig.port ? `:${engineConfig.port}` : ''}`;
+    return openAppSession({
+      appId: id,
+      hostConfig: { authType: 'noauth', host: localHost },
+    }).getDoc();
   } catch (error) {
     throw new Error('Failed to open app!', { cause: error });
   }
