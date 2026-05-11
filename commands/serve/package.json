@@ -34,9 +34,7 @@
     "build": "cross-env NODE_ENV=production DEFAULTS=true webpack --config ./lib/webpack.build.js",
     "build:dev": "cross-env NODE_ENV=development DEFAULTS=true webpack --config ./lib/webpack.build.js",
     "lint": "eslint web",
-    "prepublishOnly": "rm -rf dist && yarn run build",
-    "test:visual": "playwright test --config test/playwright.config.js",
-    "test:visual:update": "playwright test --config test/playwright.config.js --update-snapshots"
+    "prepublishOnly": "rm -rf dist && yarn run build"
   },
   "dependencies": {
     "@nebula.js/cli-build": "^6.8.0",
