@@ -256,7 +256,7 @@ export default function Visualize() {
                     style={{ background: theme.palette.background.paper, boxShadow: theme.shadows[1] }}
                   >
                     <Grid container gap={1}>
-                      <Grid item container alignItems="center" style={{ width: 'auto' }}>
+                      <Grid item container alignItems="center">
                         <Grid item>
                           <a href="https://github.com/qlik-oss/nebula.js" target="_blank" rel="noopener noreferrer">
                             <img
@@ -268,18 +268,18 @@ export default function Visualize() {
                           </a>
                         </Grid>
                       </Grid>
-                      <Grid item container alignItems="center" style={{ width: 'auto' }}>
+                      <Grid item container alignItems="center">
                         <IconButton title="Home" onClick={() => navigate('/')} size="large">
                           <Home style={{ verticalAlign: 'middle' }} />
                         </IconButton>
                       </Grid>
-                      <Grid sx={{ minWidth: 0, flex: 1 }}>
+                      <Grid>
                         <Tabs value={objectListMode ? 1 : 0} onChange={handleCreateEditChange} aria-label="Navigation">
                           <Tab label={<Typography>Create</Typography>} value={0} />
                           <Tab label={<Typography>Edit</Typography>} value={1} />
                         </Tabs>
                       </Grid>
-                      <Grid item container alignItems="center" style={{ width: 'auto' }}>
+                      <Grid item container alignItems="center" offset={{ md: 'auto' }}>
                         <Grid item gap={1}>
                           <Typography>State:</Typography>
                         </Grid>
