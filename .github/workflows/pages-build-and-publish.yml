@@ -3,7 +3,7 @@ name: Build And Publish Pages
 on:
   push:
     branches:
-      - alpha/v7
+      - main
   workflow_dispatch:
 
 permissions:
@@ -172,7 +172,7 @@ jobs:
           path: gh-pages
 
   deploy:
-    if: github.ref == 'refs/heads/alpha/v7'
+    if: github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-latest
     environment:
