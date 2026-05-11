@@ -3826,7 +3826,7 @@ __metadata:
     "@nebula.js/stardust": "npm:^6.8.0"
     "@nebula.js/ui": "npm:^6.8.0"
     "@playwright/test": "npm:^1.49.0"
-    "@qlik/api": "npm:^2.7.0"
+    "@qlik/api": "npm:^2.8.0"
     autosuggest-highlight: "npm:3.3.4"
     babel-loader: "npm:10.1.1"
     body-parser: "npm:2.2.2"
@@ -4949,7 +4949,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@qlik/api@npm:2.8.0, @qlik/api@npm:^2.7.0":
+"@qlik/api@npm:2.8.0, @qlik/api@npm:^2.8.0":
   version: 2.8.0
   resolution: "@qlik/api@npm:2.8.0"
   dependencies:
