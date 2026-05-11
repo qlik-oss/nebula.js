@@ -225,6 +225,7 @@ export default function Visualize() {
     const v = currentThemeName === 'dark' ? 'light' : 'dark';
     storage.save('themeName', v);
     setCurrentThemeName(v);
+    setCurrentMuiThemeName(v);
   };
 
   const handleCreateEditChange = (e, newValue) => {
