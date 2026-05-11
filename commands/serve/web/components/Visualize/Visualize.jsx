@@ -253,7 +253,11 @@ export default function Visualize() {
                 <Grid item>
                   <Toolbar
                     variant="dense"
-                    style={{ background: theme.palette.background.paper, boxShadow: theme.shadows[1] }}
+                    style={{
+                      background: theme.palette.background.paper,
+                      boxShadow: theme.shadows[1],
+                      width: `calc(100% - 48px)`,
+                    }}
                   >
                     <Grid container gap={1}>
                       <Grid item container alignItems="center">
