@@ -6,8 +6,13 @@ export default defineConfig({
   testDir: './e2e',
   timeout: 60000,
 
+  // Store snapshots without a platform suffix so the same baselines work on
+  // macOS (local dev) and Linux (CI). The threshold is slightly raised from
+  // the default to absorb minor cross-platform font-rendering differences.
+  snapshotPathTemplate: '{testDir}/{testFilePath}-snapshots/{arg}{ext}',
+
   expect: {
-    toMatchSnapshot: { threshold: 0.002 },
+    toMatchSnapshot: { threshold: 0.01 },
     timeout: 30000,
   },
 
