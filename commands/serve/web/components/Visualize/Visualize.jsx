@@ -259,7 +259,7 @@ export default function Visualize() {
                       width: `calc(100% - 48px)`,
                     }}
                   >
-                    <Grid container gap={1}>
+                    <Grid container gap={1} style={{ width: '100%' }}>
                       <Grid item container alignItems="center">
                         <Grid item>
                           <a href="https://github.com/qlik-oss/nebula.js" target="_blank" rel="noopener noreferrer">

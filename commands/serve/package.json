@@ -34,7 +34,9 @@
     "build": "cross-env NODE_ENV=production DEFAULTS=true webpack --config ./lib/webpack.build.js",
     "build:dev": "cross-env NODE_ENV=development DEFAULTS=true webpack --config ./lib/webpack.build.js",
     "lint": "eslint web",
-    "prepublishOnly": "rm -rf dist && yarn run build"
+    "prepublishOnly": "rm -rf dist && yarn run build",
+    "test:visual": "playwright test --config test/playwright.config.js",
+    "test:visual:update": "playwright test --config test/playwright.config.js --update-snapshots"
   },
   "dependencies": {
     "@nebula.js/cli-build": "^6.8.0",
@@ -57,6 +59,7 @@
     "yargs": "18.0.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.49.0",
     "@babel/core": "7.29.0",
     "@babel/preset-env": "7.29.2",
     "@babel/preset-react": "7.28.5",
