@@ -131,6 +131,24 @@ export default defineConfig([
     },
   },
   {
+    // Playwright e2e / visual tests and their helpers
+    files: ['commands/serve/test/**/*.{js,jsx}'],
+
+    languageOptions: {
+      ecmaVersion: 2022, // top-level await in server.js
+      globals: {
+        ...globals.node,
+      },
+    },
+
+    rules: {
+      'import/no-extraneous-dependencies': 0,
+      'import/extensions': 0,
+      'import/prefer-default-export': 0,
+      'no-use-before-define': 0,
+    },
+  },
+  {
     files: ['**/*.{int,comp,spec}.{js,jsx}'],
 
     plugins: {

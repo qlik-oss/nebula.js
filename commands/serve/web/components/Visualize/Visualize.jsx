@@ -225,6 +225,7 @@ export default function Visualize() {
     const v = currentThemeName === 'dark' ? 'light' : 'dark';
     storage.save('themeName', v);
     setCurrentThemeName(v);
+    setCurrentMuiThemeName(v);
   };
 
   const handleCreateEditChange = (e, newValue) => {
@@ -253,9 +254,13 @@ export default function Visualize() {
                 <Grid item>
                   <Toolbar
                     variant="dense"
-                    style={{ background: theme.palette.background.paper, boxShadow: theme.shadows[1] }}
+                    style={{
+                      background: theme.palette.background.paper,
+                      boxShadow: theme.shadows[1],
+                      width: `calc(100% - 48px)`,
+                    }}
                   >
-                    <Grid container gap={1}>
+                    <Grid container gap={1} style={{ width: '100%' }}>
                       <Grid item container alignItems="center">
                         <Grid item>
                           <a href="https://github.com/qlik-oss/nebula.js" target="_blank" rel="noopener noreferrer">

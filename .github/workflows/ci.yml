@@ -153,6 +153,22 @@ jobs:
           path: test/rendering/reports/xml/*.xml
           reporter: jest-junit
           fail-on-error: false
+      - name: Test visual (serve /dev route)
+        env:
+          SERVE_TEST_PORT: 8700
+          CI: 'true'
+        # --update-snapshots=missing writes baselines that don't exist yet
+        # (first run on a new platform) without overwriting existing ones.
+        # Existing baselines are still compared normally, so regressions fail.
+        run: npx playwright test --config=./commands/serve/test/playwright.config.js --update-snapshots=missing
+      - name: Upload visual snapshots
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: visual-snapshots
+          # Upload the full snapshot directory so newly-generated linux baselines
+          # (*-linux.png) can be downloaded, reviewed, and committed to the repo.
+          path: commands/serve/test/e2e/dev-route.spec.js-snapshots
 
   test-create:
     runs-on: ubuntu-latest

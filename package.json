@@ -21,6 +21,8 @@
     "test:rendering": "playwright test --config=./test/rendering/playwright.config.rendering.js --quiet",
     "test:integration": "playwright test test/integration",
     "test:component": "playwright test test/component",
+    "test:visual": "playwright test --config=./commands/serve/test/playwright.config.js",
+    "test:visual:update": "playwright test --config=./commands/serve/test/playwright.config.js --update-snapshots",
     "prepare": "husky install"
   },
   "repository": {
