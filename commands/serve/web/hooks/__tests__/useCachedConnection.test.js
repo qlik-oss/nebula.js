@@ -76,7 +76,7 @@ describe('useCachedConnection()', () => {
 
       // remove and then check again
       const { addCachedConnections } = renderResult.result.current;
-      info = { enigma: { secure: false, host: 'localhost', port: 9000 } };
+      info = { engine: { secure: false, host: 'localhost', port: 9000 } };
       await act(() => addCachedConnections({ info }));
       expect(storageSave).toHaveBeenCalledTimes(1);
       expect(storageSave).toHaveBeenCalledWith('connections', [...cachedConn, 'ws://localhost:9000']);
@@ -94,7 +94,7 @@ describe('useCachedConnection()', () => {
 
       // remove and then check again
       const { addCachedConnections } = renderResult.result.current;
-      info = { enigma: { secure: true, host: engineUrl }, webIntegrationId };
+      info = { engine: { secure: true, host: engineUrl }, webIntegrationId };
       await act(() => addCachedConnections({ info }));
       expect(storageSave).toHaveBeenCalledTimes(1);
       expect(storageSave).toHaveBeenCalledWith('connections', [
@@ -118,7 +118,7 @@ describe('useCachedConnection()', () => {
 
       // remove and then check again
       const { addCachedConnections } = renderResult.result.current;
-      info = { enigma: { secure: true, host: engineUrl }, clientId };
+      info = { engine: { secure: true, host: engineUrl }, clientId };
       await act(() => addCachedConnections({ info }));
       expect(storageSave).toHaveBeenCalledTimes(1);
       expect(storageSave).toHaveBeenCalledWith('connections', [

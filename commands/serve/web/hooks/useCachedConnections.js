@@ -15,9 +15,9 @@ export const useCachedConnections = ({ storage }) => {
 
   const addCachedConnections = ({ info }) => {
     let url = '';
-    const protocol = info.enigma.secure ? 'wss' : 'ws';
-    const host = info.enigma.host === 'localhost' ? `${info.enigma.host}:${info.enigma.port}` : info.enigma.host;
-    const prefix = info.enigma.prefix ? `/${info.enigma.prefix}` : '';
+    const protocol = info.engine.secure ? 'wss' : 'ws';
+    const host = info.engine.host === 'localhost' ? `${info.engine.host}:${info.engine.port}` : info.engine.host;
+    const prefix = info.engine.prefix ? `/${info.engine.prefix}` : '';
     const engineUrl = `${protocol}://${host}${prefix}`;
 
     if (info.clientId) {

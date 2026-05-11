@@ -148,7 +148,7 @@ export default async ({
       app.get('/info', (req, res) => {
         res.set(devServer.options.headers);
         res.json({
-          enigma: enigmaConfig,
+          engine: enigmaConfig,
           clientId,
           webIntegrationId,
           isClientIdProvided: Boolean(clientId),
