@@ -1,5 +1,4 @@
 const path = require('path');
-const serve = require('@nebula.js/cli-serve');
 const { test, expect } = require('@playwright/test');
 
 const snSelector = '.njs-viz';
@@ -7,8 +6,10 @@ const snSelector = '.njs-viz';
 test.describe('hooks', () => {
   let s;
   let page;
+  let serve;
 
   test.beforeAll(async ({ browser }) => {
+    ({ default: serve } = await import('@nebula.js/cli-serve'));
     s = await serve({
       entry: path.resolve(__dirname, 'sn-hooks'),
       config: 'nebula.config.cjs',

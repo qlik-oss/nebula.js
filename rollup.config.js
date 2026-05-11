@@ -121,6 +121,9 @@ const config = ({ format = 'umd', debug = false, file, targetPkg }) => {
       if (warning.code === 'CIRCULAR_DEPENDENCY' && warning.message.includes(`node_modules/semver`)) {
         return;
       }
+      if (warning.code === 'CIRCULAR_DEPENDENCY' && warning.message.includes(`node_modules/@qlik/api`)) {
+        return;
+      }
       warn(warning);
     },
     input: path.resolve(cwd, 'src', 'index'),

@@ -33,17 +33,17 @@ const StyledGrid = styled(Grid)(() => ({
 export function Cancel({ cancel, translator, ...props }) {
   return (
     <>
-      <StyledGrid container item direction="column" alignItems="center" gap={2}>
-        <Grid item>
+      <StyledGrid container direction="column" alignItems="center" gap={2}>
+        <Grid>
           <Progress />
         </Grid>
-        <Grid item>
+        <Grid>
           <Typography variant="h6" align="center" data-tid="update-active">
             {translator.get('Object.Update.Active')}
           </Typography>
         </Grid>
       </StyledGrid>
-      <Grid item {...props}>
+      <Grid {...props}>
         <Button variant="contained" onClick={cancel}>
           {translator.get('Cancel')}
         </Button>
@@ -55,15 +55,15 @@ export function Cancel({ cancel, translator, ...props }) {
 export function Retry({ retry, translator, ...props }) {
   return (
     <>
-      <Grid item>
+      <Grid>
         <WarningTriangle style={{ fontSize: '38px' }} />
       </Grid>
-      <Grid item>
+      <Grid>
         <Typography variant="h6" align="center" data-tid="update-cancelled">
           {translator.get('Object.Update.Cancelled')}
         </Typography>
       </Grid>
-      <Grid item>
+      <Grid>
         <Button variant="contained" onClick={retry} {...props}>
           {translator.get('Retry')}
         </Button>

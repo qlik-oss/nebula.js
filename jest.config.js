@@ -58,7 +58,8 @@ const config = {
   moduleNameMapper: {
     'd3-color': '<rootDir>/node_modules/d3-color/dist/d3-color.min.js',
   },
-  modulePathIgnorePatterns: ['<rootDir>/local-dev/.*/.yalc/'],
+  modulePathIgnorePatterns: ['<rootDir>/local-dev/.*/.yalc/', '<rootDir>/.claude/'],
+  testPathIgnorePatterns: ['/node_modules/', '<rootDir>/commands/serve/test/e2e/'],
 };
 
 export default config;

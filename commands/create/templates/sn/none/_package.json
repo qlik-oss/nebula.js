@@ -10,7 +10,7 @@
   "keywords": ["qlik", "nebula", "stardust"],
   "files": ["dist"],
   "engines": {
-    "node": ">=18.10.0"
+    "node": ">=24.0.0"
   },
   "main": "dist/<%= name %>.js",
   "module": "dist/<%= name %>.esm.js",
@@ -28,7 +28,6 @@
     "@nebula.js/cli-serve": "<%= nebulaVersion %>",
     "@nebula.js/cli-sense": "<%= nebulaVersion %>",
     "@playwright/test": "^1.59.1",
-    "@qlik/sdk": "^0.28.0",
     "eslint": "8.57.1",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.32.0",

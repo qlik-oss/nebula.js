@@ -13,8 +13,8 @@ module.exports = async () => {
 
   const args = yargs(process.argv.slice(2)).argv;
 
-  // eslint-disable-next-line
-  snapshooter = require('@nebula.js/cli-serve/lib/snapshot-server')({
+  const { default: createSnapshooter } = await import('@nebula.js/cli-serve/lib/snapshot-server');
+  snapshooter = createSnapshooter({
     snapshotUrl: `${url}/snaps/single.html`,
     chrome: args.chrome || {},
   });

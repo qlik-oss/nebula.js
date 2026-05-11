@@ -40,7 +40,6 @@ function Footer({ layout, titleStyles = {}, translator, flags, isCardTheme, isRt
   return layout && layout.showTitles && (layout.footnote || showFilters) ? (
     <StyledGrid container>
       <Grid
-        item
         className={classes.itemStyle}
         data-testid={CellFooter.className}
         sx={{ paddingTop: (theme) => (themePaddingEnabled ? paddingTop : theme.spacing(1)) }}

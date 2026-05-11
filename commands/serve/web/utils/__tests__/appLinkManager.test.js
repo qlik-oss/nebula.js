@@ -23,7 +23,7 @@ describe('getAppLink()', () => {
   });
 
   test('should call navigate to correct engine url from localhost', async () => {
-    info = { engineUrl: 'ws://localhost:1234', enigma: { secure: false, host: 'localhost', port: 1234 } };
+    info = { engineUrl: 'ws://localhost:1234', engine: { secure: false, host: 'localhost', port: 1234 } };
     location.search = `engine_url=${info.engineUrl}`;
     await getAppLink({ navigate, location, info, targetApp });
 
@@ -36,7 +36,7 @@ describe('getAppLink()', () => {
   test('should call navigate to correct engine url from localhost without prefix', async () => {
     info = {
       engineUrl: 'ws://localhost:1234',
-      enigma: { secure: false, host: 'localhost', port: 1234, prefix: undefined },
+      engine: { secure: false, host: 'localhost', port: 1234, prefix: undefined },
     };
 
     getCsrfToken.mockResolvedValue(null);
@@ -50,7 +50,7 @@ describe('getAppLink()', () => {
   test('should call navigate to correct engine url with prefix', async () => {
     info = {
       engineUrl: 'ws://localhost:1234/prefix',
-      enigma: { secure: false, host: 'localhost', port: 1234, prefix: 'prefix' },
+      engine: { secure: false, host: 'localhost', port: 1234, prefix: 'prefix' },
     };
     location.search = `engine_url=${info.engineUrl}`;
     await getAppLink({ navigate, location, info, targetApp });
@@ -64,7 +64,7 @@ describe('getAppLink()', () => {
   test('should call navigate to correct engine url from remote SDE', async () => {
     info = {
       engineUrl: 'wss://some-remote.sde.in.eu.qlikdev.com',
-      enigma: { secure: true, host: 'some-remote.sde.in.eu.qlikdev.com' },
+      engine: { secure: true, host: 'some-remote.sde.in.eu.qlikdev.com' },
     };
     getCsrfToken.mockResolvedValue(null);
     location.search = `engine_url=${info.engineUrl}`;
@@ -77,7 +77,7 @@ describe('getAppLink()', () => {
   test('should remove `shouldFetchAppList` if it was in search', async () => {
     info = {
       engineUrl: 'wss://some-remote.sde.in.eu.qlikdev.com',
-      enigma: { secure: true, host: 'some-remote.sde.in.eu.qlikdev.com' },
+      engine: { secure: true, host: 'some-remote.sde.in.eu.qlikdev.com' },
     };
     getCsrfToken.mockResolvedValue(null);
     location.search = `engine_url=${info.engineUrl}&shouldFetchAppList=true`;

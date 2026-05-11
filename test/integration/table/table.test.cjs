@@ -1,13 +1,14 @@
 const path = require('path');
-const serve = require('@nebula.js/cli-serve');
 const { test, expect } = require('@playwright/test');
 
 const content = '.simple-table';
 
 test.describe('Table visualization', () => {
   let s;
+  let serve;
 
   test.beforeAll(async () => {
+    ({ default: serve } = await import('@nebula.js/cli-serve'));
     s = await serve({
       entry: path.resolve(__dirname, 'sn-table'),
       config: 'nebula.config.cjs',

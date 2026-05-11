@@ -7,7 +7,7 @@ export default function useProperties(model) {
     if (model) {
       const onChanged = () => {
         model.getProperties().then((props) => {
-          setProps(props);
+          setProps({ ...props });
         });
       };
       model.on('changed', onChanged);
@@ -17,6 +17,6 @@ export default function useProperties(model) {
       };
     }
     return () => {};
-  }, [model]);
+  }, [model, setProps]);
   return [properties, (p) => model.setProperties(p)];
 }

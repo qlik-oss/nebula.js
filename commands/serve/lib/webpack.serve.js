@@ -1,22 +1,24 @@
-/* eslint-disable global-require, no-console */
-const path = require('path');
-const fs = require('fs');
-const homedir = require('os').homedir();
-const chalk = require('chalk');
-const express = require('express');
+/* eslint-disable no-console, import/extensions */
+import path from 'path';
+import fs from 'fs';
+import { homedir } from 'os';
+import { fileURLToPath } from 'url';
+import chalk from 'chalk';
+import express from 'express';
 
-const webpack = require('webpack');
-const WebpackDevServer = require('webpack-dev-server');
+import webpack from 'webpack';
+import WebpackDevServer from 'webpack-dev-server';
 
-const snapshooterFn = require('./snapshot-server');
-const snapshotRouter = require('./snapshot-router');
+import snapshooterFn from './snapshot-server.js';
+import snapshotRouter from './snapshot-router.js';
 
-const { OAuthRouter, getAvailableAuthInstance } = require('./oauth-router');
+const moduleDir = path.dirname(fileURLToPath(import.meta.url));
+const homeDir = homedir();
 
-const httpsKeyPath = path.join(homedir, '.certs/key.pem');
-const httpsCertPath = path.join(homedir, '.certs/cert.pem');
+const httpsKeyPath = path.join(homeDir, '.certs/key.pem');
+const httpsCertPath = path.join(homeDir, '.certs/cert.pem');
 
-module.exports = async ({
+export default async ({
   host,
   port,
   disableHostCheck,
@@ -53,7 +55,6 @@ module.exports = async ({
     snapshooter.storeSnapshot(s);
   });
 
-  const authRouter = OAuthRouter({ originUrl: url });
   const snapRouter = snapshotRouter({
     base: `${url}${snapshotRoute}`,
     snapshotUrl: `${url}/eRender.html`,
@@ -64,8 +65,8 @@ module.exports = async ({
   const renderConfigs = serveConfig.renderConfigs || [];
 
   if (dev) {
-    const webpackConfig = require('./webpack.build');
-    const srcDir = path.resolve(__dirname, '../web');
+    const webpackConfig = (await import('./webpack.build.js')).default;
+    const srcDir = path.resolve(moduleDir, '../web');
     const distDir = path.resolve(srcDir, '../dist');
     contentBase = distDir;
     config = webpackConfig({
@@ -75,8 +76,8 @@ module.exports = async ({
       serveConfig,
     });
   } else {
-    const webpackConfig = require('./webpack.prod');
-    const srcDir = path.resolve(__dirname, '../dist');
+    const webpackConfig = (await import('./webpack.prod.js')).default;
+    const srcDir = path.resolve(moduleDir, '../dist');
     contentBase = srcDir;
     config = webpackConfig({
       srcDir,
@@ -97,6 +98,9 @@ module.exports = async ({
     port,
     allowedHosts: disableHostCheck ? 'all' : 'auto',
     open,
+    // NOTE: historyApiFallback intentionally handles the @qlik/api OAuth2 callback at
+    // /auth/login/callback — the SPA is served for all paths and @qlik/api detects
+    // the authorization code in the URL to complete the token exchange client-side.
     historyApiFallback: true,
     // Disable nebula serve dev env when in MFE mode
     static: !serveConfig.mfe && {
@@ -108,7 +112,6 @@ module.exports = async ({
     setupMiddlewares(middlewares, devServer) {
       const { app } = devServer;
 
-      app.use('/auth', authRouter);
       app.use(snapshotRoute, snapRouter);
 
       if (entryWatcher) {
@@ -145,7 +148,7 @@ module.exports = async ({
       app.get('/info', (req, res) => {
         res.set(devServer.options.headers);
         res.json({
-          enigma: enigmaConfig,
+          engine: enigmaConfig,
           clientId,
           webIntegrationId,
           isClientIdProvided: Boolean(clientId),
@@ -165,23 +168,11 @@ module.exports = async ({
         });
       });
 
-      app.get('/apps', async (req, res) => {
-        const appsListUrl = `/items?resourceType=app&limit=30&sort=-updatedAt`;
-        const { data = [] } = await (await getAvailableAuthInstance().rest(appsListUrl)).json();
-        res.status(200).json(
-          data.map((d) => ({
-            qDocId: d.resourceId,
-            qTitle: d.name,
-          }))
-        );
-      });
-
       if (serveConfig.resources) {
         app.use('/resources', express.static(serveConfig.resources));
       }
 
-      app.use('/assets', express.static(path.resolve(__dirname, '../assets')));
-
+      app.use('/assets', express.static(path.resolve(moduleDir, '../assets')));
       return middlewares;
     },
     proxy: [
@@ -239,14 +230,32 @@ module.exports = async ({
       if (!initiated) {
         initiated = true;
 
-        console.log(`     _  _________  __  ____   ___
+        const banner = `
+     _  _________  __  ____   ___
     / |/ / __/ _ )/ / / / /  / _ |
    /    / _// _  / /_/ / /__/ __ |
   /_/|_/___/____/\\____/____/_/ |_|
-    / __/ __/ _ \\ | / / __/
-   _\\ \\/ _// , _/ |/ / _/
-  /___/___/_/|_||___/___/
-         `);
+      / __/ __/ _ \\ | / / __/
+     _\\ \\/ _// , _/ |/ / _/
+    /___/___/_/|_||___/___/
+         `;
+
+        const styledBanner = banner
+          .split('\n')
+          .map((line) => {
+            const trimmedLine = line.trimEnd();
+            if (!trimmedLine) {
+              return '';
+            }
+
+            const leadingWhitespace = trimmedLine.match(/^\s*/)[0];
+            const art = trimmedLine.slice(leadingWhitespace.length);
+            // Brand color for the nebula serve startup banner
+            return `${leadingWhitespace}${chalk.bgHex('#eee832').white(art)}`;
+          })
+          .join('\n');
+
+        console.log(styledBanner);
 
         if (serveConfig.mfe) {
           const bundleUrl = `${url}/pkg/${encodeURIComponent(snName)}`;

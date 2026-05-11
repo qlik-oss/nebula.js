@@ -1,6 +1,6 @@
 /* eslint no-param-reassign: 0 */
 
-const puppeteer = require('puppeteer');
+import puppeteer from 'puppeteer';
 
 function snapshooter({ snapshotUrl, chrome = {} } = {}) {
   const snapshots = {};
@@ -80,4 +80,5 @@ function snapshooter({ snapshotUrl, chrome = {} } = {}) {
     },
   };
 }
-module.exports = snapshooter;
+
+export default snapshooter;

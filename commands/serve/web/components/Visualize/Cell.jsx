@@ -222,7 +222,7 @@ export default function ({ id, expandable, minHeight }) {
               })}
             </IconButton>
           )}
-          <Grid item xs />
+          <Grid sx={{ flex: 1 }} />
           {expandable && (
             <IconButton
               title="Edit"
@@ -271,7 +271,7 @@ export default function ({ id, expandable, minHeight }) {
           )}
         </Toolbar>
       </Grid>
-      <Grid item xs style={{ ...activeStyle }} className={classes.drop}>
+      <Grid item xs style={{ ...activeStyle, flex: 1, minHeight: 0 }} className={classes.drop}>
         <Chart id={id} onLoad={onLoad} />
       </Grid>
     </StyledGrid>

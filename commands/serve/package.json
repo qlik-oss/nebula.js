@@ -2,6 +2,7 @@
   "name": "@nebula.js/cli-serve",
   "version": "6.8.0",
   "description": "",
+  "type": "module",
   "license": "MIT",
   "author": "QlikTech International AB",
   "keywords": [],
@@ -13,15 +14,21 @@
     "url": "https://github.com/qlik-oss/nebula.js.git"
   },
   "main": "lib/serve.js",
+  "exports": {
+    ".": "./lib/serve.js",
+    "./command.js": "./command.js",
+    "./lib/snapshot-server": "./lib/snapshot-server.js"
+  },
   "files": [
     "assets",
+    "BREAKING.md",
     "command.js",
     "data",
     "dist",
     "lib"
   ],
   "engines": {
-    "node": ">=18.10.0"
+    "node": ">=24.0.0"
   },
   "scripts": {
     "build": "cross-env NODE_ENV=production DEFAULTS=true webpack --config ./lib/webpack.build.js",
@@ -31,7 +38,7 @@
   },
   "dependencies": {
     "@nebula.js/cli-build": "^6.8.0",
-    "@qlik/sdk": "0.28.0",
+    "@qlik/api": "^2.7.0",
     "body-parser": "2.2.2",
     "chalk": "4.1.2",
     "chokidar": "5.0.0",
@@ -47,19 +54,20 @@
     "webpack-cli": "7.0.2",
     "webpack-dev-server": "5.2.3",
     "ws": "8.20.0",
-    "yargs": "17.7.2"
+    "yargs": "18.0.0"
   },
   "devDependencies": {
     "@babel/core": "7.29.0",
     "@babel/preset-env": "7.29.2",
     "@babel/preset-react": "7.28.5",
-    "@mui/material": "^6.5.0",
-    "@mui/system": "^6.5.0",
+    "@mui/material": "^7.3.9",
+    "@mui/system": "^7.3.9",
     "@nebula.js/enigma-mocker": "^6.8.0",
     "@nebula.js/nucleus": "^6.8.0",
     "@nebula.js/snapshooter": "^6.8.0",
     "@nebula.js/stardust": "^6.8.0",
     "@nebula.js/ui": "^6.8.0",
+    "@playwright/test": "^1.49.0",
     "autosuggest-highlight": "3.3.4",
     "babel-loader": "10.1.1",
     "d3-require": "1.3.0",

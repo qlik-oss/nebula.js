@@ -1,7 +1,7 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+import express from 'express';
+import bodyParser from 'body-parser';
 
-module.exports = function router({ base, snapshotUrl, snapshooter }) {
+export default function router({ base, snapshotUrl, snapshooter }) {
   const r = express.Router();
 
   r.use(
@@ -55,4 +55,4 @@ module.exports = function router({ base, snapshotUrl, snapshooter }) {
   });
 
   return r;
-};
+}

@@ -1,6 +1,9 @@
 /* eslint global-require: 0 */
 
-const fs = require('fs');
+import fs from 'fs';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
 
 const defaultFilename = 'nebula.config.js';
 const RX = new RegExp(`${defaultFilename.replace(/\./g, '\\.')}$`);
@@ -96,7 +99,7 @@ const options = {
   },
 };
 
-module.exports = (yargs) =>
+export default (yargs) =>
   yargs.options(options).config('config', (configPath) => {
     if (configPath === null) {
       return {};

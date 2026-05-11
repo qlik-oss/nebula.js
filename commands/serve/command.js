@@ -1,7 +1,8 @@
-const serve = require('./lib/serve');
-const init = require('./lib/init-config');
+/* eslint-disable import/extensions */
+import serve from './lib/serve.js';
+import init from './lib/init-config.js';
 
-module.exports = {
+export default {
   command: 'serve',
   desc: 'Start a development server',
   builder(yargs) {

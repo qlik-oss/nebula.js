@@ -9,7 +9,7 @@
 .vscode/
 .npmrc
 *.pem
-
+.claude/worktrees
 .pnp.*
 .yarn/*
 !.yarn/patches
@@ -39,3 +39,4 @@ storybook-static/
 test/rendering/reports
 test-results
 test/rendering/test/rendering/reports
+commands/serve/test/reports

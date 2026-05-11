@@ -9,8 +9,11 @@ window.serveFixtures = {
     const k = ['/', './'].some((v) => key.startsWith(v)) ? key : `./${key}`;
     let context;
     try {
-      // see: https://webpack.js.org/guides/dependency-management/#requirecontext
-      context = require.context('fixtures', true, /\.fix\.js$/);
+      // ESM-safe context API in webpack 5
+      context = import.meta.webpackContext('fixtures', {
+        recursive: true,
+        regExp: /\.fix\.js$/,
+      });
     } catch (_) {
       throw new Error('Specified "--fixturePath" does not exist');
     }

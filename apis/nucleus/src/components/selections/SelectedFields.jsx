@@ -128,7 +128,6 @@ export default function SelectedFields({ api, app }) {
     <Grid ref={containerRef} container gap={0} wrap="nowrap" style={{ height: '100%' }}>
       {more.length > 0 && (
         <Grid
-          item
           style={{
             position: 'relative',
             maxWidth: '98px',
@@ -142,7 +141,6 @@ export default function SelectedFields({ api, app }) {
       )}
       {items.map((s, index) => (
         <Grid
-          item
           // eslint-disable-next-line react/no-array-index-key
           key={`${s.states.join('::')}::${s.qField ?? s.name}${index}`}
           style={{

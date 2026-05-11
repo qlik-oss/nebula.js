@@ -78,8 +78,8 @@ function Header({ id, layout, sn, anchorEl, hovering, focusHandler, titleStyles 
     />
   );
   return (
-    <StyledGrid item container wrap="nowrap" className={cls.join(' ')}>
-      <Grid item zeroMinWidth xs dir={isRtl ? 'rtl' : 'ltr'}>
+    <StyledGrid container wrap="nowrap" className={cls.join(' ')}>
+      <Grid size="grow" sx={{ minWidth: 0 }} dir={isRtl ? 'rtl' : 'ltr'}>
         <Grid container wrap="nowrap" direction="column">
           {showTitle ? (
             <Tooltip title={layout.title}>
@@ -109,7 +109,7 @@ function Header({ id, layout, sn, anchorEl, hovering, focusHandler, titleStyles 
           )}
         </Grid>
       </Grid>
-      <Grid item>{Toolbar}</Grid>
+      <Grid>{Toolbar}</Grid>
     </StyledGrid>
   );
 }
