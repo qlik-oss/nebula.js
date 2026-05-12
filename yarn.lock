@@ -3846,7 +3846,7 @@ __metadata:
     puppeteer: "npm:24.40.0"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
-    react-router: "npm:7.14.0"
+    react-router: "npm:7.15.0"
     regenerator-runtime: "npm:0.14.1"
     source-map-loader: "npm:5.0.0"
     webpack: "npm:5.106.1"
@@ -16194,9 +16194,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router@npm:7.14.0":
-  version: 7.14.0
-  resolution: "react-router@npm:7.14.0"
+"react-router@npm:7.15.0":
+  version: 7.15.0
+  resolution: "react-router@npm:7.15.0"
   dependencies:
     cookie: "npm:^1.0.1"
     set-cookie-parser: "npm:^2.6.0"
@@ -16206,7 +16206,7 @@ __metadata:
   peerDependenciesMeta:
     react-dom:
       optional: true
-  checksum: 10c0/a496489973cd5e87dcc5c1c7312f4cc99463eb5e0a0f97b3f298467531b754a3227562a83e0c9019b9d2452fd0681d05882ee061af2e0cafb0818f857578b805
+  checksum: 10c0/ce27ff25a0a53afec7f24385be89b779efd9f04d84c5b90c6a8f3fbbac28fc2f8c5f1bb26aff0588d41a225482365997082808f9e098c565435fad09426de114
   languageName: node
   linkType: hard
 
