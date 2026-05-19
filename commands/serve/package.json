@@ -58,7 +58,7 @@
   },
   "devDependencies": {
     "@babel/core": "7.29.0",
-    "@babel/preset-env": "7.29.2",
+    "@babel/preset-env": "7.29.5",
     "@babel/preset-react": "7.28.5",
     "@mui/material": "^7.3.9",
     "@mui/system": "^7.3.9",
