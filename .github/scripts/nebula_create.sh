@@ -30,5 +30,11 @@ if [ "$BUILD" = "true" ]; then
   yarn run build
 fi
 if [ "$TEST" = "true" ]; then
+  echo "Installing Playwright browser for this generated project"
+  if [ "${CI:-false}" = "true" ]; then
+    yarn playwright install chromium --with-deps
+  else
+    yarn playwright install chromium
+  fi
   yarn run test:e2e
 fi
