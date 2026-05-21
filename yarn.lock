@@ -3881,9 +3881,9 @@ __metadata:
     import-cwd: "npm:3.0.0"
     yargs: "npm:18.0.0"
   peerDependencies:
-    "@nebula.js/cli-build": 5.0.0 - 6
-    "@nebula.js/cli-sense": 5.0.0 - 6
-    "@nebula.js/cli-serve": 5.0.0 - 6
+    "@nebula.js/cli-build": 5.0.0 - 7
+    "@nebula.js/cli-sense": 5.0.0 - 7
+    "@nebula.js/cli-serve": 5.0.0 - 7
   bin:
     nebula: lib/index.js
   languageName: unknown
@@ -3994,7 +3994,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@nebula.js/test-utils@workspace:apis/test-utils"
   peerDependencies:
-    "@nebula.js/stardust": ">=5.0.0"
+    "@nebula.js/stardust": ">=7.0.0"
   languageName: unknown
   linkType: soft
 
