@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.0.0](https://github.com/qlik-oss/nebula.js/compare/v6.8.0...v7.0.0) (2026-05-21)
+
+### Bug Fixes
+
+- @qlik/api migration code-quality fixes ([#1994](https://github.com/qlik-oss/nebula.js/issues/1994)) ([6e0ea5b](https://github.com/qlik-oss/nebula.js/commit/6e0ea5b8f4ff4b0f891fe3d2831129e0eab4815d))
+- adjust components ([1e3f6f8](https://github.com/qlik-oss/nebula.js/commit/1e3f6f861ffa2677a33ab4c49147ac7b21e3e9a7))
+- **deps:** update dependency @babel/preset-env to v7.29.5 ([#2010](https://github.com/qlik-oss/nebula.js/issues/2010)) ([8abcec9](https://github.com/qlik-oss/nebula.js/commit/8abcec94da67ba3370aeae5b2b5a4b5bea5f6b2f))
+- **deps:** update dependency @qlik/api to ^2.8.0 ([#2003](https://github.com/qlik-oss/nebula.js/issues/2003)) ([c6edb20](https://github.com/qlik-oss/nebula.js/commit/c6edb201b89328caa19942fe28b658a2b5d860de))
+- **deps:** update dependency html-webpack-plugin to v5.6.7 ([#2012](https://github.com/qlik-oss/nebula.js/issues/2012)) ([46d157d](https://github.com/qlik-oss/nebula.js/commit/46d157daa7895f120a71ad5fb83935a91605cce0))
+- **deps:** update dependency webpack to v5.106.2 ([#2017](https://github.com/qlik-oss/nebula.js/issues/2017)) ([e97cec8](https://github.com/qlik-oss/nebula.js/commit/e97cec8bf3860ae3b06615438919535fec79b28a))
+- **deps:** update dependency webpack-dev-server to v5.2.4 [security] ([#2004](https://github.com/qlik-oss/nebula.js/issues/2004)) ([ac220bf](https://github.com/qlik-oss/nebula.js/commit/ac220bffc53088a7506e6e48516ac584dda45918))
+- **deps:** update dependency ws to v8.20.1 [security] ([#2005](https://github.com/qlik-oss/nebula.js/issues/2005)) ([88983fd](https://github.com/qlik-oss/nebula.js/commit/88983fd7306267ce76f398361e4ded7c8cc8b0bc))
+- **deps:** update minor and patch ([#1962](https://github.com/qlik-oss/nebula.js/issues/1962)) ([d6a838d](https://github.com/qlik-oss/nebula.js/commit/d6a838d195f588c867000dc7e08f20c8ee7a1f9d))
+- **deps:** update minor and patch ([#1971](https://github.com/qlik-oss/nebula.js/issues/1971)) ([83e74cc](https://github.com/qlik-oss/nebula.js/commit/83e74cca07846381f2aff425af11a27d5cab77c1))
+- logout issue and mui things ([#1991](https://github.com/qlik-oss/nebula.js/issues/1991)) ([beeaf9a](https://github.com/qlik-oss/nebula.js/commit/beeaf9a7204bc0d1ede4a5a7500dd49a8cfc539a))
+- **mui-v7:** migrate Grid item/xs/zeroMinWidth props across serve and nucleus components ([#1995](https://github.com/qlik-oss/nebula.js/issues/1995)) ([0383307](https://github.com/qlik-oss/nebula.js/commit/03833078d3abd459160f535e363519abd6448ccb))
+- pure props ([70648b4](https://github.com/qlik-oss/nebula.js/commit/70648b489e2c0ee36f368cd23ed586227a781cda))
+- serve infrastructure documentation and clarity ([#1993](https://github.com/qlik-oss/nebula.js/issues/1993)) ([1313889](https://github.com/qlik-oss/nebula.js/commit/1313889985a1bf66e03a7aa9e323089ac98b211d))
+
+### Features
+
+- migrate all commands to esm ([#1932](https://github.com/qlik-oss/nebula.js/issues/1932)) ([c5be00c](https://github.com/qlik-oss/nebula.js/commit/c5be00c77d27b3ea1ea46b598787ce8f4aa06b41))
+- replace qlik-sdk ([#1988](https://github.com/qlik-oss/nebula.js/issues/1988)) ([e3e649c](https://github.com/qlik-oss/nebula.js/commit/e3e649c34fd9b82ec68ed96042f23bf6373e9855))
+
 # [6.8.0](https://github.com/qlik-oss/nebula.js/compare/v6.7.0...v6.8.0) (2026-03-30)
 
 ### Bug Fixes

@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/cli-serve",
-  "version": "6.8.0",
+  "version": "7.0.0",
   "description": "",
   "type": "module",
   "license": "MIT",
@@ -37,7 +37,7 @@
     "prepublishOnly": "rm -rf dist && yarn run build"
   },
   "dependencies": {
-    "@nebula.js/cli-build": "^6.8.0",
+    "@nebula.js/cli-build": "^7.0.0",
     "@qlik/api": "^2.8.0",
     "body-parser": "2.2.2",
     "chalk": "4.1.2",
@@ -62,11 +62,11 @@
     "@babel/preset-react": "7.28.5",
     "@mui/material": "^7.3.11",
     "@mui/system": "^7.3.11",
-    "@nebula.js/enigma-mocker": "^6.8.0",
-    "@nebula.js/nucleus": "^6.8.0",
-    "@nebula.js/snapshooter": "^6.8.0",
-    "@nebula.js/stardust": "^6.8.0",
-    "@nebula.js/ui": "^6.8.0",
+    "@nebula.js/enigma-mocker": "^7.0.0",
+    "@nebula.js/nucleus": "^7.0.0",
+    "@nebula.js/snapshooter": "^7.0.0",
+    "@nebula.js/stardust": "^7.0.0",
+    "@nebula.js/ui": "^7.0.0",
     "@playwright/test": "^1.60.0",
     "autosuggest-highlight": "3.3.4",
     "babel-loader": "10.1.1",

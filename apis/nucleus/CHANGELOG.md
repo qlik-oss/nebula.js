@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.0.0](https://github.com/qlik-oss/nebula.js/compare/v6.8.0...v7.0.0) (2026-05-21)
+
+### Bug Fixes
+
+- **deps:** update minor and patch ([#1962](https://github.com/qlik-oss/nebula.js/issues/1962)) ([d6a838d](https://github.com/qlik-oss/nebula.js/commit/d6a838d195f588c867000dc7e08f20c8ee7a1f9d))
+- **deps:** update minor and patch ([#1971](https://github.com/qlik-oss/nebula.js/issues/1971)) ([83e74cc](https://github.com/qlik-oss/nebula.js/commit/83e74cca07846381f2aff425af11a27d5cab77c1))
+- **mui-v7:** migrate Grid item/xs/zeroMinWidth props across serve and nucleus components ([#1995](https://github.com/qlik-oss/nebula.js/issues/1995)) ([0383307](https://github.com/qlik-oss/nebula.js/commit/03833078d3abd459160f535e363519abd6448ccb))
+
+### Features
+
+- **TLV-1526:** add theme mapping for slider ([#1963](https://github.com/qlik-oss/nebula.js/issues/1963)) ([fa2c52d](https://github.com/qlik-oss/nebula.js/commit/fa2c52d4732e20f2256da947490967d4ded46449))
+
 # [6.8.0](https://github.com/qlik-oss/nebula.js/compare/v6.7.0...v6.8.0) (2026-03-30)
 
 ### Bug Fixes

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.0.0](https://github.com/qlik-oss/nebula.js/compare/v6.8.0...v7.0.0) (2026-05-21)
+
+### Features
+
+- migrate all commands to esm ([#1932](https://github.com/qlik-oss/nebula.js/issues/1932)) ([c5be00c](https://github.com/qlik-oss/nebula.js/commit/c5be00c77d27b3ea1ea46b598787ce8f4aa06b41))
+
 # [6.8.0](https://github.com/qlik-oss/nebula.js/compare/v6.7.0...v6.8.0) (2026-03-30)
 
 **Note:** Version bump only for package @nebula.js/cli

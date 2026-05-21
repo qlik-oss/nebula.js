@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.0.0](https://github.com/qlik-oss/nebula.js/compare/v6.8.0...v7.0.0) (2026-05-21)
+
+### Bug Fixes
+
+- @qlik/api migration code-quality fixes ([#1994](https://github.com/qlik-oss/nebula.js/issues/1994)) ([6e0ea5b](https://github.com/qlik-oss/nebula.js/commit/6e0ea5b8f4ff4b0f891fe3d2831129e0eab4815d))
+- **deps:** update dependency ejs to v5.0.2 ([#2011](https://github.com/qlik-oss/nebula.js/issues/2011)) ([43f1a65](https://github.com/qlik-oss/nebula.js/commit/43f1a651eca20f4a677a2ddbdd58f36d3591744c))
+- **deps:** update minor and patch ([#1971](https://github.com/qlik-oss/nebula.js/issues/1971)) ([83e74cc](https://github.com/qlik-oss/nebula.js/commit/83e74cca07846381f2aff425af11a27d5cab77c1))
+
+### Features
+
+- add sample to nebula dev skill ([#1974](https://github.com/qlik-oss/nebula.js/issues/1974)) ([b0d4df3](https://github.com/qlik-oss/nebula.js/commit/b0d4df31293b1bb12f1dd90fa3c669fac9a28f93))
+- migrate all commands to esm ([#1932](https://github.com/qlik-oss/nebula.js/issues/1932)) ([c5be00c](https://github.com/qlik-oss/nebula.js/commit/c5be00c77d27b3ea1ea46b598787ce8f4aa06b41))
+
 # [6.8.0](https://github.com/qlik-oss/nebula.js/compare/v6.7.0...v6.8.0) (2026-03-30)
 
 **Note:** Version bump only for package @nebula.js/cli-create
