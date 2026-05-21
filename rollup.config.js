@@ -112,6 +112,9 @@ const config = ({ format = 'umd', debug = false, file, targetPkg }) => {
       if (warning.code === 'MODULE_LEVEL_DIRECTIVE' && warning.message.includes(`"use client"`)) {
         return;
       }
+      if (warning.code === 'SOURCEMAP_ERROR' && warning.message.includes('@mantine')) {
+        return;
+      }
       if (warning.code === 'INVALID_ANNOTATION' && warning.frame.includes(`// eslint-disable-next-line react`)) {
         return;
       }
@@ -159,7 +162,7 @@ const config = ({ format = 'umd', debug = false, file, targetPkg }) => {
         preventAssignment: true,
       }),
       nodeResolve({
-        extensions: [debug ? '.dev.js' : false, '.js', '.jsx'].filter(Boolean),
+        extensions: [debug ? '.dev.js' : false, '.mjs', '.js', '.jsx'].filter(Boolean),
         browser: true,
       }),
       json(),
