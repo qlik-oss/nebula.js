@@ -3818,7 +3818,7 @@ __metadata:
     "@inquirer/prompts": "npm:8.3.2"
     chalk: "npm:4.1.2"
     ejs: "npm:5.0.2"
-    fs-extra: "npm:11.3.4"
+    fs-extra: "npm:11.3.5"
   languageName: unknown
   linkType: soft
 
@@ -3836,7 +3836,7 @@ __metadata:
     "@rollup/plugin-replace": "npm:6.0.3"
     "@rollup/plugin-terser": "npm:1.0.0"
     extend: "npm:3.0.2"
-    fs-extra: "npm:11.3.4"
+    fs-extra: "npm:11.3.5"
     node-event-emitter: "npm:0.0.1"
     rollup: "npm:4.60.3"
     yargs: "npm:18.0.0"
@@ -10446,7 +10446,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fs-extra@npm:11.3.4, fs-extra@npm:^11.2.0":
+"fs-extra@npm:11.3.5":
+  version: 11.3.5
+  resolution: "fs-extra@npm:11.3.5"
+  dependencies:
+    graceful-fs: "npm:^4.2.0"
+    jsonfile: "npm:^6.0.1"
+    universalify: "npm:^2.0.0"
+  checksum: 10c0/33e80bad6b5d17308faa197e5ede99ecba4b6f6cb4aa4645d52745476c75afc57665bdf39ec75b2ebb38b97b7110f634a8dcc0a546e248eb4de059275cf5ac90
+  languageName: node
+  linkType: hard
+
+"fs-extra@npm:^11.2.0":
   version: 11.3.4
   resolution: "fs-extra@npm:11.3.4"
   dependencies:
