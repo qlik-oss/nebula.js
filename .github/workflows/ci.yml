@@ -67,7 +67,7 @@ jobs:
           path: coverage/junit
       - name: Publish junit test report
         if: ${{ always() && hashFiles('coverage/junit/*.xml') != '' }}
-        uses: dorny/test-reporter@df6247429542221bc30d46a036ee47af1102c451 # v2
+        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2 # v3
         with:
           name: Unit Tests
           path: coverage/junit/*.xml
@@ -103,7 +103,7 @@ jobs:
         run: yarn run test:component
       - name: Publish component test report
         if: ${{ always() && hashFiles('test-results/component-junit.xml') != '' }}
-        uses: dorny/test-reporter@df6247429542221bc30d46a036ee47af1102c451 # v2
+        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2 # v3
         with:
           name: Component Tests
           path: test-results/component-junit.xml
@@ -119,7 +119,7 @@ jobs:
           path: ./test/mashup
       - name: Publish mashup test report
         if: ${{ always() && hashFiles('test/mashup/reports/xml/*.xml') != '' }}
-        uses: dorny/test-reporter@df6247429542221bc30d46a036ee47af1102c451 # v2
+        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2 # v3
         with:
           name: Mashup Tests
           path: test/mashup/reports/xml/*.xml
@@ -131,7 +131,7 @@ jobs:
         run: yarn run test:integration
       - name: Publish integration test report
         if: ${{ always() && hashFiles('test-results/integration-junit.xml') != '' }}
-        uses: dorny/test-reporter@df6247429542221bc30d46a036ee47af1102c451 # v2
+        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2 # v3
         with:
           name: Integration Tests
           path: test-results/integration-junit.xml
@@ -147,7 +147,7 @@ jobs:
           path: ./test/rendering
       - name: Publish rendering test report
         if: ${{ always() && hashFiles('test/rendering/reports/xml/*.xml') != '' }}
-        uses: dorny/test-reporter@df6247429542221bc30d46a036ee47af1102c451 # v2
+        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2 # v3
         with:
           name: Rendering Tests
           path: test/rendering/reports/xml/*.xml
