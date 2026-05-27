@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.1](https://github.com/qlik-oss/nebula.js/compare/v7.0.0...v7.0.1) (2026-05-27)
+
+### Bug Fixes
+
+- **deps:** update dependency @inquirer/prompts to v8.4.3 ([#2035](https://github.com/qlik-oss/nebula.js/issues/2035)) ([fc469a7](https://github.com/qlik-oss/nebula.js/commit/fc469a7e673afca63a7c523407d17b03231da486))
+- **deps:** update dependency @qlik/api to v2.9.0 ([#2054](https://github.com/qlik-oss/nebula.js/issues/2054)) ([b0424f2](https://github.com/qlik-oss/nebula.js/commit/b0424f2983688bf0eeb89a363535608fd7007e03))
+- **deps:** update dependency fs-extra to v11.3.5 ([#2022](https://github.com/qlik-oss/nebula.js/issues/2022)) ([86dd3d3](https://github.com/qlik-oss/nebula.js/commit/86dd3d3806a0b8280220b5792dc637a5c16a567e))
+- **deps:** update dependency postcss to ^8.5.15 ([#2052](https://github.com/qlik-oss/nebula.js/issues/2052)) ([11eca2f](https://github.com/qlik-oss/nebula.js/commit/11eca2f132f4ebebb2c41ff78ff9f7c81c0a2a4e))
+- **deps:** update dependency puppeteer to v24.43.1 ([#2036](https://github.com/qlik-oss/nebula.js/issues/2036)) ([28600f2](https://github.com/qlik-oss/nebula.js/commit/28600f2d7d541997d460ea82dc2db8b27be087de))
+- **deps:** update dependency puppeteer to v25 ([#2048](https://github.com/qlik-oss/nebula.js/issues/2048)) ([03d8c22](https://github.com/qlik-oss/nebula.js/commit/03d8c22e36fa7f5125c15a293df3e631d08ea097))
+- **deps:** update dependency rollup to v4.60.4 ([#2031](https://github.com/qlik-oss/nebula.js/issues/2031)) ([c5ec8e8](https://github.com/qlik-oss/nebula.js/commit/c5ec8e8a1a5e82950b122df15feb40d7a4c0869e))
+- **deps:** update dependency webpack to v5.107.0 ([#2055](https://github.com/qlik-oss/nebula.js/issues/2055)) ([a10e61e](https://github.com/qlik-oss/nebula.js/commit/a10e61e4a1b9635a293dd87fff8c71b0e2e0f070))
+
+### Features
+
+- **serve:** add rerender and simulatedMemLeakKB options ([#2030](https://github.com/qlik-oss/nebula.js/issues/2030)) ([02fc826](https://github.com/qlik-oss/nebula.js/commit/02fc82657da54b383788e93e606b49b83585033a))
+
 # [7.0.0](https://github.com/qlik-oss/nebula.js/compare/v6.8.0...v7.0.0) (2026-05-21)
 
 ### Bug Fixes

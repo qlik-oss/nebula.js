@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.1](https://github.com/qlik-oss/nebula.js/compare/v7.0.0...v7.0.1) (2026-05-27)
+
+### Bug Fixes
+
+- **deps:** update dependency @qlik/api to v2.9.0 ([#2054](https://github.com/qlik-oss/nebula.js/issues/2054)) ([b0424f2](https://github.com/qlik-oss/nebula.js/commit/b0424f2983688bf0eeb89a363535608fd7007e03))
+- **deps:** update dependency puppeteer to v24.43.1 ([#2036](https://github.com/qlik-oss/nebula.js/issues/2036)) ([28600f2](https://github.com/qlik-oss/nebula.js/commit/28600f2d7d541997d460ea82dc2db8b27be087de))
+- **deps:** update dependency puppeteer to v25 ([#2048](https://github.com/qlik-oss/nebula.js/issues/2048)) ([03d8c22](https://github.com/qlik-oss/nebula.js/commit/03d8c22e36fa7f5125c15a293df3e631d08ea097))
+- **deps:** update dependency webpack to v5.107.0 ([#2055](https://github.com/qlik-oss/nebula.js/issues/2055)) ([a10e61e](https://github.com/qlik-oss/nebula.js/commit/a10e61e4a1b9635a293dd87fff8c71b0e2e0f070))
+
+### Features
+
+- **serve:** add rerender and simulatedMemLeakKB options ([#2030](https://github.com/qlik-oss/nebula.js/issues/2030)) ([02fc826](https://github.com/qlik-oss/nebula.js/commit/02fc82657da54b383788e93e606b49b83585033a))
+
 # [7.0.0](https://github.com/qlik-oss/nebula.js/compare/v6.8.0...v7.0.0) (2026-05-21)
 
 ### Bug Fixes
