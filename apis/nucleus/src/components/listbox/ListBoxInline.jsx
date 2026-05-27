@@ -296,8 +296,10 @@ function ListBoxInline({ options, layout }) {
         <Grid
           container
           direction="column"
-          height="100%"
-          minHeight={listBoxMinHeight}
+          sx={{
+            height: '100%',
+            minHeight: listBoxMinHeight,
+          }}
           role="region"
           aria-label={translator.get('Listbox.ResultFilterLabel')}
           ref={listboxChildRef}

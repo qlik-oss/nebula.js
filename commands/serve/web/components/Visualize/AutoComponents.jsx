@@ -140,8 +140,10 @@ function Expression({ property, value, target, changed }) {
   return (
     <TextField
       variant="standard"
-      InputProps={{
-        startAdornment: <InputAdornment position="start">=</InputAdornment>,
+      slotProps={{
+        input: {
+          startAdornment: <InputAdornment position="start">=</InputAdornment>,
+        },
       }}
       fullWidth
       onChange={handleChange}

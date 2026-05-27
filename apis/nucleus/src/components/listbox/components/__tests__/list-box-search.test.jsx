@@ -116,7 +116,7 @@ describe('<ListBoxSearch />', () => {
     expect(types[0].props.value).toBe('');
     expect(types[0].props.onChange instanceof Function).toBe(true);
     expect(types[0].props.onKeyDown instanceof Function).toBe(true);
-    expect(types[0].props.inputProps.tabIndex).toBe(0);
+    expect(types[0].props.slotProps.input.tabIndex).toBe(0);
   });
 
   test('should have css class `search`', () => {
@@ -126,8 +126,8 @@ describe('<ListBoxSearch />', () => {
     const testRenderer = testRender(model);
     const testInstance = testRenderer.root;
     const [input] = testInstance.findAllByType(OutlinedInput);
-    const { className, inputProps } = input.props;
-    expect(inputProps.tabIndex).toBe(-1);
+    const { className, slotProps } = input.props;
+    expect(slotProps.input.tabIndex).toBe(-1);
     expect(typeof className).toBe('string');
     expect(className.split(' ').includes('search')).toBe(true);
   });

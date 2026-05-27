@@ -27,7 +27,7 @@ export default function ListBoxRadioButton({ onChange, checked, label, dense, da
       value={label}
       name={label}
       className={classes.radioButton}
-      inputProps={{ 'data-n': dataN }}
+      slotProps={{ input: { 'data-n': dataN } }}
       disableRipple
       size={dense ? 'small' : 'medium'}
       dense={dense}
