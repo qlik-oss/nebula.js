@@ -99,7 +99,7 @@ export default function MultiState({ field, api, moreAlignTo = null, onClose = (
       {field.states.map((s, ix) => (
         // eslint-disable-next-line react/no-array-index-key
         <ListItem key={ix} title={field.label} onClick={(e) => handleShowState(e, ix)}>
-          <Box border={1} width="100%" borderRadius={1} borderColor="divider">
+          <Box sx={{ border: 1, width: '100%', borderRadius: 1, borderColor: 'divider' }}>
             <OneField field={field} api={api} stateIx={ix} skipHandleShowListBoxPopover />
           </Box>
         </ListItem>
@@ -119,11 +119,13 @@ export default function MultiState({ field, api, moreAlignTo = null, onClose = (
         vertical: 'top',
         horizontal: 'center',
       }}
-      PaperProps={{
-        style: {
-          minWidth: '200px',
-          width: '200px',
-          pointerEvents: 'auto',
+      slotProps={{
+        paper: {
+          style: {
+            minWidth: '200px',
+            width: '200px',
+            pointerEvents: 'auto',
+          },
         },
       }}
     >

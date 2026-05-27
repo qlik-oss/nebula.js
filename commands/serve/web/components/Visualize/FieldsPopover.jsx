@@ -152,8 +152,10 @@ export default function FieldsPopover({ alignTo, show, close, onSelected, type }
         vertical: 'top',
         horizontal: 'center',
       }}
-      PaperProps={{
-        style: { minWidth: '250px', maxHeight: '300px', background: theme.palette.background.lightest },
+      slotProps={{
+        paper: {
+          style: { minWidth: '250px', maxHeight: '300px', background: theme.palette.background.lightest },
+        },
       }}
     >
       {!selectedField && <Search onChange={setSearchTerm} />}

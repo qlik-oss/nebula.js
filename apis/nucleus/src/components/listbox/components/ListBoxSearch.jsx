@@ -314,11 +314,13 @@ function ListBoxSearch(
         onChange={onChange}
         onKeyDown={onKeyDown}
         autoFocus={autoFocus}
-        inputProps={{
-          tabIndex: keyboard.innerTabStops ? 0 : -1,
-          'data-testid': 'search-input-field',
-          'aria-label': translator.get('Listbox.Search'),
-          'aria-describedby': 'listbox-search-instructions',
+        slotProps={{
+          input: {
+            tabIndex: keyboard.innerTabStops ? 0 : -1,
+            'data-testid': 'search-input-field',
+            'aria-label': translator.get('Listbox.Search'),
+            'aria-describedby': 'listbox-search-instructions',
+          },
         }}
       />
       {/* Invisible or visually hidden instructions */}
