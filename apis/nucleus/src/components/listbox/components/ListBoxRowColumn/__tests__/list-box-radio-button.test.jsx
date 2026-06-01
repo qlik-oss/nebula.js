@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { Radio } from '@mui/material';

@@ -48,7 +48,7 @@ export const getOptions = (usersOptions = {}) => {
   const squashedOptions = {
     ...exposedOptions,
     ...DO_NOT_USE_DEFAULTS,
-    // eslint-disable-next-line no-underscore-dangle
+
     ...__DO_NOT_USE__,
   };
   return squashedOptions;

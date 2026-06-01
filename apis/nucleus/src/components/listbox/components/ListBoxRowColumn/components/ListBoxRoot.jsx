@@ -22,7 +22,7 @@ const getMaxFreqWidth = ({ sizes, frequencyMode, isGridMode }) => {
   return sizes.freqMaxWidth;
 };
 
-const getRowSelectionStyle = ({ theme, checkboxes, styles, selectionState }) => {
+const getRowSelectionStyle = ({ checkboxes, styles, selectionState }) => {
   if (checkboxes) {
     if (selectionState === 'selected') {
       return {
@@ -40,10 +40,6 @@ const getRowSelectionStyle = ({ theme, checkboxes, styles, selectionState }) => 
   return {
     background: backgroundColor,
     color: contrastTextColor,
-    '&:focus': {
-      boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder}`,
-      outline: 'none',
-    },
     '& $cell': {
       paddingRight: 0,
     },
@@ -82,6 +78,7 @@ const RowColRoot = styled('div', {
       'styles',
     ].includes(prop),
 })(({ theme, checkboxes, isGridMode, isGridCol, dense, direction, sizes, frequencyMode, freqHitsValue, styles }) => {
+  // eslint-disable-next-line no-unused-vars
   const { backgroundColor: _, ...contentFontStyles } = styles.content;
 
   const rowSelectionStyle = getRowSelectionStyle({ theme, styles, checkboxes, selectionState: 'selected' });
@@ -98,18 +95,10 @@ const RowColRoot = styled('div', {
   };
 
   return {
-    '&:focus': {
-      boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
-    },
-    '&:focus-visible': {
-      outline: 'none',
-    },
-
     '& .value': {
-      '&:focus': {
-        boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
-      },
       '&:focus-visible': {
+        boxShadow: `inset 0 0 0 2px ${theme.palette.custom.newFocusBorder} !important`,
+        borderRadius: '4px',
         outline: 'none',
       },
     },
@@ -145,7 +134,7 @@ const RowColRoot = styled('div', {
 
     // The leaf node, containing the label text.
     [`& .${classes.labelText}`]: {
-      lineHeight: '16px',
+      lineHeight: '24px',
       userSelect: 'none',
       paddingRight: '1px',
       ...ellipsis,
@@ -153,7 +142,7 @@ const RowColRoot = styled('div', {
     },
 
     [`& .${classes.labelDense}`]: {
-      fontSize: 12,
+      lineHeight: '18px',
     },
 
     // Highlight is added to labelText spans, which are created as children to original labelText,
@@ -196,6 +185,11 @@ const RowColRoot = styled('div', {
     // Selection styles (S=Selected, XS=ExcludedSelected, A=Alternative, X=Excluded).
     [`& .${classes.S}`]: {
       ...rowSelectionStyle,
+      '&:focus-visible': {
+        boxShadow: `inset 0 0 0 2px ${theme.palette.custom.newFocusBorder}, inset 0 0 0 4px ${theme.palette.custom.whiteBorder} !important`,
+        borderRadius: '4px',
+        outline: 'none',
+      },
       border: isGridMode ? 'none' : undefined,
     },
 

@@ -10,6 +10,11 @@ import * as MoreModule from '../More';
 import * as useCurrentSelectionsModelModule from '../../../hooks/useCurrentSelectionsModel';
 import * as useLayoutModule from '../../../hooks/useLayout';
 import * as useRectModule from '../../../hooks/useRect';
+import * as useFieldListModule from '../hooks/useFieldList';
+import * as useDimensionListModule from '../hooks/useDimenisonList';
+import * as usePinnedListModule from '../hooks/usePinnedList';
+import * as useModelModule from '../../../hooks/useModel';
+import * as useRpcModule from '../../../hooks/useRpc';
 import initSelectionStores from '../../../stores/new-selections-store';
 import initializeStores from '../../../stores/new-model-store';
 import InstanceContext from '../../../contexts/InstanceContext';
@@ -49,11 +54,41 @@ describe('<SelectedFields />', () => {
       .spyOn(NebulaThemeModule, 'useTheme')
       .mockImplementation(() => ({ palette: { divider: 'red', background: { paper: 'pinky' } } }));
 
+    // Create stable mock results for useRpc to maintain referential stability
+    const stableResults = new Map();
+    jest.spyOn(useRpcModule, 'default').mockImplementation((model, method) => {
+      const key = `${model?.id}-${method}`;
+      if (!stableResults.has(key)) {
+        stableResults.set(key, {
+          // Mock result object
+          qDimensionList: { qItems: [] },
+          qFieldList: { qItems: [] },
+          pinnedItems: [],
+        });
+      }
+      // Return stable references so memoization works
+      return [stableResults.get(key), { validating: false, canCancel: false, canRetry: false }, {}];
+    });
+
     OneField = jest.fn().mockImplementation(() => 'OneField');
     MultiState = jest.fn().mockImplementation(() => 'MultiState');
     More = jest.fn().mockImplementation(() => 'More');
 
+    // Hook mocks
     jest.spyOn(useLayoutModule, 'default').mockImplementation(useLayout);
+    jest.spyOn(useModelModule, 'default').mockImplementation((app, fn) => [
+      {
+        id: `mock-${fn}`,
+        Invalidated: {
+          bind: jest.fn(),
+          unbind: jest.fn(),
+        },
+      },
+      null,
+    ]);
+    jest.spyOn(useFieldListModule, 'default').mockImplementation(() => []);
+    jest.spyOn(useDimensionListModule, 'default').mockImplementation(() => []);
+    jest.spyOn(usePinnedListModule, 'default').mockImplementation(() => []);
     jest.spyOn(useRectModule, 'default').mockImplementation(() => [() => {}, rect]);
     jest.spyOn(useCurrentSelectionsModelModule, 'default').mockImplementation(() => [currentSelectionsModel]);
 
@@ -75,7 +110,9 @@ describe('<SelectedFields />', () => {
       selectionStore: selectionsStoreModule,
     };
 
-    render = async ({ api = {}, app = {}, rendererOptions } = {}) => {
+    const defaultHalo = { public: { galaxy: { flags: { isEnabled: jest.fn().mockReturnValue(false) } } } };
+
+    render = async ({ api = {}, app = {}, halo = {}, rendererOptions } = {}) => {
       api = {
         ...defaultApi,
         ...api,
@@ -84,10 +121,14 @@ describe('<SelectedFields />', () => {
         ...defaultApp,
         ...app,
       };
+      halo = {
+        ...defaultHalo,
+        ...halo,
+      };
       await act(async () => {
         renderer = create(
           <InstanceContext.Provider value={context}>
-            <SelectedFields api={api} app={app} />
+            <SelectedFields api={api} app={app} halo={halo} />
           </InstanceContext.Provider>,
           rendererOptions || null
         );
@@ -98,7 +139,9 @@ describe('<SelectedFields />', () => {
   afterEach(() => {
     jest.resetAllMocks();
     jest.restoreAllMocks();
-    renderer.unmount();
+    if (renderer) {
+      renderer.unmount();
+    }
   });
 
   test('should render `<OneField />`', async () => {
@@ -189,7 +232,8 @@ describe('<SelectedFields />', () => {
       .mockReturnValueOnce([data])
       .mockReturnValueOnce([data])
       .mockReturnValueOnce([newData])
-      .mockReturnValueOnce([newData]);
+      .mockReturnValueOnce([newData])
+      .mockReturnValue([newData]);
     await render();
     const types = renderer.root.findAllByType(OneField);
     expect(types).toHaveLength(3);

@@ -36,7 +36,8 @@ function getSenseServerUrl(app) {
 
     isSecure = wsUrl.protocol === 'wss:';
     protocol = isSecure ? 'https://' : 'http://';
-    return protocol + wsUrl.host;
+    const basePath = wsUrl.pathname === '/' ? '' : wsUrl.pathname.replace(/\/app\/.*$/, '');
+    return protocol + wsUrl.host + basePath;
   }
   return '';
 }
@@ -58,20 +59,34 @@ function getBackgroundSize(bgComp) {
   return bkgImageSize;
 }
 
-function resolveImageUrl(app, relativeUrl) {
-  return relativeUrl ? getSenseServerUrl(app) + relativeUrl : undefined;
+function resolveImageUrl(app, relativeUrl, host) {
+  if (!relativeUrl) {
+    return undefined;
+  }
+  if (host) {
+    return host + relativeUrl;
+  }
+  return getSenseServerUrl(app) + relativeUrl;
 }
 
-export function resolveBgImage(bgComp, app) {
+export function resolveBgImage(bgComp, app, queryParams, host) {
   const bgImageDef = bgComp?.bgImage;
 
   if (bgImageDef) {
     let url = '';
     if (bgImageDef.mode === 'media' || bgComp.useImage === 'media') {
+      let authParamsAsString;
       const urlObj = bgImageDef?.mediaUrl;
       const { qUrl } = urlObj?.qStaticContentUrl || {};
       url = qUrl ? decodeURIComponent(qUrl) : undefined;
-      url = resolveImageUrl(app, url);
+      url = resolveImageUrl(app, url, host);
+
+      if (queryParams) {
+        authParamsAsString = Object.entries(queryParams)
+          .map(([key, value]) => `&${key}=${encodeURIComponent(value)}`)
+          .join('&');
+        url = `${url}?${authParamsAsString}`;
+      }
     }
     if (bgImageDef.mode === 'expression') {
       url = bgImageDef.expressionUrl ? decodeURIComponent(bgImageDef.expressionUrl) : undefined;
@@ -94,9 +109,13 @@ export function resolveBgColor(comp, theme, objectType) {
   return resolveColor(bgColor?.color, '', 'backgroundColor', theme, objectType);
 }
 
-export function resolveBorder(comp, theme, objectType) {
+export function resolveBorder(comp, theme, objectType, disableThemeBorder) {
   const borderColor = resolveColor(comp?.borderColor, '', 'borderColor', theme, objectType);
-  const borderWidth = comp?.borderWidth || resolveProperty('', 'borderWidth', theme, objectType);
+  let borderWidth = comp?.borderWidth;
+  const shouldGetborderFromTheme = !borderWidth && !disableThemeBorder;
+  if (shouldGetborderFromTheme) {
+    borderWidth = resolveProperty('', 'borderWidth', theme, objectType);
+  }
   return borderWidth && borderColor ? `${borderWidth} solid ${borderColor}` : undefined;
 }
 
@@ -128,7 +147,7 @@ export function resolveTextStyle(textComp, target, theme, objectType) {
     color:
       textProps.color && textProps.color.color !== 'none'
         ? theme.getColorPickerColor(textProps.color)
-        : theme.getStyle(`object.${objectType}`, target, 'color'),
+        : theme.getStyle(`object.${objectType}`, `title.${target}`, 'color'),
     backgroundColor:
       textProps.backgroundColor || theme.getStyle(`object.${objectType}`, `title.${target}`, 'backgroundColor'),
     fontWeight: fontStyle.includes('bold') ? 'bold' : 'normal',

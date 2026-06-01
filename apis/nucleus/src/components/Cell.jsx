@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { forwardRef, useImperativeHandle, useEffect, useState, useContext, useReducer, useRef } from 'react';
+import EventEmitter from 'node-event-emitter';
 
 import { Grid, Paper } from '@mui/material';
 import { useTheme } from '@nebula.js/ui/theme';
@@ -19,6 +20,8 @@ import eventmixin from '../selections/event-mixin';
 import useStyling from '../hooks/useStyling';
 import RenderError from '../utils/render-error';
 import getPadding from '../utils/cell-padding';
+import translationKeys from '../utils/extension-translation-keys';
+import hiddenScreenReaderText from '../utils/style/screen-reader';
 
 /**
  * @interface
@@ -37,6 +40,17 @@ const CellBody = {
   /** @type {'njs-cell-body'} */
   className: 'njs-cell-body',
 };
+
+function support(prop, supportObject, layout) {
+  const value = supportObject[prop];
+  if (typeof value === 'function') {
+    return value.call(null, layout);
+  }
+  if (typeof value === 'boolean') {
+    return value;
+  }
+  return false;
+}
 
 const initialState = (err) => ({
   loading: false,
@@ -128,9 +142,10 @@ const handleModal = ({ sn, layout, model }) => {
 };
 
 const filterData = (d) => (d.qError ? d.qError.qErrorCode === 7005 : true);
+const hasError = (e) => e && e.qError && e.qError.qErrorCode !== 7005;
 
 const validateInfo = (min, info, getDescription, translatedError, translatedCalcCond) =>
-  [...Array(min).keys()].map((i) => {
+  [...Array(Math.max(min, info.length)).keys()].map((i) => {
     const exists = !!(info && info[i]);
     const softError = exists && info[i].qError && info[i].qError.qErrorCode === 7005;
     const error = exists && !softError && info[i].qError;
@@ -159,14 +174,14 @@ const validateTarget = (translator, layout, properties, def) => {
   const reqDimErrors = validateInfo(
     minD,
     getInfo(c.qDimensionInfo || c.qItems),
-    (i) => def.dimensions.description(properties, i),
+    (i) => def.dimensions.description(properties, i, {}),
     translator.get('Visualization.Invalid.Dimension'),
     translator.get('Visualization.UnfulfilledCalculationCondition')
   );
   const reqMeasErrors = validateInfo(
     minM,
     getInfo(c.qMeasureInfo),
-    (i) => def.measures.description(properties, i),
+    (i) => def.measures.description(properties, i, {}),
     translator.get('Visualization.Invalid.Measure'),
     translator.get('Visualization.UnfulfilledCalculationCondition')
   );
@@ -183,18 +198,29 @@ const validateCubes = (translator, targets, layout) => {
   let hasLayoutErrors = false;
   let hasLayoutUnfulfilledCalculcationCondition = false;
   const layoutErrors = [];
+
   for (let i = 0; i < targets.length; ++i) {
     const def = targets[i];
+
     const minD = def.dimensions.min();
     const minM = def.measures.min();
+
     const c = def.resolveLayout(layout);
-    const d = getInfo(c.qDimensionInfo || c.qItems).filter(filterData); // Filter out optional calc conditions
-    const m = getInfo(c.qMeasureInfo).filter(filterData); // Filter out optional calc conditions
+
+    const dims = getInfo(c.qDimensionInfo || c.qItems);
+    const meas = getInfo(c.qMeasureInfo);
+
+    const d = dims.filter(filterData); // Filter out optional calc conditions
+    const m = meas.filter(filterData); // Filter out optional calc conditions
     aggMinD += minD;
     aggMinM += minM;
     if (d.length < minD || m.length < minM) {
       hasUnfulfilledErrors = true;
     }
+
+    // Check for all non-calc-cond errors
+    hasUnfulfilledErrors = hasUnfulfilledErrors || dims.some(hasError) || meas.some(hasError);
+
     if (c.qError) {
       hasLayoutErrors = true;
       hasLayoutUnfulfilledCalculcationCondition = c.qError.qErrorCode === 7005;
@@ -312,6 +338,10 @@ const loadType = async ({
   }
 };
 
+function createEmitter() {
+  return new EventEmitter();
+}
+
 const Cell = forwardRef(
   (
     {
@@ -335,8 +365,12 @@ const Cell = forwardRef(
       translator,
       language,
       keyboardNavigation,
+      externalFocusManagement,
       disableCellPadding = false,
+      navigation: navigationApi,
+      queryParams,
     } = useContext(InstanceContext);
+    const [internalEmitter] = useState(emitter || createEmitter);
     const theme = useTheme();
     const [cellRef, cellRect, cellNode] = useRect();
     const [state, dispatch] = useReducer(contentReducer, initialState(initialError));
@@ -350,12 +384,15 @@ const Cell = forwardRef(
     const [selections] = useObjectSelections(app, model, [`#${cellElementId}`, '.njs-action-toolbar-popover']); // elements which will not trigger the click out listener
     const [hovering, setHover] = useState(false);
     const hoveringDebouncer = useRef({ enter: null, leave: null });
-    const { titleStyles, bgColor, bgImage, border, borderRadius, boxShadow } = useStyling(
+    const { titleStyles, bgColor, bgImage, border, borderRadius, boxShadow } = useStyling({
       layout,
-      halo.public.theme,
-      halo.app,
-      themeName
-    );
+      theme: halo.public.theme,
+      app: halo.app,
+      themeName,
+      disableThemeBorder: snOptions?.disableThemeBorder,
+      queryParams,
+    });
+    const isRtl = !!(snOptions?.direction === 'rtl');
 
     const focusHandler = useRef({
       focusToolbarButton(last) {
@@ -366,17 +403,20 @@ const Cell = forwardRef(
 
     useEffect(() => {
       eventmixin(focusHandler.current);
+      focusHandler.current.blurCallback = (resetFocus) => {
+        if (focusHandler.current.onBlurHandler) {
+          focusHandler.current.onBlurHandler(resetFocus);
+          return;
+        }
+        halo.root.toggleFocusOfCells();
+        if (resetFocus && contentNode) {
+          contentNode.focus();
+        }
+      };
+      focusHandler.current.refocusContent = () => {
+        state.sn.component && typeof state.sn.component.focus === 'function' && state.sn.component.focus();
+      };
     }, []);
-
-    focusHandler.current.blurCallback = (resetFocus) => {
-      halo.root.toggleFocusOfCells();
-      if (resetFocus && contentNode) {
-        contentNode.focus();
-      }
-    };
-    focusHandler.current.refocusContent = () => {
-      state.sn.component && typeof state.sn.component.focus === 'function' && state.sn.component.focus();
-    };
 
     const handleOnMouseEnter = () => {
       if (hoveringDebouncer.current.leave) {
@@ -436,9 +476,9 @@ const Cell = forwardRef(
           selections,
           nebbie,
           focusHandler: focusHandler.current,
-          emitter,
+          emitter: internalEmitter,
           onMount,
-          navigation,
+          navigation: navigation ?? navigationApi,
         });
       };
 
@@ -454,7 +494,6 @@ const Cell = forwardRef(
 
       return () => {};
     }, [types, state.sn, model, selections, layout, appLayout, language]);
-
     // Long running query
     useEffect(() => {
       if (!validating) {
@@ -471,6 +510,19 @@ const Cell = forwardRef(
         getQae() {
           return state.sn.generator.qae;
         },
+        getExtensionDefinition() {
+          return state.sn.generator.definition.ext;
+        },
+        // allow input of supportObject ot override when flipped to table
+        support(type, supportObject, outerLayout) {
+          if (layout && state.loaded && !state.error) {
+            const suppObj = supportObject || state.sn.generator.definition.ext?.support;
+            if (suppObj) {
+              return support(type, suppObj, outerLayout || layout);
+            }
+          }
+          return false;
+        },
         toggleFocus(active) {
           if (typeof state.sn.component.focus === 'function') {
             if (active) {
@@ -479,6 +531,9 @@ const Cell = forwardRef(
               state.sn.component.blur();
             }
           }
+        },
+        setOnBlurHandler(cb) {
+          focusHandler.current.onBlurHandler = cb;
         },
         setSnOptions,
         setSnPlugins,
@@ -489,12 +544,18 @@ const Cell = forwardRef(
           }
           return {};
         },
+        onContextMenu(...args) {
+          return state.sn?.component.onContextMenu(...args);
+        },
         async takeSnapshot() {
           const { width, height } = cellRect;
 
           // clone layout to avoid mutation
           let clonedLayout = JSON.parse(JSON.stringify(layout));
           if (typeof state.sn.component.setSnapshotData === 'function') {
+            if (!clonedLayout.snapshotData) {
+              clonedLayout.snapshotData = {};
+            }
             clonedLayout = (await state.sn.component.setSnapshotData(clonedLayout)) || clonedLayout;
           }
           return {
@@ -520,6 +581,9 @@ const Cell = forwardRef(
           const snapshot = await this.takeSnapshot(); // eslint-disable-line
           return halo.config.snapshot.capture(snapshot);
         },
+        getHypercubePath() {
+          return state.sn.generator.definition.ext?.options?.hypercubePath;
+        },
       }),
       [state.sn, contentRect, cellRect, layout, theme.name, appLayout]
     );
@@ -544,10 +608,12 @@ const Cell = forwardRef(
           snPlugins={snPlugins}
           layout={layout}
           appLayout={appLayout}
+          cellId={currentId}
         />
       );
     }
 
+    const isCardTheme = !!halo.public.theme?.getStyle('', '', '_cards');
     const flags = halo.public.galaxy?.flags;
     let useOldCellPadding;
     let bodyPadding;
@@ -558,16 +624,17 @@ const Cell = forwardRef(
       useOldCellPadding = true;
       bodyPadding = undefined;
     } else {
-      const senseTheme = halo.public.theme;
       useOldCellPadding = false;
       bodyPadding = getPadding({
         layout,
         isError: state.error,
-        senseTheme,
+        isCardTheme,
         titleStyles,
+        translator,
       });
     }
-
+    const translationKey = translationKeys.get(layout?.visualization);
+    const translation = translator.get(translationKey);
     return (
       <Paper
         style={{
@@ -604,7 +671,15 @@ const Cell = forwardRef(
             ...(useOldCellPadding ? { padding: theme.spacing(1) } : {}),
             ...(state.longRunningQuery ? { opacity: '0.3' } : {}),
           }}
+          aria-labelledby={`${currentId}_title ${currentId}_type ${currentId}_content`}
         >
+          {layout && (
+            <div
+              id={`${currentId}_type`}
+              style={hiddenScreenReaderText}
+              aria-label={translation ?? layout.visualization}
+            />
+          )}
           {cellNode && layout && state.sn && (
             <Header
               layout={layout}
@@ -613,15 +688,17 @@ const Cell = forwardRef(
               hovering={hovering}
               focusHandler={focusHandler.current}
               titleStyles={titleStyles}
+              isRtl={isRtl}
+              id={currentId}
+              translator={translator}
             >
               &nbsp;
             </Header>
           )}
           <Grid
-            tabIndex={keyboardNavigation ? 0 : -1}
-            onKeyDown={keyboardNavigation ? handleKeyDown : null}
-            item
-            xs
+            tabIndex={keyboardNavigation && !externalFocusManagement ? 0 : -1}
+            onKeyDown={keyboardNavigation && !externalFocusManagement ? handleKeyDown : null}
+            size="grow"
             className={CellBody.className}
             style={{
               height: '100%',
@@ -631,7 +708,16 @@ const Cell = forwardRef(
           >
             {Content}
           </Grid>
-          {cellNode && layout && state.sn && <Footer layout={layout} titleStyles={titleStyles} />}
+          {cellNode && layout && state.sn && (
+            <Footer
+              layout={layout}
+              titleStyles={titleStyles}
+              translator={translator}
+              flags={flags}
+              isCardTheme={isCardTheme}
+              isRtl={isRtl}
+            />
+          )}
         </Grid>
         {state.longRunningQuery && <LongRunningQuery canCancel={canCancel} canRetry={canRetry} api={longrunning} />}
       </Paper>

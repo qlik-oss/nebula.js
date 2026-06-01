@@ -56,13 +56,13 @@ export default function theme(resolvedTheme) {
     uiPalettes() {
       const pals = [];
       resolvedTheme.palettes.ui.forEach((s) => {
-        const colors = s.colors[0] !== 'none' ? ['none', ...s.colors] : s.colors;
+        const colors = s.colors && s.colors[0] !== 'none' ? ['none', ...s.colors] : s.colors;
         pals.push({
           key: 'ui',
           name: s.name,
           translation: s.translation,
           type: 'row',
-          colors,
+          colors: colors || [],
         });
       });
       return pals;

@@ -1,9 +1,10 @@
-const extend = require('extend');
-const yargs = require('yargs');
-const initConfig = require('./init-config');
-const sense = require('./sense');
+/* eslint-disable import/extensions */
+import extend from 'extend';
+import yargs from 'yargs';
+import initConfig from './init-config.js';
+import sense from './sense.js';
 
-module.exports = (argv) => {
+export default (argv) => {
   // not runnning via command line, run the config to inject default values
   const defaultBuildConfig = initConfig(yargs([])).argv;
   const senseConfig = extend(true, {}, defaultBuildConfig, argv);

@@ -222,10 +222,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
         layoutOrder={layoutOrder}
         itemPadding={itemPadding}
         gap={0}
-        className={joinClassNames(['value', ...classArr])}
-        classes={{
-          root: classes.fieldRoot,
-        }}
+        className={joinClassNames(['value', classes.fieldRoot, ...classArr])}
         onClick={onClick}
         onMouseDown={onMouseDown}
         onMouseUp={onMouseUp}
@@ -248,12 +245,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
             frequencyMax={frequencyMax}
           />
         )}
-        <Grid
-          item
-          style={cellStyle}
-          className={joinClassNames([classes.cell, classes.selectedCell])}
-          title={`${label}`}
-        >
+        <Grid style={cellStyle} className={joinClassNames([classes.cell, classes.selectedCell])} title={`${label}`}>
           {labels ? (
             <FieldWithRanges
               onChange={onChange}
@@ -290,7 +282,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
         {freqIsAllowed && <Frequency cell={cell} checkboxes={checkboxes} dense={dense} showGray={showGray} />}
 
         {showAnyIcon && (
-          <Grid item className={classes.icon}>
+          <Grid className={classes.icon}>
             {showLockIcon && <Lock style={iconStyles} size="small" />}
             {showTickIcon && <Tick style={iconStyles} size="small" />}
           </Grid>

@@ -1,26 +1,44 @@
 #!/usr/bin/env node
-/* eslint-disable no-console */
-const yargs = require('yargs');
-const importCwd = require('import-cwd');
-const checkNodeVersion = require('./checkNodeVersion');
+/* eslint-disable no-console, import/extensions */
+import path from 'path';
+import { createRequire } from 'module';
+import { pathToFileURL } from 'url';
+import yargs from 'yargs';
+
+import checkNodeVersion from './checkNodeVersion.js';
+
+const require = createRequire(import.meta.url);
 const pkg = require('../package.json');
 
 checkNodeVersion(pkg);
 
-yargs.usage('nebula <command> [options]');
+const cli = yargs(process.argv.slice(2));
 
-const tryAddCommand = (m) => {
+cli.usage('nebula <command> [options]');
+
+const getCommand = async (specifier) => {
+  const mod = await import(specifier);
+  return mod.default || mod;
+};
+
+const tryAddCommand = async (m) => {
   let cmd;
   let error;
   try {
-    cmd = require(`${m}/command`); // eslint-disable-line
+    cmd = await getCommand(`${m}/command.js`);
   } catch (e) {
     error = e;
-    cmd = importCwd.silent(`${m}/command`);
+    try {
+      const cwdRequire = createRequire(path.join(process.cwd(), 'package.json'));
+      const resolved = cwdRequire.resolve(`${m}/command`);
+      cmd = await getCommand(pathToFileURL(resolved).href);
+    } catch (ee) {
+      error = ee;
+    }
   }
 
   if (cmd) {
-    yargs.command(cmd);
+    cli.command(cmd);
   } else {
     // Print the error
     if (error) {
@@ -28,7 +46,7 @@ const tryAddCommand = (m) => {
     }
     // add dummy command in order to instruct user how to install missing package
     const comm = m.split('-')[1];
-    yargs.command({
+    cli.command({
       command: comm,
       handler() {
         throw new Error(
@@ -39,8 +57,15 @@ const tryAddCommand = (m) => {
   }
 };
 
-['@nebula.js/cli-create', '@nebula.js/cli-build', '@nebula.js/cli-serve', '@nebula.js/cli-sense'].forEach(
-  tryAddCommand
-);
+const run = async () => {
+  await ['@nebula.js/cli-create', '@nebula.js/cli-build', '@nebula.js/cli-serve', '@nebula.js/cli-sense'].reduce(
+    (chain, commandPackage) =>
+      // Preserve deterministic command registration order.
+      chain.then(() => tryAddCommand(commandPackage)),
+    Promise.resolve()
+  );
 
-yargs.demandCommand().alias('h', 'help').wrap(Math.min(80, yargs.terminalWidth())).argv;
+  cli.demandCommand().alias('h', 'help').wrap(Math.min(80, cli.terminalWidth())).argv;
+};
+
+run();

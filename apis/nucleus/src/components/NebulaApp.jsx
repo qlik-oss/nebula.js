@@ -58,6 +58,7 @@ export { NebulaApp };
 
 export default function boot({ app, context }) {
   let resolveRender;
+  let destroyed = false;
   const rendered = new Promise((resolve) => {
     resolveRender = resolve;
   });
@@ -87,47 +88,49 @@ export default function boot({ app, context }) {
   );
 
   const cells = {};
-  const cellsUnmount = {};
+  const componentsUnmount = [];
   const components = [];
 
   return [
     {
       toggleFocusOfCells(cellIdToFocus) {
         Object.keys(cells).forEach((i) => {
-          cells[i].current.toggleFocus(i === cellIdToFocus);
+          cells[i].current?.toggleFocus(i === cellIdToFocus);
         });
       },
       cells,
-      addCell(id, cell, unmount) {
+      addCell(id, cell) {
         cells[id] = cell;
-        cellsUnmount[id] = unmount;
       },
       removeCell(id) {
         delete cells[id];
-        cellsUnmount[id]();
-        delete cellsUnmount[id];
       },
-      add(component) {
-        (async () => {
+      add(component, unmount) {
+        return (async () => {
           await rendered;
           components.push(component);
-          appRef.current.setComps(components);
+          componentsUnmount.push(unmount);
+          appRef?.current?.setComps(components);
         })();
       },
       remove(component) {
-        (async () => {
-          await rendered;
-          const ix = components.indexOf(component);
-          if (ix !== -1) {
-            components.splice(ix, 1);
-          }
-          appRef.current.setComps(components);
-        })();
+        if (!destroyed) {
+          (async () => {
+            await rendered;
+            const ix = components.indexOf(component);
+            if (ix !== -1) {
+              componentsUnmount[ix]?.();
+              components.splice(ix, 1);
+              componentsUnmount.splice(ix, 1);
+            }
+            appRef?.current?.setComps(components);
+          })();
+        }
       },
       setMuiThemeName(themeName) {
         (async () => {
           await rendered;
-          appRef.current.setMuiThemeName(themeName);
+          appRef?.current?.setMuiThemeName(themeName);
         })();
       },
       context(ctx) {
@@ -137,14 +140,17 @@ export default function boot({ app, context }) {
           if (ctx) {
             unifyContraintsAndInteractions(ctx);
           }
-          appRef.current.setContext(ctx);
+          appRef?.current?.setContext(ctx);
         })();
       },
       destroy() {
-        Object.keys(cellsUnmount).forEach((c) => {
-          cellsUnmount[c]();
+        destroyed = true;
+        componentsUnmount.forEach((c) => {
+          c && c();
         });
         modelStore.destroy();
+        root.unmount();
+        document.body.removeChild(element);
       },
     },
     modelStore,

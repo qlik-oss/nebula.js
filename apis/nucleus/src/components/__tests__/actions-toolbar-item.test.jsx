@@ -102,7 +102,7 @@ describe('<ActionsToolbarItem />', () => {
     await render({ label: 'foo', action, keyboardAction });
     const item = renderer.root.findByType(IconButton);
     item.props.onKeyUp({ key: 'Spacebar' });
-    expect(action).not.toBeCalled();
+    expect(action).not.toHaveBeenCalled();
     expect(keyboardAction).toHaveBeenCalledTimes(1);
   });
 

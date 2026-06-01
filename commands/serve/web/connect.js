@@ -1,7 +1,8 @@
 import enigma from 'enigma.js';
 import qixSchema from 'enigma.js/schemas/12.2015.0.json';
-import SenseUtilities from 'enigma.js/sense-utilities';
-import { Auth, AuthType } from '@qlik/sdk';
+import auth from '@qlik/api/auth';
+import { getItems } from '@qlik/api/items';
+import { openAppSession } from '@qlik/api/qix';
 import getCsrfToken from './utils/getCsrfToken';
 
 const getParams = () => {
@@ -64,7 +65,7 @@ const parseEngineURL = (url) => {
     };
   }
   return {
-    enigma: {
+    engine: {
       secure: match[1] === 'wss',
       host: match[2],
       port: match[3] || undefined,
@@ -93,8 +94,8 @@ const getConnectionInfo = () =>
       } else if (params.app) {
         info = {
           ...info,
-          enigma: {
-            ...info.enigma,
+          engine: {
+            ...info.engine,
             appId: params.app,
           },
         };
@@ -108,23 +109,35 @@ const getConnectionInfo = () =>
       if (info.invalid) {
         return info;
       }
-      const rootPath = `${info.enigma.secure ? 'https' : 'http'}://${info.enigma.host}`;
+      const rootPath = `${info.engine.secure ? 'https' : 'http'}://${info.engine.host}`;
       return {
         ...info,
         rootPath,
       };
     });
 
-const getAuthInstance = async ({ webIntegrationId, host }) => {
-  const authInstance = new Auth({
-    webIntegrationId,
-    autoRedirect: true,
-    authType: AuthType.WebIntegration,
-    host,
-  });
-  const isAuth = await authInstance.isAuthenticated();
-  if (!isAuth) await authInstance.authenticate();
-  return authInstance;
+const setHostConfig = ({ webIntegrationId, clientId, host }) => {
+  if (webIntegrationId) {
+    auth.setDefaultHostConfig({ authType: 'cookie', webIntegrationId, host });
+  } else if (clientId) {
+    auth.setDefaultHostConfig({
+      authType: 'oauth2',
+      clientId,
+      host,
+      redirectUri: `${window.location.origin}/auth/login/callback`,
+      accessTokenStorage: 'session',
+    });
+  }
+};
+
+const buildDocList = async () => {
+  try {
+    const response = await getItems({ resourceType: 'app', limit: 30, sort: '-updatedAt' });
+    const { data = [] } = response.data;
+    return data.map((d) => ({ qDocId: d.resourceId, qTitle: d.name }));
+  } catch (error) {
+    throw new Error('Failed to fetch app list', { cause: error });
+  }
 };
 
 const connect = async () => {
@@ -132,52 +145,37 @@ const connect = async () => {
     const {
       clientId,
       webIntegrationId,
-      enigma: enigmaInfo,
-      enigma: { host },
+      engine: engineConfig,
+      engine: { host },
     } = await getConnectionInfo();
 
-    // if no clientId + user is already authorized -> deAuthorize user
-    const { isAuthorized } = await (await fetch('/auth/isAuthorized')).json();
-    if (!clientId && isAuthorized) {
-      await (await fetch('/auth/deauthorize')).json();
-    }
-
     if (webIntegrationId) {
-      const authInstance = await getAuthInstance({ webIntegrationId, host });
+      setHostConfig({ webIntegrationId, host });
       return {
-        getDocList: async () => {
-          const url = `/items?resourceType=app&limit=30&sort=-updatedAt`;
-          const { data = [] } = await (await authInstance.rest(url)).json();
-          return data.map((d) => ({
-            qDocId: d.resourceId,
-            qTitle: d.name,
-          }));
-        },
+        getDocList: buildDocList,
         getConfiguration: async () => ({}),
       };
     }
 
     if (clientId) {
+      setHostConfig({ clientId, host });
       return {
-        getDocList: async () => {
-          const URL = `/auth/oauth?host=${host}&clientId=${clientId}`;
-          const resp = await (await fetch(URL)).json();
-          if (resp.redirectUrl) window.location.href = resp.redirectUrl;
-        },
+        getDocList: buildDocList,
         getConfiguration: async () => ({}),
       };
     }
 
-    const csrfToken = await getCsrfToken(`https://${enigmaInfo.host}/${enigmaInfo.prefix}`);
-    const url = SenseUtilities.buildUrl({
-      secure: false,
-      ...enigmaInfo,
-      ...{ urlParams: { 'qlik-csrf-token': csrfToken } },
-    });
+    const csrfToken = await getCsrfToken(
+      `https://${engineConfig.host}${engineConfig.prefix ? `/${engineConfig.prefix}` : ''}`
+    );
+    const scheme = engineConfig.secure !== false ? 'wss' : 'ws';
+    const port = engineConfig.port ? `:${engineConfig.port}` : '';
+    const prefix = engineConfig.prefix ? `/${engineConfig.prefix}` : '';
+    const url = `${scheme}://${engineConfig.host}${port}${prefix}?qlik-csrf-token=${csrfToken}`;
 
     return enigma.create({ schema: qixSchema, url }).open();
   } catch (error) {
-    throw new Error('Failed to return enigma instance');
+    throw new Error('Failed to return enigma instance', { cause: error });
   }
 };
 
@@ -186,26 +184,40 @@ const openApp = async (id) => {
     const {
       clientId,
       webIntegrationId,
-      enigma: enigmaInfo,
-      enigma: { host },
+      engine: engineConfig,
+      engine: { host },
     } = await getConnectionInfo();
 
-    let url = '';
     if (webIntegrationId) {
-      const authInstance = await getAuthInstance({ webIntegrationId, host });
-      url = await authInstance.generateWebsocketUrl(id);
-    } else if (clientId) {
-      const { webSocketUrl } = await (await fetch(`/auth/getSocketUrl/${id}`)).json();
-      url = webSocketUrl;
-    } else {
-      url = SenseUtilities.buildUrl(enigmaInfo);
+      return openAppSession({
+        appId: id,
+        hostConfig: { authType: 'cookie', webIntegrationId, host },
+      }).getDoc();
     }
 
-    const enigmaGlobal = await enigma.create({ schema: qixSchema, url }).open();
-    return enigmaGlobal.openDoc(id);
+    if (clientId) {
+      return openAppSession({
+        appId: id,
+        hostConfig: {
+          authType: 'oauth2',
+          clientId,
+          host,
+          redirectUri: `${window.location.origin}/auth/login/callback`,
+          accessTokenStorage: 'session',
+        },
+      }).getDoc();
+    }
+
+    // Local / no-auth engine (e.g. qlik-core, docker engine)
+    const scheme = engineConfig.secure !== false ? 'https' : 'http';
+    const localHost = `${scheme}://${engineConfig.host}${engineConfig.port ? `:${engineConfig.port}` : ''}`;
+    return openAppSession({
+      appId: id,
+      hostConfig: { authType: 'noauth', host: localHost },
+    }).getDoc();
   } catch (error) {
-    throw new Error('Failed to open app!');
+    throw new Error('Failed to open app!', { cause: error });
   }
 };
 
-export { connect, openApp, getParams, getConnectionInfo, getAuthInstance, parseEngineURL };
+export { connect, openApp, getParams, getConnectionInfo, setHostConfig, parseEngineURL };

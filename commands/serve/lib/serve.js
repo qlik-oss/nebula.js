@@ -1,15 +1,18 @@
-const path = require('path');
-const fs = require('fs');
-const portfinder = require('portfinder');
-const extend = require('extend');
-const yargs = require('yargs');
-const WebSocket = require('ws').Server;
-const chokidar = require('chokidar');
-const build = require('@nebula.js/cli-build');
+/* eslint-disable import/extensions */
+import path from 'path';
+import fs from 'fs';
+import { createRequire } from 'module';
+import portfinder from 'portfinder';
+import extend from 'extend';
+import yargs from 'yargs';
+import { WebSocketServer } from 'ws';
+import chokidar from 'chokidar';
+import build from '@nebula.js/cli-build';
 
-const initConfig = require('./init-config');
+import initConfig from './init-config.js';
+import webpackServe from './webpack.serve.js';
 
-const webpackServe = require('./webpack.serve');
+const require = createRequire(import.meta.url);
 
 const initiateWatch = async ({ snPath = '', snName, host }) => {
   // TODO - timeout
@@ -20,7 +23,7 @@ const initiateWatch = async ({ snPath = '', snName, host }) => {
 
   const wsPort = await portfinder.getPortPromise({ port: 5001, host });
 
-  const ws = new WebSocket({
+  const ws = new WebSocketServer({
     port: wsPort,
     clientTracking: true,
   });
@@ -92,7 +95,7 @@ const initiateWatch = async ({ snPath = '', snName, host }) => {
   };
 };
 
-module.exports = async (argv) => {
+export default async (argv) => {
   let context = process.cwd();
   let defaultServeConfig = {};
   let runFromDirectory = false;
@@ -137,7 +140,7 @@ module.exports = async (argv) => {
       });
     }
     try {
-      const externalPkg = require(path.resolve(context, 'package.json')); // eslint-disable-line global-require
+      const externalPkg = require(path.resolve(context, 'package.json'));
       const externalEntry = serveConfig.mfe ? externalPkg.systemjs : externalPkg.main;
       snName = externalPkg.name;
       snPath = path.resolve(context, externalEntry);
@@ -178,7 +181,6 @@ module.exports = async (argv) => {
     process.on(signal, close);
   });
 
-  // eslint-disable-next-line consistent-return
   return {
     url: server.url,
     close,

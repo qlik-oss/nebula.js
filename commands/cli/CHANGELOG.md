@@ -3,6 +3,136 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.1](https://github.com/qlik-oss/nebula.js/compare/v7.0.0...v7.0.1) (2026-05-27)
+
+**Note:** Version bump only for package @nebula.js/cli
+
+# [7.0.0](https://github.com/qlik-oss/nebula.js/compare/v6.8.0...v7.0.0) (2026-05-21)
+
+### Features
+
+- migrate all commands to esm ([#1932](https://github.com/qlik-oss/nebula.js/issues/1932)) ([c5be00c](https://github.com/qlik-oss/nebula.js/commit/c5be00c77d27b3ea1ea46b598787ce8f4aa06b41))
+
+# [6.8.0](https://github.com/qlik-oss/nebula.js/compare/v6.7.0...v6.8.0) (2026-03-30)
+
+**Note:** Version bump only for package @nebula.js/cli
+
+# [6.7.0](https://github.com/qlik-oss/nebula.js/compare/v6.6.0...v6.7.0) (2026-03-12)
+
+**Note:** Version bump only for package @nebula.js/cli
+
+# [6.6.0](https://github.com/qlik-oss/nebula.js/compare/v6.5.0...v6.6.0) (2026-03-03)
+
+**Note:** Version bump only for package @nebula.js/cli
+
+# [6.5.0](https://github.com/qlik-oss/nebula.js/compare/v6.4.0...v6.5.0) (2026-01-27)
+
+**Note:** Version bump only for package @nebula.js/cli
+
+# [6.4.0](https://github.com/qlik-oss/nebula.js/compare/v6.3.0...v6.4.0) (2026-01-22)
+
+**Note:** Version bump only for package @nebula.js/cli
+
+# [6.3.0](https://github.com/qlik-oss/nebula.js/compare/v6.2.0...v6.3.0) (2025-12-08)
+
+**Note:** Version bump only for package @nebula.js/cli
+
+# [6.2.0](https://github.com/qlik-oss/nebula.js/compare/v6.1.1...v6.2.0) (2025-11-27)
+
+**Note:** Version bump only for package @nebula.js/cli
+
+## [6.1.1](https://github.com/qlik-oss/nebula.js/compare/v6.1.0...v6.1.1) (2025-11-13)
+
+**Note:** Version bump only for package @nebula.js/cli
+
+# [6.1.0](https://github.com/qlik-oss/nebula.js/compare/v6.0.2...v6.1.0) (2025-11-10)
+
+**Note:** Version bump only for package @nebula.js/cli
+
+## [6.0.2](https://github.com/qlik-oss/nebula.js/compare/v6.0.1...v6.0.2) (2025-10-22)
+
+**Note:** Version bump only for package @nebula.js/cli
+
+## [6.0.1](https://github.com/qlik-oss/nebula.js/compare/v6.0.1-alpha.0...v6.0.1) (2025-10-06)
+
+**Note:** Version bump only for package @nebula.js/cli
+
+## [6.0.1-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v6.0.0...v6.0.1-alpha.0) (2025-10-02)
+
+**Note:** Version bump only for package @nebula.js/cli
+
+# [6.0.0](https://github.com/qlik-oss/nebula.js/compare/v6.0.0-alpha.6...v6.0.0) (2025-09-29)
+
+**Note:** Version bump only for package @nebula.js/cli
+
+# [6.0.0-alpha.6](https://github.com/qlik-oss/nebula.js/compare/v6.0.0-alpha.5...v6.0.0-alpha.6) (2025-09-26)
+
+**Note:** Version bump only for package @nebula.js/cli
+
+# [6.0.0-alpha.5](https://github.com/qlik-oss/nebula.js/compare/v6.0.0-alpha.4...v6.0.0-alpha.5) (2025-09-25)
+
+**Note:** Version bump only for package @nebula.js/cli
+
+# [6.0.0-alpha.4](https://github.com/qlik-oss/nebula.js/compare/v6.0.0-alpha.3...v6.0.0-alpha.4) (2025-09-25)
+
+**Note:** Version bump only for package @nebula.js/cli
+
+# [6.0.0-alpha.3](https://github.com/qlik-oss/nebula.js/compare/v6.0.0-alpha.2...v6.0.0-alpha.3) (2025-09-11)
+
+**Note:** Version bump only for package @nebula.js/cli
+
+# [6.0.0-alpha.2](https://github.com/qlik-oss/nebula.js/compare/v6.0.0-alpha.1...v6.0.0-alpha.2) (2025-08-18)
+
+**Note:** Version bump only for package @nebula.js/cli
+
+# [6.0.0-alpha.1](https://github.com/qlik-oss/nebula.js/compare/v6.0.0-alpha.0...v6.0.0-alpha.1) (2025-08-14)
+
+**Note:** Version bump only for package @nebula.js/cli
+
+# [6.0.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v5.17.0...v6.0.0-alpha.0) (2025-08-14)
+
+**Note:** Version bump only for package @nebula.js/cli
+
+# [5.17.0](https://github.com/qlik-oss/nebula.js/compare/v5.16.0...v5.17.0) (2025-06-24)
+
+**Note:** Version bump only for package @nebula.js/cli
+
+# [5.16.0](https://github.com/qlik-oss/nebula.js/compare/v5.15.0...v5.16.0) (2025-06-11)
+
+**Note:** Version bump only for package @nebula.js/cli
+
+# [5.15.0](https://github.com/qlik-oss/nebula.js/compare/v5.14.0...v5.15.0) (2025-05-19)
+
+**Note:** Version bump only for package @nebula.js/cli
+
+# [5.14.0](https://github.com/qlik-oss/nebula.js/compare/v5.13.0...v5.14.0) (2025-05-07)
+
+**Note:** Version bump only for package @nebula.js/cli
+
+# [5.13.0](https://github.com/qlik-oss/nebula.js/compare/v5.12.6...v5.13.0) (2025-05-05)
+
+**Note:** Version bump only for package @nebula.js/cli
+
+## [5.12.6](https://github.com/qlik-oss/nebula.js/compare/v5.12.5...v5.12.6) (2025-04-08)
+
+**Note:** Version bump only for package @nebula.js/cli
+
+## [5.12.5](https://github.com/qlik-oss/nebula.js/compare/v5.12.4...v5.12.5) (2025-04-07)
+
+**Note:** Version bump only for package @nebula.js/cli
+
+## [5.12.4](https://github.com/qlik-oss/nebula.js/compare/v5.12.3...v5.12.4) (2025-03-31)
+
+**Note:** Version bump only for package @nebula.js/cli
+
+## [5.12.3](https://github.com/qlik-oss/nebula.js/compare/v5.12.2...v5.12.3) (2025-03-28)
+
+**Note:** Version bump only for package @nebula.js/cli
+
+## [5.12.2](https://github.com/qlik-oss/nebula.js/compare/v5.12.1...v5.12.2) (2025-03-27)
+
+**Note:** Version bump only for package @nebula.js/cli
+
 ## [5.12.1](https://github.com/qlik-oss/nebula.js/compare/v5.12.0...v5.12.1) (2025-03-25)
 
 **Note:** Version bump only for package @nebula.js/cli

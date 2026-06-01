@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
-const path = require('path');
-const fs = require('fs');
+import path from 'path';
+import fs from 'fs';
 // this plugin will check if there is a corresponding .native file for the input file and output the contents of the native file
 // This plugin should be loaded first.
 
-module.exports = ({ reactNative }) => ({
+export default ({ reactNative }) => ({
   async load(id) {
     if (!reactNative) {
       return null;

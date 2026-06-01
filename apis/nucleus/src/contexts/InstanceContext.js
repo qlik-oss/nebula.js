@@ -9,4 +9,6 @@ export default React.createContext({
   themeApi: null,
   modelStore: {},
   selectionStore: {},
+  hostConfig: null,
+  queryParams: null,
 });

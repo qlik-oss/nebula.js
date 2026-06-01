@@ -20,7 +20,7 @@ import ListBoxSearch from './components/ListBoxSearch';
 import useObjectSelections from '../../hooks/useObjectSelections';
 import createSelectionState from './hooks/selections/selectionState';
 import getHasSelections from './assets/has-selections';
-import getStyles from './assets/styling';
+import useListboxStyling from './assets/styling';
 import useTempKeyboard from './components/useTempKeyboard';
 
 export default function ListBoxPopover({
@@ -93,7 +93,7 @@ export default function ListBoxPopover({
     model.unlock('/qListObjectDef');
   }, [model]);
 
-  const { translator, themeApi, keyboardNavigation } = useContext(InstanceContext);
+  const { translator, themeApi, keyboardNavigation, hostConfig } = useContext(InstanceContext);
   const moreAlignTo = useRef();
   const containerRef = useRef();
   const [selections] = useObjectSelections(app, model, containerRef);
@@ -102,7 +102,7 @@ export default function ListBoxPopover({
   const keyboard = useTempKeyboard({ containerRef, enabled: keyboardNavigation });
   const { checkboxes = checkboxesOption } = layout || {};
 
-  const styles = getStyles({ themeApi, theme, components, checkboxes });
+  const styles = useListboxStyling({ themeApi, theme, hostConfig, components, checkboxes });
 
   useEffect(() => {
     if (selections && open) {
@@ -112,7 +112,7 @@ export default function ListBoxPopover({
     }
   }, [selections, open]);
 
-  if (!model || !layout || !translator) {
+  if (!model || !layout || !translator || !styles) {
     return null;
   }
 
@@ -157,20 +157,32 @@ export default function ListBoxPopover({
       direction={direction}
     >
       <Grid container direction="column" gap={0} ref={containerRef}>
-        <Grid item container style={{ direction, padding: theme.spacing(1) }}>
-          <Grid item>
+        <Grid container style={{ direction, padding: theme.spacing(1) }}>
+          <Grid>
             {isLocked ? (
-              <IconButton onClick={unlock} disabled={!isLocked} size="large">
-                <Lock title={translator.get('Listbox.Unlock')} />
+              <IconButton
+                onClick={unlock}
+                disabled={!isLocked}
+                size="large"
+                aria-label={translator.get('Listbox.Unlock')}
+                title={translator.get('Listbox.Unlock')}
+              >
+                <Lock />
               </IconButton>
             ) : (
-              <IconButton onClick={lock} disabled={!hasSelections} size="large">
-                <Unlock title={translator.get('Listbox.Lock')} />
+              <IconButton
+                onClick={lock}
+                disabled={!hasSelections}
+                size="large"
+                aria-label={translator.get('Listbox.Lock')}
+                title={translator.get('Listbox.Lock')}
+              >
+                <Unlock />
               </IconButton>
             )}
           </Grid>
-          <Grid item xs />
-          <Grid item>
+          <Grid size="grow" />
+          <Grid>
             <ActionsToolbar
               layout={layout}
               more={{
@@ -194,9 +206,9 @@ export default function ListBoxPopover({
             />
           </Grid>
         </Grid>
-        <Grid item xs>
+        <Grid size="grow">
           <div ref={moreAlignTo} />
-          <Grid item>
+          <Grid>
             <ListBoxSearch
               ref={searchInputRef}
               popoverOpen={open}

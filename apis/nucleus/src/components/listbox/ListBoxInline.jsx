@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { useContext, useCallback, useRef, useEffect, useState, useMemo } from 'react';
 import { styled } from '@mui/material/styles';
 import AutoSizer from 'react-virtualized-auto-sizer';
@@ -9,7 +8,7 @@ import ListBox from './ListBox';
 import InstanceContext from '../../contexts/InstanceContext';
 import ListBoxSearch from './components/ListBoxSearch';
 import getListboxContainerKeyboardNavigation from './interactions/keyboard-navigation/keyboard-nav-container';
-import getStyles from './assets/styling';
+import useListboxStyling from './assets/styling';
 import useAppSelections from '../../hooks/useAppSelections';
 import createSelectionState from './hooks/selections/selectionState';
 import { DENSE_ROW_HEIGHT, SCROLL_BAR_WIDTH } from './constants';
@@ -19,6 +18,7 @@ import useRect from '../../hooks/useRect';
 import isDirectQueryEnabled from './utils/is-direct-query';
 import getContainerPadding from './assets/list-sizes/container-padding';
 import ListBoxHeader from './components/ListBoxHeader';
+import ListBoxFocusBorder from './ListBoxFocusBorder';
 
 const PREFIX = 'ListBoxInline';
 const classes = {
@@ -28,8 +28,8 @@ const classes = {
 };
 
 const StyledGrid = styled(Grid, {
-  shouldForwardProp: (p) => !['containerPadding', 'isGridMode', 'styles'].includes(p),
-})(({ theme, containerPadding, isGridMode, styles }) => ({
+  shouldForwardProp: (p) => !['containerPadding', 'styles'].includes(p),
+})(({ containerPadding, styles }) => ({
   ...styles.background, // sets background color and image of listbox
   [`& .${classes.listBoxHeader}`]: {
     alignSelf: 'center',
@@ -43,12 +43,6 @@ const StyledGrid = styled(Grid, {
   },
   [`& .${classes.listboxWrapper}`]: {
     padding: containerPadding,
-  },
-  '&:focus': {
-    boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
-  },
-  '&:focus ::-webkit-scrollbar-track': {
-    boxShadow: !isGridMode ? 'inset -2px -2px 0px #3F8AB3' : undefined,
   },
   '&:focus-visible': {
     outline: 'none',
@@ -85,16 +79,17 @@ function ListBoxInline({ options, layout }) {
 
   const theme = useTheme();
 
-  const { translator, keyboardNavigation, themeApi, constraints } = useContext(InstanceContext);
+  const { translator, keyboardNavigation, themeApi, queryParams, constraints, hostConfig } =
+    useContext(InstanceContext);
 
   const { checkboxes = checkboxesOption } = layout || {};
-  const styles = getStyles({ app, themeApi, theme, components, checkboxes });
+  const styles = useListboxStyling({ app, themeApi, theme, queryParams, components, checkboxes, hostConfig });
 
   const isDirectQuery = isDirectQueryEnabled({ appLayout: app?.layout });
 
   const containerRef = useRef();
   const searchInputRef = useRef();
-  const [containerRectRef, containerRect] = useRect();
+  const [containerRectRef, containerRect, containerNode] = useRect();
   const [showToolbar, setShowToolbar] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const hovering = useRef(false);
@@ -107,6 +102,11 @@ function ListBoxInline({ options, layout }) {
   const isModalMode = useCallback(() => isModal({ app, appSelections }), [app, appSelections]);
   const isInvalid = layout?.qListObject.qDimensionInfo.qError;
   const errorText = isInvalid && constraints.active ? 'Visualization.Invalid.Dimension' : 'Visualization.Incomplete';
+  const [, setHasFocus] = useState(false); // Force render on focus change to show/hide ListBoxFocusBorder
+  const [listboxChildNode, setListboxChildNode] = useState(null);
+  const listboxChildRef = useCallback((node) => {
+    setListboxChildNode(node);
+  }, []);
 
   const { handleKeyDown, handleOnMouseEnter, handleOnMouseLeave, globalKeyDown } = useMemo(
     () =>
@@ -189,7 +189,7 @@ function ListBoxInline({ options, layout }) {
 
   const isRtl = direction === 'rtl';
 
-  if (!model || !layout || !translator) {
+  if (!model || !layout || !translator || !styles) {
     return null;
   }
 
@@ -200,6 +200,13 @@ function ListBoxInline({ options, layout }) {
   const handleShowSearch = () => {
     const newValue = !showSearch;
     setShowSearch(newValue);
+    if (newValue && containerRef.current?.scrollIntoView) {
+      containerRef.current.scrollIntoView({
+        block: 'nearest',
+        inline: 'nearest',
+        behavior: 'instant',
+      });
+    }
   };
 
   const onCtrlF = () => {
@@ -272,22 +279,30 @@ function ListBoxInline({ options, layout }) {
         onMouseLeave={handleOnMouseLeave}
         ref={(el) => {
           containerRef.current = el;
-          containerRectRef(el);
+          containerRectRef?.(el);
         }}
-        isGridMode={isGridMode}
         aria-label={keyboard.active ? translator.get('Listbox.ScreenReaderInstructions') : ''}
+        onFocus={() => setHasFocus(true)}
+        onBlur={() => setHasFocus(false)}
       >
+        <ListBoxFocusBorder
+          width={containerRect?.width}
+          height={containerRect?.height}
+          disabled={isModalMode() || isPopover}
+          childNode={listboxChildNode}
+          containerNode={containerNode}
+        />
         {showAttachedToolbar && listBoxHeader}
         <Grid
-          item
           container
           direction="column"
           height="100%"
           minHeight={listBoxMinHeight}
           role="region"
           aria-label={translator.get('Listbox.ResultFilterLabel')}
+          ref={listboxChildRef}
         >
-          <Grid item>
+          <Grid>
             <ListBoxSearch
               ref={searchInputRef}
               selections={selections}
@@ -306,7 +321,7 @@ function ListBoxInline({ options, layout }) {
               styles={styles}
             />
           </Grid>
-          <Grid item xs className={classes.listboxWrapper}>
+          <Grid size="grow" className={classes.listboxWrapper}>
             {isInvalid ? (
               <ListBoxError text={errorText} />
             ) : (

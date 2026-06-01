@@ -2,6 +2,7 @@ import fGO from './from-generic-objects';
 
 /**
  * @interface EnigmaMockerOptions
+ * @property {object=} appMethods Object with methods to add to the mocked app.
  * @property {number} delay Simulate delay (in ms) for calls in enigma-mocker.
  * @description Options for Enigma Mocker
  * @experimental

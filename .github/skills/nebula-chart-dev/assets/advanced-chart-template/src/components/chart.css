@@ -1,0 +1,58 @@
+.abc-advanced-chart {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  height: 100%;
+  padding: 12px;
+  border-top: 4px solid transparent;
+  overflow: hidden;
+}
+
+.abc-advanced-chart__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 11px;
+  opacity: 0.9;
+}
+
+.abc-advanced-chart__body {
+  min-height: 0;
+  flex: 1;
+  overflow: auto;
+}
+
+.abc-advanced-chart__empty {
+  margin: 0;
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+.abc-advanced-chart__table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.abc-advanced-chart__table th,
+.abc-advanced-chart__table td {
+  border-bottom: 1px solid rgba(127, 127, 127, 0.25);
+  text-align: left;
+  padding: 6px 8px;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.abc-advanced-chart__table th {
+  font-weight: 600;
+}
+
+.abc-advanced-chart__error {
+  padding: 8px;
+  border-radius: 4px;
+  background: rgba(255, 127, 127, 0.2);
+}

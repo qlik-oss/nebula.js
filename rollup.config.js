@@ -94,6 +94,7 @@ const config = ({ format = 'umd', debug = false, file, targetPkg }) => {
 
   // peers that are not devDeps should be externals for full bundle
   // const bundleExternals = peers.filter((p) => typeof (pkg.devDependencies || {})[p] === 'undefined');
+  const useDirectoryOutput = format === 'systemjs';
 
   const external = peers;
   const globals = {};
@@ -120,19 +121,34 @@ const config = ({ format = 'umd', debug = false, file, targetPkg }) => {
       if (warning.code === 'CIRCULAR_DEPENDENCY' && warning.message.includes(`node_modules/semver`)) {
         return;
       }
+      if (warning.code === 'CIRCULAR_DEPENDENCY' && warning.message.includes(`node_modules/@qlik/api`)) {
+        return;
+      }
       warn(warning);
     },
     input: path.resolve(cwd, 'src', 'index'),
-    output: {
-      // file: path.resolve(targetDir, getFileName(isEsm ? 'esm' : '', dev)),
-      file,
-      format,
-      exports: ['test-utils', 'stardust'].indexOf(targetName) !== -1 ? 'named' : 'default',
-      name: umdName,
-      sourcemap: true,
-      banner,
-      globals,
-    },
+    output: useDirectoryOutput
+      ? {
+          dir: path.dirname(file),
+          entryFileNames: path.basename(file),
+          chunkFileNames: 'chunks/[name]-[hash].js',
+          format,
+          exports: ['test-utils', 'stardust'].indexOf(targetName) !== -1 ? 'named' : 'default',
+          sourcemap: true,
+          banner,
+          globals,
+          inlineDynamicImports: false,
+        }
+      : {
+          file,
+          format,
+          exports: ['test-utils', 'stardust'].indexOf(targetName) !== -1 ? 'named' : 'default',
+          name: umdName,
+          sourcemap: true,
+          banner,
+          globals,
+          inlineDynamicImports: true,
+        },
     external,
     plugins: [
       replace({
@@ -144,6 +160,7 @@ const config = ({ format = 'umd', debug = false, file, targetPkg }) => {
       }),
       nodeResolve({
         extensions: [debug ? '.dev.js' : false, '.js', '.jsx'].filter(Boolean),
+        browser: true,
       }),
       json(),
       commonjs(),
@@ -222,6 +239,23 @@ let dist = [
         format: 'esm',
         targetPkg: pkg,
         file: path.resolve(targetDir, getFileName('esm', true)),
+      })
+    : false,
+
+  targetName === 'stardust'
+    ? config({
+        format: 'systemjs',
+        targetPkg: pkg,
+        file: path.resolve(targetDir, getFileName('systemjs', false)),
+      })
+    : false,
+
+  targetName === 'stardust'
+    ? config({
+        debug: true,
+        format: 'systemjs',
+        targetPkg: pkg,
+        file: path.resolve(targetDir, getFileName('systemjs', true)),
       })
     : false,
 

@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import {
   resolveBgColor,
   resolveBgImage,
@@ -7,25 +7,59 @@ import {
   resolveBorderRadius,
   resolveBoxShadow,
 } from '../utils/style/styling-props';
+import InstanceContext from '../contexts/InstanceContext';
 
-const useStyling = (layout, theme, app, themeName) => {
+const THEME_OBJECT_TYPE_MAP = {
+  linechart: 'lineChart',
+  barchart: 'barChart',
+  combochart: 'comboChart',
+  scatterplot: 'scatterPlot',
+  piechart: 'pieChart',
+  straightable: 'straightTable',
+  pivottable: 'pivotTable',
+  table: 'straightTable',
+  'pivot-table': 'pivotTable',
+  listbox: 'listBox',
+  referenceline: 'referenceLine',
+  datacolors: 'dataColors',
+  'text-image': 'textImage',
+  boxplot: 'boxPlot',
+  map: 'mapChart',
+  mapchart: 'mapChart',
+  bulletchart: 'bulletChart',
+  'sn-table': 'straightTableV2',
+  waterfallchart: 'waterfallChart',
+  'sn-tabbed-container': 'tabContainer',
+  'sn-slider': 'slider',
+};
+
+const getThemeObjectType = (visualization) => {
+  if (THEME_OBJECT_TYPE_MAP[visualization.toLowerCase()]) {
+    return THEME_OBJECT_TYPE_MAP[visualization.toLowerCase()];
+  }
+  return visualization;
+};
+
+const useStyling = ({ layout, theme, app, themeName, disableThemeBorder, queryParams }) => {
+  const { hostConfig } = useContext(InstanceContext);
   const styling = useMemo(() => {
     if (layout && theme) {
       const generalComp = layout.components ? layout.components.find((comp) => comp.key === 'general') : null;
+      const objectType = getThemeObjectType(layout.visualization);
       const titleStyles = {
-        main: resolveTextStyle(generalComp, 'main', theme, layout.visualization),
-        footer: resolveTextStyle(generalComp, 'footer', theme, layout.visualization),
-        subTitle: resolveTextStyle(generalComp, 'subTitle', theme, layout.visualization),
+        main: resolveTextStyle(generalComp, 'main', theme, objectType),
+        footer: resolveTextStyle(generalComp, 'footer', theme, objectType),
+        subTitle: resolveTextStyle(generalComp, 'subTitle', theme, objectType),
       };
-      const bgColor = resolveBgColor(generalComp, theme, layout.visualization);
-      const bgImage = resolveBgImage(generalComp, app);
-      const border = resolveBorder(generalComp, theme, layout.visualization);
-      const borderRadius = resolveBorderRadius(generalComp, theme, layout.visualization);
-      const boxShadow = resolveBoxShadow(generalComp, theme, layout.visualization);
+      const bgColor = resolveBgColor(generalComp, theme, objectType);
+      const bgImage = resolveBgImage(generalComp, app, queryParams, hostConfig?.host);
+      const border = resolveBorder(generalComp, theme, objectType, disableThemeBorder);
+      const borderRadius = resolveBorderRadius(generalComp, theme, objectType);
+      const boxShadow = resolveBoxShadow(generalComp, theme, objectType);
       return { titleStyles, bgColor, bgImage, border, borderRadius, boxShadow };
     }
     return {};
-  }, [layout, theme, app, themeName]);
+  }, [layout, theme, app, themeName, disableThemeBorder]);
   return styling;
 };
 

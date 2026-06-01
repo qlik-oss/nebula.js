@@ -33,11 +33,11 @@ const nuke = async ({ app, supernova: { name }, themes, theme, language }) => {
 async function renderWithEngine() {
   const info = await getConnectionInfo();
   await initiateWatch(info);
-  if (!info.enigma.appId) {
+  if (!info.engine.appId) {
     location.href = location.origin; //eslint-disable-line
   }
   const params = getParams();
-  const app = await openApp(info.enigma.appId);
+  const app = await openApp(info.engine.appId);
   const nebbie = await nuke({ app, ...info, theme: params.theme, language: params.language });
   const element = document.querySelector('#chart-container');
   let cfg;

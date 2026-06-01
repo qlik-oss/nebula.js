@@ -19,7 +19,7 @@ export default function supernova(galaxy) {
     ext: ext(galaxy),
     component() {
       const element = useElement();
-      element.innerHTML = '<div>Hello!</div>'; // eslint-disable-line
+      element.innerHTML = '<div>Hello!</div>';
     },
   };
 }

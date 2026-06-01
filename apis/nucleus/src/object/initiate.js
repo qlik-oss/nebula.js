@@ -12,9 +12,8 @@ export default async function init(model, optional, halo, navigation, initialErr
     onRender,
     onError,
   });
-  if (optional.options) {
-    api.__DO_NOT_USE__.options(optional.options);
-  }
+  api.__DO_NOT_USE__.options(optional.options || {});
+
   if (optional.plugins) {
     api.__DO_NOT_USE__.plugins(optional.plugins);
   }

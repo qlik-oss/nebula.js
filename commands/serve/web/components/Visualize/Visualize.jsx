@@ -225,6 +225,7 @@ export default function Visualize() {
     const v = currentThemeName === 'dark' ? 'light' : 'dark';
     storage.save('themeName', v);
     setCurrentThemeName(v);
+    setCurrentMuiThemeName(v);
   };
 
   const handleCreateEditChange = (e, newValue) => {
@@ -253,10 +254,14 @@ export default function Visualize() {
                 <Grid item>
                   <Toolbar
                     variant="dense"
-                    style={{ background: theme.palette.background.paper, boxShadow: theme.shadows[1] }}
+                    style={{
+                      background: theme.palette.background.paper,
+                      boxShadow: theme.shadows[1],
+                      width: `calc(100% - 48px)`,
+                    }}
                   >
-                    <Grid container gap={1}>
-                      <Grid item container alignItems="center" style={{ width: 'auto' }}>
+                    <Grid container gap={1} style={{ width: '100%' }}>
+                      <Grid item container alignItems="center">
                         <Grid item>
                           <a href="https://github.com/qlik-oss/nebula.js" target="_blank" rel="noopener noreferrer">
                             <img
@@ -268,18 +273,18 @@ export default function Visualize() {
                           </a>
                         </Grid>
                       </Grid>
-                      <Grid item container alignItems="center" style={{ width: 'auto' }}>
+                      <Grid item container alignItems="center">
                         <IconButton title="Home" onClick={() => navigate('/')} size="large">
                           <Home style={{ verticalAlign: 'middle' }} />
                         </IconButton>
                       </Grid>
-                      <Grid item xs zeroMinWidth>
+                      <Grid>
                         <Tabs value={objectListMode ? 1 : 0} onChange={handleCreateEditChange} aria-label="Navigation">
                           <Tab label={<Typography>Create</Typography>} value={0} />
                           <Tab label={<Typography>Edit</Typography>} value={1} />
                         </Tabs>
                       </Grid>
-                      <Grid item container alignItems="center" style={{ width: 'auto' }}>
+                      <Grid item container alignItems="center" offset={{ md: 'auto' }}>
                         <Grid item gap={1}>
                           <Typography>State:</Typography>
                         </Grid>
@@ -369,6 +374,8 @@ export default function Visualize() {
                   item
                   xs
                   style={{
+                    flex: 1,
+                    minHeight: 0,
                     overflowX: 'hidden',
                     overflowY: 'auto',
                     padding: theme.spacing(0, SPACING / 2, SPACING / 2, SPACING / 2),
@@ -377,7 +384,7 @@ export default function Visualize() {
                   <VizContext.Provider value={vizContext}>
                     {sn ? (
                       <Grid container wrap="nowrap" style={{ height: '100%' }} gap={SPACING / 2}>
-                        <Grid item xs zeroMinWidth>
+                        <Grid item xs style={{ flex: 1, minWidth: 0 }}>
                           {objectListMode ? (
                             <Collection cache={currentId} types={[info?.supernova.name]} />
                           ) : (

@@ -205,6 +205,7 @@ describe('ListBoxPortal', () => {
         option_two: '#02',
         __DO_NOT_USE__: doNotUse,
       };
+      // eslint-disable-next-line no-unused-vars
       const { __DO_NOT_USE__, ...resultOfOptions } = extraOptions;
       expect(getOptions(extraOptions)).toMatchObject({ ...defaultValues, ...resultOfOptions, ...doNotUse });
     });

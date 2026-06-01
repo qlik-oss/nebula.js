@@ -3,7 +3,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { useTheme } from '@nebula.js/ui/theme';
 import useRect from '@nebula.js/nucleus/src/hooks/useRect';
-import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import * as monaco from '../../monaco-setup';
 
 export default function PropertiesDialog({ model, show, close }) {
   const [objectProps, setObjectProps] = useState('');

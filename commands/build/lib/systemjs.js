@@ -6,8 +6,8 @@ const systemjsBehaviours = {
       'picasso-plugin-q',
       'react',
       'react-dom',
+      '@qlik-trial/sprout-css-modules',
       /^(?!@qlik-trial\/qmfe-data-client-parcels)(@qlik-trial\/qmfe-)/,
-      /^@qlik\/api\//,
     ];
     const { external } = cfg.systemjs || {};
     return Array.isArray(external) ? external : defaultExternal;
@@ -17,4 +17,4 @@ const systemjsBehaviours = {
   enabled: ({ pkg }) => !!pkg.systemjs,
 };
 
-module.exports = systemjsBehaviours;
+export default systemjsBehaviours;

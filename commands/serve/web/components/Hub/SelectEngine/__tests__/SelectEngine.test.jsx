@@ -4,6 +4,11 @@ import { TestRenderer } from '../../../../utils/testRenderer';
 import SelectEngine from '../SelectEngine';
 import { OptionsToConnect } from '../../../../constants/optionsToConnect';
 
+jest.mock('@qlik/api/auth', () => ({
+  __esModule: true,
+  default: { setDefaultHostConfig: jest.fn() },
+}));
+
 describe('<SelectEngine />', () => {
   test('should render properly', () => {
     TestRenderer(<SelectEngine />, { error: null });

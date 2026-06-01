@@ -82,6 +82,7 @@ function createWithHooks(generator, opts, galaxy) {
       layout: {},
       appLayout: {},
       keyboardNavigation: opts.keyboardNavigation,
+      externalFocusManagement: opts.externalFocusManagement || false,
       focusHandler: opts.focusHandler,
       constraints: forcedConstraints,
       interactions: forcedInteractions,
@@ -216,6 +217,11 @@ function createWithHooks(generator, opts, galaxy) {
       return generator.component.runMenu(this, menu, event, menuBuilder);
     },
     focus() {
+      const ref = generator.component.getImperativeHandle(this);
+      if (ref && typeof ref.focus === 'function') {
+        ref.focus();
+        return;
+      }
       generator.component.focus(this);
     },
     blur() {

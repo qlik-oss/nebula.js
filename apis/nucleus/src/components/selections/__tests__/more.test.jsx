@@ -93,7 +93,6 @@ describe('<More />', () => {
     items = [field, multiStateField];
     render = async (rendererOptions = null) => {
       await act(async () => {
-        // eslint-disable-next-line react/jsx-props-no-spreading
         renderer = create(<More items={items} api={api} />, rendererOptions);
       });
     };

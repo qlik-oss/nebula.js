@@ -1,6 +1,6 @@
-/* eslint-disable no-underscore-dangle */
 import EventEmitter from 'node-event-emitter';
-import { convertTo as conversionConvertTo } from '@nebula.js/conversion';
+import { convertTo as conversionConvertTo, helpers } from '@nebula.js/conversion';
+import { HyperCubeHandler } from '@nebula.js/supernova';
 import glueCell from './components/glue';
 import getPatches from './utils/patcher';
 import validatePlugins from './plugins/plugins';
@@ -25,6 +25,10 @@ export default function viz({
   let onMount = null;
   let onRenderResolve = null;
   let viewDataObjectId;
+  let originalExtensionDef;
+  let originalLayout;
+  let successfulRender = false;
+
   const mounted = new Promise((resolve) => {
     onMount = resolve;
   });
@@ -37,6 +41,7 @@ export default function viz({
     override?.(); // from options.onInitialRender
     onRenderResolve(); // internal promise in viz to wait for render
     onRender(); // from RenderConfig
+    successfulRender = true;
   };
 
   let initialSnOptions = {};
@@ -82,6 +87,75 @@ export default function viz({
     }
   };
 
+  let newExperimental = {};
+  if (halo.context?.enablePrivateExperimental) {
+    // ===== undocumented experimental API - use at own risk ======
+    newExperimental = {
+      /**
+       *  @ignore
+       *  valid types: viewData, cssScaling, snapshot, exportData, exploration
+       *  questionable types: supportRefresh, quickMobile, fullscreen
+       *  deprecated?: sharing
+       *
+       */
+      support(type) {
+        if (mountedReference && successfulRender) {
+          return cellRef.current.support(type, originalExtensionDef?.support, originalLayout);
+        }
+        return false;
+      },
+      getPropertyPanelDefinition() {
+        if (mountedReference && successfulRender) {
+          return originalExtensionDef
+            ? originalExtensionDef.definition
+            : cellRef.current.getExtensionDefinition().definition;
+        }
+        return false;
+      },
+      /**
+       * Gets the generic hypercube handlers
+       * @private
+       * @returns {Promise<object|undefined>} methods to handle hypercube dimensions and measures definitions and properties.
+       */
+      async getHypercubePropertyHandler() {
+        await rendered;
+
+        const extensionDefinition = cellRef.current.getExtensionDefinition();
+        const dataDefinition = extensionDefinition.data;
+        const properties = await model.getEffectiveProperties();
+
+        if (dataDefinition) {
+          const options = {
+            app: model.app,
+            dimensionDefinition: dataDefinition.dimensions,
+            measureDefinition: dataDefinition.measures,
+            dimensionProperties: properties.qHyperCubeDef?.qDimensions?.[0] || helpers.getDefaultDimension(),
+            measureProperties: properties.qHyperCubeDef?.qMeasures?.[0] || helpers.getDefaultMeasure(),
+            globalChangeListeners: undefined,
+            path: cellRef.current.getHypercubePath(),
+          };
+
+          if (typeof extensionDefinition.propertyHandler === 'function') {
+            return extensionDefinition.propertyHandler(options);
+          }
+
+          return new HyperCubeHandler(options);
+        }
+
+        return undefined;
+      },
+      toggleFocus(focus) {
+        cellRef.current.toggleFocus(focus);
+      },
+      setOnBlurHandler(cb) {
+        cellRef.current.setOnBlurHandler(cb);
+      },
+      onContextMenu(...args) {
+        return cellRef.current.onContextMenu(...args);
+      },
+    };
+  }
+
   /**
    * @class
    * @alias Viz
@@ -106,6 +180,7 @@ export default function viz({
     model,
     /**
      * Destroys the visualization and removes it from the the DOM.
+     * @returns {Promise<void>}
      * @example
      * const viz = await embed(app).render({
      *   element,
@@ -173,7 +248,7 @@ export default function viz({
     async toggleDataView(showDataView) {
       let newModel;
       if (!viewDataObjectId && showDataView !== false) {
-        let newType = halo.config.context.dataViewType;
+        let newType = halo.context.dataViewType;
         const oldProperties = await model.getEffectiveProperties();
         // Check if dataViewType is registered. Otherwise potentially fallback to table
         if (!halo.types.getSupportedVersion(newType)) {
@@ -194,14 +269,25 @@ export default function viz({
         });
         newModel = await halo.app.createSessionObject(propertyTree.qProperty);
         viewDataObjectId = newModel.id;
+        originalExtensionDef = cellRef.current.getExtensionDefinition();
+        originalLayout = await model.getLayout();
       } else if (viewDataObjectId && showDataView !== true) {
         newModel = model;
         await halo.app.destroySessionObject(viewDataObjectId);
         viewDataObjectId = undefined;
+        originalExtensionDef = undefined;
+        originalLayout = undefined;
       }
       if (newModel) {
         cellRef.current.setModel(newModel);
       }
+    },
+    /**
+     * Whether or not the chart has the data view toggled on.
+     * @type {boolean}
+     */
+    get viewDataToggled() {
+      return viewDataObjectId !== undefined;
     },
     /**
      * Listens to custom events from inside the visualization. See useEmitter
@@ -237,6 +323,7 @@ export default function viz({
       await rendered;
       return cellRef.current.takeSnapshot();
     },
+    ...newExperimental,
     // ===== unexposed experimental API - use at own risk ======
     __DO_NOT_USE__: {
       mount(element) {

@@ -1,7 +1,8 @@
 {
   "name": "@nebula.js/cli-create",
-  "version": "5.12.1",
+  "version": "7.0.1",
   "description": "",
+  "type": "module",
   "license": "MIT",
   "author": "QlikTech International AB",
   "keywords": [],
@@ -22,9 +23,9 @@
     "generate": "yo ./generator/index.js"
   },
   "dependencies": {
+    "@inquirer/prompts": "8.4.3",
     "chalk": "4.1.2",
-    "ejs": "3.1.10",
-    "fs-extra": "11.3.0",
-    "inquirer": "8.2.6"
+    "ejs": "5.0.2",
+    "fs-extra": "11.3.5"
   }
 }

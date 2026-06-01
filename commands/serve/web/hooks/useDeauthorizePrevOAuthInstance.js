@@ -1,21 +1,13 @@
+import { useEffect } from 'react';
+import auth from '@qlik/api/auth';
 import { useRootContext } from '../contexts/RootContext';
-
-const { useEffect } = require('react');
 
 export const useDeauthorizePrevOAuthInstance = () => {
   const { cachedConnectionsData } = useRootContext();
 
   useEffect(() => {
-    // deuathorize any oauth state if any was available
-    // this is b/c we need to cleaning up any previous state of Auth instance
-    const handleDeauthorization = async () => {
-      try {
-        await (await fetch('/auth/deauthorize')).json();
-      } catch (error) {
-        console.error('deauthorization failed: ', error);
-      }
-    };
-
-    handleDeauthorization();
+    // Clear any previously set host config so a fresh one is applied for the new connection.
+    // Using setDefaultHostConfig(undefined) instead of logout() to avoid redirecting the browser.
+    auth.setDefaultHostConfig(undefined);
   }, [cachedConnectionsData.cachedConnections.length]);
 };

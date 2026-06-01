@@ -1,5 +1,12 @@
-const fs = require('fs');
-const path = require('path');
+/* eslint-disable import/extensions */
+import fs from 'fs';
+import path from 'path';
+import { createRequire } from 'module';
+import { visualizer } from 'rollup-plugin-visualizer';
+
+import resolveNative from './resolveNative.js';
+
+const require = createRequire(import.meta.url);
 const babel = require('@rollup/plugin-babel');
 const postcss = require('rollup-plugin-postcss');
 const replace = require('@rollup/plugin-replace');
@@ -7,11 +14,10 @@ const json = require('@rollup/plugin-json');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
 const commonjs = require('@rollup/plugin-commonjs');
 const terser = require('@rollup/plugin-terser');
-const jsxPlugin = require('@babel/plugin-transform-react-jsx');
 const babelPreset = require('@babel/preset-env');
-const { visualizer } = require('rollup-plugin-visualizer');
-
-const resolveNative = require('./resolveNative');
+const browsersList = require('@qlik/browserslist-config');
+const babelPresetReact = require('@babel/preset-react');
+const babelPresetTypescript = require('@babel/preset-typescript');
 
 const resolveReplacementStrings = (replacementStrings) => {
   if (typeof replacementStrings !== 'object') {
@@ -67,7 +73,7 @@ const config = ({
   mode = 'production',
   format = 'umd',
   cwd = process.cwd(),
-  argv = { sourcemap: true, codeSplit: false },
+  argv = { sourcemap: true, codeSplit: false, inlineDynamic: false },
   core,
   behaviours: {
     getExternal = getExternalDefault,
@@ -80,9 +86,9 @@ const config = ({
   const CWD = argv.cwd || cwd;
   const { reactNative, reactNativePath } = setupReactNative(argv);
   let dir = CWD;
-  let pkg = require(path.resolve(CWD, 'package.json')); // eslint-disable-line
-  const corePkg = core ? require(path.resolve(core, 'package.json')) : null; // eslint-disable-line
-  pkg = reactNative ? require(path.resolve(reactNativePath, 'package.json')) : pkg; // eslint-disable-line
+  let pkg = require(path.resolve(CWD, 'package.json'));
+  const corePkg = core ? require(path.resolve(core, 'package.json')) : null;
+  pkg = reactNative ? require(path.resolve(reactNativePath, 'package.json')) : pkg;
   const { sourcemap, replacementStrings = {}, typescript, preferBuiltins, browser } = argv;
   const banner = getBanner({ pkg });
   const outputName = getOutputName({ pkg, config: argv });
@@ -134,17 +140,47 @@ const config = ({
     } else {
       outputConfig.dir = path.resolve(dir, outputFile.split('/')[0]);
     }
-    if (format === 'umd') {
+    if (format === 'umd' || argv.inlineDynamic) {
       outputConfig.inlineDynamicImports = true;
     }
     return outputConfig;
   };
+
+  const babelPresets = [
+    [
+      babelPreset,
+      {
+        modules: false,
+        targets: {
+          browsers: browsersList,
+        },
+      },
+    ],
+    [babelPresetReact, { runtime: 'automatic' }],
+  ];
+
+  if (typescript) {
+    babelPresets.push([
+      babelPresetTypescript,
+      {
+        allowNamespaces: true,
+        allowDeclareFields: true,
+        onlyRemoveTypeImports: true,
+        // Fixes for _default issues
+        isolatedModules: true,
+      },
+    ]);
+  }
 
   return {
     input: {
       onwarn(warning, warn) {
         // Supress "use client" warnings coming from MUI bundling
         if (warning.code === 'MODULE_LEVEL_DIRECTIVE' && warning.message.includes(`"use client"`)) {
+          return;
+        }
+        // https://github.com/d3/d3-interpolate/issues/58
+        if (/Circular dependency.*d3-*/.test(warning.message)) {
           return;
         }
         warn(warning);
@@ -163,30 +199,27 @@ const config = ({
           browser,
           preferBuiltins,
         }),
+        postcss({
+          exclude: /\.module\.css$/,
+        }),
+        // Handle all CSS with conditional modules processing
+        postcss({
+          include: /\.module\.css$/,
+          modules: true,
+          extract: false,
+        }),
         commonjs({
           ignoreTryCatch: false, // Avoids problems with require() inside try catch (https://github.com/rollup/plugins/issues/1004)
         }),
         json(),
+
         babel({
           babelHelpers: 'bundled',
           babelrc: false,
           inputSourceMap: sourcemap,
           extensions,
-          presets: [
-            [
-              babelPreset,
-              {
-                modules: false,
-                targets: {
-                  browsers: ['chrome 62'],
-                },
-              },
-            ],
-          ],
-          plugins: [[jsxPlugin]],
+          presets: babelPresets,
         }),
-        postcss({}),
-        ...[typescript ? typescriptPlugin() : false],
         ...[
           mode === 'production'
             ? terser({
@@ -209,4 +242,4 @@ const config = ({
   };
 };
 
-module.exports = config;
+export default config;

@@ -7,16 +7,17 @@ export default function fromGenericObjects(genericObjects, options = {}) {
   const session = new SessionMock();
   const createSessionObject = new CreateSessionObjectMock(session);
   const getObject = new GetObjectMock(genericObjects, options);
-  const getAppLayout = new GetAppLayoutMock();
+  const getAppLayout = new GetAppLayoutMock(options);
 
   const app = {
+    ...(options.appMethods || {}),
     id: `app - ${+Date.now()}`,
     session,
     createSessionObject,
     destroySessionObject: async () => {},
     getObject,
     getAppLayout,
-    getListObject: async () => {},
+    getListObject: async (props) => getObject(props.qInfo?.qId),
   };
 
   return Promise.resolve(app);

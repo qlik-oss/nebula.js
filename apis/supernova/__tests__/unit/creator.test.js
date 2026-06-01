@@ -121,6 +121,7 @@ describe('creator', () => {
       opts = {
         nebbie: 'embedAPI',
         keyboardNavigation: false,
+        externalFocusManagement: false,
         focusHandler: 'focusHandler',
         emitter: 'emitter',
         model: 'model',
@@ -145,6 +146,7 @@ describe('creator', () => {
         selections: 'selections',
         nebbie: 'embedAPI',
         keyboardNavigation: false,
+        externalFocusManagement: false,
         focusHandler: 'focusHandler',
         emitter: 'emitter',
         element: undefined,

@@ -66,6 +66,9 @@
       case 'standard':
         sc = {};
         break;
+      case 'dense':
+        sc = { dense: true };
+        break;
       case 'autoConfirm':
         sc = { autoConfirm: true };
         break;

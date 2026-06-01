@@ -1,53 +1,47 @@
-import * as SDK from '@qlik/sdk';
 import * as ENIGMA from 'enigma.js';
-import qixSchema from 'enigma.js/schemas/12.2015.0.json';
-import * as SenseUtilities from 'enigma.js/sense-utilities';
-import { connect, openApp, getConnectionInfo, getParams, parseEngineURL } from '../connect';
+
+import auth from '@qlik/api/auth';
+import { getItems } from '@qlik/api/items';
+import { openAppSession } from '@qlik/api/qix';
 import * as getCsrfToken from '../utils/getCsrfToken';
+import { connect, openApp, getConnectionInfo, getParams, parseEngineURL } from '../connect';
 
 jest.mock('../utils/getCsrfToken', () => jest.fn());
 
-jest.mock('@qlik/sdk');
+jest.mock('@qlik/api/auth', () => ({
+  __esModule: true,
+  default: { setDefaultHostConfig: jest.fn() },
+}));
+
+jest.mock('@qlik/api/items', () => ({
+  getItems: jest.fn(),
+}));
+
+jest.mock('@qlik/api/qix', () => ({
+  openAppSession: jest.fn(),
+}));
+
 jest.mock('enigma.js');
-jest.mock('enigma.js/sense-utilities');
 
 describe('connect.js', () => {
   let appId;
   let authConfig = {};
-  let isAuthenticatedMock;
-  let authenticateMock;
-  let restCallMock;
   let jsonResponseMock;
-  let generateWebsocketUrlMock;
-  let windowFetchSpy;
 
   beforeEach(() => {
     appId = 'someAppId';
     authConfig = {
-      authType: 'WebIntegration',
-      autoRedirect: 'true',
+      authType: 'cookie',
       host: 'some.eu.tenant.pte.qlikdev.com',
       webIntegrationId: 'someIntegrationId',
     };
-    isAuthenticatedMock = jest.fn();
-    authenticateMock = jest.fn();
-    restCallMock = jest.fn();
     jsonResponseMock = jest.fn();
-    generateWebsocketUrlMock = jest.fn();
     jest.spyOn(global, 'fetch').mockImplementationOnce(() =>
       Promise.resolve({
         ok: true,
         json: jsonResponseMock,
       })
     );
-    SDK.Auth.mockImplementation(() => ({
-      config: authConfig,
-      isAuthenticated: isAuthenticatedMock,
-      authenticate: authenticateMock,
-      rest: restCallMock,
-      generateWebsocketUrl: generateWebsocketUrlMock,
-    }));
-    windowFetchSpy = jest.spyOn(window, 'fetch');
     getCsrfToken.mockResolvedValue('A-CSRF-TOKEN');
   });
 
@@ -57,13 +51,6 @@ describe('connect.js', () => {
   });
 
   describe('connect()', () => {
-    beforeEach(() => {
-      windowFetchSpy.mockResolvedValue({
-        ok: true,
-        json: async () => ({ isAuthorized: false }),
-      });
-    });
-
     test('should throw error if fails to get enigma instance', async () => {
       jsonResponseMock.mockImplementation(() => Promise.reject(new Error('failed')));
       try {
@@ -73,12 +60,12 @@ describe('connect.js', () => {
       }
     });
 
-    describe('connectiong with `webIntegrationId` flow', () => {
+    describe('connecting with `webIntegrationId` flow', () => {
       beforeEach(() => {
         jsonResponseMock.mockImplementation(() =>
           Promise.resolve({
             webIntegrationId: 'someIntegrationId',
-            enigma: {
+            engine: {
               secure: false,
               host: 'some.eu.tenant.pte.qlikdev.com',
             },
@@ -86,20 +73,66 @@ describe('connect.js', () => {
         );
       });
 
-      test('should not call `Auth.authenticate()` if user is already logged in', async () => {
-        isAuthenticatedMock.mockImplementationOnce(() => true);
+      test('should call `auth.setDefaultHostConfig` with cookie authType', async () => {
         await connect();
-        expect(SDK.Auth).toHaveBeenCalledTimes(1);
-        expect(isAuthenticatedMock).toHaveBeenCalledTimes(1);
-        expect(authenticateMock).toHaveBeenCalledTimes(0);
+        expect(auth.setDefaultHostConfig).toHaveBeenCalledTimes(1);
+        expect(auth.setDefaultHostConfig).toHaveBeenCalledWith(
+          expect.objectContaining({
+            authType: 'cookie',
+            webIntegrationId: 'someIntegrationId',
+          })
+        );
       });
 
-      test('should call `Auth.authenticate()` if user is not logged in', async () => {
-        isAuthenticatedMock.mockImplementationOnce(() => false);
+      test('should return `getDocList()` and `getConfiguration()`', async () => {
+        const result = await connect();
+        expect(result).toMatchObject({
+          getDocList: expect.any(Function),
+          getConfiguration: expect.any(Function),
+        });
+      });
+
+      test('getDocList should call getItems and map results', async () => {
+        getItems.mockResolvedValue({
+          data: {
+            data: [{ resourceId: 'app-1', name: 'My App' }],
+          },
+        });
+        const result = await connect();
+        const docList = await result.getDocList();
+        expect(getItems).toHaveBeenCalledWith(expect.objectContaining({ resourceType: 'app', limit: 30 }));
+        expect(docList).toEqual([{ qDocId: 'app-1', qTitle: 'My App' }]);
+      });
+
+      test('getDocList should propagate errors from getItems', async () => {
+        getItems.mockRejectedValue(new Error('network error'));
+        const result = await connect();
+        await expect(result.getDocList()).rejects.toThrow('Failed to fetch app list');
+      });
+    });
+
+    describe('connecting with `clientId` (OAuth2) flow', () => {
+      beforeEach(() => {
+        jsonResponseMock.mockImplementation(() =>
+          Promise.resolve({
+            clientId: 'someClientId',
+            engine: {
+              secure: true,
+              host: 'some.eu.tenant.pte.qlikdev.com',
+            },
+          })
+        );
+      });
+
+      test('should call `auth.setDefaultHostConfig` with oauth2 authType', async () => {
         await connect();
-        expect(SDK.Auth).toHaveBeenCalledTimes(1);
-        expect(isAuthenticatedMock).toHaveBeenCalledTimes(1);
-        expect(authenticateMock).toHaveBeenCalledTimes(1);
+        expect(auth.setDefaultHostConfig).toHaveBeenCalledTimes(1);
+        expect(auth.setDefaultHostConfig).toHaveBeenCalledWith(
+          expect.objectContaining({
+            authType: 'oauth2',
+            clientId: 'someClientId',
+          })
+        );
       });
 
       test('should return `getDocList()` and `getConfiguration()`', async () => {
@@ -111,27 +144,21 @@ describe('connect.js', () => {
       });
     });
 
-    describe('connectiong with Local Engine flow', () => {
+    describe('connecting with Local Engine flow', () => {
       let connectionResponse = {};
-      let buildUrlMock;
       let enigmaOpenMock;
       let enigmaCreateMock;
 
       beforeEach(() => {
         connectionResponse = {
           webIntegrationId: undefined,
-          enigma: {
+          engine: {
             secure: false,
-            host: 'localhost:1234/app/engineData',
-            urlParams: {
-              'qlik-csrf-token': 'A-CSRF-TOKEN',
-            },
+            host: 'localhost',
+            port: '1234',
           },
         };
         jsonResponseMock.mockImplementation(() => Promise.resolve(connectionResponse));
-
-        buildUrlMock = jest.fn().mockReturnValue(`ws://${connectionResponse.enigma.host}`);
-        jest.spyOn(SenseUtilities, 'buildUrl').mockImplementation(buildUrlMock);
 
         enigmaOpenMock = jest.fn();
         enigmaCreateMock = jest.fn().mockReturnValue({
@@ -145,29 +172,48 @@ describe('connect.js', () => {
         jest.restoreAllMocks();
       });
 
-      test('should call buildUrl with proper arguments', async () => {
-        await connect();
-        expect(buildUrlMock).toHaveBeenCalledTimes(1);
-        expect(buildUrlMock).toHaveBeenCalledWith(connectionResponse.enigma);
-      });
-
-      test('should call `enigma.create` with proper arguments', async () => {
+      test('should call `enigma.create` with manually constructed ws URL including csrf token', async () => {
         await connect();
         expect(enigmaCreateMock).toHaveBeenCalledTimes(1);
         expect(enigmaCreateMock).toHaveBeenCalledWith({
-          schema: qixSchema,
-          url: `ws://${connectionResponse.enigma.host}`,
+          schema: expect.any(Object),
+          url: 'ws://localhost:1234?qlik-csrf-token=A-CSRF-TOKEN',
         });
+      });
+
+      test('should call `enigma.create` with wss when secure is true', async () => {
+        connectionResponse.engine.secure = true;
+        await connect();
+        expect(enigmaCreateMock).toHaveBeenCalledWith(
+          expect.objectContaining({ url: 'wss://localhost:1234?qlik-csrf-token=A-CSRF-TOKEN' })
+        );
       });
 
       test('should call `enigma.create().open()` one time', async () => {
         await connect();
         expect(enigmaOpenMock).toHaveBeenCalledTimes(1);
       });
+
+      test('should include prefix in URL when provided', async () => {
+        connectionResponse.engine.prefix = 'myprefix';
+        await connect();
+        expect(enigmaCreateMock).toHaveBeenCalledWith(
+          expect.objectContaining({ url: 'ws://localhost:1234/myprefix?qlik-csrf-token=A-CSRF-TOKEN' })
+        );
+      });
     });
   });
 
   describe('openApp()', () => {
+    let getDocMock;
+    let appSessionMock;
+
+    beforeEach(() => {
+      getDocMock = jest.fn().mockResolvedValue({ id: appId });
+      appSessionMock = { getDoc: getDocMock };
+      openAppSession.mockReturnValue(appSessionMock);
+    });
+
     test('should throw error if fails to open app', async () => {
       jsonResponseMock.mockImplementation(() => Promise.reject(new Error('failed')));
       try {
@@ -177,117 +223,126 @@ describe('connect.js', () => {
       }
     });
 
-    describe('Open app flows', () => {
-      let connectionResponse = {};
-      let buildUrlMock;
-      let enigmaOpenDocMock;
-      let enigmaOpenMock;
-      let enigmaCreateMock;
-
+    describe('open app with `webIntegrationId` flow', () => {
       beforeEach(() => {
-        enigmaOpenDocMock = jest.fn();
-        enigmaOpenMock = jest.fn().mockReturnValue({
-          openDoc: enigmaOpenDocMock,
-        });
-        enigmaCreateMock = jest.fn().mockReturnValue({
-          open: enigmaOpenMock,
-        });
-        ENIGMA.create.mockImplementation(enigmaCreateMock);
-      });
-
-      describe('open app with `webIntegrationId` flow', () => {
-        let webSocketURL;
-
-        beforeEach(() => {
-          jsonResponseMock.mockImplementation(() =>
-            Promise.resolve({
-              webIntegrationId: 'someIntegrationId',
-              enigma: {
-                secure: false,
-                host: 'some.eu.tenant.pte.qlikdev.com',
-              },
-            })
-          );
-          webSocketURL = `wss://${authConfig.host}/apps/${appId}?qlik-csrf-token=SOME_CSRF_TOKEN&qlik-web-integration-id=${authConfig.webIntegrationId}`;
-          generateWebsocketUrlMock.mockReturnValue(webSocketURL);
-        });
-
-        test('should not call `Auth.authenticate()` if user is already logged in', async () => {
-          isAuthenticatedMock.mockImplementationOnce(() => true);
-          await openApp(appId);
-          expect(SDK.Auth).toHaveBeenCalledTimes(1);
-          expect(isAuthenticatedMock).toHaveBeenCalledTimes(1);
-          expect(authenticateMock).toHaveBeenCalledTimes(0);
-        });
-
-        test('should call `Auth.authenticate()` if user is not logged in', async () => {
-          isAuthenticatedMock.mockImplementationOnce(() => false);
-          await openApp(appId);
-          expect(SDK.Auth).toHaveBeenCalledTimes(1);
-          expect(isAuthenticatedMock).toHaveBeenCalledTimes(1);
-          expect(authenticateMock).toHaveBeenCalledTimes(1);
-        });
-
-        test('should call `enigma.create` with proper arguments', async () => {
-          await openApp(appId);
-          expect(enigmaCreateMock).toHaveBeenCalledTimes(1);
-          expect(enigmaCreateMock).toHaveBeenCalledWith({
-            schema: qixSchema,
-            url: webSocketURL,
-          });
-        });
-
-        test('should call `enigma.create().open()` one time', async () => {
-          await openApp(appId);
-          expect(enigmaOpenMock).toHaveBeenCalledTimes(1);
-        });
-
-        test('should call `enigma.create().open().openDoc()` one time with proper app id', async () => {
-          await openApp(appId);
-          expect(enigmaOpenDocMock).toHaveBeenCalledTimes(1);
-          expect(enigmaOpenDocMock).toHaveBeenCalledWith(appId);
-        });
-      });
-
-      describe('with Local engine flow', () => {
-        beforeEach(() => {
-          connectionResponse = {
-            webIntegrationId: undefined,
-            enigma: {
+        jsonResponseMock.mockImplementation(() =>
+          Promise.resolve({
+            webIntegrationId: 'someIntegrationId',
+            engine: {
               secure: false,
-              host: 'localhost:1234/app/engineData',
+              host: 'some.eu.tenant.pte.qlikdev.com',
             },
-          };
-          jsonResponseMock.mockImplementation(() => Promise.resolve(connectionResponse));
-          buildUrlMock = jest.fn().mockReturnValue(`ws://${connectionResponse.enigma.host}`);
-          jest.spyOn(SenseUtilities, 'buildUrl').mockImplementation(buildUrlMock);
-        });
+          })
+        );
+      });
 
-        test('should call buildUrl with proper arguments', async () => {
-          await openApp(appId);
-          expect(buildUrlMock).toHaveBeenCalledTimes(1);
-          expect(buildUrlMock).toHaveBeenCalledWith(connectionResponse.enigma);
+      test('should call `openAppSession` with cookie hostConfig', async () => {
+        await openApp(appId);
+        expect(openAppSession).toHaveBeenCalledWith({
+          appId,
+          hostConfig: {
+            authType: 'cookie',
+            webIntegrationId: 'someIntegrationId',
+            host: 'some.eu.tenant.pte.qlikdev.com',
+          },
         });
+      });
 
-        test('should call `enigma.create` with proper arguments', async () => {
-          await openApp(appId);
-          expect(enigmaCreateMock).toHaveBeenCalledTimes(1);
-          expect(enigmaCreateMock).toHaveBeenCalledWith({
-            schema: qixSchema,
-            url: `ws://${connectionResponse.enigma.host}`,
-          });
-        });
+      test('should call `getDoc` and return the document', async () => {
+        const result = await openApp(appId);
+        expect(getDocMock).toHaveBeenCalledTimes(1);
+        expect(result).toEqual({ id: appId });
+      });
 
-        test('should call `enigma.create().open()` one time', async () => {
-          await openApp(appId);
-          expect(enigmaOpenMock).toHaveBeenCalledTimes(1);
-        });
+      test('should not call enigma directly', async () => {
+        await openApp(appId);
+        expect(ENIGMA.create).not.toHaveBeenCalled();
+      });
+    });
 
-        test('should call `enigma.create().open().openDoc()` one time with proper app id', async () => {
-          await openApp(appId);
-          expect(enigmaOpenDocMock).toHaveBeenCalledTimes(1);
-          expect(enigmaOpenDocMock).toHaveBeenCalledWith(appId);
+    describe('open app with clientId (OAuth2) flow', () => {
+      beforeEach(() => {
+        jsonResponseMock.mockImplementation(() =>
+          Promise.resolve({
+            clientId: 'someClientId',
+            engine: {
+              secure: true,
+              host: 'some.eu.tenant.pte.qlikdev.com',
+            },
+          })
+        );
+      });
+
+      test('should call `openAppSession` with oauth2 hostConfig', async () => {
+        await openApp(appId);
+        expect(openAppSession).toHaveBeenCalledWith({
+          appId,
+          hostConfig: {
+            authType: 'oauth2',
+            clientId: 'someClientId',
+            host: 'some.eu.tenant.pte.qlikdev.com',
+            redirectUri: `${window.location.origin}/auth/login/callback`,
+            accessTokenStorage: 'session',
+          },
         });
+      });
+
+      test('should call `getDoc` and return the document', async () => {
+        const result = await openApp(appId);
+        expect(getDocMock).toHaveBeenCalledTimes(1);
+        expect(result).toEqual({ id: appId });
+      });
+
+      test('should not call enigma directly', async () => {
+        await openApp(appId);
+        expect(ENIGMA.create).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('open app with Local engine flow', () => {
+      beforeEach(() => {
+        jsonResponseMock.mockImplementation(() =>
+          Promise.resolve({
+            webIntegrationId: undefined,
+            engine: {
+              secure: false,
+              host: 'localhost',
+              port: '9076',
+            },
+          })
+        );
+      });
+
+      test('should call `openAppSession` with noauth hostConfig', async () => {
+        await openApp(appId);
+        expect(openAppSession).toHaveBeenCalledWith({
+          appId,
+          hostConfig: { authType: 'noauth', host: 'http://localhost:9076' },
+        });
+      });
+
+      test('should call `openAppSession` with https when engine is secure', async () => {
+        jsonResponseMock.mockImplementation(() =>
+          Promise.resolve({
+            engine: { secure: true, host: 'myengine.internal' },
+          })
+        );
+        await openApp(appId);
+        expect(openAppSession).toHaveBeenCalledWith({
+          appId,
+          hostConfig: { authType: 'noauth', host: 'https://myengine.internal' },
+        });
+      });
+
+      test('should call `getDoc` and return the document', async () => {
+        const result = await openApp(appId);
+        expect(getDocMock).toHaveBeenCalledTimes(1);
+        expect(result).toEqual({ id: appId });
+      });
+
+      test('should not call enigma directly', async () => {
+        await openApp(appId);
+        expect(ENIGMA.create).not.toHaveBeenCalled();
       });
     });
   });
@@ -297,7 +352,7 @@ describe('connect.js', () => {
       jsonResponseMock.mockImplementation(() =>
         Promise.resolve({
           webIntegrationId: 'someIntegrationId',
-          enigma: {
+          engine: {
             secure: false,
             host: 'some.eu.tenant.pte.qlikdev.com',
           },
@@ -313,7 +368,7 @@ describe('connect.js', () => {
       expect(result).toEqual(
         expect.objectContaining({
           appUrl: undefined,
-          enigma: expect.objectContaining({
+          engine: expect.objectContaining({
             secure: true, // since it is "wss"
             host: authConfig.host,
             port: undefined, // since we are providing link
@@ -345,7 +400,7 @@ describe('connect.js', () => {
       const result = await getConnectionInfo();
       expect(result).toEqual(
         expect.objectContaining({
-          enigma: expect.objectContaining({
+          engine: expect.objectContaining({
             secure: false, // since it is "ws"
             host: 'localhost',
             port: '1234',
@@ -362,7 +417,7 @@ describe('connect.js', () => {
       const result = await getConnectionInfo();
       expect(result).toEqual(
         expect.objectContaining({
-          enigma: expect.objectContaining({
+          engine: expect.objectContaining({
             secure: false, // since it is "ws"
             host: authConfig.host,
             appId: 'SOME_APP_ID',
@@ -386,18 +441,6 @@ describe('connect.js', () => {
   });
 
   describe('getParams()', () => {
-    beforeEach(() => {
-      jsonResponseMock.mockImplementation(() =>
-        Promise.resolve({
-          webIntegrationId: 'someIntegrationId',
-          enigma: {
-            secure: false,
-            host: 'some.eu.tenant.pte.qlikdev.com',
-          },
-        })
-      );
-    });
-
     test('should detect engine url and integration id from provided link', () => {
       window.location.assign(
         `/some-url?engine_url=wss://${authConfig.host}&qlik-web-integration-id=${authConfig.webIntegrationId}`
@@ -433,7 +476,7 @@ describe('connect.js', () => {
       url = `/some-url?engine_url=wss://${authConfig.host}&qlik-web-integration-id=${authConfig.webIntegrationId}`;
       const result = parseEngineURL(url);
       expect(result).toMatchObject({
-        enigma: expect.objectContaining({
+        engine: expect.objectContaining({
           secure: expect.any(Boolean),
           host: expect.any(String),
           port: undefined, // because of providing a link
@@ -449,7 +492,7 @@ describe('connect.js', () => {
       url = '/?engine_url=ws://localhost:1234';
       const result = parseEngineURL(url);
       expect(result).toMatchObject({
-        enigma: expect.objectContaining({
+        engine: expect.objectContaining({
           secure: expect.any(Boolean),
           host: expect.any(String),
           port: expect.any(String),
@@ -465,7 +508,7 @@ describe('connect.js', () => {
       url = `engine_url=wss://${authConfig.host}/app/SOME_APP_ID/`;
       const result = parseEngineURL(url);
       expect(result).toMatchObject({
-        enigma: expect.objectContaining({
+        engine: expect.objectContaining({
           secure: expect.any(Boolean),
           host: expect.any(String),
           port: undefined, // because of providing a link
@@ -481,7 +524,7 @@ describe('connect.js', () => {
       url = `engine_url=wss://${authConfig.host}/prefix`;
       const result = parseEngineURL(url);
       expect(result).toMatchObject({
-        enigma: expect.objectContaining({
+        engine: expect.objectContaining({
           secure: expect.any(Boolean),
           host: expect.any(String),
           port: undefined,
@@ -496,7 +539,7 @@ describe('connect.js', () => {
       url = `wss://${authConfig.host}/prefix/app/SOME_APP_ID/`;
       const result2 = parseEngineURL(url);
       expect(result2).toMatchObject({
-        enigma: expect.objectContaining({
+        engine: expect.objectContaining({
           secure: expect.any(Boolean),
           host: expect.any(String),
           port: undefined, // because of providing a link
@@ -511,7 +554,7 @@ describe('connect.js', () => {
       url = `wss://${authConfig.host}/app/SOME_APP_ID/`;
       const result2 = parseEngineURL(url);
       expect(result2).toMatchObject({
-        enigma: expect.objectContaining({
+        engine: expect.objectContaining({
           secure: expect.any(Boolean),
           host: expect.any(String),
           port: undefined, // because of providing a link
@@ -527,7 +570,7 @@ describe('connect.js', () => {
       url = `wss://localhost:4455/prefix/app/SOME_APP_ID/`;
       const result2 = parseEngineURL(url);
       expect(result2).toMatchObject({
-        enigma: expect.objectContaining({
+        engine: expect.objectContaining({
           secure: expect.any(Boolean),
           host: expect.any(String),
           port: '4455', // because of providing a link
@@ -543,7 +586,7 @@ describe('connect.js', () => {
       url = `wss://localhost/prefix/app/SOME_APP_ID/`;
       const result2 = parseEngineURL(url);
       expect(result2).toMatchObject({
-        enigma: expect.objectContaining({
+        engine: expect.objectContaining({
           secure: expect.any(Boolean),
           host: expect.any(String),
           port: undefined, // because of providing a link
@@ -559,7 +602,7 @@ describe('connect.js', () => {
       url = `wss://${authConfig.host}/prefix123456789-._~/app/SOME_APP_ID/`;
       const result2 = parseEngineURL(url);
       expect(result2).toMatchObject({
-        enigma: expect.objectContaining({
+        engine: expect.objectContaining({
           secure: expect.any(Boolean),
           host: expect.any(String),
           port: undefined, // because of providing a link

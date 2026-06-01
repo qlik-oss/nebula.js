@@ -18,6 +18,7 @@ describe('viz', () => {
   let setSnOptions;
   let setSnContext;
   let setSnPlugins;
+  let getExtensionDefinition;
   let setModel;
   let takeSnapshot;
   let exportImage;
@@ -25,29 +26,40 @@ describe('viz', () => {
   let convertToMock;
   let createSessionObjectMock;
   let destroySessionObjectMock;
+  let mockCustomHandler;
+  let mockCustomPropertyHandler;
+  let mockGetHypercubePath;
 
   let mockElement;
+
+  let definitionName = 'props';
 
   beforeAll(() => {
     unmountMock = jest.fn();
     setSnOptions = jest.fn();
     setSnContext = jest.fn();
     setSnPlugins = jest.fn();
+    getExtensionDefinition = jest.fn().mockImplementation(() => ({ definition: { name: definitionName } }));
     setModel = jest.fn();
     takeSnapshot = jest.fn();
     exportImage = jest.fn();
     getImperativeHandle = jest.fn(async () => ({
       api: 'api',
     }));
+    mockCustomHandler = { customMethod: jest.fn() };
+    mockCustomPropertyHandler = jest.fn().mockReturnValue(mockCustomHandler);
+    mockGetHypercubePath = jest.fn().mockReturnValue('customPath');
     cellRef = {
       current: {
         setSnOptions,
         setSnContext,
         setSnPlugins,
+        getExtensionDefinition,
         setModel,
         takeSnapshot,
         exportImage,
         getImperativeHandle,
+        getHypercubePath: mockGetHypercubePath,
       },
     };
     glue = jest.fn().mockReturnValue([unmountMock, cellRef]);
@@ -76,7 +88,7 @@ describe('viz', () => {
       model,
       halo: {
         public: {},
-        config: { context: { dataViewType: 'sn-table' } },
+        context: { dataViewType: 'sn-table', enablePrivateExperimental: true },
         app: { createSessionObject: createSessionObjectMock, destroySessionObject: destroySessionObjectMock },
         types: { getSupportedVersion: () => true },
       },
@@ -277,6 +289,131 @@ describe('viz', () => {
       args.onInitialRender();
       const handle = await api.getImperativeHandle();
       expect(handle.api).toEqual('api');
+    });
+  });
+
+  describe('getPropertyPanelDefinition', () => {
+    test('should fetch the definition.ext.definition', async () => {
+      const opts = { myops: 'myopts', onInitialRender: jest.fn() };
+      api.__DO_NOT_USE__.options(opts);
+      await mounted;
+      const args = cellRef.current.setSnOptions.mock.lastCall[0];
+      args.onInitialRender();
+      const panelDef = api.getPropertyPanelDefinition();
+      expect(panelDef.name).toEqual('props');
+    });
+
+    test('should return original after data view toggle the definition.ext.definition', async () => {
+      const opts = { myops: 'myopts', onInitialRender: jest.fn() };
+      api.__DO_NOT_USE__.options(opts);
+      await mounted;
+      const args = cellRef.current.setSnOptions.mock.lastCall[0];
+      args.onInitialRender();
+      let panelDef = api.getPropertyPanelDefinition();
+      expect(panelDef.name).toEqual('props');
+      definitionName = 'old';
+      await api.toggleDataView(); // locks in the "old" definition
+      definitionName = 'new';
+      panelDef = api.getPropertyPanelDefinition();
+      expect(panelDef.name).toEqual('old');
+    });
+  });
+
+  describe('getHypercubePropertyHandler', () => {
+    test('should return default HyperCubeHandler when no custom propertyHandler exists', async () => {
+      const opts = { onInitialRender: jest.fn() };
+      api.__DO_NOT_USE__.options(opts);
+      await mounted;
+
+      cellRef.current.getExtensionDefinition = jest.fn().mockReturnValue({
+        data: {
+          dimensions: { min: 1, max: 10 },
+          measures: { min: 1, max: 10 },
+        },
+        definition: {},
+      });
+
+      const args = cellRef.current.setSnOptions.mock.lastCall[0];
+      args.onInitialRender();
+
+      const handler = await api.getHypercubePropertyHandler();
+
+      expect(handler.constructor.name).toBe('HyperCubeHandler');
+      expect(cellRef.current.getExtensionDefinition).toHaveBeenCalled();
+      expect(model.getEffectiveProperties).toHaveBeenCalled();
+    });
+
+    test('should return custom handler when propertyHandler exists in extension definition', async () => {
+      const opts = { onInitialRender: jest.fn() };
+      api.__DO_NOT_USE__.options(opts);
+      await mounted;
+
+      cellRef.current.getExtensionDefinition = jest.fn().mockReturnValue({
+        data: {
+          dimensions: { min: 1, max: 10 },
+          measures: { min: 1, max: 10 },
+        },
+        propertyHandler: mockCustomPropertyHandler,
+      });
+
+      const args = cellRef.current.setSnOptions.mock.lastCall[0];
+      args.onInitialRender();
+
+      const handler = await api.getHypercubePropertyHandler();
+
+      expect(handler).toBe(mockCustomHandler);
+      expect(mockCustomPropertyHandler).toHaveBeenCalledWith({
+        app: model.app,
+        dimensionDefinition: { min: 1, max: 10 },
+        measureDefinition: { min: 1, max: 10 },
+        dimensionProperties: expect.any(Object),
+        measureProperties: expect.any(Object),
+        globalChangeListeners: undefined,
+        path: 'customPath',
+      });
+      expect(cellRef.current.getHypercubePath).toHaveBeenCalled();
+    });
+
+    test('should return undefined when no data definition exists', async () => {
+      const opts = { onInitialRender: jest.fn() };
+      api.__DO_NOT_USE__.options(opts);
+      await mounted;
+
+      cellRef.current.getExtensionDefinition = jest.fn().mockReturnValue({
+        definition: {
+          propertyHandler: mockCustomPropertyHandler,
+        },
+      });
+
+      const args = cellRef.current.setSnOptions.mock.lastCall[0];
+      args.onInitialRender();
+
+      const handler = await api.getHypercubePropertyHandler();
+
+      expect(handler).toBeUndefined();
+      expect(mockCustomPropertyHandler).not.toHaveBeenCalled();
+    });
+
+    test('should handle invalid propertyHandler', async () => {
+      const opts = { onInitialRender: jest.fn() };
+      api.__DO_NOT_USE__.options(opts);
+      await mounted;
+
+      cellRef.current.getExtensionDefinition = jest.fn().mockReturnValue({
+        data: {
+          dimensions: { min: 1, max: 10 },
+          measures: { min: 1, max: 10 },
+        },
+        definition: {
+          propertyHandler: 'not-a-function',
+        },
+      });
+
+      const args = cellRef.current.setSnOptions.mock.lastCall[0];
+      args.onInitialRender();
+
+      const handler = await api.getHypercubePropertyHandler();
+      expect(handler.constructor.name).toBe('HyperCubeHandler');
     });
   });
 });

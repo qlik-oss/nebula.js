@@ -71,6 +71,14 @@ const ConnectionGuid = ({ showGuid }) => (
       <code>{window.location.host}</code> needs to be whitelisted in QMC in your Qlik Sense on Windows deployment. In
       addition, you need to enable <i>Has secure attribute</i> and set <i>SameSite attribute</i> to <i>None</i>.
       <br />
+      Also some &quot;Additional reponse headers&quot; needs to align with the whitelisted domain:
+      <ul>
+        <li>
+          Access-Control-Allow-Origin: <code>{window.location.host}</code>
+        </li>
+        <li>Access-Control-Allow-Credentials: true</li>
+        <li>Access-Control-Expose-Headers: qlik-csrf-token</li>
+      </ul>
       Make sure you are logged in to Qlik Sense in another browser tab.
     </Typography>
     <Typography variant="subtitle1" gutterBottom>

@@ -1,12 +1,12 @@
 {
   "name": "@nebula.js/locale",
-  "version": "5.12.1",
+  "version": "7.0.1",
   "private": true,
   "main": "src/index.js",
   "scripts": {
     "build": "node scripts/generate-all.mjs"
   },
   "devDependencies": {
-    "globby": "14.1.0"
+    "globby": "16.2.0"
   }
 }

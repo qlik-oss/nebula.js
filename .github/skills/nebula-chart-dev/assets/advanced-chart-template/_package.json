@@ -1,0 +1,35 @@
+{
+  "name": "react-table-chart",
+  "version": "0.1.0",
+  "description": "",
+  "license": "MIT",
+  "author": {
+    "name": "caele",
+    "email": "tsm@qlik.com"
+  },
+  "keywords": ["qlik", "nebula", "stardust"],
+  "files": ["dist"],
+  "engines": {
+    "node": ">=20"
+  },
+  "main": "dist/react-table-chart.js",
+  "module": "dist/react-table-chart.esm.js",
+  "scripts": {
+    "build": "nebula build",
+    "start": "nebula serve",
+    "sense": "nebula sense --ext src/ext.js"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "7.29.2",
+    "@babel/preset-react": "7.28.5",
+    "@nebula.js/cli": "latest",
+    "@nebula.js/cli-serve": "latest",
+    "@nebula.js/cli-sense": "latest",
+    "@nebula.js/cli-build": "latest",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "peerDependencies": {
+    "@nebula.js/stardust": "^3.0.0"
+  }
+}

@@ -17,7 +17,7 @@ const ActionElement = {
   className: 'njs-cell-action',
 };
 
-const Item = React.forwardRef(({ ariaExpanded = false, item, addAnchor = false }, ref) => {
+const Item = React.forwardRef(({ item, addAnchor = false }, ref) => {
   const theme = useTheme();
   const { hidden, disabled, style, hasSvgIconShape } = useActionState(item);
   if (hidden) return null;
@@ -29,10 +29,11 @@ const Item = React.forwardRef(({ ariaExpanded = false, item, addAnchor = false }
   const handleKeyUp = keyboardAction ? (e) => [' ', 'Spacebar'].includes(e.key) && keyboardAction() : null;
 
   const btnId = `actions-toolbar-${item.key}`;
+  const buttonRef = item.ref || (!addAnchor ? ref : null);
 
   return (
     <IconButton
-      ref={!addAnchor ? ref : null}
+      ref={buttonRef}
       title={item.label}
       onClick={item.action}
       onKeyDown={handleKeyDown}
@@ -42,8 +43,7 @@ const Item = React.forwardRef(({ ariaExpanded = false, item, addAnchor = false }
       className={[ActionElement.className, btnId].join(' ')}
       size="large"
       disableRipple
-      aria-expanded={ariaExpanded}
-      aria-controls="moreMenuList"
+      aria-label={item.label}
       data-testid={btnId}
     >
       {hasSvgIconShape && SvgIcon(item.getSvgIconShape())}

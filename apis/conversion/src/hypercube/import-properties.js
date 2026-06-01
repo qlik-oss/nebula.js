@@ -1,6 +1,3 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-prototype-builtins */
-
 import utils from '../utils';
 import helpers from '../helpers';
 

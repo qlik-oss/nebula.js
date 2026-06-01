@@ -11,8 +11,9 @@ import init from './initiate';
  * @property {HTMLElement} element Target html element to render in to
  * @property {object=} options Options passed into the visualisation
  * @property {function=} onRender Callback function called after rendering successfully
- * @property {function(RenderError)=} onError Callback function called if an error occurs
+ * @property {function(RenderError)=} onError Callback function called if an error occurs. Also called with AbortError when signal aborts.
  * @property {Plugin[]} [plugins] plugins passed into the visualisation
+ * @property {AbortSignal=} signal Optional AbortSignal to cancel the render operation. When aborted, destroy() is called for cleanup before onError() is called with the AbortError.
  * @property {string=} id For existing objects: Engine identifier of object to render
  * @property {string=} type For creating objects: Type of visualisation to render
  * @property {string=} version For creating objects: Version of visualization to render
@@ -34,11 +35,29 @@ import init from './initiate';
  * };
  * nebbie.render(createConfig);
  * // A config for rendering an existing object:
- * const createConfig = {
+ * const renderConfig = {
  *   id: 'jG5LP',
  *   element: document.querySelector('.line'),
  * };
- * nebbie.render(createConfig);
+ * nebbie.render(renderConfig);
+ * // Using AbortSignal to cancel rendering:
+ * const controller = new AbortController();
+ * const abortConfig = {
+ *   type: 'bar',
+ *   element: document.querySelector('.bar'),
+ *   fields: ['Country', '=Sum(Sales)'],
+ *   signal: controller.signal,
+ *   onError: (err) => {
+ *     if (err.name === 'AbortError') {
+ *       console.log('Render was cancelled');
+ *     } else {
+ *       console.error('Render failed:', err);
+ *     }
+ *   }
+ * };
+ * const vizPromise = nebbie.render(abortConfig);
+ * // Cancel the render operation
+ * controller.abort();
  */
 export default async function createSessionObject(
   { type, version, fields, properties, options, plugins, element, extendProperties, navigation, onRender, onError },

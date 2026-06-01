@@ -15,28 +15,35 @@ export default function useExistingModel({ app, qId, options = {} }) {
   }
 
   useEffect(() => {
-    function storeModel(m) {
-      if (modelStore.get(m.id)) {
-        return;
-      }
-      // Nebula gets the model from this store in some of its
-      // core functions, so it must always be stored here.
-      modelStore.set(m.id, m);
-      m.once('closed', () => {
-        modelStore.clear(m.id);
-      });
-    }
-
+    let isCleaned = false;
+    let cleanupFn = () => {};
     async function fetchObject(modelId) {
       const m = modelStore.get(modelId) || (await app.getObject(modelId));
       return m;
     }
 
-    const p = Promise.resolve(sessionModel || fetchObject(qId));
-    p.then((m) => {
-      storeModel(m);
+    async function fetchModel() {
+      const m = await Promise.resolve(sessionModel || fetchObject(qId));
+      if (isCleaned) {
+        return;
+      }
+      if (!modelStore.get(m.id)) {
+        modelStore.set(m.id, m);
+        const onClosed = () => {
+          modelStore.clear(m.id);
+        };
+        m.once('closed', onClosed);
+        cleanupFn = () => {
+          m.removeListener('closed', onClosed);
+        };
+      }
       setModel(m);
-    });
+    }
+    fetchModel();
+    return () => {
+      isCleaned = true;
+      cleanupFn();
+    };
   }, []);
 
   return model;

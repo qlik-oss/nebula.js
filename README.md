@@ -1,7 +1,6 @@
 <p align="center">
   <img width="500" src="./docs/assets/logos/nebula.png" alt="nebula.js logo" />
 </p>
-<p align="center">A new star on the rise</p>
 
 NebulaJS is a collection of JavaScript libraries, charts and CLIs that helps developers build and integrate visualizations on top of Qlik's Associative Engine. The collection is organized under the `@nebula.js` npm scope.
 

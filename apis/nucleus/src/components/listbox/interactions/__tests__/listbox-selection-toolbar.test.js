@@ -130,25 +130,25 @@ describe('getScrollIndex', () => {
       all.action();
       expect(model.selectListObjectAll).toHaveBeenCalledTimes(1);
       expect(selections.begin).toHaveBeenCalledTimes(1);
-      expect(model.selectListObjectAll).toBeCalledWith('/qListObjectDef');
+      expect(model.selectListObjectAll).toHaveBeenCalledWith('/qListObjectDef');
     });
     it('select possible', () => {
       possible.action();
       expect(model.selectListObjectPossible).toHaveBeenCalledTimes(1);
       expect(selections.begin).toHaveBeenCalledTimes(1);
-      expect(model.selectListObjectPossible).toBeCalledWith('/qListObjectDef');
+      expect(model.selectListObjectPossible).toHaveBeenCalledWith('/qListObjectDef');
     });
     it('select alternative', () => {
       alternative.action();
       expect(model.selectListObjectAlternative).toHaveBeenCalledTimes(1);
       expect(selections.begin).toHaveBeenCalledTimes(1);
-      expect(model.selectListObjectAlternative).toBeCalledWith('/qListObjectDef');
+      expect(model.selectListObjectAlternative).toHaveBeenCalledWith('/qListObjectDef');
     });
     it('select excluded', () => {
       excluded.action();
       expect(model.selectListObjectExcluded).toHaveBeenCalledTimes(1);
       expect(selections.begin).toHaveBeenCalledTimes(1);
-      expect(model.selectListObjectExcluded).toBeCalledWith('/qListObjectDef');
+      expect(model.selectListObjectExcluded).toHaveBeenCalledWith('/qListObjectDef');
     });
   });
 });

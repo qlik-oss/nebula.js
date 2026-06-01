@@ -46,20 +46,4 @@ export default {
     '0px 6px 20px 0px rgba(0,0,0,0.15)',
     '0px 6px 20px 0px rgba(0,0,0,0.15)',
   ],
-  props: {
-    MuiButtonBase: {
-      disableRipple: true,
-      disableTouchRipple: true,
-      focusRipple: false,
-    },
-    MuiCheckbox: {
-      color: 'secondary',
-    },
-    MuiRadio: {
-      color: 'secondary',
-    },
-    MuiTabs: {
-      indicatorColor: 'secondary',
-    },
-  },
 };

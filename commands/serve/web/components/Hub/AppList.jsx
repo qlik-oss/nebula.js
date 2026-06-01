@@ -1,10 +1,10 @@
 import React from 'react';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate, useLocation } from 'react-router';
+import { ListItemButton } from '@mui/material';
 import { useAppList } from '../../hooks';
 import { ContentWrapper } from './styles';
 import { getAppLink } from '../../utils';
@@ -27,7 +27,7 @@ const AppList = () => {
       {appList && appList.length > 0 && (
         <List>
           {appList.map((appData) => (
-            <ListItem
+            <ListItemButton
               button
               component="a"
               key={appData.qDocId}
@@ -41,7 +41,7 @@ const AppList = () => {
               }
             >
               <ListItemText primary={appData.qTitle} secondary={appData.qDocId} />
-            </ListItem>
+            </ListItemButton>
           ))}
         </List>
       )}

@@ -1,9 +1,9 @@
 {
-  "scriptappy": "1.1.0",
+  "scriptappy": "1.1.3",
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
-    "version": "5.12.1",
+    "version": "7.0.1",
     "license": "MIT",
     "stability": "stable"
   },
@@ -673,6 +673,84 @@
     }
   },
   "definitions": {
+    "Translator": {
+      "kind": "class",
+      "constructor": {
+        "kind": "function",
+        "params": []
+      },
+      "entries": {
+        "language": {
+          "description": "Returns current locale.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "lang",
+              "description": "language Locale to updated the currentLocale value",
+              "optional": true,
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "description": "current locale.",
+            "type": "string"
+          }
+        },
+        "add": {
+          "description": "Registers a string in multiple locales",
+          "kind": "function",
+          "params": [
+            {
+              "name": "item",
+              "kind": "object",
+              "entries": {
+                "id": {
+                  "type": "string"
+                },
+                "locale": {
+                  "type": "object",
+                  "generics": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "examples": [
+            "translator.add({\n  id: 'company.hello_user',\n  locale: {\n    'en-US': 'Hello {0}',\n    'sv-SE': 'Hej {0}'\n  }\n});\ntranslator.get('company.hello_user', ['John']); // Hello John"
+          ]
+        },
+        "get": {
+          "description": "Translates a string for current locale.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "str",
+              "description": "ID of the registered string.",
+              "type": "string"
+            },
+            {
+              "name": "args",
+              "description": "Values passed down for string interpolation.",
+              "optional": true,
+              "kind": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ],
+          "returns": {
+            "description": "The translated string.",
+            "type": "string"
+          }
+        }
+      }
+    },
     "Component": {
       "kind": "interface",
       "entries": {
@@ -792,6 +870,10 @@
           "optional": true,
           "defaultValue": "sn-table",
           "type": "string"
+        },
+        "navigation": {
+          "optional": true,
+          "type": "#/definitions/Navigation"
         }
       }
     },
@@ -800,6 +882,9 @@
       "entries": {
         "translator": {
           "type": "#/definitions/Translator"
+        },
+        "theme": {
+          "type": "#/definitions/Theme"
         },
         "flags": {
           "type": "#/definitions/Flags"
@@ -851,7 +936,8 @@
           },
           "examples": [
             "// render from existing object\nn.render({\n  element: el,\n  id: 'abcdef'\n});",
-            "// render on the fly\nn.render({\n  element: el,\n  type: 'barchart',\n  fields: ['Product', { qLibraryId: 'u378hn', type: 'measure' }]\n});"
+            "// render on the fly\nn.render({\n  element: el,\n  type: 'barchart',\n  fields: ['Product', { qLibraryId: 'u378hn', type: 'measure' }]\n});",
+            "// with AbortSignal\nconst controller = new AbortController();\nn.render({\n  element: el,\n  type: 'barchart',\n  fields: ['Product', '=Sum(Sales)'],\n  signal: controller.signal\n});\n// Later: cancel the render\ncontroller.abort();"
           ]
         },
         "create": {
@@ -1349,6 +1435,14 @@
           "description": "Destroys the visualization and removes it from the the DOM.",
           "kind": "function",
           "params": [],
+          "returns": {
+            "type": "Promise",
+            "generics": [
+              {
+                "type": "void"
+              }
+            ]
+          },
           "examples": [
             "const viz = await embed(app).render({\n  element,\n  id: 'abc'\n});\nviz.destroy();"
           ]
@@ -1413,6 +1507,10 @@
             }
           ]
         },
+        "viewDataToggled": {
+          "description": "Whether or not the chart has the data view toggled on.",
+          "type": "boolean"
+        },
         "addListener": {
           "description": "Listens to custom events from inside the visualization. See useEmitter",
           "kind": "function",
@@ -1466,6 +1564,167 @@
         "const viz = await embed(app).render({\n  element,\n  type: 'barchart'\n});\nviz.destroy();"
       ]
     },
+    "ActionToolbarElement": {
+      "availability": {
+        "since": "2.1.0"
+      },
+      "extends": [
+        {
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "className": {
+          "value": "'njs-action-toolbar-popover'",
+          "kind": "literal"
+        }
+      }
+    },
+    "ActionElement": {
+      "availability": {
+        "since": "2.0.0"
+      },
+      "extends": [
+        {
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "className": {
+          "value": "'njs-cell-action'",
+          "kind": "literal"
+        }
+      }
+    },
+    "CellElement": {
+      "extends": [
+        {
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "className": {
+          "value": "'njs-cell'",
+          "kind": "literal"
+        }
+      }
+    },
+    "CellBody": {
+      "extends": [
+        {
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "className": {
+          "value": "'njs-cell-body'",
+          "kind": "literal"
+        }
+      }
+    },
+    "CellFooter": {
+      "availability": {
+        "since": "2.0.0"
+      },
+      "extends": [
+        {
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "className": {
+          "value": "'njs-cell-footer'",
+          "kind": "literal"
+        }
+      }
+    },
+    "CellTitle": {
+      "availability": {
+        "since": "2.0.0"
+      },
+      "extends": [
+        {
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "className": {
+          "value": "'njs-cell-title'",
+          "kind": "literal"
+        }
+      }
+    },
+    "CellSubTitle": {
+      "availability": {
+        "since": "2.0.0"
+      },
+      "extends": [
+        {
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "className": {
+          "value": "'njs-cell-sub-title'",
+          "kind": "literal"
+        }
+      }
+    },
+    "SheetElement": {
+      "stability": "experimental",
+      "availability": {
+        "since": "3.1.0"
+      },
+      "extends": [
+        {
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "className": {
+          "value": "'njs-sheet'",
+          "kind": "literal"
+        }
+      }
+    },
+    "VizElementAttributes": {
+      "extends": [
+        {
+          "type": "NamedNodeMap"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "data-render-count": {
+          "type": "string"
+        }
+      }
+    },
+    "VizElement": {
+      "extends": [
+        {
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "attributes": {
+          "type": "#/definitions/VizElementAttributes"
+        },
+        "className": {
+          "value": "'njs-viz'",
+          "kind": "literal"
+        }
+      }
+    },
     "Flags": {
       "kind": "interface",
       "entries": {
@@ -1485,6 +1744,33 @@
           }
         }
       }
+    },
+    "Plugin": {
+      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
+      "stability": "experimental",
+      "availability": {
+        "since": "1.2.0"
+      },
+      "kind": "interface",
+      "entries": {
+        "info": {
+          "description": "Object that can hold various meta info about the plugin",
+          "kind": "object",
+          "entries": {
+            "name": {
+              "description": "The name of the plugin",
+              "type": "string"
+            }
+          }
+        },
+        "fn": {
+          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
+          "type": "function"
+        }
+      },
+      "examples": [
+        "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
+      ]
     },
     "AppSelections": {
       "kind": "class",
@@ -1792,7 +2078,7 @@
           "params": []
         },
         "onError": {
-          "description": "Callback function called if an error occurs",
+          "description": "Callback function called if an error occurs. Also called with AbortError when signal aborts.",
           "optional": true,
           "kind": "function",
           "params": [
@@ -1808,6 +2094,11 @@
           "items": {
             "type": "#/definitions/Plugin"
           }
+        },
+        "signal": {
+          "description": "Optional AbortSignal to cancel the render operation. When aborted, destroy() is called for cleanup before onError() is called with the AbortError.",
+          "optional": true,
+          "type": "AbortSignal"
         },
         "id": {
           "description": "For existing objects: Engine identifier of object to render",
@@ -1850,7 +2141,7 @@
         }
       },
       "examples": [
-        "// A config for Creating objects:\nconst createConfig = {\n  type: 'bar',\n  element: document.querySelector('.bar'),\n  extendProperties: true,\n  fields: ['[Country names]', '=Sum(Sales)'],\n  properties: {\n    legend: {\n      show: false,\n    },\n  }\n};\nnebbie.render(createConfig);\n// A config for rendering an existing object:\nconst createConfig = {\n  id: 'jG5LP',\n  element: document.querySelector('.line'),\n};\nnebbie.render(createConfig);"
+        "// A config for Creating objects:\nconst createConfig = {\n  type: 'bar',\n  element: document.querySelector('.bar'),\n  extendProperties: true,\n  fields: ['[Country names]', '=Sum(Sales)'],\n  properties: {\n    legend: {\n      show: false,\n    },\n  }\n};\nnebbie.render(createConfig);\n// A config for rendering an existing object:\nconst renderConfig = {\n  id: 'jG5LP',\n  element: document.querySelector('.line'),\n};\nnebbie.render(renderConfig);\n// Using AbortSignal to cancel rendering:\nconst controller = new AbortController();\nconst abortConfig = {\n  type: 'bar',\n  element: document.querySelector('.bar'),\n  fields: ['Country', '=Sum(Sales)'],\n  signal: controller.signal,\n  onError: (err) => {\n    if (err.name === 'AbortError') {\n      console.log('Render was cancelled');\n    } else {\n      console.error('Render failed:', err);\n    }\n  }\n};\nconst vizPromise = nebbie.render(abortConfig);\n// Cancel the render operation\ncontroller.abort();"
       ]
     },
     "LibraryField": {
@@ -1873,33 +2164,6 @@
           ]
         }
       }
-    },
-    "Plugin": {
-      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
-      "stability": "experimental",
-      "availability": {
-        "since": "1.2.0"
-      },
-      "kind": "interface",
-      "entries": {
-        "info": {
-          "description": "Object that can hold various meta info about the plugin",
-          "kind": "object",
-          "entries": {
-            "name": {
-              "description": "The name of the plugin",
-              "type": "string"
-            }
-          }
-        },
-        "fn": {
-          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
-          "type": "function"
-        }
-      },
-      "examples": [
-        "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
-      ]
     },
     "LoadType": {
       "kind": "interface",
@@ -2030,167 +2294,6 @@
       "examples": [
         "const navigation = useNavigation();\n//...\nuseEffect(() => {\n  const onSheetChanged = () => {\n    // do something\n  };\n  if (navigation?.addListener) {\n    navigation.addListener(\"sheetChanged\", onSheetChanged);\n  }\n  return () => {\n    if (navigation?.removeListener) {\n      navigation.removeListener(\"sheetChanged\", onSheetChanged);\n    }\n  };\n}, [navigation]);\n\nconst onSheetClick = (sheetId: string) => {\n  navigation?.goToSheet(sheetId);\n};"
       ]
-    },
-    "ActionToolbarElement": {
-      "availability": {
-        "since": "2.1.0"
-      },
-      "extends": [
-        {
-          "type": "HTMLElement"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "className": {
-          "value": "'njs-action-toolbar-popover'",
-          "kind": "literal"
-        }
-      }
-    },
-    "ActionElement": {
-      "availability": {
-        "since": "2.0.0"
-      },
-      "extends": [
-        {
-          "type": "HTMLElement"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "className": {
-          "value": "'njs-cell-action'",
-          "kind": "literal"
-        }
-      }
-    },
-    "CellElement": {
-      "extends": [
-        {
-          "type": "HTMLElement"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "className": {
-          "value": "'njs-cell'",
-          "kind": "literal"
-        }
-      }
-    },
-    "CellBody": {
-      "extends": [
-        {
-          "type": "HTMLElement"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "className": {
-          "value": "'njs-cell-body'",
-          "kind": "literal"
-        }
-      }
-    },
-    "CellFooter": {
-      "availability": {
-        "since": "2.0.0"
-      },
-      "extends": [
-        {
-          "type": "HTMLElement"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "className": {
-          "value": "'njs-cell-footer'",
-          "kind": "literal"
-        }
-      }
-    },
-    "CellTitle": {
-      "availability": {
-        "since": "2.0.0"
-      },
-      "extends": [
-        {
-          "type": "HTMLElement"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "className": {
-          "value": "'njs-cell-title'",
-          "kind": "literal"
-        }
-      }
-    },
-    "CellSubTitle": {
-      "availability": {
-        "since": "2.0.0"
-      },
-      "extends": [
-        {
-          "type": "HTMLElement"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "className": {
-          "value": "'njs-cell-sub-title'",
-          "kind": "literal"
-        }
-      }
-    },
-    "SheetElement": {
-      "stability": "experimental",
-      "availability": {
-        "since": "3.1.0"
-      },
-      "extends": [
-        {
-          "type": "HTMLElement"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "className": {
-          "value": "'njs-sheet'",
-          "kind": "literal"
-        }
-      }
-    },
-    "VizElementAttributes": {
-      "extends": [
-        {
-          "type": "NamedNodeMap"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "data-render-count": {
-          "type": "string"
-        }
-      }
-    },
-    "VizElement": {
-      "extends": [
-        {
-          "type": "HTMLElement"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "attributes": {
-          "type": "#/definitions/VizElementAttributes"
-        },
-        "className": {
-          "value": "'njs-viz'",
-          "kind": "literal"
-        }
-      }
     },
     "Visualization": {
       "description": "The entry point for defining a visualization.",
@@ -2724,84 +2827,6 @@
         }
       }
     },
-    "Translator": {
-      "kind": "class",
-      "constructor": {
-        "kind": "function",
-        "params": []
-      },
-      "entries": {
-        "language": {
-          "description": "Returns current locale.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "lang",
-              "description": "language Locale to updated the currentLocale value",
-              "optional": true,
-              "type": "string"
-            }
-          ],
-          "returns": {
-            "description": "current locale.",
-            "type": "string"
-          }
-        },
-        "add": {
-          "description": "Registers a string in multiple locales",
-          "kind": "function",
-          "params": [
-            {
-              "name": "item",
-              "kind": "object",
-              "entries": {
-                "id": {
-                  "type": "string"
-                },
-                "locale": {
-                  "type": "object",
-                  "generics": [
-                    {
-                      "type": "string"
-                    },
-                    {
-                      "type": "string"
-                    }
-                  ]
-                }
-              }
-            }
-          ],
-          "examples": [
-            "translator.add({\n  id: 'company.hello_user',\n  locale: {\n    'en-US': 'Hello {0}',\n    'sv-SE': 'Hej {0}'\n  }\n});\ntranslator.get('company.hello_user', ['John']); // Hello John"
-          ]
-        },
-        "get": {
-          "description": "Translates a string for current locale.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "str",
-              "description": "ID of the registered string.",
-              "type": "string"
-            },
-            {
-              "name": "args",
-              "description": "Values passed down for string interpolation.",
-              "optional": true,
-              "kind": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          ],
-          "returns": {
-            "description": "The translated string.",
-            "type": "string"
-          }
-        }
-      }
-    },
     "Theme": {
       "kind": "class",
       "constructor": {
@@ -3053,6 +3078,24 @@
         }
       }
     },
+    "move": {
+      "description": "Move an element from position old_index to position new_index in\nthe array.",
+      "kind": "function",
+      "params": [
+        {
+          "name": "array",
+          "type": "any"
+        },
+        {
+          "name": "oldIndex",
+          "type": "any"
+        },
+        {
+          "name": "newIndex",
+          "type": "any"
+        }
+      ]
+    },
     "ExportFormat": {
       "description": "Used for exporting and importing properties between backend models. An object that exports to\nExportFormat should put dimensions and measures inside one data group. If an object has two hypercubes,\neach of the cubes should export dimensions and measures in two separate data groups.\nAn object that imports from this structure is responsible for putting the existing properties where they should be\nin the new model.",
       "availability": {
@@ -3150,6 +3193,11 @@
       },
       "kind": "interface",
       "entries": {
+        "appMethods": {
+          "description": "Object with methods to add to the mocked app.",
+          "optional": true,
+          "type": "object"
+        },
         "delay": {
           "description": "Simulate delay (in ms) for calls in enigma-mocker.",
           "type": "number"

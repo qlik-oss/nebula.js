@@ -1,4 +1,5 @@
 /* eslint no-underscore-dangle:0 */
+import auth from '@qlik/api/auth';
 import React from 'react';
 import appLocaleFn from './locale/app-locale';
 import appThemeFn from './app-theme';
@@ -14,6 +15,7 @@ import ListBoxPopoverWrapper, {
 import createSessionObject from './object/create-session-object';
 import createObject from './object/create-object';
 import get from './object/get-generic-object';
+import raceWithAbort from './utils/abort-utils';
 import flagsFn from './flags/flags';
 import { create as typesFn } from './sn/types';
 import uid from './object/uid';
@@ -157,6 +159,8 @@ const DEFAULT_CONTEXT = /** @lends Context */ {
    * @type {string=}
    * */
   dataViewType: 'sn-table',
+  /** @type {Navigation=} */
+  navigation: undefined,
 };
 
 DEFAULT_CONFIG.context = DEFAULT_CONTEXT;
@@ -219,6 +223,7 @@ function nuked(configuration = {}) {
     let currentContext = {
       ...configuration.context,
       translator: locale.translator,
+      hostConfig: configuration.hostConfig,
     };
 
     const [root, modelStore] = bootNebulaApp({
@@ -237,6 +242,8 @@ function nuked(configuration = {}) {
       galaxy: /** @lends Galaxy */ {
         /** @type {Translator} */
         translator: locale.translator,
+        /** @type {Theme} */
+        theme: appTheme.externalAPI,
         // TODO - validate flags input
         /** @type {Flags} */
         flags: flagsFn(configuration.flags),
@@ -276,7 +283,18 @@ function nuked(configuration = {}) {
       )
     );
 
-    let currentThemePromise = appTheme.setTheme(configuration.context.theme);
+    let currentSetupPromise = new Promise((resolve) => {
+      const p = async () => {
+        await appTheme.setTheme(configuration.context.theme);
+
+        if (configuration.hostConfig && auth && auth.getWebResourceAuthParams) {
+          const { queryParams } = await auth.getWebResourceAuthParams({ hostConfig: configuration.hostConfig });
+          currentContext.queryParams = queryParams;
+          root.context(currentContext);
+        }
+      };
+      p().then(resolve);
+    });
 
     let selectionsApi = null;
     let selectionsComponentReference = null;
@@ -322,13 +340,37 @@ function nuked(configuration = {}) {
        *   type: 'barchart',
        *   fields: ['Product', { qLibraryId: 'u378hn', type: 'measure' }]
        * });
+       * @example
+       * // with AbortSignal
+       * const controller = new AbortController();
+       * n.render({
+       *   element: el,
+       *   type: 'barchart',
+       *   fields: ['Product', '=Sum(Sales)'],
+       *   signal: controller.signal
+       * });
+       * // Later: cancel the render
+       * controller.abort();
        */
       render: async (cfg) => {
-        await currentThemePromise;
-        if (cfg.id) {
-          return get(cfg, halo, modelStore);
+        await currentSetupPromise;
+        cfg.signal?.throwIfAborted();
+
+        const vizApiPromise = cfg.id ? get(cfg, halo, modelStore) : createSessionObject(cfg, halo, modelStore);
+
+        if (cfg.signal) {
+          const abortHandler = () => {
+            vizApiPromise.then((vizApi) => vizApi?.destroy()).catch(() => {});
+          };
+
+          cfg.signal.addEventListener('abort', abortHandler, { once: true });
+
+          return raceWithAbort(vizApiPromise, cfg.signal).finally(() => {
+            cfg.signal.removeEventListener('abort', abortHandler);
+          });
         }
-        return createSessionObject(cfg, halo, modelStore);
+
+        return vizApiPromise;
       },
       // TODO - document
       destroy: async () => {
@@ -395,8 +437,9 @@ function nuked(configuration = {}) {
         };
 
         if (changes.theme) {
-          currentThemePromise = appTheme.setTheme(changes.theme);
-          await currentThemePromise;
+          await currentSetupPromise;
+          currentSetupPromise = appTheme.setTheme(changes.theme);
+          await currentSetupPromise;
         }
 
         if (changes.language) {

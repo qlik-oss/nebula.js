@@ -8,6 +8,7 @@ const StyledText = styled(Typography, { shouldForwardProp: (p) => !['width', 'de
     minWidth: `${width}px`,
     textAlign: 'center',
     fontSize: `${dense ? '12px' : '14px'}`,
+    whiteSpace: 'normal',
     ...(dense && {
       textOverflow: 'ellipsis',
       overflow: 'hidden',

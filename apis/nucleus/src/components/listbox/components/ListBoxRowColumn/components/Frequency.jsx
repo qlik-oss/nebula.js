@@ -8,7 +8,6 @@ function Frequency({ cell, checkboxes, dense, showGray }) {
   const frequencyText = getFrequencyText(cell?.qFrequency);
   return (
     <Grid
-      item
       style={{ display: 'flex', alignItems: 'center' }}
       className={classes.frequencyCount}
       aria-label={frequencyText}

@@ -194,7 +194,8 @@ const Sheet = forwardRef(
     - sheet exposed classnames for theming
   */
 
-    const height = !layout || Number.isNaN(layout.height) ? '100%' : `${Number(layout.height)}%`;
+    const height =
+      !layout || layout.height === undefined || Number.isNaN(layout.height) ? '100%' : `${Number(layout.height)}%`;
     const promises = cells.map((c) => c.mountedPromise);
     const ps = promises.filter((p) => !!p);
     if (ps.length) {

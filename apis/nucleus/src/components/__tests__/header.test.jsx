@@ -23,9 +23,14 @@ describe('<Header />', () => {
     jest.spyOn(useRectModule, 'default').mockImplementation(() => [() => {}, rect]);
     ActionsToolbarModule.default = ActionsToolbar;
 
-    render = async (layout = {}, sn = { component: {}, selectionToolbar: {} }, focusHandler = {}) => {
+    render = async (
+      layout = {},
+      sn = { component: {}, selectionToolbar: {} },
+      focusHandler = {},
+      translator = { get: (s) => s }
+    ) => {
       await act(async () => {
-        renderer = create(<Header layout={layout} sn={sn} focusHandler={focusHandler} />);
+        renderer = create(<Header layout={layout} sn={sn} focusHandler={focusHandler} translator={translator} />);
       });
     };
   });
@@ -40,7 +45,7 @@ describe('<Header />', () => {
     expect(types).toHaveLength(0);
   });
   test('should render title', async () => {
-    await render({ showTitles: true, title: 'foo' });
+    await render({ showTitles: true, title: 'foo', qInfo: { qId: 'id' } });
     const types = renderer.root.findAllByType(Typography);
     expect(types).toHaveLength(1);
     expect(types[0].props.children).toBe('foo');

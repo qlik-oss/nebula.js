@@ -243,6 +243,33 @@ export namespace EnigmaMocker {
 }
 
 declare namespace stardust {
+    class Translator {
+        constructor();
+
+        /**
+         * Returns current locale.
+         * @param lang language Locale to updated the currentLocale value
+         */
+        language(lang?: string): string;
+
+        /**
+         * Registers a string in multiple locales
+         * @param item
+         */
+        add(item: {
+            id: string;
+            locale: object;
+        }): void;
+
+        /**
+         * Translates a string for current locale.
+         * @param str ID of the registered string.
+         * @param args Values passed down for string interpolation.
+         */
+        get(str: string, args?: string[]): string;
+
+    }
+
     interface Component {
         key: string;
     }
@@ -270,10 +297,12 @@ declare namespace stardust {
         keyboardNavigation?: boolean;
         disableCellPadding?: boolean;
         dataViewType?: string;
+        navigation?: stardust.Navigation;
     }
 
     interface Galaxy {
         translator: stardust.Translator;
+        theme: stardust.Theme;
         flags: stardust.Flags;
         deviceType: string;
         hostConfig: object;
@@ -429,7 +458,7 @@ declare namespace stardust {
         /**
          * Destroys the visualization and removes it from the the DOM.
          */
-        destroy(): void;
+        destroy(): Promise<void>;
 
         /**
          * Converts the visualization to a different registered type.
@@ -453,6 +482,8 @@ declare namespace stardust {
          */
         toggleDataView(showDataView?: boolean): void;
 
+        viewDataToggled: boolean;
+
         /**
          * Listens to custom events from inside the visualization. See useEmitter
          * @param eventName Event name to listen to
@@ -474,12 +505,63 @@ declare namespace stardust {
 
     }
 
+    interface ActionToolbarElement extends HTMLElement {
+        className: "njs-action-toolbar-popover";
+    }
+
+    interface ActionElement extends HTMLElement {
+        className: "njs-cell-action";
+    }
+
+    interface CellElement extends HTMLElement {
+        className: "njs-cell";
+    }
+
+    interface CellBody extends HTMLElement {
+        className: "njs-cell-body";
+    }
+
+    interface CellFooter extends HTMLElement {
+        className: "njs-cell-footer";
+    }
+
+    interface CellTitle extends HTMLElement {
+        className: "njs-cell-title";
+    }
+
+    interface CellSubTitle extends HTMLElement {
+        className: "njs-cell-sub-title";
+    }
+
+    interface SheetElement extends HTMLElement {
+        className: "njs-sheet";
+    }
+
+    interface VizElementAttributes extends NamedNodeMap {
+        "data-render-count": string;
+    }
+
+    interface VizElement extends HTMLElement {
+        attributes: stardust.VizElementAttributes;
+        className: "njs-viz";
+    }
+
     interface Flags {
         /**
          * Checks whether the specified flag is enabled.
          * @param flag The value flag to check.
          */
         isEnabled(flag: string): boolean;
+    }
+
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
     }
 
     class AppSelections {
@@ -579,11 +661,12 @@ declare namespace stardust {
          */
         onRender?(): void;
         /**
-         * Callback function called if an error occurs
+         * Callback function called if an error occurs. Also called with AbortError when signal aborts.
          * @param $
          */
         onError?($: stardust.RenderError): void;
         plugins?: stardust.Plugin[];
+        signal?: AbortSignal;
         id?: string;
         type?: string;
         version?: string;
@@ -595,16 +678,6 @@ declare namespace stardust {
     interface LibraryField {
         qLibraryId: string;
         type: "dimension" | "measure";
-    }
-
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
     }
 
     interface LoadType {
@@ -643,47 +716,6 @@ declare namespace stardust {
          */
         getCurrentSheetId(): string | "false";
 
-    }
-
-    interface ActionToolbarElement extends HTMLElement{
-        className: "njs-action-toolbar-popover";
-    }
-
-    interface ActionElement extends HTMLElement{
-        className: "njs-cell-action";
-    }
-
-    interface CellElement extends HTMLElement{
-        className: "njs-cell";
-    }
-
-    interface CellBody extends HTMLElement{
-        className: "njs-cell-body";
-    }
-
-    interface CellFooter extends HTMLElement{
-        className: "njs-cell-footer";
-    }
-
-    interface CellTitle extends HTMLElement{
-        className: "njs-cell-title";
-    }
-
-    interface CellSubTitle extends HTMLElement{
-        className: "njs-cell-sub-title";
-    }
-
-    interface SheetElement extends HTMLElement{
-        className: "njs-sheet";
-    }
-
-    interface VizElementAttributes extends NamedNodeMap{
-        "data-render-count": string;
-    }
-
-    interface VizElement extends HTMLElement{
-        attributes: stardust.VizElementAttributes;
-        className: "njs-viz";
     }
 
     /**
@@ -832,33 +864,6 @@ declare namespace stardust {
         removed?: stardust.fieldTargetRemovedCallback<T>;
     }
 
-    class Translator {
-        constructor();
-
-        /**
-         * Returns current locale.
-         * @param lang language Locale to updated the currentLocale value
-         */
-        language(lang?: string): string;
-
-        /**
-         * Registers a string in multiple locales
-         * @param item
-         */
-        add(item: {
-            id: string;
-            locale: object;
-        }): void;
-
-        /**
-         * Translates a string for current locale.
-         * @param str ID of the registered string.
-         * @param args Values passed down for string interpolation.
-         */
-        get(str: string, args?: string[]): string;
-
-    }
-
     class Theme {
         constructor();
 
@@ -936,6 +941,12 @@ declare namespace stardust {
     }
 
     /**
+     * Move an element from position old_index to position new_index in
+     * the array.
+     */
+    type move = (array: any, oldIndex: any, newIndex: any)=>void;
+
+    /**
      * Used for exporting and importing properties between backend models. An object that exports to
      * ExportFormat should put dimensions and measures inside one data group. If an object has two hypercubes,
      * each of the cubes should export dimensions and measures in two separate data groups.
@@ -967,6 +978,7 @@ declare namespace stardust {
      * Options for Enigma Mocker
      */
     interface EnigmaMockerOptions {
+        appMethods?: object;
         delay: number;
     }
 

@@ -1,6 +1,6 @@
 import React, { useContext, useState, useMemo } from 'react';
 
-import { Popover, List, ListSubheader, ListItem, ListItemText, ListItemIcon, Divider } from '@mui/material';
+import { Popover, List, ListSubheader, ListItemButton, ListItemText, ListItemIcon, Divider } from '@mui/material';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 
@@ -18,7 +18,7 @@ import Search from './Search';
 
 function Field({ field, onSelect, sub, parts }) {
   return (
-    <ListItem button onClick={() => onSelect(field.qName)} data-key={field.qName}>
+    <ListItemButton onClick={() => onSelect(field.qName)} data-key={field.qName}>
       <ListItemText>
         {parts.map((part, ix) => (
           <span
@@ -31,13 +31,13 @@ function Field({ field, onSelect, sub, parts }) {
         ))}
       </ListItemText>
       {sub && <ChevronRight fontSize="small" />}
-    </ListItem>
+    </ListItemButton>
   );
 }
 
 function LibraryItem({ item, onSelect, parts }) {
   return (
-    <ListItem button onClick={() => onSelect(item.qInfo)} data-key={item.qInfo.qId}>
+    <ListItemButton onClick={() => onSelect(item.qInfo)} data-key={item.qInfo.qId}>
       <ListItemText>
         {parts.map((part, ix) => (
           <span
@@ -49,15 +49,15 @@ function LibraryItem({ item, onSelect, parts }) {
           </span>
         ))}
       </ListItemText>
-    </ListItem>
+    </ListItemButton>
   );
 }
 
 function Aggr({ aggr, field, onSelect }) {
   return (
-    <ListItem button onClick={() => onSelect(aggr)} data-key={aggr}>
+    <ListItemButton onClick={() => onSelect(aggr)} data-key={aggr}>
       <ListItemText>{`${aggr}(${field})`}</ListItemText>
-    </ListItem>
+    </ListItemButton>
   );
 }
 
@@ -159,12 +159,12 @@ export default function FieldsPopover({ alignTo, show, close, onSelected, type }
       {!selectedField && <Search onChange={setSearchTerm} />}
       {selectedField && (
         <List dense component="nav">
-          <ListItem button onClick={() => setSelectedField(null)}>
+          <ListItemButton onClick={() => setSelectedField(null)}>
             <ListItemIcon>
               <ChevronLeft />
             </ListItemIcon>
             <ListItemText>Back</ListItemText>
-          </ListItem>
+          </ListItemButton>
           <Divider />
           <ListSubheader component="div">Aggregation</ListSubheader>
           {['sum', 'count', 'avg', 'min', 'max'].map((v) => (

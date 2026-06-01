@@ -100,13 +100,33 @@ describe('Styling property resolver', () => {
 
     test('should resolve background image https', () => {
       const { url, pos } = resolveBgImage(bgCompLayout, app);
-      expect(url).toBe('https://example.com/media/Tulips.jpg');
+      expect(url).toBe('https://example.com/lots/of/paths/media/Tulips.jpg');
       expect(pos).toBe('top left');
     });
     test('should resolve background image http', () => {
       app.session.config.url = 'ws://example.com/lots/of/paths';
       const { url, size } = resolveBgImage(bgCompLayout, app);
+      expect(url).toBe('http://example.com/lots/of/paths/media/Tulips.jpg');
+      expect(size).toBe('contain');
+    });
+    test('should resolve background image http without paths', () => {
+      app.session.config.url = 'ws://example.com/';
+      const { url, size } = resolveBgImage(bgCompLayout, app);
       expect(url).toBe('http://example.com/media/Tulips.jpg');
+      expect(size).toBe('contain');
+    });
+    test('should resolve background image and remove /app and everything after', () => {
+      app.session.config.url = 'wss://example.com/lots/of/paths/app/abc123/identity/tab2';
+      const { url, size } = resolveBgImage(bgCompLayout, app);
+      expect(url).toBe('https://example.com/lots/of/paths/media/Tulips.jpg');
+      expect(size).toBe('contain');
+    });
+
+    test('should resolve background image with host', () => {
+      const host = 'https://my-asset-host.com';
+      const { url, pos, size } = resolveBgImage(bgCompLayout, app, null, host);
+      expect(url).toBe('https://my-asset-host.com/media/Tulips.jpg');
+      expect(pos).toBe('top left');
       expect(size).toBe('contain');
     });
 
@@ -248,6 +268,17 @@ describe('Styling property resolver', () => {
       expect(resolveColor.default).toHaveBeenCalledWith(undefined, '', 'borderColor', styleService, objectType);
       expect(resolveProperty.default).toHaveBeenCalledTimes(1);
       expect(resolveProperty.default).toHaveBeenCalledWith('', 'borderWidth', styleService, objectType);
+      expect(res).toEqual(undefined);
+    });
+
+    test('should not get border from theme when disableThemeBorder is set', () => {
+      jest.spyOn(resolveProperty, 'default').mockReturnValue('5px');
+      jest.spyOn(resolveColor, 'default').mockReturnValue('red');
+      const disableThemeBorder = true;
+      const res = resolveBorder(comp, styleService, objectType, disableThemeBorder);
+      expect(resolveColor.default).toHaveBeenCalledTimes(1);
+      expect(resolveColor.default).toHaveBeenCalledWith(undefined, '', 'borderColor', styleService, objectType);
+      expect(resolveProperty.default).toHaveBeenCalledTimes(0);
       expect(res).toEqual(undefined);
     });
   });

@@ -33,7 +33,7 @@ export default function FormManager({ info, fields, error, isCredentialProvided 
     <form onSubmit={handleOnSubmit}>
       <Grid container spacing={2} direction="column" justifyContent="center">
         {fields.map((field, i) => (
-          <Grid item xs={12} key={field}>
+          <Grid size={12} key={field}>
             <OutlinedInput
               fullWidth
               autoFocus={i === 0}
@@ -49,11 +49,9 @@ export default function FormManager({ info, fields, error, isCredentialProvided 
           </Grid>
         ))}
 
-        <Grid container item xs={12} alignItems="center">
-          <Grid item xs={10}>
-            {error && <Error error={error} />}
-          </Grid>
-          <Grid container item xs={2} direction="row" alignItems="center" justifyContent="flex-end">
+        <Grid container size={12} alignItems="center">
+          <Grid size={10}>{error && <Error error={error} />}</Grid>
+          <Grid container size={2} direction="row" alignItems="center" justifyContent="flex-end">
             <Button
               type="submit"
               variant="contained"

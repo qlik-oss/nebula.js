@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-/* eslint-disable react/jsx-no-constructed-context-values */
+
 /* eslint-disable no-import-assign */
 import React from 'react';
 import { create, act } from 'react-test-renderer';
@@ -53,7 +53,7 @@ describe('<Cell />', () => {
     Header = jest.fn().mockImplementation(() => 'Header');
     InstanceContext = React.createContext();
     appLayout = { foo: 'app-layout' };
-    layout = { qSelectionInfo: {}, visualization: '' };
+    layout = { qSelectionInfo: {}, visualization: '', qInfo: { qId: 'id' } };
     layoutState = { validating: true, canCancel: false, canRetry: false };
     longrunning = { cancel: jest.fn(), retry: jest.fn() };
     useLayout = jest.fn().mockReturnValue([layout, layoutState, longrunning]);
@@ -363,6 +363,98 @@ describe('<Cell />', () => {
                   dimensions: {
                     min: () => 1,
                     max: () => 1,
+                    description: (_properties, ix) =>
+                      ix === 0
+                        ? 'Column'
+                        : 'Cells - dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd ',
+                  },
+                  measures: {
+                    min: () => 1,
+                    max: () => 1,
+                    description: () => 'Size',
+                  },
+                },
+              ],
+            },
+          },
+        },
+      };
+      const types = {
+        get: jest.fn().mockReturnValue({
+          supernova: async () => ({ create: () => sn }),
+        }),
+        getSupportedVersion: jest.fn().mockReturnValue('1.0.0'),
+      };
+      const model = {
+        getProperties: async () => {},
+      };
+      await render({ types, model });
+
+      const ftypes = renderer.root.findAllByType(CError);
+      expect(ftypes).toHaveLength(1);
+      expect(ftypes[0].props.title).toBe('Visualization.Incomplete');
+    });
+
+    test('should not render requirements', async () => {
+      const localLayout = { visualization: 'sn', title: 'foo', foo: { qDimensionInfo: [{}], qMeasureInfo: [{}] } };
+      const sn = {
+        generator: {
+          qae: {
+            data: {
+              targets: [
+                {
+                  resolveLayout: () => localLayout.foo,
+                  dimensions: {
+                    min: () => 1,
+                    max: () => 1,
+                    description: (_properties, ix) =>
+                      ix === 0
+                        ? 'Column'
+                        : 'Cells - dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd ',
+                  },
+                  measures: {
+                    min: () => 1,
+                    max: () => 1,
+                    description: () => 'Size',
+                  },
+                },
+              ],
+            },
+          },
+        },
+      };
+      const types = {
+        get: jest.fn().mockReturnValue({
+          supernova: async () => ({ create: () => sn }),
+        }),
+        getSupportedVersion: jest.fn().mockReturnValue('1.0.0'),
+      };
+      const model = {
+        getProperties: async () => {},
+      };
+      await render({ types, model });
+
+      const ftypes = renderer.root.findAllByType(CError);
+      expect(ftypes).toHaveLength(0);
+      const renderedSn = renderer.root.findByType(Supernova);
+      expect(renderedSn.props.sn).toEqual(sn);
+    });
+
+    test('should render requirements for dim error', async () => {
+      const localLayout = {
+        visualization: 'sn',
+        foo: { qDimensionInfo: [{}, { qError: { qErrorCode: 7000 } }], qMeasureInfo: [{}] },
+      };
+      const sn = {
+        generator: {
+          qae: {
+            data: {
+              targets: [
+                {
+                  resolveLayout: () => localLayout.foo,
+                  dimensions: {
+                    min: () => 1,
+                    max: () => 2,
                     description: (_properties, ix) =>
                       ix === 0
                         ? 'Column'

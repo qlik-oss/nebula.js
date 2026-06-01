@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { auth, qix } from '@qlik/api';
 import { embed } from '@nebula.js/stardust';
 import barchart from '@nebula.js/sn-bar-chart';

@@ -27,9 +27,8 @@ test.describe('snapper rendering test', () => {
 
     await page.goto(`${url}/snaps/snapper.html`);
 
-    const selector = await page.waitForSelector(barSelector, { visible: true });
-
-    const image = await selector.screenshot({ caret: 'hide' });
-    return expect(image).toMatchSnapshot(FILE_NAME);
+    const locator = page.locator(barSelector);
+    await locator.waitFor();
+    return expect(locator).toHaveScreenshot(FILE_NAME, { caret: 'hide' });
   });
 });

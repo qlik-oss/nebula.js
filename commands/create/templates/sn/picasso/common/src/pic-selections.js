@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign, no-console */
-
 // --- enable keyboard accessibility ---
 // pressing enter (escape) key should confirm (cancel) selections
 const KEYS = {

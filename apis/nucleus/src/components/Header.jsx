@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 
 import { Grid, Tooltip, Typography } from '@mui/material';
 import ActionsToolbar from './ActionsToolbar';
-import useRect from '../hooks/useRect';
+import hiddenScreenReaderText from '../utils/style/screen-reader';
 
 const PREFIX = 'Header';
 
@@ -22,12 +22,6 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
     paddingBottom: theme.spacing(1),
   },
 }));
-
-const ITEM_WIDTH = 32;
-const ITEM_SPACING = 4;
-const DIVIDER = 1;
-const NUMBER_OF_ITEMS = 6;
-const MIN_WIDTH = (ITEM_WIDTH + ITEM_SPACING) * NUMBER_OF_ITEMS + DIVIDER + ITEM_SPACING;
 
 /**
  * @interface
@@ -49,14 +43,11 @@ const CellSubTitle = {
   className: 'njs-cell-sub-title',
 };
 
-function Header({ layout, sn, anchorEl, hovering, focusHandler, titleStyles = {} }) {
+function Header({ id, layout, sn, anchorEl, hovering, focusHandler, titleStyles = {}, isRtl, translator }) {
   const showTitle = layout.showTitles && !!layout.title;
   const showSubtitle = layout.showTitles && !!layout.subtitle;
   const showInSelectionActions = layout.qSelectionInfo && layout.qSelectionInfo.qInSelections;
   const [actions, setActions] = useState([]);
-
-  const [containerRef, containerRect] = useRect();
-  const [shouldShowPopoverToolbar, setShouldShowPopoverToolbar] = useState(false);
 
   useEffect(() => {
     if (!sn || !sn.component || !sn.component.isHooked) {
@@ -67,20 +58,13 @@ function Header({ layout, sn, anchorEl, hovering, focusHandler, titleStyles = {}
     });
   }, [sn]);
 
-  useEffect(() => {
-    if (!containerRect) return;
-    const { width } = containerRect;
-    setShouldShowPopoverToolbar(width < MIN_WIDTH);
-  }, [containerRect]);
-
   const showTitles = showTitle || showSubtitle;
   const cls = [classes.containerStyle, ...(showTitles ? [classes.containerTitleStyle] : [])];
-  const showPopoverToolbar = (hovering || showInSelectionActions) && (shouldShowPopoverToolbar || !showTitles);
-  const showToolbar = showTitles && !showPopoverToolbar && !shouldShowPopoverToolbar;
+  const showPopoverToolbar = hovering || showInSelectionActions;
 
   const Toolbar = (
     <ActionsToolbar
-      show={showToolbar}
+      show={false}
       selections={{
         show: showInSelectionActions,
         api: sn.component.selections,
@@ -90,19 +74,31 @@ function Header({ layout, sn, anchorEl, hovering, focusHandler, titleStyles = {}
       popover={{ show: showPopoverToolbar, anchorEl }}
       focusHandler={focusHandler}
       layout={layout}
+      isRtl={isRtl}
     />
   );
-
   return (
-    <StyledGrid ref={containerRef} item container wrap="nowrap" className={cls.join(' ')}>
-      <Grid item zeroMinWidth xs>
+    <StyledGrid container wrap="nowrap" className={cls.join(' ')}>
+      <Grid size="grow" sx={{ minWidth: 0 }} dir={isRtl ? 'rtl' : 'ltr'}>
         <Grid container wrap="nowrap" direction="column">
-          {showTitle && (
+          {showTitle ? (
             <Tooltip title={layout.title}>
-              <Typography variant="h6" noWrap className={CellTitle.className} style={titleStyles.main}>
+              <Typography
+                id={`${id}_title`}
+                variant="h6"
+                noWrap
+                className={CellTitle.className}
+                style={titleStyles.main}
+              >
                 {layout.title}
               </Typography>
             </Tooltip>
+          ) : (
+            <div
+              id={`${id}_title`}
+              style={hiddenScreenReaderText}
+              aria-label={translator.get('Accessibility.Object.NoTitle')}
+            />
           )}
           {showSubtitle && (
             <Tooltip title={layout.subtitle}>
@@ -113,7 +109,7 @@ function Header({ layout, sn, anchorEl, hovering, focusHandler, titleStyles = {}
           )}
         </Grid>
       </Grid>
-      <Grid item>{Toolbar}</Grid>
+      <Grid>{Toolbar}</Grid>
     </StyledGrid>
   );
 }

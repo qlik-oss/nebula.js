@@ -1,7 +1,5 @@
-/* eslint-disable react/jsx-no-constructed-context-values */
 /* eslint-disable no-import-assign */
-/* eslint-disable array-callback-return */
-/* eslint-disable import/first */
+
 import React, { act } from 'react';
 import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
 import * as unlockModule from '@nebula.js/ui/icons/unlock';
@@ -16,6 +14,7 @@ import * as ListBoxSearchModule from '../components/ListBoxSearch';
 import * as listboxSelectionToolbarModule from '../interactions/listbox-selection-toolbar';
 import * as styling from '../assets/styling';
 import * as isDirectQueryEnabled from '../utils/is-direct-query';
+import * as useAppSelection from '../../../hooks/useAppSelections';
 
 const virtualizedModule = require('react-virtualized-auto-sizer');
 const listboxKeyboardNavigationModule = require('../interactions/keyboard-navigation/keyboard-nav-container');
@@ -94,6 +93,7 @@ describe('<ListboxInline />', () => {
       .spyOn(styling, 'default')
       .mockImplementation(() => ({ backgroundColor: '#FFFFFF', header: {}, content: {}, selections: {} }));
     jest.spyOn(isDirectQueryEnabled, 'default').mockImplementation(() => false);
+    jest.spyOn(useAppSelection, 'default').mockImplementation(() => [{ isInModal: jest.fn().mockReturnValue(false) }]);
 
     ActionsToolbarModule.default = ActionsToolbar;
     ListBoxModule.default = <div className="theListBox" />;
@@ -188,7 +188,7 @@ describe('<ListboxInline />', () => {
       expect(ListBoxSearch.mock.calls[0][0]).toMatchObject({
         visible: true,
       });
-      expect(getListboxInlineKeyboardNavigation).toHaveBeenCalledTimes(2);
+      expect(getListboxInlineKeyboardNavigation).toHaveBeenCalledTimes(3);
 
       // TODO: MUIv5
       // expect(renderer.toJSON().props.onKeyDown).toBe('keyboard-navigation');
