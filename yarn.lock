@@ -3826,7 +3826,7 @@ __metadata:
   dependencies:
     "@inquirer/prompts": "npm:8.4.3"
     chalk: "npm:4.1.2"
-    ejs: "npm:5.0.2"
+    ejs: "npm:6.0.1"
     fs-extra: "npm:11.3.5"
   languageName: unknown
   linkType: soft
@@ -8992,12 +8992,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ejs@npm:5.0.2":
-  version: 5.0.2
-  resolution: "ejs@npm:5.0.2"
+"ejs@npm:6.0.1":
+  version: 6.0.1
+  resolution: "ejs@npm:6.0.1"
   bin:
     ejs: bin/cli.js
-  checksum: 10c0/6377ba83487e9e818dd77ab92d67a5f6c0d093689fa500aa0654305f4c19af13a30a606cc6286b8dfef1cf8aae89a71130af16aca5b72dc500a4a44ac3aa13bf
+  checksum: 10c0/475665efdab9deb01448a0b136129d138483228520138b2fba7991330255e4e1050eae145124c26101ff1ab158bf5f506f19a8dae5996054fc7e76bb94a12ebd
   languageName: node
   linkType: hard
 
