@@ -10,7 +10,13 @@ import * as InstanceContextModule from '../../../contexts/InstanceContext';
 describe('<OneField />', () => {
   let InstanceContext;
   const theme = createTheme('dark');
-  const create = (component) => renderer.create(<ThemeProvider theme={theme}>{component}</ThemeProvider>);
+  const create = (component) => {
+    let testRenderer;
+    renderer.act(() => {
+      testRenderer = renderer.create(<ThemeProvider theme={theme}>{component}</ThemeProvider>);
+    });
+    return testRenderer;
+  };
 
   beforeEach(() => {
     InstanceContext = React.createContext();
