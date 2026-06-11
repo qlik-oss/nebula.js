@@ -89,7 +89,7 @@
     "puppeteer": "25.0.4",
     "qix-faker": "0.3.0",
     "react-is": "18.3.1",
-    "rollup": "4.61.0",
+    "rollup": "4.61.1",
     "rollup-plugin-sass": "1.15.3",
     "style-loader": "4.0.0",
     "whatwg-fetch": "^3.6.20",
