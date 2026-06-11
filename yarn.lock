@@ -1515,30 +1515,30 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/cli@npm:21.0.1":
-  version: 21.0.1
-  resolution: "@commitlint/cli@npm:21.0.1"
+"@commitlint/cli@npm:21.0.2":
+  version: 21.0.2
+  resolution: "@commitlint/cli@npm:21.0.2"
   dependencies:
     "@commitlint/format": "npm:^21.0.1"
-    "@commitlint/lint": "npm:^21.0.1"
-    "@commitlint/load": "npm:^21.0.1"
-    "@commitlint/read": "npm:^21.0.1"
+    "@commitlint/lint": "npm:^21.0.2"
+    "@commitlint/load": "npm:^21.0.2"
+    "@commitlint/read": "npm:^21.0.2"
     "@commitlint/types": "npm:^21.0.1"
     tinyexec: "npm:^1.0.0"
     yargs: "npm:^18.0.0"
   bin:
     commitlint: cli.js
-  checksum: 10c0/b4455b05ad6f069b831b977612757b83e39d868ca376f0ef74da1a7addfe6b3d29b721afe3ab65373d5b68b52bacd4247b9fc3f9059e2f0a7ad662b8f42bbf0e
+  checksum: 10c0/00efd139cb91d1d25df456415c9975f3086efffe8708e33c45858f6e26b83e9d5572d9f07d7aafce785c355b72d83de61a5044d9d0e50021ae2c09046ff4f77a
   languageName: node
   linkType: hard
 
-"@commitlint/config-conventional@npm:21.0.1":
-  version: 21.0.1
-  resolution: "@commitlint/config-conventional@npm:21.0.1"
+"@commitlint/config-conventional@npm:21.0.2":
+  version: 21.0.2
+  resolution: "@commitlint/config-conventional@npm:21.0.2"
   dependencies:
     "@commitlint/types": "npm:^21.0.1"
     conventional-changelog-conventionalcommits: "npm:^9.2.0"
-  checksum: 10c0/b713491392ce561a882071435ccbdfe30c7adc389674d6e3f4ece4ddf0056e21310ec086e2e6433e9b6620c532b53bbadae59ff38220ba82fd34911e69e690b8
+  checksum: 10c0/b399fc7b1b5d9964f24f040ecf4fd667556af3a24e49a40ac6b3f5724b24ce8a754201e8c75e7cd9517bad31655bc271be11912dcfa23ca728de332559fa15b7
   languageName: node
   linkType: hard
 
@@ -1589,7 +1589,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/lint@npm:^21.0.1":
+"@commitlint/lint@npm:^21.0.2":
   version: 21.0.2
   resolution: "@commitlint/lint@npm:21.0.2"
   dependencies:
@@ -1601,7 +1601,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/load@npm:^21.0.1":
+"@commitlint/load@npm:^21.0.2":
   version: 21.0.2
   resolution: "@commitlint/load@npm:21.0.2"
   dependencies:
@@ -1636,7 +1636,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/read@npm:^21.0.1":
+"@commitlint/read@npm:^21.0.2":
   version: 21.0.2
   resolution: "@commitlint/read@npm:21.0.2"
   dependencies:
@@ -16660,8 +16660,8 @@ __metadata:
     "@babel/plugin-transform-react-jsx": "npm:7.28.6"
     "@babel/preset-env": "npm:7.29.5"
     "@babel/preset-react": "npm:7.28.5"
-    "@commitlint/cli": "npm:21.0.1"
-    "@commitlint/config-conventional": "npm:21.0.1"
+    "@commitlint/cli": "npm:21.0.2"
+    "@commitlint/config-conventional": "npm:21.0.2"
     "@jest/globals": "npm:^30.4.1"
     "@playwright/test": "npm:^1.60.0"
     "@rollup/plugin-babel": "npm:7.1.0"
