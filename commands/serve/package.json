@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "@nebula.js/cli-build": "^7.0.1",
-    "@qlik/api": "^2.9.0",
+    "@qlik/api": "^2.10.0",
     "body-parser": "2.2.2",
     "chalk": "4.1.2",
     "chokidar": "5.0.0",

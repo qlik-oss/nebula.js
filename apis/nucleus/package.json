@@ -13,7 +13,7 @@
     "@nebula.js/supernova": "^7.0.1",
     "@nebula.js/theme": "^7.0.1",
     "@nebula.js/ui": "^7.0.1",
-    "@qlik/api": "2.9.0",
+    "@qlik/api": "2.10.0",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/react": "^16.3.2",
     "extend": "3.0.2",
