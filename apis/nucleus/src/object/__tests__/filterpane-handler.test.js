@@ -38,7 +38,7 @@ describe('filterpane-handler', () => {
             qInfo: {
               qType: expect.any(String),
             },
-            title: 'A',
+            title: undefined,
             searchEnabled: true,
             showTitle: true,
             wildCardSearch: false,
@@ -100,7 +100,7 @@ describe('filterpane-handler', () => {
             qInfo: {
               qType: expect.any(String),
             },
-            title: 'lib dim title',
+            title: undefined,
             searchEnabled: true,
             showTitle: true,
             wildCardSearch: false,
@@ -167,7 +167,7 @@ describe('filterpane-handler', () => {
             qInfo: {
               qType: expect.any(String),
             },
-            title: 'C',
+            title: undefined,
             searchEnabled: true,
             showTitle: true,
             wildCardSearch: false,
