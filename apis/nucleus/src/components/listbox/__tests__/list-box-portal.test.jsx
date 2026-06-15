@@ -157,15 +157,14 @@ describe('ListBoxPortal', () => {
       };
       const [elem] = ListBoxPortal({ app, fieldIdentifier, options });
       await render(elem);
-      expect(ListBoxInlineMock).toHaveBeenCalledWith(
-        {
-          options: {
-            ...options,
-            selections: usedSelectionsApi,
-          },
+      expect(ListBoxInlineMock).toHaveBeenCalled();
+      expect(ListBoxInlineMock.mock.calls[0][0]).toEqual({
+        options: {
+          ...options,
+          renderedCallback: undefined,
+          selections: usedSelectionsApi,
         },
-        {}
-      );
+      });
     });
   });
 
