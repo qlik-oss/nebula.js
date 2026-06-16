@@ -46,6 +46,14 @@ export default function getListBoxComponents({
   const { layoutOptions = {} } = layout || {};
   const { columnWidth, listHeight, itemHeight, rowCount, columnCount } = sizes || {};
 
+  // Representation settings and attribute-expression index map from dimension info, used for both List and Grid.
+  const dimensionInfo = layout?.qListObject?.qDimensionInfo;
+  const representation = dimensionInfo?.representation;
+  const attrExprIndex = (dimensionInfo?.qAttrExprInfo || []).reduce((acc, expr, i) => {
+    acc[expr.id] = i;
+    return acc;
+  }, {});
+
   const itemWidth = layoutOptions.dataLayout === 'grid' ? columnWidth : width;
   const showTick = itemWidth > REMOVE_TICK_LIMIT;
 
@@ -73,6 +81,8 @@ export default function getListBoxComponents({
     isSingleSelect,
     textAlign,
     sizes,
+    representation,
+    attrExprIndex,
     actions: {
       select,
       confirm: () => selections?.confirm.call(selections),

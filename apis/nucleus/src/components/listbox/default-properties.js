@@ -13,6 +13,17 @@
  */
 
 /**
+ * Representation settings for the dimension values, set on `qListObjectDef.qDef.representation`.
+ * When `type` is `'image'` the values are rendered as images; the image URL is resolved from the
+ * `imageUrl` attribute expression (added to `qListObjectDef.qDef.qAttributeExpressions`), falling
+ * back to the field value.
+ * @interface Representation
+ * @property {('text'|'image')} [type='text'] How the dimension values are presented.
+ * @property {('alwaysFit'|'fitWidth'|'fitHeight'|'fill')} [imageSize='fitHeight'] Image sizing mode. Only used when type is 'image'.
+ * @property {string} [imagePosition='topCenter'] Image position within the cell. Only used when type is 'image' and imageSize is not 'fill'.
+ */
+
+/**
  * @name ListboxProperties
  * @type object
  */

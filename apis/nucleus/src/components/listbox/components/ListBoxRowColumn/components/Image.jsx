@@ -104,16 +104,16 @@ const getObjectFit = (imageSize) => {
   }
 };
 
-function Image(representation) {
-  const { imageSize, imagePosition } = representation.representation;
+function Image({ representation, src, label }) {
+  const { imageSize, imagePosition } = representation;
   const isFitHeight = imageSize === 'fitHeight';
   const resolvedImagePosition = resolveImagePosition(imagePosition);
   const maxImageHeight = '200px';
 
   const imgNode = (
     <img
-      src={representation.label}
-      alt={representation.label}
+      src={src}
+      alt={label}
       style={{
         width: getImageWidth(imageSize),
         height: '100%',
@@ -133,7 +133,7 @@ function Image(representation) {
         height: isFitHeight ? maxImageHeight : '100%',
         overflow: 'hidden',
         display: 'flex',
-        justifyContent: isFitHeight ? representation?.resolvedImagePosition?.horizontal : undefined,
+        justifyContent: isFitHeight ? resolvedImagePosition?.horizontal : undefined,
       }}
     >
       {imgNode}
