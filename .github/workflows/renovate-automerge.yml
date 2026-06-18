@@ -9,6 +9,11 @@ permissions:
   pull-requests: write
 
 jobs:
+  debug-actor:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "actor=${{ github.actor }}"
+
   automerge:
     if: github.actor == 'renovate[bot]'
     runs-on: ubuntu-latest
