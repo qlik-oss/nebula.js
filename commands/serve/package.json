@@ -52,7 +52,7 @@
     "source-map-loader": "5.0.0",
     "webpack": "5.107.2",
     "webpack-cli": "7.0.3",
-    "webpack-dev-server": "5.2.4",
+    "webpack-dev-server": "5.2.5",
     "ws": "8.21.0",
     "yargs": "18.0.0"
   },
