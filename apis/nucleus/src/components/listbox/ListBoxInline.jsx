@@ -184,7 +184,7 @@ function ListBoxInline({ options, layout }) {
   const showSearchIcon = searchEnabled !== false && search === 'toggle' && !isLocked;
 
   const dimInfo = layout?.qListObject?.qDimensionInfo;
-  const effectiveTitle = (dimInfo?.qLibraryId ? dimInfo?.qFallbackTitle : layout?.title);
+  const effectiveTitle = dimInfo?.qLibraryId ? dimInfo?.qFallbackTitle : layout?.title;
   const canShowTitle = effectiveTitle?.length && layout?.showTitle !== false;
   const showDetachedToolbarOnly = toolbar && !canShowTitle && !isPopover;
   const showAttachedToolbar = (toolbar && canShowTitle) || isPopover;
