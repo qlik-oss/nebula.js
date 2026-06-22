@@ -3774,7 +3774,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nebula.js/cli-build@npm:^7.0.1, @nebula.js/cli-build@workspace:commands/build":
+"@nebula.js/cli-build@npm:^7.1.0, @nebula.js/cli-build@workspace:commands/build":
   version: 0.0.0-use.local
   resolution: "@nebula.js/cli-build@workspace:commands/build"
   dependencies:
@@ -3803,7 +3803,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@nebula.js/cli-create@npm:^7.0.1, @nebula.js/cli-create@workspace:commands/create":
+"@nebula.js/cli-create@npm:^7.1.0, @nebula.js/cli-create@workspace:commands/create":
   version: 0.0.0-use.local
   resolution: "@nebula.js/cli-create@workspace:commands/create"
   dependencies:
@@ -3821,7 +3821,7 @@ __metadata:
     "@babel/cli": "npm:7.29.7"
     "@babel/core": "npm:7.29.7"
     "@babel/preset-env": "npm:7.29.7"
-    "@nebula.js/stardust": "npm:^7.0.1"
+    "@nebula.js/stardust": "npm:^7.1.0"
     "@rollup/plugin-babel": "npm:7.1.0"
     "@rollup/plugin-commonjs": "npm:29.0.3"
     "@rollup/plugin-node-resolve": "npm:16.0.3"
@@ -3844,12 +3844,12 @@ __metadata:
     "@babel/preset-react": "npm:7.29.7"
     "@mui/material": "npm:^7.3.11"
     "@mui/system": "npm:^7.3.11"
-    "@nebula.js/cli-build": "npm:^7.0.1"
-    "@nebula.js/enigma-mocker": "npm:^7.0.1"
-    "@nebula.js/nucleus": "npm:^7.0.1"
-    "@nebula.js/snapshooter": "npm:^7.0.1"
-    "@nebula.js/stardust": "npm:^7.0.1"
-    "@nebula.js/ui": "npm:^7.0.1"
+    "@nebula.js/cli-build": "npm:^7.1.0"
+    "@nebula.js/enigma-mocker": "npm:^7.1.0"
+    "@nebula.js/nucleus": "npm:^7.1.0"
+    "@nebula.js/snapshooter": "npm:^7.1.0"
+    "@nebula.js/stardust": "npm:^7.1.0"
+    "@nebula.js/ui": "npm:^7.1.0"
     "@playwright/test": "npm:^1.61.0"
     "@qlik/api": "npm:^2.11.0"
     autosuggest-highlight: "npm:3.3.4"
@@ -3886,7 +3886,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@nebula.js/cli@workspace:commands/cli"
   dependencies:
-    "@nebula.js/cli-create": "npm:^7.0.1"
+    "@nebula.js/cli-create": "npm:^7.1.0"
     import-cwd: "npm:3.0.0"
     yargs: "npm:18.0.0"
   peerDependencies:
@@ -3898,7 +3898,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@nebula.js/conversion@npm:^7.0.1, @nebula.js/conversion@workspace:apis/conversion":
+"@nebula.js/conversion@npm:^7.1.0, @nebula.js/conversion@workspace:apis/conversion":
   version: 0.0.0-use.local
   resolution: "@nebula.js/conversion@workspace:apis/conversion"
   dependencies:
@@ -3906,7 +3906,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@nebula.js/enigma-mocker@npm:^7.0.1, @nebula.js/enigma-mocker@workspace:apis/enigma-mocker":
+"@nebula.js/enigma-mocker@npm:^7.1.0, @nebula.js/enigma-mocker@workspace:apis/enigma-mocker":
   version: 0.0.0-use.local
   resolution: "@nebula.js/enigma-mocker@workspace:apis/enigma-mocker"
   dependencies:
@@ -3914,7 +3914,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@nebula.js/locale@npm:^7.0.1, @nebula.js/locale@workspace:apis/locale":
+"@nebula.js/locale@npm:^7.1.0, @nebula.js/locale@workspace:apis/locale":
   version: 0.0.0-use.local
   resolution: "@nebula.js/locale@workspace:apis/locale"
   dependencies:
@@ -3922,7 +3922,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@nebula.js/nucleus@npm:^7.0.1, @nebula.js/nucleus@workspace:apis/nucleus":
+"@nebula.js/nucleus@npm:^7.1.0, @nebula.js/nucleus@workspace:apis/nucleus":
   version: 0.0.0-use.local
   resolution: "@nebula.js/nucleus@workspace:apis/nucleus"
   dependencies:
@@ -3930,11 +3930,11 @@ __metadata:
     "@emotion/styled": "npm:^11.14.1"
     "@mui/icons-material": "npm:^7.3.11"
     "@mui/material": "npm:^7.3.11"
-    "@nebula.js/conversion": "npm:^7.0.1"
-    "@nebula.js/locale": "npm:^7.0.1"
-    "@nebula.js/supernova": "npm:^7.0.1"
-    "@nebula.js/theme": "npm:^7.0.1"
-    "@nebula.js/ui": "npm:^7.0.1"
+    "@nebula.js/conversion": "npm:^7.1.0"
+    "@nebula.js/locale": "npm:^7.1.0"
+    "@nebula.js/supernova": "npm:^7.1.0"
+    "@nebula.js/theme": "npm:^7.1.0"
+    "@nebula.js/ui": "npm:^7.1.0"
     "@qlik/api": "npm:2.11.0"
     "@testing-library/dom": "npm:^10.4.1"
     "@testing-library/react": "npm:^16.3.2"
@@ -3951,13 +3951,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@nebula.js/snapshooter@npm:^7.0.1, @nebula.js/snapshooter@workspace:apis/snapshooter":
+"@nebula.js/snapshooter@npm:^7.1.0, @nebula.js/snapshooter@workspace:apis/snapshooter":
   version: 0.0.0-use.local
   resolution: "@nebula.js/snapshooter@workspace:apis/snapshooter"
   languageName: unknown
   linkType: soft
 
-"@nebula.js/stardust@npm:^7.0.1, @nebula.js/stardust@workspace:apis/stardust":
+"@nebula.js/stardust@npm:^7.1.0, @nebula.js/stardust@workspace:apis/stardust":
   version: 0.0.0-use.local
   resolution: "@nebula.js/stardust@workspace:apis/stardust"
   dependencies:
@@ -3965,13 +3965,13 @@ __metadata:
     "@emotion/styled": "npm:^11.14.1"
     "@mui/icons-material": "npm:^7.3.11"
     "@mui/material": "npm:^7.3.11"
-    "@nebula.js/conversion": "npm:^7.0.1"
-    "@nebula.js/enigma-mocker": "npm:^7.0.1"
-    "@nebula.js/locale": "npm:^7.0.1"
-    "@nebula.js/nucleus": "npm:^7.0.1"
-    "@nebula.js/supernova": "npm:^7.0.1"
-    "@nebula.js/theme": "npm:^7.0.1"
-    "@nebula.js/ui": "npm:^7.0.1"
+    "@nebula.js/conversion": "npm:^7.1.0"
+    "@nebula.js/enigma-mocker": "npm:^7.1.0"
+    "@nebula.js/locale": "npm:^7.1.0"
+    "@nebula.js/nucleus": "npm:^7.1.0"
+    "@nebula.js/supernova": "npm:^7.1.0"
+    "@nebula.js/theme": "npm:^7.1.0"
+    "@nebula.js/ui": "npm:^7.1.0"
     "@qlik/api": "npm:2.11.0"
     "@scriptappy/cli": "npm:0.10.6"
     "@scriptappy/from-jsdoc": "npm:0.19.6"
@@ -3989,11 +3989,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@nebula.js/supernova@npm:^7.0.1, @nebula.js/supernova@workspace:apis/supernova":
+"@nebula.js/supernova@npm:^7.1.0, @nebula.js/supernova@workspace:apis/supernova":
   version: 0.0.0-use.local
   resolution: "@nebula.js/supernova@workspace:apis/supernova"
   dependencies:
-    "@nebula.js/conversion": "npm:^7.0.1"
+    "@nebula.js/conversion": "npm:^7.1.0"
     extend: "npm:3.0.2"
     node-event-emitter: "npm:0.0.1"
   languageName: unknown
@@ -4007,7 +4007,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@nebula.js/theme@npm:^7.0.1, @nebula.js/theme@workspace:apis/theme":
+"@nebula.js/theme@npm:^7.1.0, @nebula.js/theme@workspace:apis/theme":
   version: 0.0.0-use.local
   resolution: "@nebula.js/theme@workspace:apis/theme"
   dependencies:
@@ -4017,7 +4017,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@nebula.js/ui@npm:^7.0.1, @nebula.js/ui@workspace:packages/ui":
+"@nebula.js/ui@npm:^7.1.0, @nebula.js/ui@workspace:packages/ui":
   version: 0.0.0-use.local
   resolution: "@nebula.js/ui@workspace:packages/ui"
   dependencies:

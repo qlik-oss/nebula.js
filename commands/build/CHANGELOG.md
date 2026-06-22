@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.1.0](https://github.com/qlik-oss/nebula.js/compare/v7.0.1...v7.1.0) (2026-06-22)
+
+### Bug Fixes
+
+- **deps:** update babel monorepo to v7.29.7 ([#2061](https://github.com/qlik-oss/nebula.js/issues/2061)) ([259f9e8](https://github.com/qlik-oss/nebula.js/commit/259f9e8754f88aaa01552d94cd45465ad3724cba))
+- **deps:** update dependency @rollup/plugin-babel to v7.1.0 ([#2073](https://github.com/qlik-oss/nebula.js/issues/2073)) ([3a09611](https://github.com/qlik-oss/nebula.js/commit/3a096113e7f43d5238bc1b37dc602e1ca35929e5))
+- **deps:** update dependency @rollup/plugin-commonjs to v29.0.3 ([#2072](https://github.com/qlik-oss/nebula.js/issues/2072)) ([bb54b5c](https://github.com/qlik-oss/nebula.js/commit/bb54b5c04d8228ac676f77e9ebbda5dabcd90dd7))
+- **deps:** update dependency rollup to v4.61.0 ([#2076](https://github.com/qlik-oss/nebula.js/issues/2076)) ([43ee9b7](https://github.com/qlik-oss/nebula.js/commit/43ee9b7fd9c0c3f5096b980ee1591f79e0cc5796))
+- **deps:** update dependency rollup to v4.61.1 ([#2080](https://github.com/qlik-oss/nebula.js/issues/2080)) ([3d123fe](https://github.com/qlik-oss/nebula.js/commit/3d123fe3d3a17fe5a464828911b843d20eeecde1))
+- **deps:** update dependency rollup to v4.62.0 ([#2096](https://github.com/qlik-oss/nebula.js/issues/2096)) ([f5c3b88](https://github.com/qlik-oss/nebula.js/commit/f5c3b885e1a51769ae08f0c2caabe76108e27193))
+
 ## [7.0.1](https://github.com/qlik-oss/nebula.js/compare/v7.0.0...v7.0.1) (2026-05-27)
 
 ### Bug Fixes

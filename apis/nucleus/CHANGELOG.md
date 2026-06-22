@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.1.0](https://github.com/qlik-oss/nebula.js/compare/v7.0.1...v7.1.0) (2026-06-22)
+
+### Bug Fixes
+
+- **deps:** update dependency @qlik/api to v2.10.0 ([#2077](https://github.com/qlik-oss/nebula.js/issues/2077)) ([ef46b4a](https://github.com/qlik-oss/nebula.js/commit/ef46b4a1d02406740ee0911ae8eaa96eaab3ce59))
+- **deps:** update dependency @qlik/api to v2.11.0 ([#2088](https://github.com/qlik-oss/nebula.js/issues/2088)) ([35b3294](https://github.com/qlik-oss/nebula.js/commit/35b32943796dccf33d151510d5edc85c703dc8af))
+- fix listbox title for master dimension ([#2083](https://github.com/qlik-oss/nebula.js/issues/2083)) ([5bf0653](https://github.com/qlik-oss/nebula.js/commit/5bf0653219602eecb1f52ad4c18150140b56de00))
+
 ## [7.0.1](https://github.com/qlik-oss/nebula.js/compare/v7.0.0...v7.0.1) (2026-05-27)
 
 ### Bug Fixes
