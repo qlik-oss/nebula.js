@@ -3940,7 +3940,7 @@ __metadata:
     "@testing-library/react": "npm:^16.3.2"
     extend: "npm:3.0.2"
     node-event-emitter: "npm:0.0.1"
-    qlik-chart-modules: "npm:0.103.0"
+    qlik-chart-modules: "npm:1.0.0"
     react: "npm:19.2.7"
     react-dom: "npm:19.2.7"
     react-test-renderer: "npm:19.2.7"
@@ -15830,16 +15830,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qlik-chart-modules@npm:0.103.0":
-  version: 0.103.0
-  resolution: "qlik-chart-modules@npm:0.103.0"
+"qlik-chart-modules@npm:1.0.0":
+  version: 1.0.0
+  resolution: "qlik-chart-modules@npm:1.0.0"
   peerDependencies:
     "@emotion/react": ^11.0.0
     "@emotion/styled": ^11.0.0
     "@mui/material": ^5.0.0
     react: ">=18.3.1"
     react-dom: ">=18.3.1"
-  checksum: 10c0/a4939e999acc461a0326831d527c19e3c8553371402591ad82bddbe8354de4ea6d731299547b083ccf0f526000c8fbc066e4a2980947cd50ea4d423666126388
+  checksum: 10c0/2ff29c1a0c9aa9a91494b8717cef3b8e58a1d9da80ef1abf9e72c0f92ade5a5ed5437a2b674ec0a28af782dd06246529799d945c4aa14aa84c8e0c8c1dc07ed6
   languageName: node
   linkType: hard
 
