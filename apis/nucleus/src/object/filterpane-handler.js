@@ -36,16 +36,9 @@ export default function filterpaneHandler({ /* dc, def, properties, */ children,
                 qExpr: dimProps.qDim.qLabelExpression,
               },
             };
-          } else if (dimProps.qDim.qGrouping === 'C') {
-            listboxProps.title = {
-              qStringExpression: {
-                qExpr: `GroupDimensionLabel('${dimProps.qDim.title}')`,
-              },
-            };
+          } else {
+            listboxProps.title = dimProps.qDim.title;
           }
-          // For regular (non-cyclic) master dimensions without a label expression,
-          // leave title empty so qFallbackTitle is used instead. This ensures the
-          // filterpane title always reflects the current master dimension name.
         } else {
           listboxProps.title =
             dimension.qDef.title || dimension.qDef.qFieldLabels?.[0] || dimension.qDef.qFieldDefs?.[0];
