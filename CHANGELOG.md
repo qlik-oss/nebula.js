@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.1.1](https://github.com/qlik-oss/nebula.js/compare/v7.1.0...v7.1.1) (2026-06-22)
+
+### Reverts
+
+- Revert "fix: fix listbox title for master dimension (#2083)" (#2103) ([c9b11fe](https://github.com/qlik-oss/nebula.js/commit/c9b11fe53799aa77befe1aca86c207510ca908a3)), closes [#2083](https://github.com/qlik-oss/nebula.js/issues/2083) [#2103](https://github.com/qlik-oss/nebula.js/issues/2103)
+
 # [7.1.0](https://github.com/qlik-oss/nebula.js/compare/v7.0.1...v7.1.0) (2026-06-22)
 
 ### Bug Fixes
