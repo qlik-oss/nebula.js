@@ -82,7 +82,6 @@ export default function ListBoxHeader({
   keyboard,
   autoConfirm,
   app,
-  title,
   disablePortal,
 }) {
   const [isToolbarDetached, setIsToolbarDetached] = useState(showDetachedToolbarOnly);
@@ -258,8 +257,8 @@ export default function ListBoxHeader({
         justifyContent={isRtl ? 'flex-end' : 'flex-start'}
         className={classes.listBoxHeader}
       >
-        <HeaderTitle variant="h6" noWrap ref={titleRef} title={title ?? layout.title} styles={styles}>
-          {title ?? layout.title}
+        <HeaderTitle variant="h6" noWrap ref={titleRef} title={layout.title} styles={styles}>
+          {layout.title}
         </HeaderTitle>
       </Grid>
       <Grid display="flex">{actionsToolbar}</Grid>

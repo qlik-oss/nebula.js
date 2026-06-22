@@ -100,7 +100,7 @@ describe('filterpane-handler', () => {
             qInfo: {
               qType: expect.any(String),
             },
-            title: '',
+            title: 'lib dim title',
             searchEnabled: true,
             showTitle: true,
             wildCardSearch: false,
