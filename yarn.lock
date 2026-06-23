@@ -12143,7 +12143,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-location-mock@npm:^3.0.0":
+"jest-location-mock@npm:^3.1.0":
   version: 3.1.0
   resolution: "jest-location-mock@npm:3.1.0"
   dependencies:
@@ -16635,7 +16635,7 @@ __metadata:
     jest: "npm:^30.4.2"
     jest-environment-jsdom: "npm:^30.4.1"
     jest-junit: "npm:^17.0.0"
-    jest-location-mock: "npm:^3.0.0"
+    jest-location-mock: "npm:^3.1.0"
     jimp: "npm:^1.6.1"
     lerna: "npm:9.0.7"
     lint-staged: "npm:^17.0.7"
