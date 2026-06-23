@@ -78,7 +78,7 @@
     "jest": "^30.4.2",
     "jest-environment-jsdom": "^30.4.1",
     "jest-junit": "^17.0.0",
-    "jest-location-mock": "^3.0.0",
+    "jest-location-mock": "^3.1.0",
     "jimp": "^1.6.1",
     "lerna": "9.0.7",
     "lint-staged": "^17.0.7",
