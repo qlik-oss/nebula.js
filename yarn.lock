@@ -3783,7 +3783,7 @@ __metadata:
     "@babel/preset-env": "npm:7.29.7"
     "@babel/preset-react": "npm:7.29.7"
     "@babel/preset-typescript": "npm:7.29.7"
-    "@qlik/browserslist-config": "npm:^3.0.0"
+    "@qlik/browserslist-config": "npm:^3.0.1"
     "@rollup/plugin-babel": "npm:7.1.0"
     "@rollup/plugin-commonjs": "npm:29.0.3"
     "@rollup/plugin-json": "npm:6.1.0"
@@ -4937,10 +4937,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@qlik/browserslist-config@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "@qlik/browserslist-config@npm:3.0.0"
-  checksum: 10c0/722917f25ae5583c805e6297a28add75ee80dba2d236b9861bb23e6bf25a220515b9353d124b730d39b87c15d18fa21f37a45b672b26bf3ffeb070f28ea6bf2c
+"@qlik/browserslist-config@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "@qlik/browserslist-config@npm:3.0.1"
+  checksum: 10c0/1da9f06fc71141f716de7d3234a2b020969db0f62371b8159816b8a8dc1fa04768121b2151da466b336c9c44c8f9ed26a84f14cc80c6978c89f345b1a7ba8dcd
   languageName: node
   linkType: hard
 
