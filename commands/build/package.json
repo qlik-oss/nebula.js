@@ -27,7 +27,7 @@
     "@babel/preset-env": "7.29.7",
     "@babel/preset-react": "7.29.7",
     "@babel/preset-typescript": "7.29.7",
-    "@qlik/browserslist-config": "^3.0.0",
+    "@qlik/browserslist-config": "^3.0.1",
     "@rollup/plugin-babel": "7.1.0",
     "@rollup/plugin-commonjs": "29.0.3",
     "@rollup/plugin-json": "6.1.0",
