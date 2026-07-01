@@ -18,7 +18,7 @@ jobs:
         run: corepack enable
       - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
-          node-version: 24.17.0
+          node-version: 24.18.0
           cache: 'yarn'
       - name: Install dependencies
         run: yarn install --immutable
@@ -43,7 +43,7 @@ jobs:
         run: corepack enable
       - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
-          node-version: 24.17.0
+          node-version: 24.18.0
           cache: 'yarn'
       - name: Download workspace
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
@@ -86,7 +86,7 @@ jobs:
         run: corepack enable
       - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
-          node-version: 24.17.0
+          node-version: 24.18.0
           cache: 'yarn'
       - name: Download workspace
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
@@ -179,7 +179,7 @@ jobs:
         run: corepack enable
       - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
-          node-version: 24.17.0
+          node-version: 24.18.0
           cache: 'yarn'
       - name: Download workspace
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
@@ -223,7 +223,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
-          node-version: 24.17.0
+          node-version: 24.18.0
           cache: 'yarn'
 
       - name: Install dependencies
