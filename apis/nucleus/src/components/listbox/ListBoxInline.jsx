@@ -273,7 +273,7 @@ function ListBoxInline({ options, layout }) {
         gap={0}
         containerPadding={containerPadding}
         styles={styles}
-        style={{ height: '100%', flexFlow: 'column nowrap' }}
+        style={{ height: '100%', width: "100%",  flexFlow: 'column nowrap' }}
         onKeyDown={handleKeyDown}
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
