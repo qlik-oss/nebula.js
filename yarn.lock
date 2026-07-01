@@ -12144,14 +12144,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-location-mock@npm:^3.1.0":
-  version: 3.1.0
-  resolution: "jest-location-mock@npm:3.1.0"
+"jest-location-mock@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "jest-location-mock@npm:4.0.1"
   dependencies:
     "@jedmao/location": "npm:^3.0.0"
   peerDependencies:
     "@jest/globals": ^30.0.0
-  checksum: 10c0/2a40a5dedf2c3280c03a9d502d5c00ff2e1f786ecf6436d345d154b75bdf4e83ba31d81960642e88a7fddd7371095095f7cfdd08e82ed2f4b008d4b033b27189
+    vitest: ^4.0.0
+  peerDependenciesMeta:
+    "@jest/globals":
+      optional: true
+    vitest:
+      optional: true
+  checksum: 10c0/dbf3509682ffe6dd4fe7faf3015aaaab7306537cf35cb4537bdfb7965ce572fcdae46c81ef2b6d33862eb4dcb68620f15a361c740ff264a55be436d17a5075da
   languageName: node
   linkType: hard
 
@@ -16636,7 +16642,7 @@ __metadata:
     jest: "npm:^30.4.2"
     jest-environment-jsdom: "npm:^30.4.1"
     jest-junit: "npm:^17.0.0"
-    jest-location-mock: "npm:^3.1.0"
+    jest-location-mock: "npm:^4.0.1"
     jimp: "npm:^1.6.1"
     lerna: "npm:9.0.7"
     lint-staged: "npm:^17.0.8"
