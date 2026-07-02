@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.1.1](https://github.com/qlik-oss/nebula.js/compare/v7.1.0...v7.1.1) (2026-06-22)
+
+**Note:** Version bump only for package @nebula.js/cli-create
+
+# [7.1.0](https://github.com/qlik-oss/nebula.js/compare/v7.0.1...v7.1.0) (2026-06-22)
+
+### Bug Fixes
+
+- **deps:** update dependency @inquirer/prompts to v8.5.0 ([#2062](https://github.com/qlik-oss/nebula.js/issues/2062)) ([6ba4fea](https://github.com/qlik-oss/nebula.js/commit/6ba4fea476e2fed78eb810fd128439f2de46ef3f))
+- **deps:** update dependency ejs to v6 ([#2066](https://github.com/qlik-oss/nebula.js/issues/2066)) ([f72735b](https://github.com/qlik-oss/nebula.js/commit/f72735be1157b580d082d614c707a14d72b952b6))
+
+## [7.0.1](https://github.com/qlik-oss/nebula.js/compare/v7.0.0...v7.0.1) (2026-05-27)
+
+### Bug Fixes
+
+- **deps:** update dependency @inquirer/prompts to v8.4.3 ([#2035](https://github.com/qlik-oss/nebula.js/issues/2035)) ([fc469a7](https://github.com/qlik-oss/nebula.js/commit/fc469a7e673afca63a7c523407d17b03231da486))
+- **deps:** update dependency fs-extra to v11.3.5 ([#2022](https://github.com/qlik-oss/nebula.js/issues/2022)) ([86dd3d3](https://github.com/qlik-oss/nebula.js/commit/86dd3d3806a0b8280220b5792dc637a5c16a567e))
+
 # [7.0.0](https://github.com/qlik-oss/nebula.js/compare/v6.8.0...v7.0.0) (2026-05-21)
 
 ### Bug Fixes

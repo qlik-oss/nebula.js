@@ -85,7 +85,7 @@ describe('<ActionsToolbarItem />', () => {
     const action = jest.fn();
     await render({ label: 'foo', action }, true);
     const anchor = renderer.root.findByType('div');
-    expect(anchor.props).toEqual({
+    expect(anchor.props).toMatchObject({
       style: {
         bottom: -0,
         right: 0,

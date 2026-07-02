@@ -546,6 +546,14 @@ declare namespace stardust {
         className: "njs-viz";
     }
 
+    interface Flags {
+        /**
+         * Checks whether the specified flag is enabled.
+         * @param flag The value flag to check.
+         */
+        isEnabled(flag: string): boolean;
+    }
+
     class AppSelections {
         constructor();
 
@@ -662,12 +670,14 @@ declare namespace stardust {
         type: "dimension" | "measure";
     }
 
-    interface Flags {
-        /**
-         * Checks whether the specified flag is enabled.
-         * @param flag The value flag to check.
-         */
-        isEnabled(flag: string): boolean;
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
     }
 
     interface LoadType {
@@ -689,16 +699,6 @@ declare namespace stardust {
 
         originalError: Error;
 
-    }
-
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
     }
 
     class Navigation implements stardust.Emitter {

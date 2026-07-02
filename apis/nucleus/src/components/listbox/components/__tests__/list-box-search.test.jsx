@@ -12,7 +12,13 @@ import ListBoxSearch from '../ListBoxSearch';
 const InstanceContext = React.createContext();
 const theme = createTheme('dark');
 
-const create = (comp) => renderer.create(<ThemeProvider theme={theme}>{comp}</ThemeProvider>);
+const create = (comp) => {
+  let testRenderer;
+  act(() => {
+    testRenderer = renderer.create(<ThemeProvider theme={theme}>{comp}</ThemeProvider>);
+  });
+  return testRenderer;
+};
 
 let selections = {};
 const styles = { content: {}, header: {}, selections: {}, search: {}, background: {} };
@@ -428,6 +434,8 @@ describe('<ListBoxSearch />', () => {
       const type = getType(false);
       await act(async () => {
         await type.props.onChange({ target: { value: 'some value' } });
+      });
+      await act(async () => {
         await onKeyDown(type, 'Enter');
       });
       expect(model.acceptListObjectSearch).toHaveBeenCalled();
@@ -439,6 +447,8 @@ describe('<ListBoxSearch />', () => {
       const tooLongString = Array(64100).fill('M').join('');
       await act(async () => {
         await type.props.onChange({ target: { value: tooLongString } });
+      });
+      await act(async () => {
         await onKeyDown(type, 'Enter');
       });
       expect(model.searchListObjectFor).toHaveBeenCalledTimes(2);

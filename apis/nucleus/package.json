@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/nucleus",
-  "version": "7.0.0",
+  "version": "7.1.1",
   "private": true,
   "main": "src/index.js",
   "devDependencies": {
@@ -8,23 +8,23 @@
     "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^7.3.11",
     "@mui/material": "^7.3.11",
-    "@nebula.js/conversion": "^7.0.0",
-    "@nebula.js/locale": "^7.0.0",
-    "@nebula.js/supernova": "^7.0.0",
-    "@nebula.js/theme": "^7.0.0",
-    "@nebula.js/ui": "^7.0.0",
-    "@qlik/api": "2.8.0",
+    "@nebula.js/conversion": "^7.1.1",
+    "@nebula.js/locale": "^7.1.1",
+    "@nebula.js/supernova": "^7.1.1",
+    "@nebula.js/theme": "^7.1.1",
+    "@nebula.js/ui": "^7.1.1",
+    "@qlik/api": "2.13.0",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/react": "^16.3.2",
     "extend": "3.0.2",
     "node-event-emitter": "0.0.1",
-    "qlik-chart-modules": "0.100.1",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "react-test-renderer": "18.3.1",
+    "qlik-chart-modules": "1.1.0",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "react-test-renderer": "19.2.7",
     "react-virtualized-auto-sizer": "1.0.25",
     "react-window": "1.8.11",
     "react-window-infinite-loader": "1.0.10",
-    "semver": "7.7.4"
+    "semver": "7.8.5"
   }
 }

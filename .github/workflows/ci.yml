@@ -13,12 +13,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
       - name: Enable Corepack
         run: corepack enable
       - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
-          node-version: 24.14.1
+          node-version: 24.18.0
           cache: 'yarn'
       - name: Install dependencies
         run: yarn install --immutable
@@ -38,12 +38,12 @@ jobs:
       contents: read
       checks: write
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
       - name: Enable Corepack
         run: corepack enable
       - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
-          node-version: 24.14.0
+          node-version: 24.18.0
           cache: 'yarn'
       - name: Download workspace
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
@@ -67,7 +67,7 @@ jobs:
           path: coverage/junit
       - name: Publish junit test report
         if: ${{ always() && hashFiles('coverage/junit/*.xml') != '' }}
-        uses: dorny/test-reporter@df6247429542221bc30d46a036ee47af1102c451 # v2
+        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2 # v3
         with:
           name: Unit Tests
           path: coverage/junit/*.xml
@@ -81,12 +81,12 @@ jobs:
       contents: read
       checks: write
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
       - name: Enable Corepack
         run: corepack enable
       - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
-          node-version: 24.14.0
+          node-version: 24.18.0
           cache: 'yarn'
       - name: Download workspace
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
@@ -103,7 +103,7 @@ jobs:
         run: yarn run test:component
       - name: Publish component test report
         if: ${{ always() && hashFiles('test-results/component-junit.xml') != '' }}
-        uses: dorny/test-reporter@df6247429542221bc30d46a036ee47af1102c451 # v2
+        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2 # v3
         with:
           name: Component Tests
           path: test-results/component-junit.xml
@@ -119,7 +119,7 @@ jobs:
           path: ./test/mashup
       - name: Publish mashup test report
         if: ${{ always() && hashFiles('test/mashup/reports/xml/*.xml') != '' }}
-        uses: dorny/test-reporter@df6247429542221bc30d46a036ee47af1102c451 # v2
+        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2 # v3
         with:
           name: Mashup Tests
           path: test/mashup/reports/xml/*.xml
@@ -131,7 +131,7 @@ jobs:
         run: yarn run test:integration
       - name: Publish integration test report
         if: ${{ always() && hashFiles('test-results/integration-junit.xml') != '' }}
-        uses: dorny/test-reporter@df6247429542221bc30d46a036ee47af1102c451 # v2
+        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2 # v3
         with:
           name: Integration Tests
           path: test-results/integration-junit.xml
@@ -147,7 +147,7 @@ jobs:
           path: ./test/rendering
       - name: Publish rendering test report
         if: ${{ always() && hashFiles('test/rendering/reports/xml/*.xml') != '' }}
-        uses: dorny/test-reporter@df6247429542221bc30d46a036ee47af1102c451 # v2
+        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2 # v3
         with:
           name: Rendering Tests
           path: test/rendering/reports/xml/*.xml
@@ -174,12 +174,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
       - name: Enable Corepack
         run: corepack enable
       - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
-          node-version: 24.14.0
+          node-version: 24.18.0
           cache: 'yarn'
       - name: Download workspace
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
@@ -215,7 +215,7 @@ jobs:
         working-directory: .
     steps:
       - name: Checkout repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
         with:
           fetch-depth: 0
       - name: Enable Corepack
@@ -223,7 +223,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
-          node-version: 24.14.1
+          node-version: 24.18.0
           cache: 'yarn'
 
       - name: Install dependencies

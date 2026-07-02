@@ -19,7 +19,7 @@ describe('useExistingModel', () => {
     getMock = jest.fn();
     once = jest.fn();
     app = {
-      getObject: jest.fn().mockResolvedValue({ id: 'generic-id', once }),
+      getObject: jest.fn().mockResolvedValue({ id: 'generic-id', once, removeListener: jest.fn() }),
     };
     useModelStoreMock = jest.fn().mockReturnValue([
       {
@@ -48,14 +48,14 @@ describe('useExistingModel', () => {
   test('providing a qId should give a model fetched from the app', async () => {
     await doRender(useExistingModel, { app, qId: 'generic-id' });
     expect(getMock).toHaveBeenCalledWith('generic-id');
-    expect(setMock).toHaveBeenCalledWith('generic-id', { id: 'generic-id', once });
-    expect(ref.current.result).toEqual({ id: 'generic-id', once });
+    expect(setMock).toHaveBeenCalledWith('generic-id', expect.objectContaining({ id: 'generic-id', once }));
+    expect(ref.current.result).toEqual(expect.objectContaining({ id: 'generic-id', once }));
     expect(once).toHaveBeenCalled();
     expect(once.mock.calls[0][0]).toEqual('closed');
   });
 
   test('providing sessionModel should simply use that model', async () => {
-    const sessionModel = { id: 'session-model', once };
+    const sessionModel = { id: 'session-model', once, removeListener: jest.fn() };
     await doRender(useExistingModel, { options: { sessionModel } });
     expect(ref.current.result?.id).toEqual('session-model');
     expect(once).toHaveBeenCalled();
