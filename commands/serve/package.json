@@ -50,7 +50,7 @@
     "puppeteer": "25.2.1",
     "regenerator-runtime": "0.14.1",
     "source-map-loader": "5.0.0",
-    "webpack": "5.107.2",
+    "webpack": "5.108.1",
     "webpack-cli": "7.0.3",
     "webpack-dev-server": "5.2.5",
     "ws": "8.21.0",
