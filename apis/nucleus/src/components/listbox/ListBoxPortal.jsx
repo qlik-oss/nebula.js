@@ -55,7 +55,7 @@ export const getOptions = (usersOptions = {}) => {
 };
 
 const ListBoxWrapper = forwardRef(
-  ({ app, fieldIdentifier, qId, stateName, element, initialOptions, renderedCallback }, ref) => {
+  ({ app, fieldIdentifier, qId, stateName, element, initialOptions, renderedCallback, flags }, ref) => {
     const [options, setOptions] = useState(initialOptions);
     const { isExistingObject, hasExternalSelectionsApi } = identify({ qId, options });
 
@@ -97,6 +97,7 @@ const ListBoxWrapper = forwardRef(
         model,
         app,
         renderedCallback,
+        flags,
       }),
       [options, selections, model, app]
     );
@@ -119,6 +120,7 @@ export default function ListBoxPortal({
   stateName = '$',
   options = {},
   renderedCallback,
+  flags,
 }) {
   const listRef = React.createRef();
   const portal = ReactDOM.createPortal(
@@ -131,6 +133,7 @@ export default function ListBoxPortal({
       stateName={stateName}
       initialOptions={options}
       renderedCallback={renderedCallback}
+      flags={flags}
     />,
     element,
     uid()

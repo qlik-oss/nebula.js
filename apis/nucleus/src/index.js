@@ -607,6 +607,7 @@ function nuked(configuration = {}) {
                 }),
                 stateName: options.stateName || '$',
                 renderedCallback: resolve,
+                flags: halo.public.galaxy.flags,
               });
               root.add(this._instance);
             });

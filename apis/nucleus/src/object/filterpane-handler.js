@@ -19,7 +19,7 @@ export const toListBox = (d) => {
   return listboxProps;
 };
 
-export default function filterpaneHandler({ /* dc, def, properties, */ children }) {
+export default function filterpaneHandler({ /* dc, def, properties, */ children, halo }) {
   const handler = {
     async addDimension(d) {
       const listboxProps = toListBox(d);
@@ -27,9 +27,30 @@ export default function filterpaneHandler({ /* dc, def, properties, */ children 
       dimension.qDef.cId = dimension.qDef.cId || uid(); // maybe not needed
 
       if (!listboxProps.title) {
-        // set title to undefined to make filterpane take title from library dimension or field name
-        listboxProps.title = undefined;
+        if (halo.public.galaxy.flags.isEnabled('QCB-35224_FILTERPANE_TITLE_IMPROVEMENT')) {
+          // set title to undefined to make filterpane take title from library dimension or field name
+          listboxProps.title = undefined;
+        } else {
+          // eslint-disable-next-line no-lonely-if
+          if (dimension.qLibraryId) {
+            const dimModel = await halo.app.getDimension(dimension.qLibraryId);
+            const dimProps = await dimModel.getProperties();
+            if (dimProps.qDim.qLabelExpression) {
+              listboxProps.title = {
+                qStringExpression: {
+                  qExpr: dimProps.qDim.qLabelExpression,
+                },
+              };
+            } else {
+              listboxProps.title = dimProps.qDim.title;
+            }
+          } else {
+            listboxProps.title =
+              dimension.qDef.title || dimension.qDef.qFieldLabels?.[0] || dimension.qDef.qFieldDefs?.[0];
+          }
+        }
       }
+
       // def.dimensions.added(dimension, properties, listboxProps);
       children.push({
         qProperty: listboxProps,
