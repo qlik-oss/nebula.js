@@ -128,6 +128,9 @@ describe('<ListboxInline />', () => {
       fetchStart: 'fetchStart',
       isPopover: false,
       components: [],
+      flags: {
+        isEnabled: () => false,
+      },
     };
 
     useRef.mockReturnValue({ current: 'current' });

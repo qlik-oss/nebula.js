@@ -19,6 +19,13 @@ describe('filterpane-handler', () => {
       app: {
         getDimension: async () => dimensionModel,
       },
+      public: {
+        galaxy: {
+          flags: {
+            isEnabled: () => false,
+          },
+        },
+      },
     };
     children = [];
 
@@ -38,7 +45,7 @@ describe('filterpane-handler', () => {
             qInfo: {
               qType: expect.any(String),
             },
-            title: undefined,
+            title: 'A',
             searchEnabled: true,
             showTitle: true,
             wildCardSearch: false,
@@ -100,7 +107,7 @@ describe('filterpane-handler', () => {
             qInfo: {
               qType: expect.any(String),
             },
-            title: undefined,
+            title: 'lib dim title',
             searchEnabled: true,
             showTitle: true,
             wildCardSearch: false,
@@ -167,7 +174,7 @@ describe('filterpane-handler', () => {
             qInfo: {
               qType: expect.any(String),
             },
-            title: undefined,
+            title: 'C',
             searchEnabled: true,
             showTitle: true,
             wildCardSearch: false,
