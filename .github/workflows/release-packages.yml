@@ -1,0 +1,151 @@
+name: Release Packages
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_branch:
+        description: Branch to version and push tags to
+        required: true
+        default: main
+        type: string
+      bump:
+        description: Version bump strategy
+        required: true
+        default: minor
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+          - prepatch
+          - preminor
+          - premajor
+          - prerelease
+          - custom
+      custom_version:
+        description: 'Exact semver version when bump=custom (example: 7.1.0)'
+        required: false
+        type: string
+      dist_tag:
+        description: npm dist-tag (latest uses npm default tag)
+        required: true
+        default: latest
+        type: choice
+        options:
+          - latest
+          - next
+      dry_run:
+        description: If true, run versioning only and skip push/publish
+        required: true
+        default: true
+        type: boolean
+
+concurrency:
+  group: release-packages
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.inputs.target_branch }}
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Set up Node.js
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
+        with:
+          node-version: 24.14.1
+          cache: yarn
+          registry-url: https://registry.npmjs.org
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Validate release inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          target="${{ github.event.inputs.target_branch }}"
+          bump="${{ github.event.inputs.bump }}"
+          custom="${{ github.event.inputs.custom_version }}"
+
+          if [[ "$target" != "main" && ! "$target" =~ ^release/.+ ]]; then
+            echo "target_branch must be main or release/*"
+            exit 1
+          fi
+
+          if [[ "$bump" == "custom" && -z "$custom" ]]; then
+            echo "custom_version is required when bump=custom"
+            exit 1
+          fi
+
+          if [[ "$bump" != "custom" && -n "$custom" ]]; then
+            echo "custom_version is only used when bump=custom"
+          fi
+
+      - name: Configure git author
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Version packages with Lerna
+        shell: bash
+        run: |
+          set -euo pipefail
+          bump="${{ github.event.inputs.bump }}"
+          target="${{ github.event.inputs.target_branch }}"
+
+          if [[ "$bump" == "custom" ]]; then
+            version_input="${{ github.event.inputs.custom_version }}"
+          else
+            version_input="$bump"
+          fi
+
+          yarn lerna version "$version_input" \
+            --force-publish \
+            --yes \
+            --allow-branch "$target" \
+            --no-push
+
+      - name: Push release commit and tags
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          target="${{ github.event.inputs.target_branch }}"
+          git push origin "HEAD:$target"
+          git push origin --follow-tags
+
+      - name: Dry run summary
+        if: ${{ github.event.inputs.dry_run == 'true' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Dry run enabled. Skipping push and publish."
+          git --no-pager log -1 --oneline
+          echo "Tags on current commit:"
+          git tag --points-at HEAD || true
+
+      - name: Publish packages
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        shell: bash
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          set -euo pipefail
+          tag="${{ github.event.inputs.dist_tag }}"
+
+          if [[ "$tag" == "next" ]]; then
+            npx lerna publish from-package --yes --dist-tag next
+          else
+            npx lerna publish from-package --yes
+          fi
