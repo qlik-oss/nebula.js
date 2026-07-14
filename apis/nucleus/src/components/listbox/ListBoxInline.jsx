@@ -75,6 +75,7 @@ function ListBoxInline({ options, layout }) {
     components,
     selectDisabled = () => false,
     disablePortal = true,
+    flags,
   } = options;
 
   const theme = useTheme();
@@ -183,7 +184,11 @@ function ListBoxInline({ options, layout }) {
   const isLocked = layout?.qListObject?.qDimensionInfo?.qLocked;
   const showSearchIcon = searchEnabled !== false && search === 'toggle' && !isLocked;
 
-  const canShowTitle = layout?.title?.length && layout?.showTitle !== false;
+  const dimInfo = layout?.qListObject?.qDimensionInfo;
+  const effectiveTitle = flags.isEnabled('QCB-35224_FILTERPANE_TITLE_IMPROVEMENT')
+    ? (layout?.title ?? dimInfo?.qFallbackTitle)
+    : layout?.title;
+  const canShowTitle = effectiveTitle?.length && layout?.showTitle !== false;
   const showDetachedToolbarOnly = toolbar && !canShowTitle && !isPopover;
   const showAttachedToolbar = (toolbar && canShowTitle) || isPopover;
 
@@ -245,6 +250,7 @@ function ListBoxInline({ options, layout }) {
       isDirectQuery={isDirectQuery}
       autoConfirm={autoConfirm}
       showDetachedToolbarOnly={showDetachedToolbarOnly}
+      title={effectiveTitle}
       layout={layout}
       translator={translator}
       styles={styles}

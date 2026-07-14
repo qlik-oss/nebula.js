@@ -19,6 +19,13 @@ describe('filterpane-handler', () => {
       app: {
         getDimension: async () => dimensionModel,
       },
+      public: {
+        galaxy: {
+          flags: {
+            isEnabled: () => false,
+          },
+        },
+      },
     };
     children = [];
 
