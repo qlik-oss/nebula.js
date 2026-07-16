@@ -49,8 +49,11 @@ export default function getListBoxComponents({
   // Representation settings and attribute-expression index map from dimension info, used for both List and Grid.
   const dimensionInfo = layout?.qListObject?.qDimensionInfo;
   const representation = dimensionInfo?.representation;
-  const attrExprIndex = (dimensionInfo?.qAttrExprInfo || []).reduce((acc, expr, i) => {
-    acc[expr.id] = i;
+  // Per-value list-object expressions (qListObjectDef.qExpressions) arrive as extra data columns:
+  // qMatrix[row] = [dimensionCell, exprCell0, ...]. Map an expression's qLabel (e.g. 'imageUrl') to
+  // its column index (offset by 1 for the dimension column).
+  const listExprIndex = (layout?.qListObject?.qExpressions || []).reduce((acc, expr, i) => {
+    acc[expr.qLabel] = i + 1;
     return acc;
   }, {});
 
@@ -82,7 +85,7 @@ export default function getListBoxComponents({
     textAlign,
     sizes,
     representation,
-    attrExprIndex,
+    listExprIndex,
     actions: {
       select,
       confirm: () => selections?.confirm.call(selections),

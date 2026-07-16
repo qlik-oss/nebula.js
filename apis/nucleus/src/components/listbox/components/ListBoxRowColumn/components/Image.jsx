@@ -9,18 +9,18 @@ const resolveImagePosition = (imagePosition) => {
       };
     case 'centerLeft':
       return {
-        horizontal: 'center',
-        vertical: 'flex-start',
+        horizontal: 'flex-start',
+        vertical: 'center',
       };
     case 'bottomLeft':
       return {
-        horizontal: 'flex-end',
-        vertical: 'flex-start',
+        horizontal: 'flex-start',
+        vertical: 'flex-end',
       };
     case 'topCenter':
       return {
-        horizontal: 'flex-start',
-        vertical: 'center',
+        horizontal: 'center',
+        vertical: 'flex-start',
       };
     case 'centerCenter':
       return {
@@ -29,18 +29,18 @@ const resolveImagePosition = (imagePosition) => {
       };
     case 'bottomCenter':
       return {
-        horizontal: 'flex-end',
-        vertical: 'center',
+        horizontal: 'center',
+        vertical: 'flex-end',
       };
     case 'topRight':
       return {
-        horizontal: 'flex-start',
-        vertical: 'flex-end',
+        horizontal: 'flex-end',
+        vertical: 'flex-start',
       };
     case 'centerRight':
       return {
-        horizontal: 'center',
-        vertical: 'flex-end',
+        horizontal: 'flex-end',
+        vertical: 'center',
       };
     case 'bottomRight':
       return {
@@ -91,11 +91,12 @@ const getObjectPosition = (resolvedImagePosition) => {
 const getObjectFit = (imageSize) => {
   switch (imageSize) {
     case 'alwaysFit':
+    case 'fitHeight':
+    case 'fitWidth':
       return 'contain';
     case 'fill':
       return 'fill';
-    case 'fitHeight':
-    case 'fitWidth':
+    case 'cover':
       return 'cover';
     case 'originalSize':
       return 'none';
@@ -110,7 +111,7 @@ function Image({ representation, src, label }) {
   const resolvedImagePosition = resolveImagePosition(imagePosition);
   const maxImageHeight = '200px';
 
-  const imgNode = (
+  const imgNode = src ? (
     <img
       src={src}
       alt={label}
@@ -123,7 +124,7 @@ function Image({ representation, src, label }) {
         overflow: 'hidden',
       }}
     />
-  );
+  ) : null;
 
   return (
     <div
