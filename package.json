@@ -97,7 +97,7 @@
   },
   "resolutions": {
     "dts-dom": "3.7.0",
-    "caniuse-lite": "1.0.30001803",
+    "caniuse-lite": "1.0.30001805",
     "react": "19.2.7",
     "react-dom": "19.2.7",
     "react-is": "19.2.7",
