@@ -3801,7 +3801,7 @@ __metadata:
     "@rollup/plugin-typescript": "npm:12.3.0"
     chalk: "npm:4.1.2"
     extend: "npm:3.0.2"
-    postcss: "npm:^8.5.18"
+    postcss: "npm:^8.5.19"
     rollup: "npm:4.62.2"
     rollup-plugin-postcss: "npm:4.0.2"
     rollup-plugin-visualizer: "npm:7.0.1"
@@ -13875,6 +13875,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nanoid@npm:^3.3.16":
+  version: 3.3.16
+  resolution: "nanoid@npm:3.3.16"
+  bin:
+    nanoid: bin/nanoid.cjs
+  checksum: 10c0/bbf2dcffe22d2b62d16de2711752070b539c0f644c7916f823ad6521986b2078cbe524f2d6240f58c46e9141ea0c7b87a029e100c0f7f175228cacaf30e41bba
+  languageName: node
+  linkType: hard
+
 "napi-postinstall@npm:^0.3.4":
   version: 0.3.4
   resolution: "napi-postinstall@npm:0.3.4"
@@ -15652,14 +15661,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.5.18":
-  version: 8.5.19
-  resolution: "postcss@npm:8.5.19"
+"postcss@npm:^8.5.19":
+  version: 8.5.20
+  resolution: "postcss@npm:8.5.20"
   dependencies:
-    nanoid: "npm:^3.3.12"
+    nanoid: "npm:^3.3.16"
     picocolors: "npm:^1.1.1"
     source-map-js: "npm:^1.2.1"
-  checksum: 10c0/302af9e4dfa8cce4f43af1798576b3a77ab7b23abac5522328c6c7a830d49b31281cba9d6071e478e6970a05ef82346d1570b8fbffae912f26a4f1a1a07f0a44
+  checksum: 10c0/9c7a0e32c77ac54c5613f974e6ccc97d4a70fdb3bf242617f3fb4d652e5c62a37c86c589e6e7a2d1e7120f80bc169cdf673482b88bd75020d2a44899fa569c13
   languageName: node
   linkType: hard
 
