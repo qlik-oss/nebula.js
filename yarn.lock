@@ -3801,7 +3801,7 @@ __metadata:
     "@rollup/plugin-typescript": "npm:12.3.0"
     chalk: "npm:4.1.2"
     extend: "npm:3.0.2"
-    postcss: "npm:^8.5.17"
+    postcss: "npm:^8.5.18"
     rollup: "npm:4.62.2"
     rollup-plugin-postcss: "npm:4.0.2"
     rollup-plugin-visualizer: "npm:7.0.1"
@@ -15652,7 +15652,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.5.17":
+"postcss@npm:^8.5.18":
   version: 8.5.19
   resolution: "postcss@npm:8.5.19"
   dependencies:
