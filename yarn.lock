@@ -16686,7 +16686,6 @@ __metadata:
     "@testing-library/user-event": "npm:^14.6.1"
     babel-loader: "npm:10.1.1"
     babel-plugin-istanbul: "npm:8.0.0"
-    body-parser: "npm:2.3.0"
     cross-env: "npm:10.1.0"
     css-loader: "npm:7.1.4"
     enigma.js: "npm:2.14.0"
