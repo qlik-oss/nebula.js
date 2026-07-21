@@ -53,7 +53,7 @@
     "webpack": "5.108.4",
     "webpack-cli": "7.2.1",
     "webpack-dev-server": "5.2.6",
-    "ws": "8.21.0",
+    "ws": "8.21.1",
     "yargs": "18.0.0"
   },
   "devDependencies": {
