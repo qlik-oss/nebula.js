@@ -76,6 +76,7 @@ export default function ListBox({
   const scrollTimeout = 0;
 
   const { frequencyMax, awaitingFrequencyMax } = useFrequencyMax(app, layout);
+  const dataWidth = 1 + (layout?.qListObject?.qExpressions?.length ?? 0);
   // eslint-disable-next-line no-unused-vars
   const { isLoadingData, ...itemsLoader } = useItemsLoader({
     local,
@@ -85,6 +86,7 @@ export default function ListBox({
     scrollTimeout,
     postProcessPages,
     listData,
+    dataWidth,
   });
   const { getStoreValue, setStoreValue } = useDataStore(model);
   const loadMoreItems = useCallback(itemsLoader.loadMoreItems, [layout]);
