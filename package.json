@@ -116,5 +116,8 @@
     "apis/*",
     "test/component/*"
   ],
-  "packageManager": "yarn@4.17.1"
+  "packageManager": "yarn@4.17.1",
+  "dependencies": {
+    "fast-uri": "3.1.3"
+  }
 }
