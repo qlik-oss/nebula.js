@@ -57,9 +57,9 @@
     "yargs": "18.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.29.7",
-    "@babel/preset-env": "7.29.7",
-    "@babel/preset-react": "7.29.7",
+    "@babel/core": "8.0.1",
+    "@babel/preset-env": "8.0.2",
+    "@babel/preset-react": "8.0.1",
     "@mui/material": "^7.3.11",
     "@mui/system": "^7.3.11",
     "@nebula.js/enigma-mocker": "^7.1.1",
