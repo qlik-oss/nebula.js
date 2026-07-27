@@ -218,6 +218,36 @@ describe('filterpane-handler', () => {
       ]);
     });
 
+    test('from master dimension with cyclic grouping - uses GroupDimensionLabel expression', async () => {
+      halo.app.getDimension = async () => ({
+        getProperties: async () => ({
+          qDim: {
+            title: 'cyclic dim',
+            qGrouping: 'C',
+          },
+        }),
+      });
+      await h.addDimension({ qLibraryId: 'abc' });
+      expect(children[0].qProperty.title).toEqual({
+        qStringExpression: { qExpr: "GroupDimensionLabel('cyclic dim')" },
+      });
+    });
+
+    test('from master dimension with drilldown grouping - uses GroupDimensionLabel expression', async () => {
+      halo.app.getDimension = async () => ({
+        getProperties: async () => ({
+          qDim: {
+            title: 'drilldown dim',
+            qGrouping: 'H',
+          },
+        }),
+      });
+      await h.addDimension({ qLibraryId: 'abc' });
+      expect(children[0].qProperty.title).toEqual({
+        qStringExpression: { qExpr: "GroupDimensionLabel('drilldown dim')" },
+      });
+    });
+
     test('from listbox object - override title', () => {
       h.addDimension({
         checkboxes: true,
