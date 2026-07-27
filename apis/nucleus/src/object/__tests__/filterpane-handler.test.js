@@ -218,6 +218,19 @@ describe('filterpane-handler', () => {
       ]);
     });
 
+    test('from master dimension with drilldown grouping - leaves title empty so qFallbackTitle is used', async () => {
+      halo.app.getDimension = async () => ({
+        getProperties: async () => ({
+          qDim: {
+            title: 'drilldown dim',
+            qGrouping: 'H',
+          },
+        }),
+      });
+      await h.addDimension({ qLibraryId: 'abc' });
+      expect(children[0].qProperty.title).toEqual('');
+    });
+
     test('from master dimension with cyclic grouping - uses GroupDimensionLabel expression', async () => {
       halo.app.getDimension = async () => ({
         getProperties: async () => ({
@@ -230,21 +243,6 @@ describe('filterpane-handler', () => {
       await h.addDimension({ qLibraryId: 'abc' });
       expect(children[0].qProperty.title).toEqual({
         qStringExpression: { qExpr: "GroupDimensionLabel('cyclic dim')" },
-      });
-    });
-
-    test('from master dimension with drilldown grouping - uses GroupDimensionLabel expression', async () => {
-      halo.app.getDimension = async () => ({
-        getProperties: async () => ({
-          qDim: {
-            title: 'drilldown dim',
-            qGrouping: 'H',
-          },
-        }),
-      });
-      await h.addDimension({ qLibraryId: 'abc' });
-      expect(children[0].qProperty.title).toEqual({
-        qStringExpression: { qExpr: "GroupDimensionLabel('drilldown dim')" },
       });
     });
 
