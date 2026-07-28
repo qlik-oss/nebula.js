@@ -135,9 +135,10 @@ export default function ListBox({
 
   const { layoutOptions = {} } = layout || {};
 
+  const isImageMode = layout?.qListObject?.qDimensionInfo?.representation?.type === 'image';
   let isRow = true;
   if (layoutOptions.dataLayout) {
-    isRow = layoutOptions.dataLayout === 'singleColumn' ? true : layoutOptions?.layoutOrder === 'row';
+    isRow = layoutOptions.dataLayout === 'singleColumn' || isImageMode ? true : layoutOptions?.layoutOrder === 'row';
   }
 
   const isGrid = layoutOptions?.dataLayout === 'grid';

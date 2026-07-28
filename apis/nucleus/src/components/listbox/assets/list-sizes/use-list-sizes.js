@@ -7,6 +7,7 @@ import {
   CHECKBOX_WIDTH,
   REMOVE_TICK_LIMIT,
   GRID_ITEM_PADDING,
+  GRID_ROW_HEIGHT,
 } from '../../constants';
 import useTextWidth from '../../hooks/useTextWidth';
 import getMeasureText from '../measure-text';
@@ -41,8 +42,9 @@ export default function useListSizes({ layout, width, height, listCount, count, 
   let columnWidth;
   let rowCount;
   const isGridMode = dataLayout === 'grid';
+  const isImageMode = layout?.qListObject?.qDimensionInfo?.representation?.type === 'image';
 
-  const itemHeight = getItemHeight({ isGridMode, dense });
+  let itemHeight = getItemHeight({ isGridMode, dense });
 
   const listHeight = height ?? 8 * itemHeight;
 
@@ -73,6 +75,21 @@ export default function useListSizes({ layout, width, height, listCount, count, 
         itemMinWidth: dynamicItemMinWidth,
       }));
     }
+  }
+
+  // In image representation the grid renders a fixed maxColumns × maxVisibleRows viewport whose cells
+  // scale to fill the pane (rather than the fixed text row height), matching the image-grid design.
+  // maxVisibleRows only sizes the cell height here; the full rowCount still spans all data so the
+  // remaining rows scroll into view.
+  if (isImageMode && isGridMode) {
+    const imageMaxColumns = Math.max(1, maxVisibleColumns?.maxColumns || 3);
+    const imageMaxRows = Math.max(1, maxVisibleRows?.maxRows || 4);
+    columnCount = Math.min(listCount || imageMaxColumns, imageMaxColumns) || 1;
+    columnWidth = Math.max(1, (width - SCROLL_BAR_WIDTH) / columnCount);
+    itemHeight = Math.max(GRID_ROW_HEIGHT + GRID_ITEM_PADDING, Math.floor(listHeight / imageMaxRows));
+    rowCount = Math.ceil((listCount || 1) / columnCount);
+    // Row-major image grid scrolls vertically.
+    overflowStyling = { overflowX: 'hidden' };
   }
 
   columnCount = (dataLayout === 'singleColumn' ? 1 : columnCount) || 1;

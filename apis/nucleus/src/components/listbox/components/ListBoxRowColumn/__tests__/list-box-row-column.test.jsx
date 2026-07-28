@@ -1248,6 +1248,37 @@ describe('<ListBoxRowColumn />', () => {
       await testRenderer.unmount();
     });
 
+    test('renders row-major even when layoutOrder is column (fills every column)', async () => {
+      const qMatrix = Array.from({ length: 12 }, (_, i) => [{ qState: 'A', qText: `m${i}`, qElemNumber: i }]);
+      const data = {
+        styles,
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
+        keyboard,
+        actions,
+        dataOffset: 0,
+        sizes: { itemPadding: 2 },
+        representation: { type: 'image', imageSetting: 'label', imageSize: 'fitHeight' },
+        layoutOptions: { dataLayout: 'grid', layoutOrder: 'column' },
+        columnCount: 3,
+        rowCount: 10,
+        pages: [{ qArea: { qTop: 0, qHeight: 12 }, qMatrix }],
+        focusListItems: () => ({ first: false, last: false }),
+      };
+      const testRenderer = await render(
+        <ThemeProvider theme={theme}>
+          <ListBoxRowColumn rowIndex={0} columnIndex={1} style={{}} data={data} />
+        </ThemeProvider>
+      );
+      const image = testRenderer.root.findByType(Image);
+      // row-major: cellIndex = rowIndex*columnCount + columnIndex = 0*3 + 1 = 1 -> 'm1'
+      // (column-major would be columnIndex*rowCount + rowIndex = 1*10 + 0 = 10 -> 'm10', an unloaded far index)
+      expect(image.props.src).toBe('m1');
+      await testRenderer.unmount();
+    });
+
     test('non-image representation does not render an Image', async () => {
       const testRenderer = await renderImageCell({
         representation: { type: 'text' },
