@@ -7,14 +7,18 @@ describe('<Progress />', () => {
   let renderer;
   let render;
   beforeEach(() => {
-    render = async (size) => {
-      await act(async () => {
+    render = (size) => {
+      act(() => {
         renderer = create(<Progress size={size} />);
       });
     };
   });
   afterEach(() => {
-    renderer.unmount();
+    if (renderer) {
+      act(() => {
+        renderer.unmount();
+      });
+    }
   });
   test('should render default', () => {
     render();

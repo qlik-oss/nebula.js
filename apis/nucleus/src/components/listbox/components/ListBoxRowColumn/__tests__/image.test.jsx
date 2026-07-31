@@ -129,7 +129,11 @@ describe('<Image />', () => {
 
     test('should not render the title overlay when no title is provided', async () => {
       const testRenderer = await render(
-        <Image representation={{ imageSize: 'cover', imagePosition: 'topCenter' }} src="http://foo/bar.png" label="alt" />
+        <Image
+          representation={{ imageSize: 'cover', imagePosition: 'topCenter' }}
+          src="http://foo/bar.png"
+          label="alt"
+        />
       );
       expect(testRenderer.root.findAllByProps({ 'data-key': 'image-title-overlay' })).toHaveLength(0);
       await testRenderer.unmount();

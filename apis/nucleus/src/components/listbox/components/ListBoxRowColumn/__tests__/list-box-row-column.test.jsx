@@ -1334,7 +1334,12 @@ describe('<ListBoxRowColumn />', () => {
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
-          <ListBoxRowColumn rowIndex={0} columnIndex={0} style={{ left: 0, top: 0, width: 90, height: 120 }} data={data} />
+          <ListBoxRowColumn
+            rowIndex={0}
+            columnIndex={0}
+            style={{ left: 0, top: 0, width: 90, height: 120 }}
+            data={data}
+          />
         </ThemeProvider>
       );
       const root = testRenderer.root.findByProps({ 'data-testid': 'listbox.item' });
