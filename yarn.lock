@@ -9394,7 +9394,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jest@npm:^29.15.5":
+"eslint-plugin-jest@npm:^29.16.0":
   version: 29.16.0
   resolution: "eslint-plugin-jest@npm:29.16.0"
   dependencies:
@@ -16606,7 +16606,7 @@ __metadata:
     eslint-config-airbnb: "npm:19.0.4"
     eslint-config-prettier: "npm:10.1.8"
     eslint-plugin-import: "npm:2.32.0"
-    eslint-plugin-jest: "npm:^29.15.5"
+    eslint-plugin-jest: "npm:^29.16.0"
     eslint-plugin-jsx-a11y: "npm:6.10.2"
     eslint-plugin-mocha: "npm:11.3.0"
     eslint-plugin-prettier: "npm:5.5.6"
