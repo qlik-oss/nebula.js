@@ -3859,7 +3859,7 @@ __metadata:
     "@nebula.js/stardust": "npm:^7.1.1"
     "@nebula.js/ui": "npm:^7.1.1"
     "@playwright/test": "npm:^1.61.1"
-    "@qlik/api": "npm:^2.13.0"
+    "@qlik/api": "npm:^2.14.1"
     autosuggest-highlight: "npm:3.3.4"
     babel-loader: "npm:10.1.1"
     body-parser: "npm:2.3.0"
@@ -3943,7 +3943,7 @@ __metadata:
     "@nebula.js/supernova": "npm:^7.1.1"
     "@nebula.js/theme": "npm:^7.1.1"
     "@nebula.js/ui": "npm:^7.1.1"
-    "@qlik/api": "npm:2.13.0"
+    "@qlik/api": "npm:2.14.1"
     "@testing-library/dom": "npm:^10.4.1"
     "@testing-library/react": "npm:^16.3.2"
     extend: "npm:3.0.2"
@@ -3980,7 +3980,7 @@ __metadata:
     "@nebula.js/supernova": "npm:^7.1.1"
     "@nebula.js/theme": "npm:^7.1.1"
     "@nebula.js/ui": "npm:^7.1.1"
-    "@qlik/api": "npm:2.13.0"
+    "@qlik/api": "npm:2.14.1"
     "@scriptappy/cli": "npm:0.10.6"
     "@scriptappy/from-jsdoc": "npm:0.19.6"
     "@scriptappy/to-dts": "npm:1.0.4"
@@ -4936,15 +4936,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@qlik/api@npm:2.13.0, @qlik/api@npm:^2.13.0":
-  version: 2.13.0
-  resolution: "@qlik/api@npm:2.13.0"
+"@qlik/api@npm:2.14.1, @qlik/api@npm:^2.14.1":
+  version: 2.14.1
+  resolution: "@qlik/api@npm:2.14.1"
   dependencies:
     enigma.js: "npm:^2.14.0"
     extend: "npm:3.0.2"
     lodash-es: "npm:^4.18.1"
-    ws: "npm:^8.21.0"
-  checksum: 10c0/8de9d98fdae62daa049de6b39be0c20ccff9160c24ee6837b2d13eb10b0f6ee208371dbb265a8002c78c20047f86d485256d788016d78361e17c086b20033c28
+    ws: "npm:^8.21.1"
+  checksum: 10c0/ea86f45c7b02479d9c16c345f3d4b77e08b04f60bf8fc57a404e797d03633df2c963c2e8e546e060c053d6011d29b54d9ebbaa73a19921803e671cda5734327b
   languageName: node
   linkType: hard
 
@@ -19032,7 +19032,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ws@npm:8.21.1":
+"ws@npm:8.21.1, ws@npm:^8.21.1":
   version: 8.21.1
   resolution: "ws@npm:8.21.1"
   peerDependencies:
