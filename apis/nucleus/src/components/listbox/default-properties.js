@@ -26,6 +26,13 @@
  *   (`'url'`) or the image label (`'label'`).
  * @property {('alwaysFit'|'fitWidth'|'fitHeight'|'fill'|'originalSize')} [imageSize='fitHeight'] Image sizing mode. Only used when `type` is 'image'.
  * @property {string} [imagePosition='topCenter'] Image position within the cell. Only used when `type` is 'image' and `imageSize` is not 'fill'.
+ * @property {('left'|'center'|'right')} [titleHorizontalAlign='center'] Horizontal alignment of the title (the dimension value) overlaid on the image. Only used when `type` is 'image'.
+ * @property {('top'|'middle'|'bottom')} [titleVerticalAlign='top'] Vertical alignment of the title overlaid on the image. Only used when `type` is 'image'.
+ * @property {boolean} [titleBackground=true] Draw a background behind the title text for legibility. Only used when `type` is 'image'.
+ * @property {number} [gridGap=0.5] Spacing between image grid cells, as a percentage of the grid width. Only used when `type` is 'image'.
+ * @property {('none'|'small'|'medium'|'large'|'full')} [cornerRadius='small'] Corner radius of the image cell (0/4/8/16px or 50%). Only used when `type` is 'image'.
+ * @property {number} [borderWidth=0] Cell border width in px. Only used when `type` is 'image'.
+ * @property {string} [borderColor='#d9d9d9'] Cell border color. Only used when `type` is 'image' and `borderWidth` > 0.
  */
 
 /**

@@ -72,6 +72,10 @@ export default function ListBox({
     pages: [],
   });
 
+  // Per-value expression cache, keyed by expression qLabel -> dimension value (qText) -> last-known
+  // value.
+  const exprCache = useRef({});
+
   // The time from scroll end until new data is being fetched, may be exposed in API later on.
   const scrollTimeout = 0;
 
@@ -303,6 +307,7 @@ export default function ListBox({
     showSearch,
     isModal,
     styles,
+    exprCache: exprCache.current,
   });
 
   const { columnWidth, listHeight, itemHeight } = sizes || {};
