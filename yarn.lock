@@ -12903,7 +12903,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:^17.1.1":
+"lint-staged@npm:^17.2.0":
   version: 17.2.0
   resolution: "lint-staged@npm:17.2.0"
   dependencies:
@@ -16620,7 +16620,7 @@ __metadata:
     jest-location-mock: "npm:^4.0.1"
     jimp: "npm:^1.6.1"
     lerna: "npm:9.0.7"
-    lint-staged: "npm:^17.1.1"
+    lint-staged: "npm:^17.2.0"
     mocha-junit-reporter: "npm:2.2.1"
     picasso-plugin-q: "npm:2.11.5"
     picasso.js: "npm:2.11.5"
