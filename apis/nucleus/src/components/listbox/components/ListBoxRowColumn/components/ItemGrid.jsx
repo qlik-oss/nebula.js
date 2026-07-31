@@ -5,13 +5,15 @@ import classes from '../helpers/classes';
 
 const ItemGrid = styled(Grid, {
   shouldForwardProp: (prop) =>
-    !['dataLayout', 'layoutOrder', 'itemPadding', 'cellPaddingRight', 'direction', 'fillHeight'].includes(prop),
-})(({ dataLayout, layoutOrder, itemPadding, cellPaddingRight, direction, fillHeight }) => {
+    !['dataLayout', 'layoutOrder', 'itemPadding', 'cellPaddingRight', 'direction', 'fillHeight', 'isImage'].includes(
+      prop
+    ),
+})(({ dataLayout, layoutOrder, itemPadding, cellPaddingRight, direction, fillHeight, isImage }) => {
   const att = `padding${direction === 'rtl' ? 'Left' : 'Right'}`;
   return {
     [`&.${classes.fieldRoot}`]: {
-      ...getItemSizes({ dataLayout, layoutOrder, itemPadding, fillHeight }),
-      [att]: cellPaddingRight ? '8px' : undefined,
+      ...getItemSizes({ dataLayout, layoutOrder, itemPadding, fillHeight, isImage }),
+      [att]: isImage ? 0 : cellPaddingRight ? '8px' : undefined,
     },
   };
 });

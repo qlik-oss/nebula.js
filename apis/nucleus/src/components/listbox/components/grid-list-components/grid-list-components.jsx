@@ -42,6 +42,7 @@ export default function getListBoxComponents({
   showSearch,
   isModal,
   styles,
+  exprCache,
 }) {
   const { layoutOptions = {} } = layout || {};
   const { columnWidth, listHeight, itemHeight, rowCount, columnCount } = sizes || {};
@@ -86,6 +87,7 @@ export default function getListBoxComponents({
     sizes,
     representation,
     listExprIndex,
+    exprCache,
     actions: {
       select,
       confirm: () => selections?.confirm.call(selections),

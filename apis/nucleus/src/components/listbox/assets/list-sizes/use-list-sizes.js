@@ -41,8 +41,10 @@ export default function useListSizes({ layout, width, height, listCount, count, 
   let columnCount;
   let columnWidth;
   let rowCount;
+  let gridGap = 0;
   const isGridMode = dataLayout === 'grid';
-  const isImageMode = layout?.qListObject?.qDimensionInfo?.representation?.type === 'image';
+  const representation = layout?.qListObject?.qDimensionInfo?.representation;
+  const isImageMode = representation?.type === 'image';
 
   let itemHeight = getItemHeight({ isGridMode, dense });
 
@@ -90,6 +92,11 @@ export default function useListSizes({ layout, width, height, listCount, count, 
     rowCount = Math.ceil((listCount || 1) / columnCount);
     // Row-major image grid scrolls vertically.
     overflowStyling = { overflowX: 'hidden' };
+    // Grid gap is authored as a percentage of the grid width
+
+    const gridGapPct = Math.max(0, representation?.gridGap ?? 0.5);
+    gridGap = Math.min(Math.round((gridGapPct / 100) * width), columnWidth - 1, itemHeight - 1);
+    gridGap = Math.max(0, gridGap);
   }
 
   columnCount = (dataLayout === 'singleColumn' ? 1 : columnCount) || 1;
@@ -116,6 +123,7 @@ export default function useListSizes({ layout, width, height, listCount, count, 
     listCount: limitedListCount,
     maxCount: { row: maxRowCount, column: maxColumnCount },
     itemPadding: GRID_ITEM_PADDING,
+    gridGap,
     textWidth,
     freqMinWidth,
     freqMaxWidth,
