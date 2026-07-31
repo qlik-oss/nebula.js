@@ -206,7 +206,7 @@ export default function ListBoxPopover({
             />
           </Grid>
         </Grid>
-        <Grid size="grow">
+        <Grid size="grow" role="region" aria-label={translator.get('Listbox.ResultFilterLabel')}>
           <div ref={moreAlignTo} />
           <Grid>
             <ListBoxSearch
