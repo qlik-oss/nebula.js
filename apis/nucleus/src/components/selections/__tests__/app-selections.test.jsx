@@ -49,7 +49,10 @@ describe('<AppSelections />', () => {
 
   test('should render a toolbar', () => {
     api.canGoBack = () => false;
-    const r = renderer.create(<AppSelections api={api} />);
+    let r;
+    renderer.act(() => {
+      r = renderer.create(<AppSelections api={api} />);
+    });
 
     expect(r.toJSON()).toEqual({
       type: 'g',
