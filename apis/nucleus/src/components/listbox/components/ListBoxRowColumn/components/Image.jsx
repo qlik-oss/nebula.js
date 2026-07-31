@@ -118,7 +118,6 @@ function Image({ representation, src, label }) {
       style={{
         width: getImageWidth(imageSize),
         height: '100%',
-        maxHeight: maxImageHeight,
         objectFit: getObjectFit(imageSize),
         objectPosition: getObjectPosition(resolvedImagePosition),
         overflow: 'hidden',

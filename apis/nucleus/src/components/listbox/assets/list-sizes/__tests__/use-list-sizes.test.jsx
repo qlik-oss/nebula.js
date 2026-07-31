@@ -258,6 +258,21 @@ describe('use-list-sizes', () => {
     });
   });
 
+  it('image representation fixes columns to maxColumns and scales cell height to fill by maxVisibleRows', () => {
+    args.layout.layoutOptions.dataLayout = 'grid';
+    args.layout.layoutOptions.layoutOrder = 'row';
+    args.layout.qListObject = { qDimensionInfo: { representation: { type: 'image' } } };
+    // maxColumns = 4, maxVisibleRows = 3, width 200, height 300, listCount 100
+    const sizes = useListSizes(args);
+    expect(sizes).toMatchObject({
+      columnCount: 4,
+      columnWidth: (200 - 10) / 4, // (width - scrollbar) / columns
+      itemHeight: 100, // listHeight / maxVisibleRows = 300 / 3, cells fill the pane
+      rowCount: 25, // ceil(listCount / columnCount) => scrolls beyond the visible rows
+      listCount: 100,
+    });
+  });
+
   it('Algorithm should reduce rowCount when container height cannot fit all items.', () => {
     const rowCount = 3;
     const itemHeight = 36;

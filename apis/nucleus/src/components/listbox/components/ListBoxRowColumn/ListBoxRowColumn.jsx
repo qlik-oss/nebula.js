@@ -64,13 +64,14 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
 
   const { dense = false, dataLayout = 'singleColumn', layoutOrder } = layoutOptions;
   const { itemPadding } = sizes;
+  const effectiveLayoutOrder = representation?.type === 'image' ? 'row' : layoutOrder;
 
   let cellIndex;
   let styleOverrides;
   const count = { max: null, currentIndex: null };
 
   if (typeof rowIndex === 'number' && typeof columnIndex === 'number') {
-    if (layoutOrder === 'row') {
+    if (effectiveLayoutOrder === 'row') {
       cellIndex = rowIndex * columnCount + columnIndex;
       count.max = rowCount;
       count.currentIndex = rowIndex;
