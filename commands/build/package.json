@@ -22,11 +22,11 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@babel/cli": "7.29.7",
-    "@babel/core": "7.29.7",
-    "@babel/preset-env": "7.29.7",
-    "@babel/preset-react": "7.29.7",
-    "@babel/preset-typescript": "7.29.7",
+    "@babel/cli": "8.0.4",
+    "@babel/core": "8.0.1",
+    "@babel/preset-env": "8.0.2",
+    "@babel/preset-react": "8.0.1",
+    "@babel/preset-typescript": "8.0.1",
     "@qlik/browserslist-config": "^3.0.1",
     "@rollup/plugin-babel": "7.1.0",
     "@rollup/plugin-commonjs": "29.0.3",
