@@ -28,6 +28,12 @@ yarn link ../../commands/serve
 yarn link ../../commands/build
 echo "Log node_modules/@nebula.js"
 ls -la node_modules/@nebula.js
+
+if [ "$MASHUP" = "true" ]; then
+  echo "Ensure Parcel Babel compatibility for mashup build"
+  YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn add @babel/core@^7.12.0 @parcel/transformer-babel@2.16.4
+fi
+
 if [ "$BUILD" = "true" ]; then
   if [ "$MASHUP" = "true" ]; then
     PARCEL_AUTOINSTALL=false NODE_OPTIONS="--preserve-symlinks" yarn run build
