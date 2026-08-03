@@ -1,23 +1,15 @@
 import React from 'react';
 import { screen, act } from '@testing-library/react';
-import * as reactRouterDomModule from 'react-router';
+import { useNavigate } from 'react-router';
 import { TestRenderer } from '../../../../utils';
 import ConnectionHistory from '../ConnectionHistory';
 
-jest.mock('react-router', () => ({
-  ...jest.requireActual('react-router'),
-  useNavigate: jest.fn(),
-}));
-
 describe('<ConnectionHistory />', () => {
-  let useNavigateMock;
   let navigateMock;
 
   beforeAll(() => {
     navigateMock = jest.fn();
-    useNavigateMock = jest.fn().mockReturnValue(navigateMock);
-
-    jest.spyOn(reactRouterDomModule, 'useNavigate').mockImplementation(useNavigateMock);
+    jest.mocked(useNavigate).mockReturnValue(navigateMock);
   });
 
   afterAll(() => {

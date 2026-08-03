@@ -1,18 +1,12 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
-import * as RouterModule from 'react-router';
 import HubLayout from '../HubLayout';
 import { TestRenderer } from '../../../utils';
 import { steps } from '../../../constants/connectionSteps';
 
-jest.mock('react-router', () => ({ ...jest.requireActual('react-router') }));
-
 describe('Should render layout', () => {
-  let useNavigateMock;
-
   beforeAll(() => {
-    useNavigateMock = jest.fn().mockReturnValue('navigate');
-    jest.spyOn(RouterModule, 'useNavigate').mockImplementation(useNavigateMock);
+    // useNavigate is already mocked at module level
   });
 
   afterAll(() => {

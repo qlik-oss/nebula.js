@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react';
-import * as ReactRouter from 'react-router';
+import { useLocation } from 'react-router';
 import {
   useConnection,
   handleConnectionSuccess,
@@ -11,12 +11,6 @@ import { RouterWrapper } from '../../utils';
 import getCsrfToken from '../../utils/getCsrfToken';
 
 jest.mock('../../utils/getCsrfToken', () => jest.fn());
-
-// Mock useLocation to control the pathname
-jest.mock('react-router', () => ({
-  ...jest.requireActual('react-router'),
-  useLocation: jest.fn(),
-}));
 
 // Workaround for JSDOM WebSocket cleanup bug: https://github.com/jsdom/jsdom/issues/3816
 // Mock WebSocket to avoid cleanup errors in Jest 30 + JSDOM 26
@@ -83,7 +77,7 @@ describe('useConnection Module', () => {
     getCsrfToken.mockResolvedValue('A-CSRF-TOKEN');
 
     // Default mock for useLocation - can be overridden in individual tests
-    ReactRouter.useLocation.mockReturnValue({ pathname: '/' });
+    jest.mocked(useLocation).mockReturnValue({ pathname: '/' });
   });
 
   afterEach(() => {
@@ -131,7 +125,7 @@ describe('useConnection Module', () => {
     });
 
     test('should not proceed in any flow and NOT cache the provided connection if info was invalid', async () => {
-      ReactRouter.useLocation.mockReturnValue({ pathname: '/some-other-route' });
+      jest.mocked(useLocation).mockReturnValue({ pathname: '/some-other-route' });
       info = { engineUrl: 'someEngineUrl#01', invalid: true };
 
       await act(async () => {
@@ -146,7 +140,7 @@ describe('useConnection Module', () => {
     });
 
     test('should proceed in success flow and cache the provided connection successfully', async () => {
-      ReactRouter.useLocation.mockReturnValue({ pathname: '/some-other-route' });
+      jest.mocked(useLocation).mockReturnValue({ pathname: '/some-other-route' });
       info = { engineUrl: 'someEngineUrl#01' };
 
       await act(async () => {
