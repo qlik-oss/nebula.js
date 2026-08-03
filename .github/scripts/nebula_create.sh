@@ -30,7 +30,7 @@ echo "Log node_modules/@nebula.js"
 ls -la node_modules/@nebula.js
 if [ "$BUILD" = "true" ]; then
   if [ "$MASHUP" = "true" ]; then
-    NODE_OPTIONS=--preserve-symlinks yarn run build
+    PARCEL_AUTOINSTALL=false NODE_OPTIONS="--preserve-symlinks" yarn run build
   else
     yarn run build
   fi
