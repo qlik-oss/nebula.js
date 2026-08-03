@@ -54,7 +54,10 @@ const config = {
   ],
   coverageReporters: ['json', 'lcov', 'text-summary', 'clover'],
   reporters: ['default', ['jest-junit', { outputDirectory: 'coverage/junit/' }]],
-  transformIgnorePatterns: ['/node_modules/(?!@qlik/sdk|@qlik/api)'],
+  transform: {
+    '^.+\\.(js|jsx|cjs|mjs)$': 'babel-jest',
+  },
+  transformIgnorePatterns: ['/node_modules/(?!(@qlik/(sdk|api)|react-router)/)'],
   moduleNameMapper: {
     'd3-color': '<rootDir>/node_modules/d3-color/dist/d3-color.min.js',
   },

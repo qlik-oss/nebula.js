@@ -1,13 +1,8 @@
 import React from 'react';
 import { screen, act } from '@testing-library/react';
-import * as reactRouterDomModule from 'react-router';
+import { useNavigate } from 'react-router';
 import { TestRenderer } from '../../../../utils/testRenderer';
 import FormManager from '../FormManager';
-
-jest.mock('react-router', () => ({
-  ...jest.requireActual('react-router'),
-  useNavigate: jest.fn(),
-}));
 
 describe('<FormManager />', () => {
   let info;
@@ -15,7 +10,6 @@ describe('<FormManager />', () => {
   let fields;
   let isCredentialProvided;
   let setErrorMock;
-  let useNavigateMock;
   let navigateMock;
   let engineUrl;
   let clientId;
@@ -28,9 +22,7 @@ describe('<FormManager />', () => {
     isCredentialProvided = false;
     setErrorMock = jest.fn();
     navigateMock = jest.fn();
-    useNavigateMock = jest.fn().mockReturnValue(navigateMock);
-
-    jest.spyOn(reactRouterDomModule, 'useNavigate').mockImplementation(useNavigateMock);
+    jest.mocked(useNavigate).mockReturnValue(navigateMock);
   });
 
   test('should render properly', () => {
