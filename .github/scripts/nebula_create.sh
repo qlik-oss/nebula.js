@@ -36,7 +36,20 @@ fi
 
 if [ "$BUILD" = "true" ]; then
   if [ "$MASHUP" = "true" ]; then
+    STARDUST_NODE_MODULES="../../apis/stardust/node_modules"
+    STARDUST_BABEL_SCOPE="$STARDUST_NODE_MODULES/@babel"
+    STARDUST_BABEL_CORE_LINK="$STARDUST_BABEL_SCOPE/core"
+
+    # Keep local stardust linked, but force Babel resolution to this generated project's Babel 7.
+    mkdir -p "$STARDUST_BABEL_SCOPE"
+    rm -rf "$STARDUST_BABEL_CORE_LINK"
+    ln -sfn "$PWD/node_modules/@babel/core" "$STARDUST_BABEL_CORE_LINK"
+
     PARCEL_AUTOINSTALL=false node --preserve-symlinks --preserve-symlinks-main ./node_modules/parcel/lib/bin.js build src/index.html --dist-dir ./dist
+
+    rm -rf "$STARDUST_BABEL_CORE_LINK"
+    rmdir "$STARDUST_BABEL_SCOPE" 2>/dev/null || true
+    rmdir "$STARDUST_NODE_MODULES" 2>/dev/null || true
   else
     yarn run build
   fi
