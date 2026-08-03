@@ -16,8 +16,8 @@ else
   ./commands/cli/lib/index.js create "$PROJECT_NAME" --picasso "$PICASSO_TEMPLATE" --install "$INSTALL" --pkgm yarn
 fi
 touch "$PROJECT_NAME"/yarn.lock
-echo "Yarn"
-YARN_ENABLE_HARDENED_MODE=0 yarn
+echo "Install generated project dependencies"
+YARN_ENABLE_HARDENED_MODE=0 yarn --cwd "$PROJECT_NAME"
 echo "Linking packages"
 cd "$PROJECT_NAME"
 yarn link ../../apis/stardust
