@@ -120,6 +120,8 @@ export default defineConfig([
       'react/function-component-definition': 0,
       'import/prefer-default-export': 1,
       'import/no-cycle': 1,
+      // react-router v8 is ESM-only (exports field, no main); resolver can't find it
+      'import/no-unresolved': ['error', { ignore: ['react-router'] }],
     },
   },
   {
