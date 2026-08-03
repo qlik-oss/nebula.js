@@ -75,7 +75,7 @@
     "eslint-import-resolver-alias": "1.1.2",
     "eslint-import-resolver-webpack": "0.13.11",
     "file-loader": "^6.2.0",
-    "monaco-editor": "0.55.1",
+    "monaco-editor": "0.56.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "react-router": "8.3.0"
