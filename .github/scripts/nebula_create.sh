@@ -36,7 +36,7 @@ fi
 
 if [ "$BUILD" = "true" ]; then
   if [ "$MASHUP" = "true" ]; then
-    PARCEL_AUTOINSTALL=false NODE_OPTIONS="--preserve-symlinks" yarn run build
+    PARCEL_AUTOINSTALL=false node --preserve-symlinks --preserve-symlinks-main ./node_modules/parcel/lib/bin.js build src/index.html --dist-dir ./dist
   else
     yarn run build
   fi
