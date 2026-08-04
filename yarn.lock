@@ -3979,7 +3979,7 @@ __metadata:
     rollup-plugin-postcss: "npm:4.0.2"
     rollup-plugin-visualizer: "npm:7.0.1"
     tslib: "npm:*"
-    typescript: "npm:>=6.0.3"
+    typescript: "npm:>=7.0.2"
     yargs: "npm:18.1.0"
   languageName: unknown
   linkType: soft
@@ -17955,7 +17955,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:>=6.0.3":
+"typescript@npm:>=7.0.2":
   version: 7.0.2
   resolution: "typescript@npm:7.0.2"
   dependencies:
@@ -18036,7 +18036,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A>=6.0.3#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A>=7.0.2#optional!builtin<compat/typescript>":
   version: 7.0.2
   resolution: "typescript@patch:typescript@npm%3A7.0.2#optional!builtin<compat/typescript>::version=7.0.2&hash=3bafbf"
   dependencies:
