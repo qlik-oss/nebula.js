@@ -32,9 +32,10 @@ function setupColorScale(colors, nanColor, gradient) {
     newColors.push(colors[i]);
   }
 
-  newColors.push(colors[i]);
+  const lastColor = colors[colors.length - 1];
+  newColors.push(lastColor);
   if (!gradient) {
-    newColors.push(colors[i]);
+    newColors.push(lastColor);
   }
 
   for (let j = 0; j < newColors.length; j += 2) {
