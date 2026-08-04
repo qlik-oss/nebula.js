@@ -9579,16 +9579,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-mocha@npm:12.0.0":
-  version: 12.0.0
-  resolution: "eslint-plugin-mocha@npm:12.0.0"
+"eslint-plugin-mocha@npm:12.0.1":
+  version: 12.0.1
+  resolution: "eslint-plugin-mocha@npm:12.0.1"
   dependencies:
     "@eslint-community/eslint-utils": "npm:4.10.1"
     "@eslint/core": "npm:1.2.1"
     globals: "npm:17.7.0"
   peerDependencies:
     eslint: ">=10.2.0"
-  checksum: 10c0/f05a2410c7857dc4a72533d6d8fa3a7a4125bab7d742fc92b6081c9b43702436b029b675285446208929d0306cfb965b7bb647d35f76c3bf299abef39d5926d2
+  checksum: 10c0/1ad59a9c4b906f0584608d15db157e905c5c91d6be77f4a36f95bedde8c9dbc2783862f48ddb30c379da3116b4dff45c19252fd8cd061ded5b8461aa395c40a0
   languageName: node
   linkType: hard
 
@@ -16447,7 +16447,7 @@ __metadata:
     eslint-plugin-import: "npm:2.32.0"
     eslint-plugin-jest: "npm:^29.16.0"
     eslint-plugin-jsx-a11y: "npm:6.10.2"
-    eslint-plugin-mocha: "npm:12.0.0"
+    eslint-plugin-mocha: "npm:12.0.1"
     eslint-plugin-prettier: "npm:5.5.6"
     eslint-plugin-react: "npm:7.37.5"
     express: "npm:5.2.1"
