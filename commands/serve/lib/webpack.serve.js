@@ -124,7 +124,12 @@ export default async ({
       });
 
       app.get('/theme/:id', (req, res) => {
-        const t = themes.filter((theme) => theme.id === req.params.id)[0];
+        const { id } = req.params;
+        if (!/^[\w-]+$/.test(id)) {
+          res.sendStatus('400');
+          return;
+        }
+        const t = themes.filter((theme) => theme.id === id)[0];
         if (!t) {
           res.sendStatus('404');
         } else {
@@ -137,7 +142,12 @@ export default async ({
       });
 
       app.get('/render-config/:id', (req, res) => {
-        const renderConfig = renderConfigs.filter((r) => r.id === req.params.id)[0];
+        const { id } = req.params;
+        if (!/^[\w-]+$/.test(id)) {
+          res.sendStatus('400');
+          return;
+        }
+        const renderConfig = renderConfigs.filter((r) => r.id === id)[0];
         if (!renderConfig) {
           res.sendStatus('404');
         } else {
