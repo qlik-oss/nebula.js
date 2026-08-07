@@ -4,6 +4,7 @@ import { Grid, Typography, Icon } from '@mui/material';
 import WarningTriangle from '@nebula.js/ui/icons/warning-triangle-2';
 import Tick from '@nebula.js/ui/icons/tick';
 import { useTheme } from '@nebula.js/ui/theme';
+import useRect from '../hooks/useRect';
 
 function DescriptionRow({ d }) {
   const theme = useTheme();
@@ -73,28 +74,62 @@ function Descriptions({ data }) {
 }
 
 export default function Error({ title = 'Error', message = '', data = [] }) {
+  const [containerRef, containerRect] = useRect();
+  const [baseContentRef, baseContentRect] = useRect();
+  const [descriptionsMeasureRef, descriptionsMeasureRect] = useRect();
+  const hasDescriptions = data.some((entry) => entry.descriptions && entry.descriptions.length > 0);
+
+  const needsSecondColumn =
+    !!containerRect &&
+    !!baseContentRect &&
+    !!descriptionsMeasureRect &&
+    baseContentRect.height + descriptionsMeasureRect.height > containerRect.height;
+
+  const secondColumnFits =
+    !!containerRect &&
+    !!baseContentRect &&
+    !!descriptionsMeasureRect &&
+    baseContentRect.width + descriptionsMeasureRect.width <= containerRect.width;
+
+  const hasMeasurements = !!containerRect && !!baseContentRect && !!descriptionsMeasureRect;
+  const showDescriptions =
+    hasDescriptions && hasMeasurements && (!needsSecondColumn || secondColumnFits);
+
   return (
     <Grid
+      ref={containerRef}
       container
       direction="column"
+      wrap="wrap"
       alignItems="center"
       justifyContent="center"
       style={{ position: 'relative', height: '100%', width: '100%' }}
     >
-      <Grid>
-        <WarningTriangle style={{ fontSize: '38px' }} />
+      <Grid ref={baseContentRef} container direction="column" alignItems="center" wrap="nowrap">
+        <Grid>
+          <WarningTriangle style={{ fontSize: '38px' }} />
+        </Grid>
+        <Grid>
+          <Typography variant="h6" align="center" data-tid="error-title">
+            {title}
+          </Typography>
+        </Grid>
+        <Grid>
+          <Typography variant="subtitle1" align="center" data-tid="error-message">
+            {message}
+          </Typography>
+        </Grid>
       </Grid>
-      <Grid>
-        <Typography variant="h6" align="center" data-tid="error-title">
-          {title}
-        </Typography>
-      </Grid>
-      <Grid>
-        <Typography variant="subtitle1" align="center" data-tid="error-message">
-          {message}
-        </Typography>
-      </Grid>
-      <Descriptions data={data} />
+      {showDescriptions ? <Descriptions data={data} /> : null}
+      {hasDescriptions ? (
+        <Grid
+          ref={descriptionsMeasureRef}
+          aria-hidden
+          style={{ position: 'absolute', visibility: 'hidden', pointerEvents: 'none', left: 0, top: 0 }}
+        >
+          <Descriptions data={data} />
+        </Grid>
+      ) : null}
     </Grid>
   );
 }
