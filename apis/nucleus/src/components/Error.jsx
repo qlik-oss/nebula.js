@@ -92,8 +92,7 @@ export default function Error({ title = 'Error', message = '', data = [] }) {
     baseContentRect.width + descriptionsMeasureRect.width <= containerRect.width;
 
   const hasMeasurements = !!containerRect && !!baseContentRect && !!descriptionsMeasureRect;
-  const showDescriptions =
-    hasDescriptions && hasMeasurements && (!needsSecondColumn || secondColumnFits);
+  const showDescriptions = hasDescriptions && hasMeasurements && (!needsSecondColumn || secondColumnFits);
 
   return (
     <Grid
