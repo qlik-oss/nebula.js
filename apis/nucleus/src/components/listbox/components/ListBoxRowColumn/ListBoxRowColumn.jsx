@@ -12,10 +12,11 @@ import { joinClassNames } from './helpers/operations';
 import RowColRoot from './components/ListBoxRoot';
 import FieldWithRanges from './components/FieldWithRanges';
 import Field from './components/Field';
+import Image from './components/Image';
 import Histogram from './components/Histogram';
 import Frequency from './components/Frequency';
 import ItemGrid from './components/ItemGrid';
-import getCellFromPages from './helpers/get-cell-from-pages';
+import getRowFromPages from './helpers/get-cell-from-pages';
 import getRowsKeyboardNavigation from '../../interactions/keyboard-navigation/keyboard-nav-rows';
 import getValueTextAlign from './helpers/get-value-text-align';
 import getValueLabel from '../screen-reader/value-label';
@@ -57,6 +58,8 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     contentFontStyle,
     styles,
     fillHeight,
+    representation,
+    listExprIndex = {},
   } = data;
 
   const { dense = false, dataLayout = 'singleColumn', layoutOrder } = layoutOptions;
@@ -122,7 +125,8 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     [actions, keyboard?.innerTabStops, rowCount, columnCount, rowIndex, columnIndex, layoutOrder]
   );
 
-  const cell = useMemo(() => getCellFromPages({ pages, cellIndex }), [pages, cellIndex]);
+  const row = useMemo(() => getRowFromPages({ pages, cellIndex }), [pages, cellIndex]);
+  const cell = row?.[0];
   const isSelected = cell?.qState === 'S' || cell?.qState === 'XS' || cell?.qState === 'L' || cell?.qState === 'XL';
 
   const classArr = useMemo(
@@ -149,6 +153,29 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const isGridCol = dataLayout === 'grid' && layoutOrder === 'column';
 
   const label = cell?.qText ?? '';
+
+  // Image representation. In 'url' mode the image src comes from the imageUrl expression and the
+  // field value is the alt text; in 'label' mode (default) the field value is the image src and
+  // the imageLabel expression provides the alt text.
+  const isImage = representation?.type === 'image';
+  let imageSrc;
+  let imageAlt;
+  if (isImage) {
+    const imageSetting = representation?.imageSetting ?? 'label';
+    const urlCol = listExprIndex.imageUrl;
+    const labelCol = listExprIndex.imageLabel;
+    const urlExprValue = urlCol != null ? row?.[urlCol]?.qText : undefined;
+    const labelExprValue = labelCol != null ? row?.[labelCol]?.qText : undefined;
+
+    if (imageSetting === 'url') {
+      imageSrc = urlExprValue ?? label;
+      imageAlt = label;
+    } else {
+      imageSrc = label;
+      imageAlt = labelExprValue ?? label;
+    }
+  }
+
   // Search highlights. Split up labelText span into several and add the highlighted class to matching sub-strings.
 
   let labels;
@@ -246,7 +273,9 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
           />
         )}
         <Grid style={cellStyle} className={joinClassNames([classes.cell, classes.selectedCell])} title={`${label}`}>
-          {labels ? (
+          {isImage ? (
+            <Image representation={representation} src={imageSrc} label={imageAlt} />
+          ) : labels ? (
             <FieldWithRanges
               onChange={onChange}
               labels={labels}

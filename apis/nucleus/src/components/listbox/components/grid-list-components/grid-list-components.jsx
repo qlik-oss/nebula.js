@@ -46,6 +46,17 @@ export default function getListBoxComponents({
   const { layoutOptions = {} } = layout || {};
   const { columnWidth, listHeight, itemHeight, rowCount, columnCount } = sizes || {};
 
+  // Representation settings and attribute-expression index map from dimension info, used for both List and Grid.
+  const dimensionInfo = layout?.qListObject?.qDimensionInfo;
+  const representation = dimensionInfo?.representation;
+  // Per-value list-object expressions (qListObjectDef.qExpressions) arrive as extra data columns:
+  // qMatrix[row] = [dimensionCell, exprCell0, ...]. Map an expression's qLabel (e.g. 'imageUrl') to
+  // its column index (offset by 1 for the dimension column).
+  const listExprIndex = (layout?.qListObject?.qExpressions || []).reduce((acc, expr, i) => {
+    acc[expr.qLabel] = i + 1;
+    return acc;
+  }, {});
+
   const itemWidth = layoutOptions.dataLayout === 'grid' ? columnWidth : width;
   const showTick = itemWidth > REMOVE_TICK_LIMIT;
 
@@ -73,6 +84,8 @@ export default function getListBoxComponents({
     isSingleSelect,
     textAlign,
     sizes,
+    representation,
+    listExprIndex,
     actions: {
       select,
       confirm: () => selections?.confirm.call(selections),
