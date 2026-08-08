@@ -27,7 +27,7 @@ If the proposal includes new designs or bigger changes, please be prepared to di
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) 24.0.0+ and [yarn](https://yarnpkg.com) 1+ installed
+- [Node.js](https://nodejs.org/) 24.0.0+ and [pnpm](https://pnpm.io) 1+ installed
 
 ### Project structure
 
@@ -62,11 +62,11 @@ To open the visualization, run:
 
 ### Development workflow
 
-- `yarn` install all dependencies
-- `yarn run build` generate UMD bundles for all packages and an ESM bundle for stardust
-- `yarn run lint` check code style
-- `yarn run format` format code style
-- `yarn run test` run all tests
+- `pnpm` install all dependencies
+- `pnpm run build` generate UMD bundles for all packages and an ESM bundle for stardust
+- `pnpm run lint` check code style
+- `pnpm run format` format code style
+- `pnpm run test` run all tests
 
 ### Cutting a release
 

@@ -1,8 +1,10 @@
-import path from 'path';
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
 import { Jimp } from 'jimp';
 
 export async function looksLike(fileName, capturedPath) {
-  const artifactsPath = path.resolve(__dirname, './__artifacts__/');
+  const dir = dirname(fileURLToPath(import.meta.url));
+  const artifactsPath = path.resolve(dir, './__artifacts__/');
   const storedPath = path.resolve(artifactsPath, 'baseline', fileName);
 
   const stored = await Jimp.read(storedPath);

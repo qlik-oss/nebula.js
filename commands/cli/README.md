@@ -38,7 +38,7 @@ npm install @nebula.js/cli @nebula.js/cli-build @nebula.js/cli-sense @nebula.js/
 or
 
 ```bash
-yarn add @nebula.js/cli @nebula.js/cli-build @nebula.js/cli-sense @nebula.js/cli-serve
+pnpm add @nebula.js/cli @nebula.js/cli-build @nebula.js/cli-sense @nebula.js/cli-serve
 ```
 
 Open up your package.json, those dependencies are added.
@@ -92,7 +92,7 @@ node build.js
 Requirements:
 
 - Node.js
-- yarn
+- pnpm
 
 Clone the repository:
 
@@ -103,7 +103,7 @@ git clone https://github.com/qlik-oss/nebula.js
 From the root directory, run the following command to install all the necessary dependencies of nebula CLI:
 
 ```sh
-yarn
+pnpm
 ```
 
 You can modify code in commands directory and do the following to test modified nebula CLI locally and globally:
@@ -122,7 +122,7 @@ node lib/index.js -h
 From the commands/cli directory, run the following command to create a global symlik to the binary:
 
 ```sh
-yarn link
+pnpm link
 ```
 
 Run nebula CLI globally to see help info to check whether it works:
@@ -135,8 +135,8 @@ Tips:
 
 If 'There's already a package called "@nebula.js/cli" registered.' or 'command not found: nebula' is displayed.
 
-Run the following command to remove the symlinked nebula and run 'yarn link' again:
+Run the following command to remove the symlinked nebula and run 'pnpm link' again:
 
 ```sh
-yarn unlink
+pnpm unlink
 ```
