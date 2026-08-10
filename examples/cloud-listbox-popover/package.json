@@ -1,0 +1,21 @@
+{
+  "name": "cloud-listbox-popover",
+  "version": "1.0.0",
+  "description": "Test listbox width fix in a popover against a cloud tenant",
+  "scripts": {
+    "start": "parcel index.html --open --no-hmr --port 1234",
+    "rebuild": "(cd ../../apis/stardust && ../../node_modules/.bin/rollup --bundleConfigAsCjs --config ../../rollup.config.js) && kill $(lsof -ti :1234) 2>/dev/null; sleep 1 && rm -rf .parcel-cache && yarn start"
+  },
+  "dependencies": {
+    "@nebula.js/stardust": "latest",
+    "@qlik/sdk": "0.28.0",
+    "enigma.js": "2.11.0"
+  },
+  "devDependencies": {
+    "@babel/core": "7.29.6",
+    "parcel": "^2.7.0"
+  },
+  "resolutions": {
+    "@nebula.js/stardust": "portal:../../apis/stardust"
+  }
+}

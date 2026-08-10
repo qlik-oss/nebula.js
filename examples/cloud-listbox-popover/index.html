@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Listbox popover test</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        background: #eee;
+        margin: 24px;
+      }
+
+      .trigger {
+        padding: 8px 16px;
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      /* Simulates a popover: fixed size, no explicit width on the mount target */
+      .popover {
+        display: none;
+        position: fixed;
+        top: 60px;
+        left: 40px;
+        width: 220px;
+        height: 320px;
+        background: white;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        border-radius: 4px;
+        overflow: hidden;
+        z-index: 100;
+      }
+
+      .popover.open {
+        display: block;
+      }
+
+      /* Mount target: height only — no width — this is what the fix addresses */
+      .popover-listbox {
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <button class="trigger">Open listbox popover</button>
+    <div class="popover">
+      <div class="popover-listbox"></div>
+    </div>
+    <script type="module" src="index.js"></script>
+  </body>
+</html>
