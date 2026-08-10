@@ -30,9 +30,9 @@
     "types/index.d.ts"
   ],
   "scripts": {
-    "build": "cross-env NODE_ENV=production rollup --bundleConfigAsCjs --config ../../rollup.config.js",
-    "build:dev": "rollup --bundleConfigAsCjs --config ../../rollup.config.js",
-    "build:watch": "rollup --bundleConfigAsCjs --config ../../rollup.config.js -w",
+    "build": "cross-env NODE_ENV=production rspack build --config ../../rspack.config.mjs",
+    "build:dev": "rspack build --config ../../rspack.config.mjs",
+    "build:watch": "rspack build --watch --config ../../rspack.config.mjs",
     "prepublishOnly": "rm -rf dist && pnpm run build",
     "spec:stardust": "sy from-jsdoc -c ./api-spec/spec.conf.js",
     "spec:listbox": "sy from-jsdoc -c ./api-spec/listbox-spec.conf.js",
@@ -54,12 +54,8 @@
     "@nebula.js/theme": "workspace:*",
     "@nebula.js/ui": "workspace:*",
     "@qlik/api": "2.14.1",
-    "@rollup/plugin-babel": "7.1.0",
-    "@rollup/plugin-commonjs": "29.0.3",
-    "@rollup/plugin-json": "6.1.0",
-    "@rollup/plugin-node-resolve": "16.0.3",
-    "@rollup/plugin-replace": "6.0.3",
-    "@rollup/plugin-terser": "1.0.0",
+    "@rspack/cli": "2.1.8",
+    "@rspack/core": "2.1.8",
     "@scriptappy/cli": "0.10.6",
     "@scriptappy/from-jsdoc": "0.19.6",
     "@scriptappy/to-dts": "1.0.4",
@@ -73,7 +69,6 @@
     "react-window": "1.8.11",
     "react-window-infinite-loader": "1.0.10",
     "regenerator-runtime": "0.14.1",
-    "rollup": "4.62.3",
     "semver": "7.8.5"
   }
 }

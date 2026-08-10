@@ -19,9 +19,9 @@
     "dist"
   ],
   "scripts": {
-    "build": "cross-env NODE_ENV=production rollup --bundleConfigAsCjs --config ../../rollup.config.js",
-    "build:dev": "rollup --bundleConfigAsCjs --config ../../rollup.config.js",
-    "build:watch": "rollup --bundleConfigAsCjs --config ../../rollup.config.js -w",
+    "build": "cross-env NODE_ENV=production rspack build --config ../../rspack.config.mjs",
+    "build:dev": "rspack build --config ../../rspack.config.mjs",
+    "build:watch": "rspack build --watch --config ../../rspack.config.mjs",
     "prepublishOnly": "rm -rf dist && pnpm run build"
   },
   "peerDependencies": {
@@ -29,13 +29,8 @@
   },
   "devDependencies": {
     "@babel/preset-env": "8.0.2",
-    "@rollup/plugin-babel": "7.1.0",
-    "@rollup/plugin-commonjs": "29.0.3",
-    "@rollup/plugin-json": "6.1.0",
-    "@rollup/plugin-node-resolve": "16.0.3",
-    "@rollup/plugin-replace": "6.0.3",
-    "@rollup/plugin-terser": "1.0.0",
-    "cross-env": "10.1.0",
-    "rollup": "4.62.3"
+    "@rspack/cli": "2.1.8",
+    "@rspack/core": "2.1.8",
+    "cross-env": "10.1.0"
   }
 }
