@@ -23,6 +23,9 @@ importers:
 
   .:
     devDependencies:
+      '@babel/helper-plugin-utils':
+        specifier: 8.0.1
+        version: 8.0.1(@babel/core@8.0.1)
       '@commitlint/cli':
         specifier: 21.2.1
         version: 21.2.1(@types/node@26.1.2)(conventional-commits-filter@6.0.1)(conventional-commits-parser@7.1.2)(typescript@5.9.3)
