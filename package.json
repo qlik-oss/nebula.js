@@ -41,6 +41,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/helper-plugin-utils": "8.0.1",
     "@commitlint/cli": "21.2.4",
     "@commitlint/config-conventional": "21.2.4",
     "@eslint/eslintrc": "^3.3.7",
