@@ -6,6 +6,9 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { createRequire } from 'module';
 import { fileURLToPath } from 'url';
 
+// eslint-disable-next-line import/extensions -- this package is ESM; the extension is required at runtime
+import fixturesAlias from './fixtures-alias.js';
+
 const require = createRequire(import.meta.url);
 const moduleDir = path.dirname(fileURLToPath(import.meta.url));
 
@@ -39,7 +42,7 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
         '@nebula.js/conversion': path.resolve(moduleDir, '../../../apis/conversion/src'),
         '@nebula.js/locale/all.json$': path.resolve(moduleDir, '../../../apis/locale/all.json'),
         '@nebula.js/locale': path.resolve(moduleDir, '../../../apis/locale/src'),
-        fixtures: path.resolve(process.cwd(), serveConfig.fixturePath || ''),
+        ...fixturesAlias(serveConfig.fixturePath),
       },
       extensions: ['.dev.js', '.js', '.jsx'],
     },
