@@ -127,6 +127,8 @@ const config = ({ format = 'umd', debug = false, file, targetPkg }) => {
       filename: path.basename(file),
       chunkFilename: 'chunks/[name]-[contenthash].js',
       uniqueName: `nebula-${targetName}${debug ? '-dev' : ''}-${format}`,
+      // every variant is merged down to a single chunk, so nothing is ever resolved against
+      // this at runtime — see the LimitChunkCountPlugin note below
       publicPath: 'auto',
       globalObject: 'this',
       // several compilers write into the same directory, never let one wipe another's output
@@ -208,9 +210,16 @@ const config = ({ format = 'umd', debug = false, file, targetPkg }) => {
         // the banner is emitted verbatim and the mappings account for it
         stage: rspack.Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE_SIZE + 1,
       }),
-      // systemjs is the only code split target
-      format !== 'systemjs' ? new rspack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }) : null,
-    ].filter(Boolean),
+      // Inline the dynamic imports into the entry for every format, the equivalent of
+      // rollup's inlineDynamicImports. The systemjs bundle needs this too: rspack loads
+      // split chunks with the jsonp loader, which derives its base url from
+      // document.currentScript (or, failing that, the last <script> tag on the page).
+      // Under a SystemJS host that base url is wrong or racy, and rspack has no
+      // system-aware chunkLoading type to fix it -- __system_context__ is passed to the
+      // System.register factory but never reaches the runtime. A single chunk removes the
+      // question, since nothing is loaded at runtime.
+      new rspack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
+    ],
   };
 
   if (isEsm) {
