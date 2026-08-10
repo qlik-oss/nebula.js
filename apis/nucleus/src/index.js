@@ -288,7 +288,9 @@ function nuked(configuration = {}) {
         await appTheme.setTheme(configuration.context.theme);
 
         if (configuration.hostConfig && auth && auth.getWebResourceAuthParams) {
-          const { queryParams } = await auth.getWebResourceAuthParams({ hostConfig: configuration.hostConfig });
+          const { queryParams } = await auth.getWebResourceAuthParams({
+            hostConfig: configuration.hostConfig,
+          });
           currentContext.queryParams = queryParams;
           root.context(currentContext);
         }

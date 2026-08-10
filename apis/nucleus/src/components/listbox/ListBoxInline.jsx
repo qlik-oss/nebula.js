@@ -53,6 +53,18 @@ const isModal = ({ app, appSelections }) => app.isInModalSelection?.() ?? appSel
 
 const isToolbarMode = (value) => ['attach', 'detach', 'auto'].includes(value);
 
+function getResolvedToolbarMode({ toolbarMode, canShowTitle, isPopover }) {
+  if (toolbarMode !== 'auto') {
+    return toolbarMode;
+  }
+
+  if (!canShowTitle && !isPopover) {
+    return 'detach';
+  }
+
+  return 'attach';
+}
+
 function ListBoxInline({ options, layout }) {
   const {
     app,
@@ -86,7 +98,15 @@ function ListBoxInline({ options, layout }) {
     useContext(InstanceContext);
 
   const { checkboxes = checkboxesOption } = layout || {};
-  const styles = useListboxStyling({ app, themeApi, theme, queryParams, components, checkboxes, hostConfig });
+  const styles = useListboxStyling({
+    app,
+    themeApi,
+    theme,
+    queryParams,
+    components,
+    checkboxes,
+    hostConfig,
+  });
 
   const isDirectQuery = isDirectQueryEnabled({ appLayout: app?.layout });
 
@@ -189,14 +209,12 @@ function ListBoxInline({ options, layout }) {
   const canShowTitle = layout?.title?.length && layout?.showTitle !== false;
   const normalizedToolbarMode = isToolbarMode(toolbarMode) ? toolbarMode : 'auto';
   const shouldShowToolbar = toolbar || isPopover;
-  const resolvedToolbarMode =
-    normalizedToolbarMode === 'auto'
-      ? !canShowTitle && !isPopover
-        ? 'detach'
-        : 'attach'
-      : normalizedToolbarMode;
+  const resolvedToolbarMode = getResolvedToolbarMode({
+    toolbarMode: normalizedToolbarMode,
+    canShowTitle,
+    isPopover,
+  });
   const renderDetachedToolbar = shouldShowToolbar && resolvedToolbarMode === 'detach';
-  const renderAttachedToolbar = shouldShowToolbar && resolvedToolbarMode !== 'detach';
 
   const isRtl = direction === 'rtl';
 
@@ -244,7 +262,7 @@ function ListBoxInline({ options, layout }) {
     renderedCallback?.();
   }
 
-  const listBoxMinHeight = renderAttachedToolbar ? DENSE_ROW_HEIGHT + SCROLL_BAR_WIDTH : 0;
+  const listBoxMinHeight = shouldShowToolbar && !renderDetachedToolbar ? DENSE_ROW_HEIGHT + SCROLL_BAR_WIDTH : 0;
 
   const listBoxHeader = (
     <ListBoxHeader
@@ -303,7 +321,7 @@ function ListBoxInline({ options, layout }) {
           childNode={listboxChildNode}
           containerNode={containerNode}
         />
-        {renderAttachedToolbar && listBoxHeader}
+        {shouldShowToolbar && !renderDetachedToolbar && listBoxHeader}
         <Grid
           container
           direction="column"

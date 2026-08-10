@@ -21,7 +21,13 @@ const selections = {
   canCancel: () => true,
   isActive: () => false,
 };
-const styles = { content: {}, header: { color: 'red' }, selections: {}, search: {}, background: {} };
+const styles = {
+  content: {},
+  header: { color: 'red' },
+  selections: {},
+  search: {},
+  background: {},
+};
 let rendererInst;
 
 const translator = { get: jest.fn().mockImplementation((v) => v) };
@@ -212,7 +218,10 @@ describe('<ListBoxHeader />', () => {
   });
 
   test('There should be an unlock cover button on top of the actions toolbar', async () => {
-    const layout = { title: 'The title', qListObject: { qDimensionInfo: { qLocked: true, qGrouping: 'N' } } };
+    const layout = {
+      title: 'The title',
+      qListObject: { qDimensionInfo: { qLocked: true, qGrouping: 'N' } },
+    };
     hasSelections.mockReturnValue(false);
     const testRenderer = await render({
       layout,
