@@ -76,10 +76,11 @@ const TYPES_SCOPE_RX = /^@qlik\/api/;
 const LIBRARY_TYPES = {
   umd: 'umd',
   systemjs: 'system',
-  // 'modern-module' emits the entry as two initial chunks (a re-exporting facade plus the
-  // actual entry), which both claim output.filename and therefore collide. 'module' emits a
-  // single flat esm file with the externals kept as static imports, which is what the
-  // published core/esm output has always been.
+  // 'modern-module' owns chunk rendering itself, which does not suit a single-file library:
+  // it emits the entry as two initial chunks (a re-exporting facade plus the actual entry)
+  // that both claim output.filename, and it ignores LimitChunkCountPlugin so the dynamic
+  // imports stay in separate files. 'module' stays on the regular pipeline and emits one flat
+  // esm file with the externals kept as static imports, which is what core/esm has always been.
   esm: 'module',
 };
 
