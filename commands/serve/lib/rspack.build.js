@@ -1,16 +1,17 @@
 import path from 'path';
 import crypto from 'crypto';
-import webpack from 'webpack';
+// eslint-disable-next-line import/no-unresolved -- @rspack/core is resolvable at runtime; the lint resolver doesn't know about it
+import { rspack } from '@rspack/core';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { createRequire } from 'module';
 import { fileURLToPath } from 'url';
 
+// eslint-disable-next-line import/extensions -- this package is ESM; the extension is required at runtime
+import fixturesAlias from './fixtures-alias.js';
+
 const require = createRequire(import.meta.url);
 const moduleDir = path.dirname(fileURLToPath(import.meta.url));
 
-const babelPath = require.resolve('babel-loader');
-const babelPresetEnvPath = require.resolve('@babel/preset-env');
-const babelPresetReactPath = require.resolve('@babel/preset-react');
 const sourceMapLoaderPath = require.resolve('source-map-loader');
 
 const favicon = path.resolve(moduleDir, '../../../docs/assets/njs.png');
@@ -41,11 +42,21 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
         '@nebula.js/conversion': path.resolve(moduleDir, '../../../apis/conversion/src'),
         '@nebula.js/locale/all.json$': path.resolve(moduleDir, '../../../apis/locale/all.json'),
         '@nebula.js/locale': path.resolve(moduleDir, '../../../apis/locale/src'),
-        fixtures: path.resolve(process.cwd(), serveConfig.fixturePath || ''),
+        ...fixturesAlias(serveConfig.fixturePath),
       },
       extensions: ['.dev.js', '.js', '.jsx'],
     },
     module: {
+      // Rspack defaults `exportsPresence` to 'error' (webpack 5 only warns for the same case).
+      // web/utils/testRenderer.jsx (pulled into the eHub bundle via AppList.jsx/Root.jsx) imports
+      // @testing-library/react, which destructures a `React.act` export that this repo's React 19.2.8
+      // doesn't expose statically — a pre-existing incompatibility webpack tolerates as a warning.
+      // Mirror webpack's leniency here rather than hard-failing the production build over it.
+      parser: {
+        javascript: {
+          exportsPresence: 'warn',
+        },
+      },
       rules: [
         {
           test: /\.m?js$/,
@@ -55,7 +66,7 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
         },
         {
           test: /\.css$/,
-          use: ['style-loader', 'css-loader'],
+          use: [require.resolve('style-loader'), require.resolve('css-loader')],
         },
         {
           test: /\.ttf$/,
@@ -71,20 +82,13 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
           sideEffects: false,
           include: [srcDir, /nucleus/, /ui[/\\]icons/],
           use: {
-            loader: babelPath,
+            loader: 'builtin:swc-loader',
             options: {
-              presets: [
-                [
-                  babelPresetEnvPath,
-                  {
-                    modules: false,
-                    targets: {
-                      browsers: ['last 2 chrome versions'],
-                    },
-                  },
-                ],
-                babelPresetReactPath,
-              ],
+              jsc: {
+                parser: { syntax: 'ecmascript', jsx: true },
+                transform: { react: { runtime: 'automatic', development: dev } },
+              },
+              env: { targets: 'last 2 chrome versions' },
             },
           },
         },
@@ -92,7 +96,7 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
     },
     ignoreWarnings: [/node_modules[/\\]@qlik[/\\]sdk/],
     plugins: [
-      new webpack.DefinePlugin({
+      new rspack.DefinePlugin({
         __NEBULA_DEV__: true,
         'process.env.NEBULA_VERSION': JSON.stringify(version),
         'process.env.NEBULA_VERSION_HASH': JSON.stringify(versionHash),

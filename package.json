@@ -38,13 +38,16 @@
     ]
   },
   "devDependencies": {
+    "@babel/helper-plugin-utils": "8.0.1",
     "@commitlint/cli": "21.2.1",
     "@commitlint/config-conventional": "21.2.0",
     "@eslint/eslintrc": "^3.3.6",
     "@eslint/js": "^10.0.1",
     "@jest/globals": "^30.4.1",
     "@playwright/test": "^1.62.0",
+    "@rspack/core": "2.1.8",
     "@testing-library/jest-dom": "^7.0.0",
+    "babel-loader": "10.1.1",
     "babel-plugin-istanbul": "8.0.0",
     "cross-env": "10.1.0",
     "eslint": "9.39.5",

@@ -147,4 +147,4 @@ Verify that two new files have appeared in the certs/ - folder
 
 ### More info
 
-webpack and webpack-dev-server are used behind the web development server for nebula.js visualizations. You can find more info from [webpack configuration](https://webpack.js.org/configuration/) and [webpack-dev-server configuration](https://webpack.js.org/configuration/dev-server/#devserverport).
+Rspack and @rspack/dev-server are used behind the web development server for nebula.js visualizations. You can find more info from [Rspack configuration](https://rspack.rs/config/) and [dev server configuration](https://rspack.rs/config/dev-server).
