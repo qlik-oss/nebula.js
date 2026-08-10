@@ -106,9 +106,9 @@ nebula sense                    # Build as Qlik Sense extension
 - Supports fixtures for testing without engine connection
 - See [commands/serve/README.md](commands/serve/README.md) for options
 
-### Rollup Build Configuration
+### Rspack Build Configuration
 
-All packages use shared [rollup.config.js](rollup.config.js):
+`@nebula.js/stardust` and `@nebula.js/test-utils` use the shared [rspack.config.mjs](rspack.config.mjs):
 - **UMD format** for browsers (default export via `unpkg`/`jsdelivr`)
 - **ESM format** for bundlers (exposed via `module` field)
 - Creates `.dev.js` variants with source maps in development mode
