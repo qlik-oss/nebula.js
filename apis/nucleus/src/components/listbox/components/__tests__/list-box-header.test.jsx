@@ -55,7 +55,7 @@ function getDefaultProps() {
     containerRect: { width: 200 },
     isPopover: false,
     showToolbar: true,
-    showDetachedToolbarOnly: false,
+    toolbarMode: 'auto',
     containerRef,
     model,
     selectionState: {
@@ -141,7 +141,7 @@ describe('<ListBoxHeader />', () => {
   });
 
   test('should render a detached toolbar when told to do so', async () => {
-    const testRenderer = await render({ showDetachedToolbarOnly: true });
+    const testRenderer = await render({ toolbarMode: 'detach' });
     const testInstance = testRenderer.root;
 
     const titles = testInstance.findAllByType(HeaderTitle);
@@ -159,7 +159,7 @@ describe('<ListBoxHeader />', () => {
 
   test.skip('should render a detached toolbar when space is limited', async () => {
     const containerRect = { width: 20 };
-    const testRenderer = await render({ showDetachedToolbarOnly: false, containerRect });
+    const testRenderer = await render({ toolbarMode: 'auto', containerRect });
     const testInstance = testRenderer.root;
 
     const titles = testInstance.findAllByType(HeaderTitle);

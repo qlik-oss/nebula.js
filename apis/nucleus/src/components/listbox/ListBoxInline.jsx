@@ -51,6 +51,8 @@ const StyledGrid = styled(Grid, {
 
 const isModal = ({ app, appSelections }) => app.isInModalSelection?.() ?? appSelections.isInModal();
 
+const isToolbarMode = (value) => ['attach', 'detach', 'auto'].includes(value);
+
 function ListBoxInline({ options, layout }) {
   const {
     app,
@@ -70,6 +72,7 @@ function ListBoxInline({ options, layout }) {
     scrollState = undefined,
     renderedCallback,
     toolbar = true,
+    toolbarMode = 'auto',
     isPopover = false,
     showLock = false,
     components,
@@ -184,8 +187,16 @@ function ListBoxInline({ options, layout }) {
   const showSearchIcon = searchEnabled !== false && search === 'toggle' && !isLocked;
 
   const canShowTitle = layout?.title?.length && layout?.showTitle !== false;
-  const showDetachedToolbarOnly = toolbar && !canShowTitle && !isPopover;
-  const showAttachedToolbar = (toolbar && canShowTitle) || isPopover;
+  const normalizedToolbarMode = isToolbarMode(toolbarMode) ? toolbarMode : 'auto';
+  const shouldShowToolbar = toolbar || isPopover;
+  const resolvedToolbarMode =
+    normalizedToolbarMode === 'auto'
+      ? !canShowTitle && !isPopover
+        ? 'detach'
+        : 'attach'
+      : normalizedToolbarMode;
+  const renderDetachedToolbar = shouldShowToolbar && resolvedToolbarMode === 'detach';
+  const renderAttachedToolbar = shouldShowToolbar && resolvedToolbarMode !== 'detach';
 
   const isRtl = direction === 'rtl';
 
@@ -233,7 +244,7 @@ function ListBoxInline({ options, layout }) {
     renderedCallback?.();
   }
 
-  const listBoxMinHeight = showAttachedToolbar ? DENSE_ROW_HEIGHT + SCROLL_BAR_WIDTH : 0;
+  const listBoxMinHeight = renderAttachedToolbar ? DENSE_ROW_HEIGHT + SCROLL_BAR_WIDTH : 0;
 
   const listBoxHeader = (
     <ListBoxHeader
@@ -244,7 +255,7 @@ function ListBoxInline({ options, layout }) {
       showToolbar={showToolbar}
       isDirectQuery={isDirectQuery}
       autoConfirm={autoConfirm}
-      showDetachedToolbarOnly={showDetachedToolbarOnly}
+      toolbarMode={renderDetachedToolbar ? 'detach' : normalizedToolbarMode}
       layout={layout}
       translator={translator}
       styles={styles}
@@ -264,7 +275,7 @@ function ListBoxInline({ options, layout }) {
 
   return (
     <>
-      {showDetachedToolbarOnly && listBoxHeader}
+      {renderDetachedToolbar && listBoxHeader}
       <StyledGrid
         className="listbox-container"
         container
@@ -292,7 +303,7 @@ function ListBoxInline({ options, layout }) {
           childNode={listboxChildNode}
           containerNode={containerNode}
         />
-        {showAttachedToolbar && listBoxHeader}
+        {renderAttachedToolbar && listBoxHeader}
         <Grid
           container
           direction="column"

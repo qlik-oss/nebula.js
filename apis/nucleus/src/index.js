@@ -527,6 +527,10 @@ function nuked(configuration = {}) {
          */
 
         /**
+         * @typedef { 'attach' | 'detach' | 'auto' } ToolbarMode
+         */
+
+        /**
          * @typedef { 'selectionActivated' | 'selectionDeactivated' } FieldEventTypes
          */
 
@@ -572,6 +576,7 @@ function nuked(configuration = {}) {
            * @param {SearchMode=} [options.search=true] Show the search bar permanently, using the toggle button or when in selection: false|true|toggle
            * @param {boolean=} [options.showLock=false] Show the button for toggling locked state.
            * @param {boolean=} [options.toolbar=true] Show the toolbar
+           * @param {ToolbarMode=} [options.toolbarMode=auto] Toolbar placement mode: attach, detach, or auto.
            * @param {boolean=} [options.checkboxes=false] Show values as checkboxes instead of as fields (not applicable for existing objects)
            * @param {boolean=} [options.dense=false] Reduces padding and text size (not applicable for existing objects)
            * @param {string=} [options.stateName="$"] Sets the state to make selections in (not applicable for existing objects)
