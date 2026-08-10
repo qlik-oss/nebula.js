@@ -24,6 +24,9 @@
   "dependencies": {
     "@babel/cli": "8.0.4",
     "@babel/core": "8.0.1",
+    "@babel/helper-plugin-utils": "8.0.1",
+    "@babel/plugin-proposal-object-rest-spread": "7.20.7",
+    "@babel/plugin-transform-react-jsx": "8.0.1",
     "@babel/preset-env": "8.0.2",
     "@babel/preset-react": "8.0.1",
     "@babel/preset-typescript": "8.0.1",
@@ -39,6 +42,7 @@
     "postcss": "^8.5.23",
     "rollup": "4.62.3",
     "rollup-plugin-postcss": "4.0.2",
+    "rollup-plugin-sass": "1.15.3",
     "rollup-plugin-visualizer": "7.0.1",
     "yargs": "18.1.0"
   },

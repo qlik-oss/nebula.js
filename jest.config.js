@@ -1,3 +1,5 @@
+const transformAllowlist = '@qlik/(sdk|api)|react-router|d3-color';
+
 const config = {
   verbose: true,
   clearMocks: true,
@@ -57,10 +59,12 @@ const config = {
   transform: {
     '^.+\\.(js|jsx|cjs|mjs)$': 'babel-jest',
   },
-  transformIgnorePatterns: ['/node_modules/(?!(@qlik/(sdk|api)|react-router)/)'],
-  moduleNameMapper: {
-    'd3-color': '<rootDir>/node_modules/d3-color/dist/d3-color.min.js',
-  },
+  transformIgnorePatterns: [
+    // Ignore regular node_modules, but still transform the allowlisted ESM packages.
+    `/node_modules/(?!\\.pnpm/)(?!(${transformAllowlist})/)`,
+    // Ignore pnpm virtual-store packages, but still transform allowlisted packages under .pnpm/*/node_modules/.
+    `/node_modules/\\.pnpm/(?![^/]+/node_modules/(${transformAllowlist})/)`,
+  ],
   modulePathIgnorePatterns: ['<rootDir>/local-dev/.*/.yalc/', '<rootDir>/.claude/'],
   testPathIgnorePatterns: ['/node_modules/', '<rootDir>/commands/serve/test/e2e/'],
 };

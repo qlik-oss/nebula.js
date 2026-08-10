@@ -14,7 +14,10 @@ import webpackServe from './webpack.serve.js';
 
 const require = createRequire(import.meta.url);
 
-const initiateWatch = async ({ snPath = '', snName, host }) => {
+const initiateWatch = async ({ snPath, snName, host }) => {
+  if (!snPath) {
+    return null;
+  }
   // TODO - timeout
   let onInitiated;
   const done = new Promise((resolve) => {

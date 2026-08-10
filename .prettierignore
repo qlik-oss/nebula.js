@@ -1,4 +1,8 @@
+.vscode/
+pnpm-lock.yaml
 dist/
+apis/snapshooter/client.js
+apis/locale/all.json
 **/index.d.ts
 **/spec.json
 

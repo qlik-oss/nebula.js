@@ -13,7 +13,7 @@ These tests are aimed for more generic rendering tests than the **mashup** and *
    - listbox.spec.js - a test file which orchestrates interactions and when to take a screenshot
    - listbox.html - constitutes the "site" that the test file interacts with and creates screenshots from
    - listbox.js - (optional) if you don't want to add all JS code inside of the html file
-3. Run tests from the nebula.js root with `yarn test:rendering`
+3. Run tests from the nebula.js root with `pnpm test:rendering`
 4. The first time, the test will fail and create an image inside of the `__artifacts__/temp` folder. Drag this file to the `__artifacts__/baseline` folder and re-run the test to verify that it passes. Then `git push` the baseline.
 
 Check the [listbox files](./listbox) for details on how to write the code in these files.
