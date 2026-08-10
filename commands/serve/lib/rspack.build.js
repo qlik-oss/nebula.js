@@ -44,6 +44,16 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
       extensions: ['.dev.js', '.js', '.jsx'],
     },
     module: {
+      // Rspack defaults `exportsPresence` to 'error' (webpack 5 only warns for the same case).
+      // web/utils/testRenderer.jsx (pulled into the eHub bundle via AppList.jsx/Root.jsx) imports
+      // @testing-library/react, which destructures a `React.act` export that this repo's React 19.2.8
+      // doesn't expose statically — a pre-existing incompatibility webpack tolerates as a warning.
+      // Mirror webpack's leniency here rather than hard-failing the production build over it.
+      parser: {
+        javascript: {
+          exportsPresence: 'warn',
+        },
+      },
       rules: [
         {
           test: /\.m?js$/,
