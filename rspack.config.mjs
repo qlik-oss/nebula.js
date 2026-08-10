@@ -213,7 +213,10 @@ const config = ({ format = 'umd', debug = false, file, targetPkg }) => {
   };
 
   if (isEsm) {
+    // keep the peers as static imports instead of bundling them
     cfg.externalsType = 'module';
+    // rspack does not require this to emit an esm library, webpack does — keep it
+    // stated so the esm output does not depend on that difference
     cfg.experiments = { outputModule: true };
   }
 
