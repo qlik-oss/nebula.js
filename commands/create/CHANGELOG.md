@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.2.0](https://github.com/qlik-oss/nebula.js/compare/v7.1.1...v7.2.0) (2026-08-11)
+
+### Bug Fixes
+
+- **deps:** update babel monorepo to v8 ([#2106](https://github.com/qlik-oss/nebula.js/issues/2106)) ([60e6c04](https://github.com/qlik-oss/nebula.js/commit/60e6c0498aa9030a80436033eff17524e6276ab3))
+- **deps:** update dependency fs-extra to v11.3.6 ([#2137](https://github.com/qlik-oss/nebula.js/issues/2137)) ([839f22b](https://github.com/qlik-oss/nebula.js/commit/839f22b1cc666face645f4378a1a766e03ba52e6))
+- **deps:** update dependency fs-extra to v11.4.0 ([#2205](https://github.com/qlik-oss/nebula.js/issues/2205)) ([6e0fc8f](https://github.com/qlik-oss/nebula.js/commit/6e0fc8f30a30933ad2111e451e23ec48aed50be9))
+
 ## [7.1.1](https://github.com/qlik-oss/nebula.js/compare/v7.1.0...v7.1.1) (2026-06-22)
 
 **Note:** Version bump only for package @nebula.js/cli-create
