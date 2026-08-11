@@ -93,6 +93,7 @@ const render = async (overrideProps = {}) => {
   await act(async () => {
     rendererInst = create(component);
   });
+  await act(async () => {});
   return rendererInst;
 };
 
@@ -100,9 +101,14 @@ let ActionsToolbar;
 let HeaderTitle;
 let hasSelections;
 
-function HeaderTitleMock() {
+const HeaderTitleMock = React.forwardRef((props, ref) => {
+  if (ref && typeof ref !== 'function') {
+    /* eslint-disable no-param-reassign */
+    ref.current = { clientWidth: 100, scrollWidth: 100, offsetWidth: 100 };
+    /* eslint-enable no-param-reassign */
+  }
   return <div />;
-}
+});
 
 describe('<ListBoxHeader />', () => {
   beforeEach(() => {
@@ -112,7 +118,6 @@ describe('<ListBoxHeader />', () => {
     InstanceContextModule.default = InstanceContext;
     const ActionsToolbarElement = <div id="test-actions-toolbar" />;
     ActionsToolbar = jest.spyOn(ActionsToolbarModule, 'default').mockImplementation(() => ActionsToolbarElement);
-    jest.spyOn(React, 'useRef').mockReturnValue({ current: { clientWidth: 100, scrollWidth: 100, offsetWidth: 100 } });
   });
 
   afterEach(() => {
@@ -146,6 +151,24 @@ describe('<ListBoxHeader />', () => {
     expect(titleProps.styles.header.color).toEqual('red');
   });
 
+  test('should keep toolbar attached in auto mode when space is sufficient', async () => {
+    const testRenderer = await render({ toolbarMode: 'auto', containerRect: { width: 500 } });
+    const testInstance = testRenderer.root;
+
+    const [actionsToolbar] = testInstance.findAllByType(ActionsToolbar);
+
+    expect(actionsToolbar.props.isDetached).toEqual(false);
+  });
+
+  test('should keep toolbar attached when toolbarMode is attach', async () => {
+    const testRenderer = await render({ toolbarMode: 'attach', containerRect: { width: 500 } });
+    const testInstance = testRenderer.root;
+
+    const [actionsToolbar] = testInstance.findAllByType(ActionsToolbar);
+
+    expect(actionsToolbar.props.isDetached).toEqual(false);
+  });
+
   test('should render a detached toolbar when told to do so', async () => {
     const testRenderer = await render({ toolbarMode: 'detach' });
     const testInstance = testRenderer.root;
@@ -163,7 +186,7 @@ describe('<ListBoxHeader />', () => {
     expect(actionsToolbars[0].props.isDetached).toEqual(true);
   });
 
-  test.skip('should render a detached toolbar when space is limited', async () => {
+  test('should render a detached toolbar in auto mode when auto detection says detach', async () => {
     const containerRect = { width: 20 };
     const testRenderer = await render({ toolbarMode: 'auto', containerRect });
     const testInstance = testRenderer.root;
@@ -179,6 +202,15 @@ describe('<ListBoxHeader />', () => {
 
     // Verify it is detached.
     expect(actionsToolbars[0].props.isDetached).toEqual(true);
+  });
+
+  test('should keep toolbar attached in attach mode even when space is limited', async () => {
+    const testRenderer = await render({ toolbarMode: 'attach', containerRect: { width: 20 } });
+    const testInstance = testRenderer.root;
+
+    const [actionsToolbar] = testInstance.findAllByType(ActionsToolbar);
+
+    expect(actionsToolbar.props.isDetached).toEqual(false);
   });
 
   test('trigger toggle search field when pressing search icon in toggle mode', async () => {
