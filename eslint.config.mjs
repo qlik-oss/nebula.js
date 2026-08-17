@@ -112,6 +112,15 @@ export default defineConfig([
     },
   },
   {
+    // Commands lib files use chalk which has ESM-only exports (no main field)
+    files: ['commands/build/lib/**/*.js', 'commands/create/lib/**/*.js', 'commands/serve/lib/**/*.js'],
+
+    rules: {
+      // chalk v6+ is ESM-only with exports field; resolver has trouble finding it
+      'import/no-unresolved': ['error', { ignore: ['chalk'] }],
+    },
+  },
+  {
     files: ['commands/serve/web/**/*.{js,jsx}'],
 
     rules: {
