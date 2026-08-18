@@ -33,8 +33,9 @@ export const UnlockButton = styled(ButtonBase)(({ theme, isLoading }) => ({
 
 export const StyledGridHeader = styled(Grid, { shouldForwardProp: (p) => !['styles', 'isRtl'].includes(p) })(
   ({ styles, isRtl }) => ({
+    display: 'flex',
     flexDirection: isRtl ? 'row-reverse' : 'row',
-    wrap: 'nowrap',
+    flexWrap: 'nowrap',
     minHeight: 32,
     alignContent: 'center',
     ...styles.header,
