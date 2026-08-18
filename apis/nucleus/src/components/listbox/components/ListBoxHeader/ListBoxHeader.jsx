@@ -262,16 +262,14 @@ export default function ListBoxHeader({
         </Grid>
       )}
       <Grid
-        size="grow"
-        sx={{ minWidth: 0 }} // needed to text-overflow see: https://css-tricks.com/flexbox-truncated-text/
-        justifyContent={isRtl ? 'flex-end' : 'flex-start'}
+        sx={{ flex: 1, minWidth: 0, display: 'flex', justifyContent: isRtl ? 'flex-end' : 'flex-start' }}
         className={classes.listBoxHeader}
       >
         <HeaderTitle variant="h6" noWrap ref={titleRef} title={layout.title} styles={styles}>
           {layout.title}
         </HeaderTitle>
       </Grid>
-      <Grid display="flex">{actionsToolbar}</Grid>
+      <Grid sx={{ display: 'flex' }}>{actionsToolbar}</Grid>
     </StyledGridHeader>
   );
 }
