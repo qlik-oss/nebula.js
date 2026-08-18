@@ -157,6 +157,14 @@ jobs:
         # (first run on a new platform) without overwriting existing ones.
         # Existing baselines are still compared normally, so regressions fail.
         run: pnpm test:visual:update-missing
+      - name: Publish visual test report
+        if: ${{ always() && hashFiles('commands/serve/test/reports/xml/*.xml') != '' }}
+        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6
+        with:
+          name: Visual Tests
+          path: ./commands/serve/test/reports/xml/*.xml
+          reporter: jest-junit
+          fail-on-error: false
       - name: Upload visual snapshots
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
@@ -164,7 +172,9 @@ jobs:
           name: visual-snapshots
           # Upload the full snapshot directory so newly-generated linux baselines
           # (*-linux.png) can be downloaded, reviewed, and committed to the repo.
-          path: commands/serve/test/e2e/dev-route.spec.js-snapshots
+          path: |
+            ./commands/serve/test/reports/
+            ./commands/serve/test/e2e/dev-route.spec.js-snapshots
 
   test-create:
     runs-on: ubuntu-latest
