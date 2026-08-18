@@ -68,11 +68,11 @@ Nucleus (React-based) orchestrates visualization rendering:
 ### Setup & Build
 
 ```bash
-yarn install                    # Install all dependencies
-yarn run locale:generate        # Generate translation files (required before build)
-yarn run build                  # Build all packages (production UMD + ESM)
-yarn run build:dev              # Build with source maps for development
-yarn run build:watch            # Watch mode for active development
+pnpm install                    # Install all dependencies
+pnpm run locale:generate        # Generate translation files (required before build)
+pnpm run build                  # Build all packages (production UMD + ESM)
+pnpm run build:dev              # Build with source maps for development
+pnpm run build:watch            # Watch mode for active development
 ```
 
 **Critical**: Always run `locale:generate` before building if locale files changed.
@@ -80,11 +80,11 @@ yarn run build:watch            # Watch mode for active development
 ### Testing
 
 ```bash
-yarn test:unit                  # Jest unit tests for all packages
-yarn test:component             # Playwright component tests
-yarn test:integration           # Playwright integration tests  
-yarn test:rendering             # Visual regression tests (Playwright)
-yarn test:mashup                # Full mashup integration tests
+pnpm test:unit                  # Jest unit tests for all packages
+pnpm test:component             # Playwright component tests
+pnpm test:integration           # Playwright integration tests  
+pnpm test:rendering             # Visual regression tests (Playwright)
+pnpm test:mashup                # Full mashup integration tests
 ```
 
 Unit tests use `jest` with `jest-environment-jsdom`. See [jest.config.js](jest.config.js) for coverage and test patterns.
