@@ -30,8 +30,10 @@
   "dependencies": {
     "@babel/cli": "8.0.4",
     "@babel/core": "8.0.1",
+    "@babel/helper-plugin-utils": "8.0.1",
+    "@babel/plugin-proposal-object-rest-spread": "7.20.7",
     "@babel/preset-env": "8.0.2",
-    "@nebula.js/stardust": "^7.2.0",
+    "@nebula.js/stardust": "workspace:*",
     "@rollup/plugin-babel": "7.1.0",
     "@rollup/plugin-commonjs": "29.0.3",
     "@rollup/plugin-node-resolve": "16.0.3",

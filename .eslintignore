@@ -1,5 +1,0 @@
-dist/
-coverage/
-node_modules/
-apis/snapshooter/client.js
-apis/*/core/**/*.js

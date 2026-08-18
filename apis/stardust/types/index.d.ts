@@ -557,20 +557,6 @@ declare namespace stardust {
         isEnabled(flag: string): boolean;
     }
 
-    interface LoadType {
-        (type: {
-            name: string;
-            version: string;
-        }): Promise<stardust.Visualization>;
-    }
-
-    interface TypeInfo {
-        name: string;
-        version?: string;
-        load: stardust.LoadType;
-        meta?: object;
-    }
-
     /**
      * An object literal containing meta information about the plugin and a function containing the plugin implementation.
      */
@@ -579,13 +565,6 @@ declare namespace stardust {
             name: string;
         };
         fn: ()=>void;
-    }
-
-    class RenderError extends Error {
-        constructor(message: string, originalError: Error);
-
-        originalError: Error;
-
     }
 
     type Field = string | qix.NxDimension | qix.NxMeasure | stardust.LibraryField;
@@ -628,6 +607,20 @@ declare namespace stardust {
     interface LibraryField {
         qLibraryId: string;
         type: "dimension" | "measure";
+    }
+
+    interface LoadType {
+        (type: {
+            name: string;
+            version: string;
+        }): Promise<stardust.Visualization>;
+    }
+
+    interface TypeInfo {
+        name: string;
+        version?: string;
+        load: stardust.LoadType;
+        meta?: object;
     }
 
     class AppSelections {
@@ -701,6 +694,13 @@ declare namespace stardust {
          * @param accept
          */
         noModal(accept?: boolean): Promise<undefined>;
+
+    }
+
+    class RenderError extends Error {
+        constructor(message: string, originalError: Error);
+
+        originalError: Error;
 
     }
 

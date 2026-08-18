@@ -1,8 +1,5 @@
 {
   "extends": ["local>qlik-oss/renovate-config", ":automergeMinor", ":automergeDigest"],
-  "circleci": {
-    "ignoreDeps": []
-  },
   "ignoreDeps": ["react-virtualized-auto-sizer"],
   "semanticCommits": true,
   "rangeStrategy": "bump",

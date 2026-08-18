@@ -1,0 +1,12 @@
+{
+  "name": "@nebula.js/test-component",
+  "private": true,
+  "devDependencies": {
+    "@playwright/test": "1.62.1",
+    "@nebula.js/cli-serve": "workspace:*",
+    "@nebula.js/stardust": "workspace:*",
+    "picasso-plugin-q": "2.11.5",
+    "picasso.js": "2.11.5",
+    "qix-faker": "0.3.0"
+  }
+}
