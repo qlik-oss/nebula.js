@@ -15,6 +15,10 @@ allowBuilds:
   unrs-resolver: false
 
 overrides:
+  # Optional peer of `debug`. Left unpinned it resolves to two versions, which
+  # forks @emotion/react + @mui/material into duplicate instances and breaks
+  # MUI's ThemeProvider context across workspace package boundaries.
+  'supports-color': '8.1.1'
   'dts-dom': '3.7.0'
   'caniuse-lite': '1.0.30001806'
   'react': '19.2.8'
