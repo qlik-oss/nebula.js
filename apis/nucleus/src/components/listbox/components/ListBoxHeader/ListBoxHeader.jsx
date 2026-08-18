@@ -226,13 +226,14 @@ export default function ListBoxHeader({
 
   return (
     <StyledGridHeader
-      item
       container
       styles={styles}
       isRtl={isRtl}
-      marginY={1}
-      paddingLeft={`${paddingLeft}px`}
-      paddingRight={`${paddingRight}px`}
+      sx={{
+        marginY: 1,
+        paddingLeft: `${paddingLeft}px`,
+        paddingRight: `${paddingRight}px`,
+      }}
       className="header-container"
     >
       {showUnlock && (
