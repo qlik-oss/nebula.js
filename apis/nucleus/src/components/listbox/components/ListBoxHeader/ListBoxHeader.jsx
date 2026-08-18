@@ -250,7 +250,11 @@ export default function ListBoxHeader({
         />
       )}
       {showLeftIcon && (
-        <Grid container sx={{ display: 'flex', alignItems: 'center', width: iconsWidth }} className="header-action-container">
+        <Grid
+          container
+          sx={{ display: 'flex', alignItems: 'center', width: iconsWidth }}
+          className="header-action-container"
+        >
           {lockedIconComp || (showSearchIcon && searchIconComp)}
           <DimensionIcon
             iconData={iconData}
