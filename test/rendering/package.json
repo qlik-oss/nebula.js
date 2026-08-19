@@ -1,0 +1,13 @@
+{
+  "name": "@nebula.js/test-rendering",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "@nebula.js/cli-serve": "workspace:*",
+    "@playwright/test": "^1.62.1",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/react": "^16.3.2",
+    "express": "5.2.1",
+    "jimp": "^1.6.1"
+  }
+}

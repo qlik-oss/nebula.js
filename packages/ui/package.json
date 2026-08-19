@@ -1,7 +1,7 @@
 {
   "name": "@nebula.js/ui",
   "private": true,
-  "version": "7.1.1",
+  "version": "7.2.0",
   "description": "",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -20,6 +20,7 @@
     "@mui/icons-material": "^7.3.11",
     "@mui/material": "^7.3.11",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "react-test-renderer": "19.2.8"
   }
 }

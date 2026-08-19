@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
-    "version": "7.1.1",
+    "version": "7.2.0",
     "license": "MIT",
     "stability": "stable"
   },
@@ -1149,6 +1149,26 @@
         ]
       }
     },
+    "ToolbarMode": {
+      "kind": "alias",
+      "items": {
+        "kind": "union",
+        "items": [
+          {
+            "kind": "literal",
+            "value": "'attach'"
+          },
+          {
+            "kind": "literal",
+            "value": "'detach'"
+          },
+          {
+            "kind": "literal",
+            "value": "'auto'"
+          }
+        ]
+      }
+    },
     "FieldEventTypes": {
       "kind": "alias",
       "items": {
@@ -1275,6 +1295,12 @@
                   "optional": true,
                   "defaultValue": true,
                   "type": "boolean"
+                },
+                "toolbarMode": {
+                  "description": "Toolbar placement mode: attach, detach, or auto.",
+                  "optional": true,
+                  "defaultValue": "auto",
+                  "type": "#/definitions/ToolbarMode"
                 },
                 "checkboxes": {
                   "description": "Show values as checkboxes instead of as fields (not applicable for existing objects)",
@@ -1745,6 +1771,260 @@
         }
       }
     },
+    "LoadType": {
+      "kind": "interface",
+      "params": [
+        {
+          "name": "type",
+          "kind": "object",
+          "entries": {
+            "name": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            }
+          }
+        }
+      ],
+      "returns": {
+        "type": "Promise",
+        "generics": [
+          {
+            "type": "#/definitions/Visualization"
+          }
+        ]
+      },
+      "entries": {}
+    },
+    "TypeInfo": {
+      "kind": "interface",
+      "entries": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "optional": true,
+          "type": "string"
+        },
+        "load": {
+          "type": "#/definitions/LoadType"
+        },
+        "meta": {
+          "optional": true,
+          "type": "object"
+        }
+      }
+    },
+    "Plugin": {
+      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
+      "stability": "experimental",
+      "availability": {
+        "since": "1.2.0"
+      },
+      "kind": "interface",
+      "entries": {
+        "info": {
+          "description": "Object that can hold various meta info about the plugin",
+          "kind": "object",
+          "entries": {
+            "name": {
+              "description": "The name of the plugin",
+              "type": "string"
+            }
+          }
+        },
+        "fn": {
+          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
+          "type": "function"
+        }
+      },
+      "examples": [
+        "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
+      ]
+    },
+    "RenderError": {
+      "extends": [
+        {
+          "type": "Error"
+        }
+      ],
+      "kind": "class",
+      "constructor": {
+        "kind": "function",
+        "params": [
+          {
+            "name": "message",
+            "type": "string"
+          },
+          {
+            "name": "originalError",
+            "type": "Error"
+          }
+        ]
+      },
+      "entries": {
+        "originalError": {
+          "type": "Error"
+        }
+      }
+    },
+    "Field": {
+      "kind": "alias",
+      "items": {
+        "kind": "union",
+        "items": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "qix.NxDimension"
+          },
+          {
+            "type": "qix.NxMeasure"
+          },
+          {
+            "type": "#/definitions/LibraryField"
+          }
+        ]
+      }
+    },
+    "CreateConfig": {
+      "description": "Rendering configuration for creating and rendering a new object",
+      "kind": "interface",
+      "entries": {
+        "type": {
+          "type": "string"
+        },
+        "version": {
+          "optional": true,
+          "type": "string"
+        },
+        "fields": {
+          "optional": true,
+          "kind": "union",
+          "items": [
+            {
+              "kind": "array",
+              "items": {
+                "type": "#/definitions/Field"
+              }
+            }
+          ]
+        },
+        "properties": {
+          "optional": true,
+          "type": "qix.GenericObjectProperties"
+        }
+      }
+    },
+    "RenderConfig": {
+      "description": "Configuration for rendering a visualisation, either creating or fetching an existing object.",
+      "kind": "interface",
+      "entries": {
+        "element": {
+          "description": "Target html element to render in to",
+          "type": "HTMLElement"
+        },
+        "options": {
+          "description": "Options passed into the visualisation",
+          "optional": true,
+          "type": "object"
+        },
+        "onRender": {
+          "description": "Callback function called after rendering successfully",
+          "optional": true,
+          "kind": "function",
+          "params": []
+        },
+        "onError": {
+          "description": "Callback function called if an error occurs. Also called with AbortError when signal aborts.",
+          "optional": true,
+          "kind": "function",
+          "params": [
+            {
+              "type": "#/definitions/RenderError"
+            }
+          ]
+        },
+        "plugins": {
+          "description": "plugins passed into the visualisation",
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/Plugin"
+          }
+        },
+        "signal": {
+          "description": "Optional AbortSignal to cancel the render operation. When aborted, destroy() is called for cleanup before onError() is called with the AbortError.",
+          "optional": true,
+          "type": "AbortSignal"
+        },
+        "id": {
+          "description": "For existing objects: Engine identifier of object to render",
+          "optional": true,
+          "type": "string"
+        },
+        "type": {
+          "description": "For creating objects: Type of visualisation to render",
+          "optional": true,
+          "type": "string"
+        },
+        "version": {
+          "description": "For creating objects: Version of visualization to render",
+          "optional": true,
+          "type": "string"
+        },
+        "fields": {
+          "description": "For creating objects: Data fields to use",
+          "optional": true,
+          "kind": "union",
+          "items": [
+            {
+              "kind": "array",
+              "items": {
+                "type": "#/definitions/Field"
+              }
+            }
+          ]
+        },
+        "extendProperties": {
+          "description": "For creating objects: Whether to deeply extend properties or not. If false then subtrees will be overwritten.",
+          "optional": true,
+          "defaultValue": false,
+          "type": "boolean"
+        },
+        "properties": {
+          "description": "For creating objects: Explicit properties to set",
+          "optional": true,
+          "type": "qix.GenericObjectProperties"
+        }
+      },
+      "examples": [
+        "// A config for Creating objects:\nconst createConfig = {\n  type: 'bar',\n  element: document.querySelector('.bar'),\n  extendProperties: true,\n  fields: ['[Country names]', '=Sum(Sales)'],\n  properties: {\n    legend: {\n      show: false,\n    },\n  }\n};\nnebbie.render(createConfig);\n// A config for rendering an existing object:\nconst renderConfig = {\n  id: 'jG5LP',\n  element: document.querySelector('.line'),\n};\nnebbie.render(renderConfig);\n// Using AbortSignal to cancel rendering:\nconst controller = new AbortController();\nconst abortConfig = {\n  type: 'bar',\n  element: document.querySelector('.bar'),\n  fields: ['Country', '=Sum(Sales)'],\n  signal: controller.signal,\n  onError: (err) => {\n    if (err.name === 'AbortError') {\n      console.log('Render was cancelled');\n    } else {\n      console.error('Render failed:', err);\n    }\n  }\n};\nconst vizPromise = nebbie.render(abortConfig);\n// Cancel the render operation\ncontroller.abort();"
+      ]
+    },
+    "LibraryField": {
+      "kind": "interface",
+      "entries": {
+        "qLibraryId": {
+          "type": "string"
+        },
+        "type": {
+          "kind": "union",
+          "items": [
+            {
+              "kind": "literal",
+              "value": "'dimension'"
+            },
+            {
+              "kind": "literal",
+              "value": "'measure'"
+            }
+          ]
+        }
+      }
+    },
     "AppSelections": {
       "kind": "class",
       "constructor": {
@@ -1979,260 +2259,6 @@
               }
             ]
           }
-        }
-      }
-    },
-    "Field": {
-      "kind": "alias",
-      "items": {
-        "kind": "union",
-        "items": [
-          {
-            "type": "string"
-          },
-          {
-            "type": "qix.NxDimension"
-          },
-          {
-            "type": "qix.NxMeasure"
-          },
-          {
-            "type": "#/definitions/LibraryField"
-          }
-        ]
-      }
-    },
-    "CreateConfig": {
-      "description": "Rendering configuration for creating and rendering a new object",
-      "kind": "interface",
-      "entries": {
-        "type": {
-          "type": "string"
-        },
-        "version": {
-          "optional": true,
-          "type": "string"
-        },
-        "fields": {
-          "optional": true,
-          "kind": "union",
-          "items": [
-            {
-              "kind": "array",
-              "items": {
-                "type": "#/definitions/Field"
-              }
-            }
-          ]
-        },
-        "properties": {
-          "optional": true,
-          "type": "qix.GenericObjectProperties"
-        }
-      }
-    },
-    "RenderConfig": {
-      "description": "Configuration for rendering a visualisation, either creating or fetching an existing object.",
-      "kind": "interface",
-      "entries": {
-        "element": {
-          "description": "Target html element to render in to",
-          "type": "HTMLElement"
-        },
-        "options": {
-          "description": "Options passed into the visualisation",
-          "optional": true,
-          "type": "object"
-        },
-        "onRender": {
-          "description": "Callback function called after rendering successfully",
-          "optional": true,
-          "kind": "function",
-          "params": []
-        },
-        "onError": {
-          "description": "Callback function called if an error occurs. Also called with AbortError when signal aborts.",
-          "optional": true,
-          "kind": "function",
-          "params": [
-            {
-              "type": "#/definitions/RenderError"
-            }
-          ]
-        },
-        "plugins": {
-          "description": "plugins passed into the visualisation",
-          "optional": true,
-          "kind": "array",
-          "items": {
-            "type": "#/definitions/Plugin"
-          }
-        },
-        "signal": {
-          "description": "Optional AbortSignal to cancel the render operation. When aborted, destroy() is called for cleanup before onError() is called with the AbortError.",
-          "optional": true,
-          "type": "AbortSignal"
-        },
-        "id": {
-          "description": "For existing objects: Engine identifier of object to render",
-          "optional": true,
-          "type": "string"
-        },
-        "type": {
-          "description": "For creating objects: Type of visualisation to render",
-          "optional": true,
-          "type": "string"
-        },
-        "version": {
-          "description": "For creating objects: Version of visualization to render",
-          "optional": true,
-          "type": "string"
-        },
-        "fields": {
-          "description": "For creating objects: Data fields to use",
-          "optional": true,
-          "kind": "union",
-          "items": [
-            {
-              "kind": "array",
-              "items": {
-                "type": "#/definitions/Field"
-              }
-            }
-          ]
-        },
-        "extendProperties": {
-          "description": "For creating objects: Whether to deeply extend properties or not. If false then subtrees will be overwritten.",
-          "optional": true,
-          "defaultValue": false,
-          "type": "boolean"
-        },
-        "properties": {
-          "description": "For creating objects: Explicit properties to set",
-          "optional": true,
-          "type": "qix.GenericObjectProperties"
-        }
-      },
-      "examples": [
-        "// A config for Creating objects:\nconst createConfig = {\n  type: 'bar',\n  element: document.querySelector('.bar'),\n  extendProperties: true,\n  fields: ['[Country names]', '=Sum(Sales)'],\n  properties: {\n    legend: {\n      show: false,\n    },\n  }\n};\nnebbie.render(createConfig);\n// A config for rendering an existing object:\nconst renderConfig = {\n  id: 'jG5LP',\n  element: document.querySelector('.line'),\n};\nnebbie.render(renderConfig);\n// Using AbortSignal to cancel rendering:\nconst controller = new AbortController();\nconst abortConfig = {\n  type: 'bar',\n  element: document.querySelector('.bar'),\n  fields: ['Country', '=Sum(Sales)'],\n  signal: controller.signal,\n  onError: (err) => {\n    if (err.name === 'AbortError') {\n      console.log('Render was cancelled');\n    } else {\n      console.error('Render failed:', err);\n    }\n  }\n};\nconst vizPromise = nebbie.render(abortConfig);\n// Cancel the render operation\ncontroller.abort();"
-      ]
-    },
-    "LibraryField": {
-      "kind": "interface",
-      "entries": {
-        "qLibraryId": {
-          "type": "string"
-        },
-        "type": {
-          "kind": "union",
-          "items": [
-            {
-              "kind": "literal",
-              "value": "'dimension'"
-            },
-            {
-              "kind": "literal",
-              "value": "'measure'"
-            }
-          ]
-        }
-      }
-    },
-    "Plugin": {
-      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
-      "stability": "experimental",
-      "availability": {
-        "since": "1.2.0"
-      },
-      "kind": "interface",
-      "entries": {
-        "info": {
-          "description": "Object that can hold various meta info about the plugin",
-          "kind": "object",
-          "entries": {
-            "name": {
-              "description": "The name of the plugin",
-              "type": "string"
-            }
-          }
-        },
-        "fn": {
-          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
-          "type": "function"
-        }
-      },
-      "examples": [
-        "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
-      ]
-    },
-    "LoadType": {
-      "kind": "interface",
-      "params": [
-        {
-          "name": "type",
-          "kind": "object",
-          "entries": {
-            "name": {
-              "type": "string"
-            },
-            "version": {
-              "type": "string"
-            }
-          }
-        }
-      ],
-      "returns": {
-        "type": "Promise",
-        "generics": [
-          {
-            "type": "#/definitions/Visualization"
-          }
-        ]
-      },
-      "entries": {}
-    },
-    "TypeInfo": {
-      "kind": "interface",
-      "entries": {
-        "name": {
-          "type": "string"
-        },
-        "version": {
-          "optional": true,
-          "type": "string"
-        },
-        "load": {
-          "type": "#/definitions/LoadType"
-        },
-        "meta": {
-          "optional": true,
-          "type": "object"
-        }
-      }
-    },
-    "RenderError": {
-      "extends": [
-        {
-          "type": "Error"
-        }
-      ],
-      "kind": "class",
-      "constructor": {
-        "kind": "function",
-        "params": [
-          {
-            "name": "message",
-            "type": "string"
-          },
-          {
-            "name": "originalError",
-            "type": "Error"
-          }
-        ]
-      },
-      "entries": {
-        "originalError": {
-          "type": "Error"
         }
       }
     },

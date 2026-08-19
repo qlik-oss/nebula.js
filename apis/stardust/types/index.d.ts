@@ -365,6 +365,8 @@ declare namespace stardust {
 
     type SearchMode = boolean | "toggle";
 
+    type ToolbarMode = "attach" | "detach" | "auto";
+
     type FieldEventTypes = "selectionActivated" | "selectionDeactivated";
 
     class FieldInstance {
@@ -398,6 +400,7 @@ declare namespace stardust {
             search?: stardust.SearchMode;
             showLock?: boolean;
             toolbar?: boolean;
+            toolbarMode?: stardust.ToolbarMode;
             checkboxes?: boolean;
             dense?: boolean;
             stateName?: string;
@@ -554,6 +557,72 @@ declare namespace stardust {
         isEnabled(flag: string): boolean;
     }
 
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
+    }
+
+    type Field = string | qix.NxDimension | qix.NxMeasure | stardust.LibraryField;
+
+    /**
+     * Rendering configuration for creating and rendering a new object
+     */
+    interface CreateConfig {
+        type: string;
+        version?: string;
+        fields?: stardust.Field[];
+        properties?: qix.GenericObjectProperties;
+    }
+
+    /**
+     * Configuration for rendering a visualisation, either creating or fetching an existing object.
+     */
+    interface RenderConfig {
+        element: HTMLElement;
+        options?: object;
+        /**
+         * Callback function called after rendering successfully
+         */
+        onRender?(): void;
+        /**
+         * Callback function called if an error occurs. Also called with AbortError when signal aborts.
+         * @param $
+         */
+        onError?($: stardust.RenderError): void;
+        plugins?: stardust.Plugin[];
+        signal?: AbortSignal;
+        id?: string;
+        type?: string;
+        version?: string;
+        fields?: stardust.Field[];
+        extendProperties?: boolean;
+        properties?: qix.GenericObjectProperties;
+    }
+
+    interface LibraryField {
+        qLibraryId: string;
+        type: "dimension" | "measure";
+    }
+
+    interface LoadType {
+        (type: {
+            name: string;
+            version: string;
+        }): Promise<stardust.Visualization>;
+    }
+
+    interface TypeInfo {
+        name: string;
+        version?: string;
+        load: stardust.LoadType;
+        meta?: object;
+    }
+
     class AppSelections {
         constructor();
 
@@ -626,72 +695,6 @@ declare namespace stardust {
          */
         noModal(accept?: boolean): Promise<undefined>;
 
-    }
-
-    type Field = string | qix.NxDimension | qix.NxMeasure | stardust.LibraryField;
-
-    /**
-     * Rendering configuration for creating and rendering a new object
-     */
-    interface CreateConfig {
-        type: string;
-        version?: string;
-        fields?: stardust.Field[];
-        properties?: qix.GenericObjectProperties;
-    }
-
-    /**
-     * Configuration for rendering a visualisation, either creating or fetching an existing object.
-     */
-    interface RenderConfig {
-        element: HTMLElement;
-        options?: object;
-        /**
-         * Callback function called after rendering successfully
-         */
-        onRender?(): void;
-        /**
-         * Callback function called if an error occurs. Also called with AbortError when signal aborts.
-         * @param $
-         */
-        onError?($: stardust.RenderError): void;
-        plugins?: stardust.Plugin[];
-        signal?: AbortSignal;
-        id?: string;
-        type?: string;
-        version?: string;
-        fields?: stardust.Field[];
-        extendProperties?: boolean;
-        properties?: qix.GenericObjectProperties;
-    }
-
-    interface LibraryField {
-        qLibraryId: string;
-        type: "dimension" | "measure";
-    }
-
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
-    }
-
-    interface LoadType {
-        (type: {
-            name: string;
-            version: string;
-        }): Promise<stardust.Visualization>;
-    }
-
-    interface TypeInfo {
-        name: string;
-        version?: string;
-        load: stardust.LoadType;
-        meta?: object;
     }
 
     class RenderError extends Error {

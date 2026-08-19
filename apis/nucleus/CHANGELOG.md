@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.2.0](https://github.com/qlik-oss/nebula.js/compare/v7.1.1...v7.2.0) (2026-08-11)
+
+### Bug Fixes
+
+- add wrapper to filter and search ([#2125](https://github.com/qlik-oss/nebula.js/issues/2125)) ([6dbf35d](https://github.com/qlik-oss/nebula.js/commit/6dbf35d2052e79c78092da83d688b01c40a9b370))
+- **deps:** update babel monorepo to v8 ([#2106](https://github.com/qlik-oss/nebula.js/issues/2106)) ([60e6c04](https://github.com/qlik-oss/nebula.js/commit/60e6c0498aa9030a80436033eff17524e6276ab3))
+- **deps:** update dependency @qlik/api to v2.12.0 ([#2111](https://github.com/qlik-oss/nebula.js/issues/2111)) ([1ae5298](https://github.com/qlik-oss/nebula.js/commit/1ae5298a0bec73a1eb0b56a23ad04518bc32623a))
+- **deps:** update dependency @qlik/api to v2.13.0 ([#2116](https://github.com/qlik-oss/nebula.js/issues/2116)) ([607bc69](https://github.com/qlik-oss/nebula.js/commit/607bc692ed2d27a92dff0330995d32ad6bf771ca))
+- **deps:** update dependency @qlik/api to v2.14.1 ([#2200](https://github.com/qlik-oss/nebula.js/issues/2200)) ([df8a5ab](https://github.com/qlik-oss/nebula.js/commit/df8a5ab19c479668e62ffe2bba5adbb6c0c54a4d))
+- make listbox cover entire parent element ([#2123](https://github.com/qlik-oss/nebula.js/issues/2123)) ([9fe9a23](https://github.com/qlik-oss/nebula.js/commit/9fe9a23172e4e3bfb9d151ea64ad78541d82a5ee))
+
+### Features
+
+- make requirements more responsive + toolbarmode ([#2226](https://github.com/qlik-oss/nebula.js/issues/2226)) ([284a3be](https://github.com/qlik-oss/nebula.js/commit/284a3beb08fee5bc0808e6785eb17ec6584dde99))
+
 ## [7.1.1](https://github.com/qlik-oss/nebula.js/compare/v7.1.0...v7.1.1) (2026-06-22)
 
 ### Reverts

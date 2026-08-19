@@ -6,17 +6,10 @@
 .cache/
 .DS_Store
 .idea/
-.vscode/
 .npmrc
 *.pem
 .claude/worktrees
 .pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
 
 node_modules/
 coverage/
@@ -28,7 +21,7 @@ test/**/__artifacts__/temp
 apis/*/core/**/*.js
 apis/*/core/**/*.js.map
 apis/locale/all.json
-generated/
+bundle-analysis.html
 
 Search/
 
@@ -36,7 +29,9 @@ local-dev/
 storybook-static/
 
 # testing
+test/mashup/reports
 test/rendering/reports
 test-results
 test/rendering/test/rendering/reports
 commands/serve/test/reports
+playwright-report/
