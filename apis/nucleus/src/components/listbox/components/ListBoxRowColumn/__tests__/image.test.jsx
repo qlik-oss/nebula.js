@@ -44,6 +44,36 @@ describe('<Image />', () => {
     await testRenderer.unmount();
   });
 
+  describe('src security validation', () => {
+    test.each([
+      ['https URL', 'https://foo/bar.png'],
+      ['http URL', 'http://foo/bar.png'],
+      ['relative URL', '/media/bar.png'],
+      ['image data URI', 'data:image/png;base64,iVBORw0KGgo='],
+    ])('renders an img for a safe src (%s)', async (_desc, src) => {
+      const testRenderer = await render(
+        <Image representation={{ imageSize: 'fitHeight', imagePosition: 'topLeft' }} src={src} label="l" />
+      );
+      const imgs = testRenderer.root.findAllByType('img');
+      expect(imgs).toHaveLength(1);
+      expect(imgs[0].props.src).toBe(src);
+      await testRenderer.unmount();
+    });
+
+    test.each([
+      // eslint-disable-next-line no-script-url -- intentionally testing that a javascript: src is rejected
+      ['javascript: URL', 'javascript:alert(1)'],
+      ['data:text/html', 'data:text/html,<script>alert(1)</script>'],
+      ['vbscript: URL', 'vbscript:msgbox(1)'],
+    ])('does not render an img for an unsafe src (%s)', async (_desc, src) => {
+      const testRenderer = await render(
+        <Image representation={{ imageSize: 'fitHeight', imagePosition: 'topLeft' }} src={src} label="l" />
+      );
+      expect(testRenderer.root.findAllByType('img')).toHaveLength(0);
+      await testRenderer.unmount();
+    });
+  });
+
   describe('imageSize', () => {
     test.each([
       ['fitHeight', { width: 'auto', objectFit: 'contain' }],
