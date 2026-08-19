@@ -47,6 +47,7 @@ const StyledOutlinedInput = styled(OutlinedInput, {
     },
     '&.Mui-focused fieldset': {
       borderColor: `${styles.search.highlightBorderColor} !important`,
+      borderWidth: '2px 0 2px 0',
     },
     '& .MuiInputBase-root': {
       ...styles.search,
