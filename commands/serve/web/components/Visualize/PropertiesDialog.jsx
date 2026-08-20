@@ -71,15 +71,20 @@ export default function PropertiesDialog({ model, show, close }) {
 
   return (
     <Dialog
-      disableEscapeKeyDown
       open={show}
       scroll="paper"
       maxWidth="md"
-      onClose={close}
-      PaperProps={{
-        style: {
-          height: '80%',
-          width: '80%',
+      onClose={(_event, reason) => {
+        if (reason !== 'escapeKeyDown') {
+          close();
+        }
+      }}
+      slotProps={{
+        paper: {
+          style: {
+            height: '80%',
+            width: '80%',
+          },
         },
       }}
     >
