@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.3.0](https://github.com/qlik-oss/nebula.js/compare/v7.2.0...v7.3.0) (2026-08-20)
+
+### Features
+
+- **listbox:** use qFallbackTitle when title is undefined ([#2134](https://github.com/qlik-oss/nebula.js/issues/2134)) ([bccf81d](https://github.com/qlik-oss/nebula.js/commit/bccf81ddd54efca3f8bd1b3b1da17b14e0f4d440))
+
 # [7.2.0](https://github.com/qlik-oss/nebula.js/compare/v7.1.1...v7.2.0) (2026-08-11)
 
 ### Bug Fixes
