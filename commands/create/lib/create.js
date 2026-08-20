@@ -59,12 +59,6 @@ function copyFactory(root, destination) {
   };
 }
 
-const typescriptDevDependencies = {
-  '@rollup/plugin-typescript': '12.3.0',
-  tslib: '^2.8.1',
-  typescript: '^5.9.3',
-};
-
 const renameJavascriptSourcesToTypescript = (target) => {
   if (!fse.existsSync(target)) {
     return;
@@ -87,14 +81,6 @@ const renameJavascriptSourcesToTypescript = (target) => {
 
 const scaffoldTypescript = ({ destination }) => {
   renameJavascriptSourcesToTypescript(path.resolve(destination, 'src'));
-
-  const packageJsonPath = path.resolve(destination, 'package.json');
-  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, { encoding: 'utf8' }));
-  packageJson.devDependencies = {
-    ...packageJson.devDependencies,
-    ...typescriptDevDependencies,
-  };
-  fs.writeFileSync(packageJsonPath, `${JSON.stringify(packageJson, null, 2)}\n`);
 
   fs.copyFileSync(
     path.resolve(moduleDir, '../templates/sn/typescript/tsconfig.json'),
@@ -181,6 +167,7 @@ const create = async (argv) => {
       user: options.author.name,
       email: options.author.email,
       nebulaVersion: pkg.version,
+      typescript: Boolean(options.typescript),
     };
 
     const traverse = (sourceFolder, targetFolder = '') => {
