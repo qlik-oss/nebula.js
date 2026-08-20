@@ -59,10 +59,62 @@ function copyFactory(root, destination) {
   };
 }
 
+const typescriptDevDependencies = {
+  '@rollup/plugin-typescript': '12.3.0',
+  tslib: '^2.8.1',
+  typescript: '^5.9.3',
+};
+
+const renameJavascriptSourcesToTypescript = (target) => {
+  if (!fse.existsSync(target)) {
+    return;
+  }
+
+  const entries = fs.readdirSync(target, { withFileTypes: true });
+  entries.forEach((entry) => {
+    const currentPath = path.resolve(target, entry.name);
+    if (entry.isDirectory()) {
+      renameJavascriptSourcesToTypescript(currentPath);
+      return;
+    }
+
+    if (entry.isFile() && path.extname(entry.name) === '.js') {
+      const nextPath = currentPath.replace(/\.js$/, '.ts');
+      fs.renameSync(currentPath, nextPath);
+    }
+  });
+};
+
+const scaffoldTypescript = ({ destination }) => {
+  renameJavascriptSourcesToTypescript(path.resolve(destination, 'src'));
+
+  const packageJsonPath = path.resolve(destination, 'package.json');
+  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, { encoding: 'utf8' }));
+  packageJson.devDependencies = {
+    ...packageJson.devDependencies,
+    ...typescriptDevDependencies,
+  };
+  fs.writeFileSync(packageJsonPath, `${JSON.stringify(packageJson, null, 2)}\n`);
+
+  fs.copyFileSync(
+    path.resolve(moduleDir, '../templates/sn/typescript/tsconfig.json'),
+    path.resolve(destination, 'tsconfig.json')
+  );
+  fs.copyFileSync(
+    path.resolve(moduleDir, '../templates/sn/typescript/nebula.config.js'),
+    path.resolve(destination, 'nebula.config.js')
+  );
+};
+
 const create = async (argv) => {
   const { name } = argv;
 
   const isMashup = argv._.includes('mashup');
+
+  if (isMashup && argv.typescript) {
+    console.error(chalk.red('TypeScript scaffolding is only supported for visualizations.'));
+    process.exit(1);
+  }
 
   const projectFolder = name;
   const packageName = name.split('/').slice(-1)[0];
@@ -153,6 +205,10 @@ const create = async (argv) => {
     folders.forEach((folder) => {
       traverse(folder);
     });
+
+    if (options.typescript) {
+      scaffoldTypescript({ destination });
+    }
   };
 
   const install = async () => {
