@@ -1,5 +1,6 @@
 {
   "name": "listbox",
+  "private": true,
   "main": "dist/listbox.js",
   "peerDependencies": {
     "@nebula.js/stardust": "workspace:*"
