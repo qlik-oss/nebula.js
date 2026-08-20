@@ -150,12 +150,13 @@ export default function getListBoxComponents({
   const Grid = ({ onItemsRendered, ref }) => {
     const { overflowStyling, scrollBarWidth } = sizes;
     const { layoutOrder } = layoutOptions || {};
+    const effectiveLayoutOrder = representation?.type === 'image' ? 'row' : layoutOrder;
     const gridHeight = Math.min(listHeight, rowCount * itemHeight + scrollBarWidth);
     // eslint-disable-next-line no-param-reassign
     local.current.listRef = ref;
 
     const handleGridItemsRendered = (renderProps) => {
-      const isRow = layoutOrder === 'row';
+      const isRow = effectiveLayoutOrder === 'row';
       setCurrentScrollIndex({
         start: isRow ? renderProps.visibleRowStartIndex : renderProps.visibleColumnStartIndex,
         stop: isRow ? renderProps.visibleRowStopIndex : renderProps.visibleColumnStopIndex,
@@ -163,7 +164,7 @@ export default function getListBoxComponents({
       const renderOptions = deriveRenderOptions({
         renderProps,
         scrollState,
-        layoutOrder,
+        layoutOrder: effectiveLayoutOrder,
         rowCount,
         columnCount,
       });
