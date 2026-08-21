@@ -7,6 +7,7 @@ MASHUP="${3:-false}"
 INSTALL="${4:-false}"
 BUILD="${5:-true}"
 TEST="${6:-true}"
+TYPESCRIPT="${7:-false}"
 
 NEBULA_ROOT="$(pwd)"
 
@@ -15,7 +16,11 @@ if [ "$MASHUP" = "true" ]; then
   ./commands/cli/lib/index.js create mashup "$PROJECT_NAME" --install false --pkgm pnpm
 else
   echo "Create project based on Picasso template"
-  ./commands/cli/lib/index.js create "$PROJECT_NAME" --picasso "$PICASSO_TEMPLATE" --install false --pkgm pnpm
+  CREATE_ARGS=("$PROJECT_NAME" --picasso "$PICASSO_TEMPLATE" --install false --pkgm pnpm)
+  if [ "$TYPESCRIPT" = "true" ]; then
+    CREATE_ARGS+=(--typescript)
+  fi
+  ./commands/cli/lib/index.js create "${CREATE_ARGS[@]}"
 fi
 
 cd "$PROJECT_NAME"
@@ -30,12 +35,12 @@ echo "Installing packages from tarballs (simulates npm install)"
 # Pack this branch's packages as tarballs so the generated project uses them
 # the way real users would (no workspace symlinks, tests the 'files' field,
 # prevents monorepo transitive issues like Babel 8 from stardust).
-pnpm --dir "$NEBULA_ROOT/apis/stardust" pack --out "$PWD/nebula-stardust.tgz"
-pnpm --dir "$NEBULA_ROOT/commands/cli" pack --out "$PWD/nebula-cli.tgz"
-pnpm --dir "$NEBULA_ROOT/commands/serve" pack --out "$PWD/nebula-serve.tgz"
-pnpm --dir "$NEBULA_ROOT/commands/build" pack --out "$PWD/nebula-build.tgz"
+pnpm --dir "$NEBULA_ROOT/apis/stardust" pack --pack-destination "$PWD"
+pnpm --dir "$NEBULA_ROOT/commands/cli" pack --pack-destination "$PWD"
+pnpm --dir "$NEBULA_ROOT/commands/serve" pack --pack-destination "$PWD"
+pnpm --dir "$NEBULA_ROOT/commands/build" pack --pack-destination "$PWD"
 
-pnpm add ./nebula-stardust.tgz ./nebula-cli.tgz ./nebula-serve.tgz ./nebula-build.tgz
+pnpm add ./nebula.js-stardust-*.tgz ./nebula.js-cli-[0-9]*.tgz ./nebula.js-cli-serve-*.tgz ./nebula.js-cli-build-*.tgz
 pnpm add buffer@6.0.3
 
 echo "Log node_modules/@nebula.js"
