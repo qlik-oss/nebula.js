@@ -169,7 +169,7 @@ jobs:
             ./commands/serve/test/e2e/dev-route.spec.js-snapshots
 
   test-create:
-    name: ${{ matrix['picasso-template'] }}${{ matrix.mashup && '-mashup' || '' }}${{ matrix.typescript && '-ts' || '' }}
+    name: ${{ matrix['picasso-template'] != 'none' && matrix['picasso-template'] || 'basic' }}${{ matrix.mashup && '-mashup' || '' }}${{ matrix.typescript && '-ts' || '' }}
     runs-on: ubuntu-latest
     needs: build
     strategy:
