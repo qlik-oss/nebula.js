@@ -557,16 +557,6 @@ declare namespace stardust {
         isEnabled(flag: string): boolean;
     }
 
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
-    }
-
     class AppSelections {
         constructor();
 
@@ -683,11 +673,14 @@ declare namespace stardust {
         type: "dimension" | "measure";
     }
 
-    class RenderError extends Error {
-        constructor(message: string, originalError: Error);
-
-        originalError: Error;
-
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
     }
 
     interface LoadType {
@@ -702,6 +695,13 @@ declare namespace stardust {
         version?: string;
         load: stardust.LoadType;
         meta?: object;
+    }
+
+    class RenderError extends Error {
+        constructor(message: string, originalError: Error);
+
+        originalError: Error;
+
     }
 
     class Navigation implements stardust.Emitter {

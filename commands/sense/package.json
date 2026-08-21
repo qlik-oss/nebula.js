@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/cli-sense",
-  "version": "7.3.0",
+  "version": "7.4.0",
   "description": "Build a supernova as a Qlik Sense extension",
   "type": "module",
   "license": "MIT",
