@@ -1,15 +1,15 @@
 #! /usr/bin/env node
-/* eslint no-underscore-dangle: 0 */
+/* eslint-disable no-console */
 import { globbySync } from 'globby';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
 import path from 'path';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const LOCALES_DIR = path.resolve(__dirname, '../locales');
+const LOCALES_DIR = path.resolve(dirname, '../locales');
 const LOCALES_FILES = globbySync(['*.json'], { cwd: LOCALES_DIR });
-const LOCALE_PKG_DIR = path.resolve(__dirname, '..');
+const LOCALE_PKG_DIR = path.resolve(dirname, '..');
 const ALL = path.resolve(`${LOCALE_PKG_DIR}`, 'all.json');
 
 const LOCALES = {
@@ -33,6 +33,8 @@ const LOCALES = {
 
 const merged = {};
 
+console.log(`Processing ${LOCALES_FILES.length} locale files...`);
+
 for (const fileName of LOCALES_FILES) {
   const file = path.join(LOCALES_DIR, fileName);
   const short = path.parse(file).name;
@@ -55,3 +57,4 @@ for (const fileName of LOCALES_FILES) {
 }
 
 fs.writeFileSync(ALL, JSON.stringify(merged, ' ', 2));
+console.log(`✓ Generated ${Object.keys(merged).length} locale keys → ${path.relative(process.cwd(), ALL)}`);

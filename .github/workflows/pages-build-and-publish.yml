@@ -22,20 +22,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Set up Node.js
-        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+      - uses: pnpm/setup@c9883cc79df532ad1a7b81bf9ab944ceb090d65c # v2
         with:
-          node-version: 24.18.0
-          cache: yarn
-
-      - name: Install dependencies
-        run: yarn install --immutable
+          cache: true
 
       - name: Build packages
-        run: yarn run build
+        run: pnpm run build
 
       - name: Prepare Pages content
         run: |

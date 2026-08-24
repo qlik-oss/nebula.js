@@ -16,7 +16,7 @@ import Image from './components/Image';
 import Histogram from './components/Histogram';
 import Frequency from './components/Frequency';
 import ItemGrid from './components/ItemGrid';
-import getRowFromPages from './helpers/get-cell-from-pages';
+import getRowFromPages from './helpers/get-row-from-pages';
 import getRowsKeyboardNavigation from '../../interactions/keyboard-navigation/keyboard-nav-rows';
 import getValueTextAlign from './helpers/get-value-text-align';
 import getValueLabel from '../screen-reader/value-label';

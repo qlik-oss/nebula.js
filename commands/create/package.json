@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/cli-create",
-  "version": "7.1.1",
+  "version": "7.4.0",
   "description": "",
   "type": "module",
   "license": "MIT",
@@ -24,8 +24,10 @@
   },
   "dependencies": {
     "@inquirer/prompts": "8.5.2",
-    "chalk": "4.1.2",
+    "chalk": "6.0.0",
     "ejs": "6.0.1",
-    "fs-extra": "11.3.6"
+    "fs-extra": "11.4.0",
+    "picasso-plugin-q": "2.11.5",
+    "picasso.js": "2.11.5"
   }
 }

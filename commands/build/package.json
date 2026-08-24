@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/cli-build",
-  "version": "7.1.1",
+  "version": "7.4.0",
   "description": "",
   "type": "module",
   "license": "MIT",
@@ -22,11 +22,14 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@babel/cli": "7.29.7",
-    "@babel/core": "7.29.7",
-    "@babel/preset-env": "7.29.7",
-    "@babel/preset-react": "7.29.7",
-    "@babel/preset-typescript": "7.29.7",
+    "@babel/cli": "8.0.4",
+    "@babel/core": "8.0.1",
+    "@babel/helper-plugin-utils": "8.0.1",
+    "@babel/plugin-proposal-object-rest-spread": "7.20.7",
+    "@babel/plugin-transform-react-jsx": "8.0.1",
+    "@babel/preset-env": "8.0.2",
+    "@babel/preset-react": "8.0.1",
+    "@babel/preset-typescript": "8.0.1",
     "@qlik/browserslist-config": "^3.0.1",
     "@rollup/plugin-babel": "7.1.0",
     "@rollup/plugin-commonjs": "29.0.3",
@@ -34,17 +37,18 @@
     "@rollup/plugin-node-resolve": "16.0.3",
     "@rollup/plugin-replace": "6.0.3",
     "@rollup/plugin-terser": "1.0.0",
-    "chalk": "4.1.2",
+    "chalk": "6.0.0",
     "extend": "3.0.2",
-    "postcss": "^8.5.22",
-    "rollup": "4.62.2",
+    "postcss": "^8.5.23",
+    "rollup": "4.62.3",
     "rollup-plugin-postcss": "4.0.2",
+    "rollup-plugin-sass": "1.15.3",
     "rollup-plugin-visualizer": "7.0.1",
-    "yargs": "18.0.0"
+    "yargs": "18.1.0"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "12.3.0",
     "tslib": "*",
-    "typescript": ">=6.0.3"
+    "typescript": "^5.9.3"
   }
 }

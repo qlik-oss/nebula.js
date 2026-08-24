@@ -47,9 +47,9 @@ export default function getListBoxComponents({
   const { layoutOptions = {} } = layout || {};
   const { columnWidth, listHeight, itemHeight, rowCount, columnCount } = sizes || {};
 
-  // Representation settings and attribute-expression index map from dimension info, used for both List and Grid.
-  const dimensionInfo = layout?.qListObject?.qDimensionInfo;
-  const representation = dimensionInfo?.representation;
+  // Representation settings live at the listbox object root (sibling of qListObjectDef, alongside
+  // layoutOptions); the per-value expression index map comes from the list object's qExpressions.
+  const representation = layout?.representation;
   // Per-value list-object expressions (qListObjectDef.qExpressions) arrive as extra data columns:
   // qMatrix[row] = [dimensionCell, exprCell0, ...]. Map an expression's qLabel (e.g. 'imageUrl') to
   // its column index (offset by 1 for the dimension column).

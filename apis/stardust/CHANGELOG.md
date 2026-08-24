@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.4.0](https://github.com/qlik-oss/nebula.js/compare/v7.3.0...v7.4.0) (2026-08-21)
+
+### Features
+
+- ts scaffold in nebula create ([#2232](https://github.com/qlik-oss/nebula.js/issues/2232)) ([6df9fcf](https://github.com/qlik-oss/nebula.js/commit/6df9fcf4d951b908728f34b2a8c02ade08144649))
+
+# [7.3.0](https://github.com/qlik-oss/nebula.js/compare/v7.2.0...v7.3.0) (2026-08-20)
+
+**Note:** Version bump only for package @nebula.js/stardust
+
+# [7.2.0](https://github.com/qlik-oss/nebula.js/compare/v7.1.1...v7.2.0) (2026-08-11)
+
+### Bug Fixes
+
+- **deps:** update dependency @qlik/api to v2.12.0 ([#2111](https://github.com/qlik-oss/nebula.js/issues/2111)) ([1ae5298](https://github.com/qlik-oss/nebula.js/commit/1ae5298a0bec73a1eb0b56a23ad04518bc32623a))
+- **deps:** update dependency @qlik/api to v2.13.0 ([#2116](https://github.com/qlik-oss/nebula.js/issues/2116)) ([607bc69](https://github.com/qlik-oss/nebula.js/commit/607bc692ed2d27a92dff0330995d32ad6bf771ca))
+- **deps:** update dependency @qlik/api to v2.14.1 ([#2200](https://github.com/qlik-oss/nebula.js/issues/2200)) ([df8a5ab](https://github.com/qlik-oss/nebula.js/commit/df8a5ab19c479668e62ffe2bba5adbb6c0c54a4d))
+
+### Features
+
+- make requirements more responsive + toolbarmode ([#2226](https://github.com/qlik-oss/nebula.js/issues/2226)) ([284a3be](https://github.com/qlik-oss/nebula.js/commit/284a3beb08fee5bc0808e6785eb17ec6584dde99))
+
 ## [7.1.1](https://github.com/qlik-oss/nebula.js/compare/v7.1.0...v7.1.1) (2026-06-22)
 
 **Note:** Version bump only for package @nebula.js/stardust

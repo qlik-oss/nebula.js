@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
-    "version": "7.1.1",
+    "version": "7.4.0",
     "license": "MIT",
     "stability": "stable"
   },
@@ -1149,6 +1149,26 @@
         ]
       }
     },
+    "ToolbarMode": {
+      "kind": "alias",
+      "items": {
+        "kind": "union",
+        "items": [
+          {
+            "kind": "literal",
+            "value": "'attach'"
+          },
+          {
+            "kind": "literal",
+            "value": "'detach'"
+          },
+          {
+            "kind": "literal",
+            "value": "'auto'"
+          }
+        ]
+      }
+    },
     "FieldEventTypes": {
       "kind": "alias",
       "items": {
@@ -1275,6 +1295,12 @@
                   "optional": true,
                   "defaultValue": true,
                   "type": "boolean"
+                },
+                "toolbarMode": {
+                  "description": "Toolbar placement mode: attach, detach, or auto.",
+                  "optional": true,
+                  "defaultValue": "auto",
+                  "type": "#/definitions/ToolbarMode"
                 },
                 "checkboxes": {
                   "description": "Show values as checkboxes instead of as fields (not applicable for existing objects)",

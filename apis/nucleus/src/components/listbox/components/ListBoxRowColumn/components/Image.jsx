@@ -105,6 +105,24 @@ const getObjectFit = (imageSize) => {
   }
 };
 
+// Validate the image src before putting it in the DOM. Only http(s) URLs (including relative ones,
+// which resolve against the page origin) and inline image data URIs are allowed; anything else
+// (e.g. javascript: or data:text/html) is rejected.
+const isSafeImageSrc = (src) => {
+  if (typeof src !== 'string' || !src.trim()) {
+    return false;
+  }
+  try {
+    const url = new URL(src, window.location.origin);
+    if (url.protocol === 'https:' || url.protocol === 'http:') {
+      return true;
+    }
+    return url.protocol === 'data:' && /^data:image\//i.test(src.trim());
+  } catch {
+    return false;
+  }
+};
+
 // Corner radius options (matching the property-panel dropdown) mapped to CSS border-radius values.
 const cornerRadiusMap = {
   none: '0px',
@@ -147,6 +165,7 @@ function Image({
   const isFitHeight = imageSize === 'fitHeight';
   const resolvedImagePosition = resolveImagePosition(imagePosition);
   const maxImageHeight = '200px';
+  const safeSrc = isSafeImageSrc(src) ? src : null;
   const resolvedCornerRadius = cornerRadiusMap[cornerRadius] ?? '4px';
   // Selected cells get a colored border; otherwise use the configured border
   let border;
@@ -158,9 +177,9 @@ function Image({
     border = '2px solid transparent';
   }
 
-  const imgNode = src ? (
+  const imgNode = safeSrc ? (
     <img
-      src={src}
+      src={safeSrc}
       alt={label}
       style={{
         width: getImageWidth(imageSize),
