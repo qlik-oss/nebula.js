@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/test-utils",
-  "version": "7.1.1",
+  "version": "7.4.0",
   "private": true,
   "description": "",
   "license": "MIT",
@@ -22,9 +22,20 @@
     "build": "cross-env NODE_ENV=production rollup --bundleConfigAsCjs --config ../../rollup.config.js",
     "build:dev": "rollup --bundleConfigAsCjs --config ../../rollup.config.js",
     "build:watch": "rollup --bundleConfigAsCjs --config ../../rollup.config.js -w",
-    "prepublishOnly": "rm -rf dist && yarn run build"
+    "prepublishOnly": "rm -rf dist && pnpm run build"
   },
   "peerDependencies": {
     "@nebula.js/stardust": ">=7.0.0"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "8.0.2",
+    "@rollup/plugin-babel": "7.1.0",
+    "@rollup/plugin-commonjs": "29.0.3",
+    "@rollup/plugin-json": "6.1.0",
+    "@rollup/plugin-node-resolve": "16.0.3",
+    "@rollup/plugin-replace": "6.0.3",
+    "@rollup/plugin-terser": "1.0.0",
+    "cross-env": "10.1.0",
+    "rollup": "4.62.3"
   }
 }

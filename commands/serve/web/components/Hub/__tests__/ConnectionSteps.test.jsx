@@ -1,27 +1,19 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
-import * as reactRouterDomModule from 'react-router';
+import { useNavigate } from 'react-router';
 import { TestRenderer } from '../../../utils';
 import ConnectionSteps from '../ConnectionSteps';
 
 import { steps } from '../../../constants/connectionSteps';
 
-jest.mock('react-router', () => ({
-  ...jest.requireActual('react-router'),
-  useNavigate: jest.fn(),
-}));
-
 describe('<ConnectionSteps />', () => {
   let setErrorMock;
-  let useNavigateMock;
   let navigateMock;
 
   beforeAll(() => {
     setErrorMock = jest.fn();
     navigateMock = jest.fn();
-    useNavigateMock = jest.fn().mockReturnValue(navigateMock);
-
-    jest.spyOn(reactRouterDomModule, 'useNavigate').mockImplementation(useNavigateMock);
+    jest.mocked(useNavigate).mockReturnValue(navigateMock);
   });
 
   afterAll(() => {
@@ -42,7 +34,7 @@ describe('<ConnectionSteps />', () => {
 
     await userEvents.click(screen.queryByText(steps[0]));
 
-    expect(useNavigateMock).toHaveBeenCalledTimes(1);
+    expect(useNavigate).toHaveBeenCalledTimes(1);
     expect(setErrorMock).toHaveBeenCalledTimes(1);
     expect(navigateMock).toHaveBeenCalledTimes(1);
     expect(navigateMock).toHaveBeenCalledWith('/');

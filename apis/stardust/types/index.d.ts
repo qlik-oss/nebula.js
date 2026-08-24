@@ -365,6 +365,8 @@ declare namespace stardust {
 
     type SearchMode = boolean | "toggle";
 
+    type ToolbarMode = "attach" | "detach" | "auto";
+
     type FieldEventTypes = "selectionActivated" | "selectionDeactivated";
 
     class FieldInstance {
@@ -398,6 +400,7 @@ declare namespace stardust {
             search?: stardust.SearchMode;
             showLock?: boolean;
             toolbar?: boolean;
+            toolbarMode?: stardust.ToolbarMode;
             checkboxes?: boolean;
             dense?: boolean;
             stateName?: string;

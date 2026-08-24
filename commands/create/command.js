@@ -44,6 +44,11 @@ export default {
       type: 'string',
       description: 'Package author',
     });
+    yargs.option('typescript', {
+      type: 'boolean',
+      default: false,
+      description: 'Generate a TypeScript visualization scaffold',
+    });
   },
   handler(argv) {
     create(argv);

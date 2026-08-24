@@ -13,7 +13,8 @@
  */
 
 /**
- * Representation settings for the dimension values, set on `qListObjectDef.qDef.representation`.
+ * Representation settings for the dimension values, set on the listbox object root `representation`
+ * (a sibling of `qListObjectDef`, alongside `layoutOptions`).
  *
  * Notes on image representation:
  * -   * When `type` is `'image'` the values are rendered as images. Image metadata is resolved from
