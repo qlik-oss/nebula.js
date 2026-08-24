@@ -1,0 +1,13 @@
+{
+  "command": {
+    "version": {
+      "allowBranch": "main",
+      "conventionalCommits": true,
+      "message": "chore(release): %s 🚀"
+    }
+  },
+  "ignoreChanges": ["**/*.md", "**/__tests__/**", "**/__stories__/**"],
+  "version": "7.4.0",
+  "npmClient": "pnpm",
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json"
+}

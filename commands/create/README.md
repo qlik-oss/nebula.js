@@ -28,6 +28,8 @@ Options:
   --install   Run package installation step            [boolean] [default: true]
   --pkgm      Package manager          [string] [choices: "npm", "yarn", "pnpm"]
   --picasso   Picasso template [string] [choices: "none", "minimal", "barchart"]
+  --typescript Generate a TypeScript visualization scaffold
+                                                      [boolean] [default: false]
   --author    Package author                                            [string]
   -h, --help  Show help                                                [boolean]
 ```
@@ -64,6 +66,10 @@ options.
 - none: without the picasso.js template
 - minimal: a basic setup of picasso.js is ready
 - barchart: a bar chart component created by picasso.js is ready
+
+Generate a TypeScript visualization scaffold by adding `--typescript`. This
+adds `tsconfig.json`, `nebula.config.js`, TypeScript build dependencies, and
+TypeScript source files for the generated visualization.
 
 You can find the [tutorial](https://qlik.dev/extend/extend-quickstarts/first-extension) to build a basic nebula visualization using nebula.js.
 
@@ -102,4 +108,12 @@ Create a mashup and do not install any dependencies yet
 
 ```sh
 nebula create mashup table-mashup --install false
+```
+
+#### TypeScript scaffold
+
+Create a nebula visualization project with a TypeScript scaffold
+
+```sh
+nebula create sn-table --typescript
 ```

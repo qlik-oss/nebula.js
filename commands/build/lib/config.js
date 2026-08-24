@@ -164,10 +164,7 @@ const config = ({
       babelPresetTypescript,
       {
         allowNamespaces: true,
-        allowDeclareFields: true,
         onlyRemoveTypeImports: true,
-        // Fixes for _default issues
-        isolatedModules: true,
       },
     ]);
   }

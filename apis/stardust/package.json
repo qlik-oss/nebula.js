@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/stardust",
-  "version": "7.2.0",
+  "version": "7.4.0",
   "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
   "license": "MIT",
   "author": "QlikTech International AB",

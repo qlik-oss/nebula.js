@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.4.0](https://github.com/qlik-oss/nebula.js/compare/v7.3.0...v7.4.0) (2026-08-21)
+
+### Features
+
+- ts scaffold in nebula create ([#2232](https://github.com/qlik-oss/nebula.js/issues/2232)) ([6df9fcf](https://github.com/qlik-oss/nebula.js/commit/6df9fcf4d951b908728f34b2a8c02ade08144649))
+
+# [7.3.0](https://github.com/qlik-oss/nebula.js/compare/v7.2.0...v7.3.0) (2026-08-20)
+
+### Bug Fixes
+
+- **deps:** update dependency chalk to v6 ([#2211](https://github.com/qlik-oss/nebula.js/issues/2211)) ([0e5aff1](https://github.com/qlik-oss/nebula.js/commit/0e5aff19cf9aaff1454548277c59e5a2fffd33ca)), closes [#2230](https://github.com/qlik-oss/nebula.js/issues/2230)
+
+### Features
+
+- **listbox:** use qFallbackTitle when title is undefined ([#2134](https://github.com/qlik-oss/nebula.js/issues/2134)) ([bccf81d](https://github.com/qlik-oss/nebula.js/commit/bccf81ddd54efca3f8bd1b3b1da17b14e0f4d440))
+
 # [7.2.0](https://github.com/qlik-oss/nebula.js/compare/v7.1.1...v7.2.0) (2026-08-11)
 
 ### Bug Fixes
