@@ -9,6 +9,9 @@ export default function useItemsLoader({
   scrollTimeout,
   postProcessPages,
   listData,
+  // Number of columns to fetch: 1 (the dimension) plus one per list-object expression
+  // (qListObjectDef.qExpressions). Extra columns carry per-value expression results.
+  dataWidth = 1,
 }) {
   const [isLoading, setIsLoading] = useState(false);
   const [pages, setPages] = useState([]);
@@ -52,13 +55,13 @@ export default function useItemsLoader({
                   qTop: lastItemInQueue.start > minimumBatchSize ? lastItemInQueue.start - minimumBatchSize : 0,
                   qHeight: minimumBatchSize,
                   qLeft: 0,
-                  qWidth: 1,
+                  qWidth: dataWidth,
                 },
                 {
                   qTop: lastItemInQueue.start,
                   qHeight: minimumBatchSize,
                   qLeft: 0,
-                  qWidth: 1,
+                  qWidth: dataWidth,
                 },
               ]
             )
