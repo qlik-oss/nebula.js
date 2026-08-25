@@ -72,6 +72,7 @@ describe('use-list-sizes', () => {
       },
       rowCount: 200,
       scrollBarWidth: 10,
+      gridGap: 0,
     });
   });
 
@@ -107,6 +108,7 @@ describe('use-list-sizes', () => {
       },
       rowCount: 3,
       scrollBarWidth: 10,
+      gridGap: 0,
     });
   });
 
@@ -136,6 +138,7 @@ describe('use-list-sizes', () => {
       },
       rowCount: 3,
       scrollBarWidth: 10,
+      gridGap: 0,
     });
   });
 
@@ -222,6 +225,7 @@ describe('use-list-sizes', () => {
       },
       rowCount: 200,
       scrollBarWidth: 10,
+      gridGap: 0,
     });
   });
 
@@ -255,6 +259,7 @@ describe('use-list-sizes', () => {
       },
       rowCount,
       scrollBarWidth: 10,
+      gridGap: 0,
     });
   });
 
@@ -270,7 +275,16 @@ describe('use-list-sizes', () => {
       itemHeight: 100, // listHeight / maxVisibleRows = 300 / 3, cells fill the pane
       rowCount: 25, // ceil(listCount / columnCount) => scrolls beyond the visible rows
       listCount: 100,
+      gridGap: 1, // default 0.5% of width 200 = 1px
     });
+  });
+
+  it('image representation converts the gridGap percentage of width into a pixel gap', () => {
+    args.layout.layoutOptions.dataLayout = 'grid';
+    args.layout.layoutOptions.layoutOrder = 'row';
+    args.layout.qListObject = { qDimensionInfo: { representation: { type: 'image', gridGap: 5 } } };
+    const sizes = useListSizes(args);
+    expect(sizes.gridGap).toBe(10); // 5% of width 200 = 10px
   });
 
   it('Algorithm should reduce rowCount when container height cannot fit all items.', () => {

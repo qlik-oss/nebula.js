@@ -60,11 +60,13 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     fillHeight,
     representation,
     listExprIndex = {},
+    exprCache = {},
   } = data;
 
   const { dense = false, dataLayout = 'singleColumn', layoutOrder } = layoutOptions;
-  const { itemPadding } = sizes;
-  const effectiveLayoutOrder = representation?.type === 'image' ? 'row' : layoutOrder;
+  const { itemPadding, gridGap = 0 } = sizes;
+  const isImageRepr = representation?.type === 'image';
+  const effectiveLayoutOrder = isImageRepr ? 'row' : layoutOrder;
 
   let cellIndex;
   let styleOverrides;
@@ -88,6 +90,12 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
       // right: columnIndex === columnCount ? style.right : Number(style.right) + columnIndex * padding,
       top: rowIndex === 0 ? style.top : Number(style.top) + rowIndex * padding,
     };
+    if (isImageRepr && gridGap > 0) {
+      styleOverrides.width = Math.max(1, Number(style.width) - gridGap);
+      styleOverrides.height = Math.max(1, Number(style.height) - gridGap);
+      styleOverrides.left = Number(style.left) + gridGap / 2;
+      styleOverrides.top = Number(style.top) + gridGap / 2;
+    }
   } else {
     cellIndex = index;
     count.max = listCount;
@@ -158,22 +166,53 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   // Image representation. In 'url' mode the image src comes from the imageUrl expression and the
   // field value is the alt text; in 'label' mode (default) the field value is the image src and
   // the imageLabel expression provides the alt text.
-  const isImage = representation?.type === 'image';
+  const isImage = isImageRepr;
   let imageSrc;
   let imageAlt;
+  let imageSubtitle;
+  let imageCellBgColor;
+  let imageTooltip;
+  let imageSelectionColor;
+  let imageOpacity = 1;
+  let imagePlaceholderBg;
   if (isImage) {
+    imageSelectionColor = styles?.selections?.selected || '#009845';
+    if (cell.qState === 'X' || cell.qState === 'XS') {
+      imageOpacity = 0.3;
+    } else if (cell.qState === 'A') {
+      imageOpacity = 0.4;
+    }
+    // Neutral backdrop shown while the image loads and behind any letterboxing (a touch darker for
+    // alternatives); the cell background color expression, when set, takes precedence over this.
+    imagePlaceholderBg = cell.qState === 'A' ? '#e0e0e0' : '#f0f0f0';
+
+    // Resolve a per-value expression column, caching the last non-empty value per dimension value so
+    // it survives once the value becomes excluded (the engine returns null for excluded values).
+    const resolveExpr = (key) => {
+      const col = listExprIndex[key];
+      if (col == null) return undefined;
+      const raw = row?.[col]?.qText;
+      const bucket = exprCache[key] || (exprCache[key] = {});
+      if (raw != null && raw !== '') {
+        bucket[label] = raw;
+        return raw;
+      }
+      return bucket[label];
+    };
+
     const imageSetting = representation?.imageSetting ?? 'label';
-    const urlCol = listExprIndex.imageUrl;
-    const labelCol = listExprIndex.imageLabel;
-    const urlExprValue = urlCol != null ? row?.[urlCol]?.qText : undefined;
-    const labelExprValue = labelCol != null ? row?.[labelCol]?.qText : undefined;
+    const urlExprValue = resolveExpr('imageUrl');
+    const labelExprValue = resolveExpr('imageLabel');
+    imageSubtitle = resolveExpr('subtitle');
+    imageCellBgColor = resolveExpr('cellBgColor');
+    imageTooltip = resolveExpr('tooltip') || label;
 
     if (imageSetting === 'url') {
-      imageSrc = urlExprValue ?? label;
+      imageSrc = urlExprValue || label;
       imageAlt = label;
     } else {
       imageSrc = label;
-      imageAlt = labelExprValue ?? label;
+      imageAlt = labelExprValue || label;
     }
   }
 
@@ -197,8 +236,8 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     display: 'flex',
     alignItems: 'center',
     flexGrow: 1,
-    paddingLeft: isRtl ? 8 : checkboxes ? 0 : undefined,
-    paddingRight: checkboxes ? 0 : isRtl ? 8 : 0,
+    paddingLeft: isImage ? 0 : isRtl ? 8 : checkboxes ? 0 : undefined,
+    paddingRight: isImage ? 0 : checkboxes ? 0 : isRtl ? 8 : 0,
     justifyContent: valueTextAlign,
     textAlign: valueTextAlign,
   };
@@ -207,7 +246,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
 
   const showLockIcon = isSelected && isLocked;
   const showTickIcon = !checkboxes && isSelected && !isLocked;
-  const showAnyIcon = !checkboxes && sizePermitsTickOrLock;
+  const showAnyIcon = !checkboxes && sizePermitsTickOrLock && !isImage;
   const cellPaddingRight = checkboxes || !sizePermitsTickOrLock;
 
   const ariaLabel = getValueLabel({
@@ -249,6 +288,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
         cellPaddingRight={cellPaddingRight}
         layoutOrder={layoutOrder}
         itemPadding={itemPadding}
+        isImage={isImage}
         gap={0}
         className={joinClassNames(['value', classes.fieldRoot, ...classArr])}
         onClick={onClick}
@@ -273,9 +313,24 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
             frequencyMax={frequencyMax}
           />
         )}
-        <Grid style={cellStyle} className={joinClassNames([classes.cell, classes.selectedCell])} title={`${label}`}>
+        <Grid
+          style={cellStyle}
+          className={joinClassNames([classes.cell, classes.selectedCell])}
+          title={isImage ? `${imageTooltip}` : `${label}`}
+        >
           {isImage ? (
-            <Image representation={representation} src={imageSrc} label={imageAlt} />
+            <Image
+              representation={representation}
+              src={imageSrc}
+              label={imageAlt}
+              title={label}
+              subtitle={imageSubtitle}
+              cellBgColor={imageCellBgColor}
+              placeholderBackground={imagePlaceholderBg}
+              selected={isSelected}
+              selectionColor={imageSelectionColor}
+              opacity={imageOpacity}
+            />
           ) : labels ? (
             <FieldWithRanges
               onChange={onChange}

@@ -5,13 +5,22 @@ import classes from '../helpers/classes';
 
 const ItemGrid = styled(Grid, {
   shouldForwardProp: (prop) =>
-    !['dataLayout', 'layoutOrder', 'itemPadding', 'cellPaddingRight', 'direction', 'fillHeight'].includes(prop),
-})(({ dataLayout, layoutOrder, itemPadding, cellPaddingRight, direction, fillHeight }) => {
+    !['dataLayout', 'layoutOrder', 'itemPadding', 'cellPaddingRight', 'direction', 'fillHeight', 'isImage'].includes(
+      prop
+    ),
+})(({ dataLayout, layoutOrder, itemPadding, cellPaddingRight, direction, fillHeight, isImage }) => {
   const att = `padding${direction === 'rtl' ? 'Left' : 'Right'}`;
+  // Image cells fill the whole card (no trailing padding); otherwise reserve space when needed.
+  let cellPadding;
+  if (!isImage && cellPaddingRight) {
+    cellPadding = '8px';
+  } else if (isImage) {
+    cellPadding = 0;
+  }
   return {
     [`&.${classes.fieldRoot}`]: {
-      ...getItemSizes({ dataLayout, layoutOrder, itemPadding, fillHeight }),
-      [att]: cellPaddingRight ? '8px' : undefined,
+      ...getItemSizes({ dataLayout, layoutOrder, itemPadding, fillHeight, isImage }),
+      [att]: cellPadding,
     },
   };
 });
