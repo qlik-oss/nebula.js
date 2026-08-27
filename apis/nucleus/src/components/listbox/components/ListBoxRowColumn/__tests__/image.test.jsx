@@ -77,11 +77,10 @@ describe('<Image />', () => {
   describe('imageSize', () => {
     test.each([
       ['fitHeight', { width: 'auto', objectFit: 'contain' }],
-      ['fitWidth', { width: '100%', objectFit: 'contain' }],
+      ['fitWidth', { width: '100%', objectFit: undefined }],
       ['alwaysFit', { width: '100%', objectFit: 'contain' }],
-      ['fill', { width: '100%', objectFit: 'fill' }],
-      ['cover', { width: '100%', objectFit: 'cover' }],
-      ['originalSize', { width: 'fit-content', objectFit: 'none' }],
+      ['stretch', { width: '100%', objectFit: 'fill' }],
+      ['alwaysFill', { width: '100%', objectFit: 'cover' }],
     ])('%s maps width/objectFit correctly', async (imageSize, expected) => {
       const testRenderer = await render(
         <Image representation={{ imageSize, imagePosition: 'topLeft' }} src="http://foo/bar.png" label="l" />
@@ -89,6 +88,22 @@ describe('<Image />', () => {
       const img = testRenderer.root.findByType('img');
       expect(img.props.style.width).toBe(expected.width);
       expect(img.props.style.objectFit).toBe(expected.objectFit);
+      await testRenderer.unmount();
+    });
+
+    it('fitWidth fills the width and lets the height scale proportionally (auto)', async () => {
+      const testRenderer = await render(
+        <Image
+          representation={{ imageSize: 'fitWidth', imagePosition: 'topLeft' }}
+          src="http://foo/bar.png"
+          label="l"
+        />
+      );
+      const img = testRenderer.root.findByType('img');
+      expect(img.props.style.width).toBe('100%');
+      expect(img.props.style.height).toBe('auto');
+      expect(img.props.style.maxHeight).toBeUndefined();
+      expect(img.props.style.objectFit).toBeUndefined();
       await testRenderer.unmount();
     });
   });
@@ -170,38 +185,35 @@ describe('<Image />', () => {
     });
 
     test.each([
-      ['left', 'flex-start'],
-      ['center', 'center'],
-      ['right', 'flex-end'],
-    ])('titleHorizontalAlign %s maps to justifyContent %s', async (titleHorizontalAlign, expected) => {
+      ['top-left', 'flex-start', 'flex-start'],
+      ['center-center', 'center', 'center'],
+      ['bottom-right', 'flex-end', 'flex-end'],
+    ])('titlePosition %s maps to justifyContent/alignItems', async (titlePosition, expectedJustify, expectedAlign) => {
       const testRenderer = await render(
         <Image
-          representation={{ imageSize: 'cover', imagePosition: 'topCenter', titleHorizontalAlign }}
+          representation={{ imageSize: 'alwaysFill', imagePosition: 'top-center', titlePosition }}
           src="http://foo/bar.png"
           label="alt"
           title="t"
         />
       );
       const overlay = testRenderer.root.findByProps({ 'data-key': 'image-title-overlay' });
-      expect(overlay.props.style.justifyContent).toBe(expected);
+      expect(overlay.props.style.justifyContent).toBe(expectedJustify);
+      expect(overlay.props.style.alignItems).toBe(expectedAlign);
       await testRenderer.unmount();
     });
 
-    test.each([
-      ['top', 'flex-start'],
-      ['middle', 'center'],
-      ['bottom', 'flex-end'],
-    ])('titleVerticalAlign %s maps to alignItems %s', async (titleVerticalAlign, expected) => {
+    test('textOverlay=false hides the whole title overlay', async () => {
       const testRenderer = await render(
         <Image
-          representation={{ imageSize: 'cover', imagePosition: 'topCenter', titleVerticalAlign }}
+          representation={{ imageSize: 'alwaysFill', imagePosition: 'top-center', textOverlay: false }}
           src="http://foo/bar.png"
           label="alt"
           title="t"
+          subtitle="s"
         />
       );
-      const overlay = testRenderer.root.findByProps({ 'data-key': 'image-title-overlay' });
-      expect(overlay.props.style.alignItems).toBe(expected);
+      expect(testRenderer.root.findAllByProps({ 'data-key': 'image-title-overlay' })).toHaveLength(0);
       await testRenderer.unmount();
     });
 
@@ -326,7 +338,7 @@ describe('<Image />', () => {
     test('selected cell gets a colored border and full opacity', async () => {
       const testRenderer = await render(
         <Image
-          representation={{ imageSize: 'cover', imagePosition: 'topCenter', borderWidth: 0 }}
+          representation={{ imageSize: 'alwaysFill', imagePosition: 'topCenter', borderWidth: 0 }}
           src="http://foo/bar.png"
           label="l"
           selected

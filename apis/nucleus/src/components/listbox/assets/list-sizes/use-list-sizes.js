@@ -43,7 +43,7 @@ export default function useListSizes({ layout, width, height, listCount, count, 
   let rowCount;
   let gridGap = 0;
   const isGridMode = dataLayout === 'grid';
-  const representation = layout?.qListObject?.qDimensionInfo?.representation;
+  const representation = layout?.representation;
   const isImageMode = representation?.type === 'image';
 
   let itemHeight = getItemHeight({ isGridMode, dense });
@@ -84,8 +84,17 @@ export default function useListSizes({ layout, width, height, listCount, count, 
   // maxVisibleRows only sizes the cell height here; the full rowCount still spans all data so the
   // remaining rows scroll into view.
   if (isImageMode && isGridMode) {
-    const imageMaxColumns = Math.max(1, maxVisibleColumns?.maxColumns || 3);
-    const imageMaxRows = Math.max(1, maxVisibleRows?.maxRows || 4);
+    // When "Auto" is selected the image grid uses fixed defaults (5 columns, 4 rows); when set to
+    // "Custom" it uses the user-specified counts (falling back to the same defaults if unset).
+    const IMAGE_DEFAULT_COLUMNS = 5;
+    const IMAGE_DEFAULT_ROWS = 4;
+    const columnsAuto = maxVisibleColumns?.auto ?? true;
+    const rowsAuto = maxVisibleRows?.auto ?? true;
+    const imageMaxColumns = Math.max(
+      1,
+      (columnsAuto ? undefined : maxVisibleColumns?.maxColumns) || IMAGE_DEFAULT_COLUMNS
+    );
+    const imageMaxRows = Math.max(1, (rowsAuto ? undefined : maxVisibleRows?.maxRows) || IMAGE_DEFAULT_ROWS);
     columnCount = Math.min(listCount || imageMaxColumns, imageMaxColumns) || 1;
     columnWidth = Math.max(1, (width - SCROLL_BAR_WIDTH) / columnCount);
     itemHeight = Math.max(GRID_ROW_HEIGHT + GRID_ITEM_PADDING, Math.floor(listHeight / imageMaxRows));

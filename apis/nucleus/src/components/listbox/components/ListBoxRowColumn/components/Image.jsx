@@ -1,58 +1,29 @@
 import React from 'react';
 
-const resolveImagePosition = (imagePosition) => {
-  switch (imagePosition) {
-    case 'topLeft':
-      return {
-        horizontal: 'flex-start',
-        vertical: 'flex-start',
-      };
-    case 'centerLeft':
-      return {
-        horizontal: 'flex-start',
-        vertical: 'center',
-      };
-    case 'bottomLeft':
-      return {
-        horizontal: 'flex-start',
-        vertical: 'flex-end',
-      };
-    case 'topCenter':
-      return {
-        horizontal: 'center',
-        vertical: 'flex-start',
-      };
-    case 'centerCenter':
-      return {
-        horizontal: 'center',
-        vertical: 'center',
-      };
-    case 'bottomCenter':
-      return {
-        horizontal: 'center',
-        vertical: 'flex-end',
-      };
-    case 'topRight':
-      return {
-        horizontal: 'flex-end',
-        vertical: 'flex-start',
-      };
-    case 'centerRight':
-      return {
-        horizontal: 'flex-end',
-        vertical: 'center',
-      };
-    case 'bottomRight':
-      return {
-        horizontal: 'flex-end',
-        vertical: 'flex-end',
-      };
-    default:
-      return {
-        horizontal: 'flex-start',
-        vertical: 'flex-start',
-      };
+// Position is stored as `{vertical}-{horizontal}` by the position-grid component (e.g. 'top-center',
+// 'center-center', 'bottom-right'); older objects used camelCase ('topCenter'). Accept both and map
+// each axis onto flexbox alignment.
+const VERTICAL_TO_FLEX = { top: 'flex-start', center: 'center', middle: 'center', bottom: 'flex-end' };
+const HORIZONTAL_TO_FLEX = { left: 'flex-start', center: 'center', right: 'flex-end' };
+
+const parsePosition = (position) => {
+  const raw = position || 'top-center';
+  if (raw.includes('-')) {
+    const [vertical, horizontal] = raw.split('-');
+    return { vertical, horizontal };
   }
+  const match = raw.match(/^(top|middle|center|bottom)(left|center|right)$/i);
+  return match
+    ? { vertical: match[1].toLowerCase(), horizontal: match[2].toLowerCase() }
+    : { vertical: 'top', horizontal: 'center' };
+};
+
+const resolveImagePosition = (imagePosition) => {
+  const { vertical, horizontal } = parsePosition(imagePosition);
+  return {
+    vertical: VERTICAL_TO_FLEX[vertical] ?? 'flex-start',
+    horizontal: HORIZONTAL_TO_FLEX[horizontal] ?? 'center',
+  };
 };
 
 const getImageWidth = (imageSize) => {
@@ -92,14 +63,13 @@ const getObjectFit = (imageSize) => {
   switch (imageSize) {
     case 'alwaysFit':
     case 'fitHeight':
-    case 'fitWidth':
       return 'contain';
-    case 'fill':
+    // 'fitWidth' fills the width and lets the height scale proportionally (via width:100% +
+    // height:auto, the object-fit equivalent of background-size: 100% auto), so no object-fit here.
+    case 'stretch':
       return 'fill';
-    case 'cover':
+    case 'alwaysFill':
       return 'cover';
-    case 'originalSize':
-      return 'none';
     default:
       return undefined;
   }
@@ -132,14 +102,6 @@ const cornerRadiusMap = {
   full: '50%',
 };
 
-// Map the title alignment settings (from the property panel) onto flexbox alignment. The title is
-// overlaid on the image, so horizontal alignment drives justify-content and vertical drives align-items.
-const resolveTitleAlignment = (horizontalAlign, verticalAlign) => {
-  const horizontal = { left: 'flex-start', center: 'center', right: 'flex-end' }[horizontalAlign] || 'center';
-  const vertical = { top: 'flex-start', middle: 'center', bottom: 'flex-end' }[verticalAlign] || 'flex-start';
-  return { horizontal, vertical };
-};
-
 function Image({
   representation,
   src,
@@ -153,16 +115,17 @@ function Image({
   opacity = 1,
 }) {
   const {
-    imageSize,
+    imageSize = 'alwaysFit',
     imagePosition,
-    titleHorizontalAlign = 'center',
-    titleVerticalAlign = 'top',
+    titlePosition = 'top-center',
+    textOverlay = true,
     titleBackground = true,
     cornerRadius = 'small',
     borderWidth = 0,
     borderColor = '#d9d9d9',
   } = representation;
   const isFitHeight = imageSize === 'fitHeight';
+  const isFitWidth = imageSize === 'fitWidth';
   const resolvedImagePosition = resolveImagePosition(imagePosition);
   const maxImageHeight = '200px';
   const safeSrc = isSafeImageSrc(src) ? src : null;
@@ -183,8 +146,10 @@ function Image({
       alt={label}
       style={{
         width: getImageWidth(imageSize),
-        height: '100%',
-        maxHeight: maxImageHeight,
+        // fitWidth: fill width, height scales proportionally; the container's overflow:hidden clips
+        // any vertical overflow. Other modes fill the cell height (capped at maxImageHeight).
+        height: isFitWidth ? 'auto' : '100%',
+        maxHeight: isFitWidth ? undefined : maxImageHeight,
         objectFit: getObjectFit(imageSize),
         objectPosition: getObjectPosition(resolvedImagePosition),
         overflow: 'hidden',
@@ -194,8 +159,8 @@ function Image({
 
   // The title is the dimension (cell) value, and the subtitle is a per-value expression. Both are
   // overlaid on top of the image and aligned per the title alignment settings.
-  const resolvedTitleAlignment = resolveTitleAlignment(titleHorizontalAlign, titleVerticalAlign);
-  const hasOverlayText = title || subtitle;
+  const resolvedTitleAlignment = resolveImagePosition(titlePosition);
+  const hasOverlayText = textOverlay !== false && (title || subtitle);
   const overlayNode = hasOverlayText ? (
     <div
       data-key="image-title-overlay"

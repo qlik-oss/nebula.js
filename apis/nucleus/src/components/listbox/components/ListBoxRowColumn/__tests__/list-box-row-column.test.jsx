@@ -1281,7 +1281,7 @@ describe('<ListBoxRowColumn />', () => {
 
     test('passes the dimension value as the title and the subtitle/cellBgColor expression columns to Image', async () => {
       const testRenderer = await renderImageCell({
-        representation: { type: 'image', imageSetting: 'url', imageSize: 'cover' },
+        representation: { type: 'image', imageSetting: 'url', imageSize: 'alwaysFill' },
         qText: 'Amadeus',
         listExprIndex: { imageUrl: 1, subtitle: 2, cellBgColor: 3 },
         exprValues: ['http://foo/poster.png', 'Milos Forman', '#ff0000'],
@@ -1295,7 +1295,7 @@ describe('<ListBoxRowColumn />', () => {
 
     test('uses the tooltip expression column as the cell title, falling back to the dimension value', async () => {
       const withTooltip = await renderImageCell({
-        representation: { type: 'image', imageSetting: 'url', imageSize: 'cover' },
+        representation: { type: 'image', imageSetting: 'url', imageSize: 'alwaysFill' },
         qText: 'Amadeus',
         listExprIndex: { imageUrl: 1, tooltip: 2 },
         exprValues: ['http://foo/poster.png', 'A film by Milos Forman'],
@@ -1304,7 +1304,7 @@ describe('<ListBoxRowColumn />', () => {
       await withTooltip.unmount();
 
       const withoutTooltip = await renderImageCell({
-        representation: { type: 'image', imageSetting: 'url', imageSize: 'cover' },
+        representation: { type: 'image', imageSetting: 'url', imageSize: 'alwaysFill' },
         qText: 'Amadeus',
         listExprIndex: { imageUrl: 1 },
         exprValues: ['http://foo/poster.png'],
@@ -1325,7 +1325,7 @@ describe('<ListBoxRowColumn />', () => {
         actions,
         dataOffset: 0,
         sizes: { itemPadding: 2, gridGap: 10 },
-        representation: { type: 'image', imageSetting: 'label', imageSize: 'cover' },
+        representation: { type: 'image', imageSetting: 'label', imageSize: 'alwaysFill' },
         layoutOptions: { dataLayout: 'grid', layoutOrder: 'row' },
         columnCount: 3,
         rowCount: 2,
@@ -1375,7 +1375,7 @@ describe('<ListBoxRowColumn />', () => {
           actions,
           dataOffset: 0,
           sizes: { itemPadding: 2 },
-          representation: { type: 'image', imageSetting: 'label', imageSize: 'cover' },
+          representation: { type: 'image', imageSetting: 'label', imageSize: 'alwaysFill' },
           listExprIndex: {},
           pages: [{ qArea: { qTop: 0, qHeight: 1 }, qMatrix: [row] }],
           focusListItems: () => ({ first: false, last: false }),
@@ -1405,7 +1405,7 @@ describe('<ListBoxRowColumn />', () => {
         actions,
         dataOffset: 0,
         sizes: { itemPadding: 2 },
-        representation: { type: 'image', imageSetting: 'url', imageSize: 'cover' },
+        representation: { type: 'image', imageSetting: 'url', imageSize: 'alwaysFill' },
         listExprIndex: { imageUrl: 1 },
         exprCache,
         pages: [

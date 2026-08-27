@@ -139,7 +139,7 @@ export default function ListBox({
 
   const { layoutOptions = {} } = layout || {};
 
-  const isImageMode = layout?.qListObject?.qDimensionInfo?.representation?.type === 'image';
+  const isImageMode = layout?.representation?.type === 'image';
   let isRow = true;
   if (layoutOptions.dataLayout) {
     isRow = layoutOptions.dataLayout === 'singleColumn' || isImageMode ? true : layoutOptions?.layoutOrder === 'row';
