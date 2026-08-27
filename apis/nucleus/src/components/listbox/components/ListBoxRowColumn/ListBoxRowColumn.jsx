@@ -188,16 +188,19 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
 
     // Resolve a per-value expression column, caching the last non-empty value per dimension value so
     // it survives once the value becomes excluded (the engine returns null for excluded values).
+    // Key by the stable element number rather than the display text (qText/label), which is not
+    // guaranteed unique — duplicate labels would otherwise overwrite each other's cached values.
+    const valueKey = cell?.qElemNumber ?? label;
     const resolveExpr = (key) => {
       const col = listExprIndex[key];
       if (col == null) return undefined;
       const raw = row?.[col]?.qText;
       const bucket = exprCache[key] || (exprCache[key] = {});
       if (raw != null && raw !== '') {
-        bucket[label] = raw;
+        bucket[valueKey] = raw;
         return raw;
       }
-      return bucket[label];
+      return bucket[valueKey];
     };
 
     const imageSetting = representation?.imageSetting ?? 'label';

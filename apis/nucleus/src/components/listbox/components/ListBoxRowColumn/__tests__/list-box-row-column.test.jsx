@@ -1436,6 +1436,59 @@ describe('<ListBoxRowColumn />', () => {
       await second.unmount();
     });
 
+    test('per-value cache is keyed by qElemNumber so values with duplicate labels do not collide', async () => {
+      const exprCache = {};
+      const dataFor = (qElemNumber, urlValue) => ({
+        styles,
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
+        keyboard,
+        actions,
+        dataOffset: 0,
+        sizes: { itemPadding: 2 },
+        representation: { type: 'image', imageSetting: 'url', imageSize: 'alwaysFill' },
+        listExprIndex: { imageUrl: 1 },
+        exprCache,
+        pages: [
+          {
+            qArea: { qTop: 0, qHeight: 1 },
+            // Two distinct values share the same display text ('Amadeus').
+            qMatrix: [[{ qState: 'O', qText: 'Amadeus', qElemNumber }, { qText: urlValue }]],
+          },
+        ],
+        focusListItems: () => ({ first: false, last: false }),
+      });
+
+      // Value #0 resolves and caches its own url.
+      const a = await render(
+        <ThemeProvider theme={theme}>
+          <ListBoxRowColumn index={0} style={{}} data={dataFor(0, 'http://foo/a.png')} />
+        </ThemeProvider>
+      );
+      expect(a.root.findByType(Image).props.src).toBe('http://foo/a.png');
+      await a.unmount();
+
+      // A different value with the SAME label caches its own (different) url.
+      const b = await render(
+        <ThemeProvider theme={theme}>
+          <ListBoxRowColumn index={0} style={{}} data={dataFor(1, 'http://foo/b.png')} />
+        </ThemeProvider>
+      );
+      expect(b.root.findByType(Image).props.src).toBe('http://foo/b.png');
+      await b.unmount();
+
+      // Value #0 is now excluded (empty url) — it must recover ITS OWN cached url, not value #1's.
+      const aExcluded = await render(
+        <ThemeProvider theme={theme}>
+          <ListBoxRowColumn index={0} style={{}} data={dataFor(0, '')} />
+        </ThemeProvider>
+      );
+      expect(aExcluded.root.findByType(Image).props.src).toBe('http://foo/a.png');
+      await aExcluded.unmount();
+    });
+
     test('non-image representation does not render an Image', async () => {
       const testRenderer = await renderImageCell({
         representation: { type: 'text' },
