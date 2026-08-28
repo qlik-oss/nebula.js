@@ -229,7 +229,8 @@ describe('use-list-sizes', () => {
     const rowCount = 3;
     const itemHeight = 36;
     args.layout.layoutOptions.dataLayout = 'grid';
-    args.height = itemHeight * 3; // ensure height can fit 3 rows, or we will fall back to auto calculation
+    // ensure height can fit 3 rows plus scrollbar reservation, or we will fall back to auto calculation
+    args.height = itemHeight * 3 + 10; // +10 = SCROLL_BAR_WIDTH
     args.layout.layoutOptions.layoutOrder = 'column';
     const columnCount = 578448;
     args.listCount = rowCount * columnCount + 1;
@@ -244,7 +245,7 @@ describe('use-list-sizes', () => {
       itemPadding: 4,
       itemHeight,
       listCount: columnCount * rowCount,
-      listHeight: 3 * itemHeight,
+      listHeight: 3 * itemHeight + 10,
       listWidth: 200,
       maxCount: {
         column: columnCount,
