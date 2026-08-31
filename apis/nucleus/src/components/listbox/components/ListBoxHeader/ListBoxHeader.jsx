@@ -167,6 +167,7 @@ export default function ListBoxHeader({
       aria-label={translator.get('Listbox.Search')}
       size="large"
       disableRipple
+      tabIndex={keyboard?.innerTabStops ? 0 : -1}
       data-testid="search-toggle-btn"
     >
       <SearchIcon style={iconStyle} />
