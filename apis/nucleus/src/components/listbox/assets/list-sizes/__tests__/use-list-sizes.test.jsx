@@ -1,4 +1,4 @@
-import { CHECKBOX_WIDTH, ITEM_MIN_WIDTH } from '../../../constants';
+import { CHECKBOX_WIDTH, ITEM_MIN_WIDTH, SCROLL_BAR_WIDTH } from '../../../constants';
 import useListSizes from '../use-list-sizes';
 import * as useTextWidthModule from '../../../hooks/useTextWidth';
 import * as getMeasureTextModule from '../../measure-text';
@@ -230,7 +230,7 @@ describe('use-list-sizes', () => {
     const itemHeight = 36;
     args.layout.layoutOptions.dataLayout = 'grid';
     // ensure height can fit 3 rows plus scrollbar reservation, or we will fall back to auto calculation
-    args.height = itemHeight * 3 + 10; // +10 = SCROLL_BAR_WIDTH
+    args.height = itemHeight * 3 + SCROLL_BAR_WIDTH;
     args.layout.layoutOptions.layoutOrder = 'column';
     const columnCount = 578448;
     args.listCount = rowCount * columnCount + 1;
@@ -245,7 +245,7 @@ describe('use-list-sizes', () => {
       itemPadding: 4,
       itemHeight,
       listCount: columnCount * rowCount,
-      listHeight: 3 * itemHeight + 10,
+      listHeight: 3 * itemHeight + SCROLL_BAR_WIDTH,
       listWidth: 200,
       maxCount: {
         column: columnCount,

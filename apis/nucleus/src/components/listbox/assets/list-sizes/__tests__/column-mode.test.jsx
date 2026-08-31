@@ -1,4 +1,5 @@
 import calculateColumnMode from '../column-mode';
+import { SCROLL_BAR_WIDTH } from '../../../constants';
 
 describe('column-mode', () => {
   const maxVisibleRows = { auto: true };
@@ -22,9 +23,11 @@ describe('column-mode', () => {
       itemMinWidth,
     });
 
+    const expectedRowCount = Math.floor((listHeight - SCROLL_BAR_WIDTH) / itemHeight); // one row reserved for the scrollbar
+
     expect(columnWidth * columnCount).toBeGreaterThan(containerWidth); // confirms columns do overflow horizontally
-    expect(rowCount).toEqual(4);
-    expect(columnCount).toEqual(13);
+    expect(rowCount).toEqual(expectedRowCount);
+    expect(columnCount).toEqual(Math.ceil(listCount / expectedRowCount));
     expect(columnWidth).toEqual(100);
   });
 
