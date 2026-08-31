@@ -56,3 +56,19 @@ Specify an array of available themes in the instance config. Provide the `id` of
 ### `language`
 
 Language to use when rendering visualization.
+
+### `rerenders`
+
+Number of destroy-and-re-render cycles to run after the initial render. After each cycle `data-render-count` on `#chart-container` is incremented, so when it reaches `N` all cycles are complete.
+
+Intended for memory leak testing. The recommended pattern is two separate navigations: first load the fixture without `rerenders` and take a baseline heap snapshot, then reload with `rerenders=N` and take the after-snapshot once `#chart-container[data-render-count='N']` is present.
+
+Example: `http://localhost:8000/render?fixture=scenario-1.fix.js&rerenders=20`
+
+### `simulatedMemLeakKB`
+
+Wraps the fixture's `getLayout` to accumulate approximately the given number of kilobytes of plain JS objects per render cycle, pinned to the DOM so the garbage collector cannot reclaim them. Use together with `rerenders` to verify that your memory measurement infrastructure can detect a real leak before trusting clean-chart results.
+
+This parameter has no effect unless `rerenders` is also set.
+
+Example leaking 500 KB per cycle: `http://localhost:8000/render?fixture=scenario-1.fix.js&rerenders=20&simulatedMemLeakKB=500`

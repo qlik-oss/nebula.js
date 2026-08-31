@@ -13,22 +13,22 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-      - name: Enable Corepack
-        run: corepack enable
-      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: pnpm/setup@c9883cc79df532ad1a7b81bf9ab944ceb090d65c # v2
         with:
-          node-version: 24.14.1
-          cache: 'yarn'
-      - name: Install dependencies
-        run: yarn install --immutable
+          cache: true
       - name: Build
-        run: yarn run build
+        run: pnpm run build
+      - name: Remove node_modules
+        run: find . -name node_modules -type d -prune -exec rm -rf {} +
       - name: Upload workspace
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: workspace
-          path: .
+          path: |
+            **/dist/**
+            apis/locale/all.json
+            apis/snapshooter/client.js
           retention-days: 1
 
   validate:
@@ -38,28 +38,25 @@ jobs:
       contents: read
       checks: write
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-      - name: Enable Corepack
-        run: corepack enable
-      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: pnpm/setup@c9883cc79df532ad1a7b81bf9ab944ceb090d65c # v2
         with:
-          node-version: 24.14.0
-          cache: 'yarn'
+          cache: true
       - name: Download workspace
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: workspace
           path: .
-      - name: Install dependencies
-        run: yarn install --immutable
       - name: Locale verify
-        run: yarn run locale:verify
+        run: pnpm run locale:verify
+      - name: format
+        run: pnpm run format:check
       - name: Lint
-        run: yarn run lint
+        run: pnpm run lint
       - name: Run unit tests and publish to codeclimate
         env:
           JEST_JUNIT_OUTPUT_DIR: ./coverage/junit/
-        run: yarn test:unit --coverage
+        run: pnpm test:unit --coverage
       - name: Store junit results
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
@@ -67,7 +64,7 @@ jobs:
           path: coverage/junit
       - name: Publish junit test report
         if: ${{ always() && hashFiles('coverage/junit/*.xml') != '' }}
-        uses: dorny/test-reporter@df6247429542221bc30d46a036ee47af1102c451 # v2
+        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2 # v3
         with:
           name: Unit Tests
           path: coverage/junit/*.xml
@@ -81,45 +78,42 @@ jobs:
       contents: read
       checks: write
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-      - name: Enable Corepack
-        run: corepack enable
-      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: pnpm/setup@c9883cc79df532ad1a7b81bf9ab944ceb090d65c # v2
         with:
-          node-version: 24.14.0
-          cache: 'yarn'
+          cache: true
       - name: Download workspace
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: workspace
           path: .
-      - name: Install dependencies
-        run: yarn install --immutable
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+        run: pnpm exec playwright install --with-deps chromium
       - name: Test component
         env:
           PLAYWRIGHT_JUNIT_OUTPUT_NAME: component-junit.xml
-        run: yarn run test:component
+        run: pnpm run test:component
       - name: Publish component test report
         if: ${{ always() && hashFiles('test-results/component-junit.xml') != '' }}
-        uses: dorny/test-reporter@df6247429542221bc30d46a036ee47af1102c451 # v2
+        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2 # v3
         with:
           name: Component Tests
           path: test-results/component-junit.xml
           reporter: jest-junit
           fail-on-error: false
       - name: Test mashup
-        run: yarn run test:mashup
+        run: pnpm run test:mashup
       - name: Store mashup artifacts
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: mashup
-          path: ./test/mashup
+          path: |
+            ./test/mashup/reports
+            ./test/mashup/test-results
       - name: Publish mashup test report
         if: ${{ always() && hashFiles('test/mashup/reports/xml/*.xml') != '' }}
-        uses: dorny/test-reporter@df6247429542221bc30d46a036ee47af1102c451 # v2
+        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2 # v3
         with:
           name: Mashup Tests
           path: test/mashup/reports/xml/*.xml
@@ -128,26 +122,28 @@ jobs:
       - name: Test integration
         env:
           PLAYWRIGHT_JUNIT_OUTPUT_NAME: integration-junit.xml
-        run: yarn run test:integration
+        run: pnpm run test:integration
       - name: Publish integration test report
         if: ${{ always() && hashFiles('test-results/integration-junit.xml') != '' }}
-        uses: dorny/test-reporter@df6247429542221bc30d46a036ee47af1102c451 # v2
+        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2 # v3
         with:
           name: Integration Tests
           path: test-results/integration-junit.xml
           reporter: jest-junit
           fail-on-error: false
       - name: Test rendering
-        run: yarn run test:rendering
+        run: pnpm run test:rendering
       - name: Store rendering artifacts
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: rendering
-          path: ./test/rendering
+          path: |
+            ./test/rendering/reports
+            ./test/rendering/test-results
       - name: Publish rendering test report
         if: ${{ always() && hashFiles('test/rendering/reports/xml/*.xml') != '' }}
-        uses: dorny/test-reporter@df6247429542221bc30d46a036ee47af1102c451 # v2
+        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2 # v3
         with:
           name: Rendering Tests
           path: test/rendering/reports/xml/*.xml
@@ -160,7 +156,7 @@ jobs:
         # --update-snapshots=missing writes baselines that don't exist yet
         # (first run on a new platform) without overwriting existing ones.
         # Existing baselines are still compared normally, so regressions fail.
-        run: npx playwright test --config=./commands/serve/test/playwright.config.js --update-snapshots=missing
+        run: pnpm test:visual:update-missing
       - name: Upload visual snapshots
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
@@ -168,45 +164,72 @@ jobs:
           name: visual-snapshots
           # Upload the full snapshot directory so newly-generated linux baselines
           # (*-linux.png) can be downloaded, reviewed, and committed to the repo.
-          path: commands/serve/test/e2e/dev-route.spec.js-snapshots
+          path: |
+            ./commands/serve/test/reports/
+            ./commands/serve/test/e2e/dev-route.spec.js-snapshots
 
   test-create:
+    name: test-create-${{ matrix['picasso-template'] != 'none' && matrix['picasso-template'] || 'basic' }}${{ matrix.mashup && '-mashup' || '' }}${{ matrix.typescript && '-ts' || '' }}
     runs-on: ubuntu-latest
     needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - picasso-template: none
+            mashup: false
+            install: false
+            build: true
+            test: true
+            typescript: false
+          - picasso-template: barchart
+            mashup: false
+            install: false
+            build: true
+            test: true
+            typescript: false
+          - picasso-template: none
+            mashup: false
+            install: false
+            build: true
+            test: false
+            typescript: true
+          - picasso-template: none
+            mashup: true
+            install: true
+            build: true
+            test: false
+            typescript: false
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-      - name: Enable Corepack
-        run: corepack enable
-      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: pnpm/setup@c9883cc79df532ad1a7b81bf9ab944ceb090d65c # v2
         with:
-          node-version: 24.14.0
-          cache: 'yarn'
+          cache: true
       - name: Download workspace
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: workspace
           path: .
-      - name: Install dependencies
-        run: yarn install --immutable
-      - run: chmod +x .github/scripts/nebula_create.sh
-      - name: Create Nebula visualization project (Picasso)
-        run: .github/scripts/nebula_create.sh generated/hello none false false true true
-      - name: Create Nebula visualization project (Barchart)
-        run: .github/scripts/nebula_create.sh generated/barchart barchart false false true true
-      - name: Create Nebula mashup project
-        run: .github/scripts/nebula_create.sh generated/hello-mashup none true true true false
-      - name: Store barchart screenshots
+      - name: Create Nebula ${{ matrix.mashup && 'mashup' || 'visualization' }} project with template (${{ matrix.picasso-template }})
+        id: create-project
+        env:
+          PICASSO_TEMPLATE: ${{ matrix.picasso-template }}
+          MASHUP: ${{ matrix.mashup }}
+          INSTALL: ${{ matrix.install }}
+          BUILD: ${{ matrix.build }}
+          TEST: ${{ matrix.test }}
+          TYPESCRIPT: ${{ matrix.typescript }}
+        run: |
+          set -x
+          PROJECT_FOLDER=$(mktemp -d)/$PICASSO_TEMPLATE
+          .github/scripts/nebula_create.sh $PROJECT_FOLDER "$PICASSO_TEMPLATE" "$MASHUP" "$INSTALL" "$BUILD" "$TEST" "$TYPESCRIPT"
+          echo "PROJECT_FOLDER=$PROJECT_FOLDER" >> $GITHUB_OUTPUT
+      - name: Store project screenshots
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
-          name: barchart-screenshots
-          path: generated/barchart/screenshots
-      - name: Store mashup artifacts
-        if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
-        with:
-          name: mashup-artifacts
-          path: test/mashup/__artifacts__
+          name: screenshots-${{ matrix.picasso-template }}-${{ matrix.mashup && 'mashup' || 'visualization' }}
+          path: ${{ steps.create-project.outputs.PROJECT_FOLDER }}/screenshots
 
   api-governance:
     runs-on: ubuntu-latest
@@ -215,19 +238,12 @@ jobs:
         working-directory: .
     steps:
       - name: Checkout repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
-      - name: Enable Corepack
-        run: corepack enable
-      - name: Set up Node.js
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+      - uses: pnpm/setup@c9883cc79df532ad1a7b81bf9ab944ceb090d65c # v2
         with:
-          node-version: 24.14.1
-          cache: 'yarn'
-
-      - name: Install dependencies
-        run: yarn install --immutable
+          cache: true
 
       - name: Create version.txt
         id: version
@@ -236,8 +252,8 @@ jobs:
           if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
             version=${GITHUB_REF_NAME#v}
           else
-            yarn workspace "@nebula.js/stardust" version preminor
-            yarn spec
+            pnpm --filter "@nebula.js/stardust" version preminor
+            pnpm spec
             version=$(node -p "require('./apis/stardust/api-spec/spec.json').info.version")
           fi
           echo "$version" > ./version.txt

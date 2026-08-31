@@ -1,7 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import userEvents from '@testing-library/user-event';
-import { BrowserRouter } from 'react-router';
 import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
 
 import { RootContext } from '../contexts/RootContext';
@@ -39,14 +38,13 @@ export function TestRenderer(component, contextValuesOverride) {
   };
 
   const Wrapper = ({ children }) => (
-    <BrowserRouter>
-      <RootContext.Provider value={contextValue}>
-        <ThemeProvider theme={theme}>{children}</ThemeProvider>
-      </RootContext.Provider>
-    </BrowserRouter>
+    <RootContext.Provider value={contextValue}>
+      <ThemeProvider theme={theme}>{children}</ThemeProvider>
+    </RootContext.Provider>
   );
 
   return { ...render(component, { wrapper: Wrapper }), userEvents: userEvents.setup() };
 }
 
-export const RouterWrapper = ({ children }) => <BrowserRouter>{children}</BrowserRouter>;
+// Wrapper for tests that use routing context - in tests, BrowserRouter is mocked
+export const RouterWrapper = ({ children }) => children;

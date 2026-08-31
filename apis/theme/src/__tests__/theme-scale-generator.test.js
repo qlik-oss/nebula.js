@@ -24,6 +24,18 @@ describe('Theme scale generator', () => {
     expect(colors).toEqual(base8);
   });
 
+  test('Should not throw and generate a constant pyramid for a single-color scale', () => {
+    const scales = [{ type: 'class', scale: ['#3200e6'] }];
+    expect(() => scaleGenerator(scales)).not.toThrow();
+    const { scale, type } = scales[0];
+
+    expect(type).toBe('class-pyramid');
+    expect(scale).toHaveLength(8);
+    scale.slice(1).forEach((level) => {
+      level.forEach((c) => expect(c).toBe('#3200e6'));
+    });
+  });
+
   test('Should work correctly on a scale from the sense theme', () => {
     const senseDivergentScale = [
       '#ae1c3e',

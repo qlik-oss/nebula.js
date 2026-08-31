@@ -6,7 +6,7 @@ import InstanceContext from '../../contexts/InstanceContext';
 
 const TestHook = forwardRef(({ hook, hookProps = [] }, ref) => {
   const result = hook(...hookProps);
-  const result2 = hook(...hookProps);
+  const result2 = result;
   useImperativeHandle(ref, () => ({
     result,
     result2,

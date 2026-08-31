@@ -73,7 +73,7 @@ export default function ListBoxHeader({
   containerRect,
   isPopover,
   showToolbar,
-  showDetachedToolbarOnly,
+  toolbarMode = 'auto',
   containerRef,
   model,
   selectionState,
@@ -82,9 +82,13 @@ export default function ListBoxHeader({
   keyboard,
   autoConfirm,
   app,
+  title,
   disablePortal,
 }) {
-  const [isToolbarDetached, setIsToolbarDetached] = useState(showDetachedToolbarOnly);
+  const forceDetached = toolbarMode === 'detach';
+  const forceAttached = toolbarMode === 'attach';
+  const isAutoToolbarMode = !forceDetached && !forceAttached;
+  const [isToolbarDetached, setIsToolbarDetached] = useState(forceDetached);
   const [isLocked, setLocked] = useState(layout?.qListObject?.qDimensionInfo?.qLocked);
   const [settingLockedState, setSettingLockedState] = useState(false);
 
@@ -170,6 +174,10 @@ export default function ListBoxHeader({
   );
 
   useEffect(() => {
+    if (!isAutoToolbarMode) {
+      return;
+    }
+
     if (!titleRef.current || !containerRect) {
       return;
     }
@@ -181,17 +189,15 @@ export default function ListBoxHeader({
       paddingLeft,
       paddingRight,
     });
-    const isDetached = showDetachedToolbarOnly || mustShowDetached;
-    setIsToolbarDetached(isDetached);
+    setIsToolbarDetached(mustShowDetached);
   }, [
+    isAutoToolbarMode,
     iconsWidth,
     paddingLeft,
     paddingRight,
     titleRef.current,
-    showDetachedToolbarOnly,
-    Object.entries(containerRect || {})
-      .sort()
-      .join(','),
+    containerRect?.width,
+    containerRect?.height,
   ]);
 
   const toolbarProps = getListboxActionProps({
@@ -210,7 +216,7 @@ export default function ListBoxHeader({
 
   const actionsToolbar = <ActionsToolbar isRtl={isRtl} layout={layout} {...toolbarProps} />;
 
-  if (showDetachedToolbarOnly) {
+  if (forceDetached) {
     return actionsToolbar;
   }
 
@@ -257,8 +263,8 @@ export default function ListBoxHeader({
         justifyContent={isRtl ? 'flex-end' : 'flex-start'}
         className={classes.listBoxHeader}
       >
-        <HeaderTitle variant="h6" noWrap ref={titleRef} title={layout.title} styles={styles}>
-          {layout.title}
+        <HeaderTitle variant="h6" noWrap ref={titleRef} title={title ?? layout.title} styles={styles}>
+          {title ?? layout.title}
         </HeaderTitle>
       </Grid>
       <Grid display="flex">{actionsToolbar}</Grid>

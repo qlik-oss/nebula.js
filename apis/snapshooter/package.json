@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/snapshooter",
-  "version": "7.0.0",
+  "version": "7.4.0",
   "private": true,
   "description": "",
   "license": "MIT",
@@ -23,6 +23,13 @@
   ],
   "scripts": {
     "build": "cross-env NODE_ENV=production rollup --bundleConfigAsCjs --config ./rollup.config.js",
-    "prepublishOnly": "rm -rf dist && yarn run build"
+    "prepublishOnly": "rm -rf dist && pnpm run build"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "8.0.2",
+    "@rollup/plugin-babel": "7.1.0",
+    "@rollup/plugin-terser": "1.0.0",
+    "cross-env": "10.1.0",
+    "rollup": "4.62.3"
   }
 }

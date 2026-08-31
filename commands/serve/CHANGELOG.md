@@ -3,6 +3,73 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.4.0](https://github.com/qlik-oss/nebula.js/compare/v7.3.0...v7.4.0) (2026-08-21)
+
+**Note:** Version bump only for package @nebula.js/cli-serve
+
+# [7.3.0](https://github.com/qlik-oss/nebula.js/compare/v7.2.0...v7.3.0) (2026-08-20)
+
+### Bug Fixes
+
+- **deps:** update dependency chalk to v6 ([#2211](https://github.com/qlik-oss/nebula.js/issues/2211)) ([0e5aff1](https://github.com/qlik-oss/nebula.js/commit/0e5aff19cf9aaff1454548277c59e5a2fffd33ca)), closes [#2230](https://github.com/qlik-oss/nebula.js/issues/2230)
+
+# [7.2.0](https://github.com/qlik-oss/nebula.js/compare/v7.1.1...v7.2.0) (2026-08-11)
+
+### Bug Fixes
+
+- **deps:** update babel monorepo to v8 ([#2106](https://github.com/qlik-oss/nebula.js/issues/2106)) ([60e6c04](https://github.com/qlik-oss/nebula.js/commit/60e6c0498aa9030a80436033eff17524e6276ab3))
+- **deps:** update dependency @qlik/api to v2.12.0 ([#2111](https://github.com/qlik-oss/nebula.js/issues/2111)) ([1ae5298](https://github.com/qlik-oss/nebula.js/commit/1ae5298a0bec73a1eb0b56a23ad04518bc32623a))
+- **deps:** update dependency @qlik/api to v2.13.0 ([#2116](https://github.com/qlik-oss/nebula.js/issues/2116)) ([607bc69](https://github.com/qlik-oss/nebula.js/commit/607bc692ed2d27a92dff0330995d32ad6bf771ca))
+- **deps:** update dependency @qlik/api to v2.14.1 ([#2200](https://github.com/qlik-oss/nebula.js/issues/2200)) ([df8a5ab](https://github.com/qlik-oss/nebula.js/commit/df8a5ab19c479668e62ffe2bba5adbb6c0c54a4d))
+- **deps:** update dependency body-parser to v2.3.0 ([#2102](https://github.com/qlik-oss/nebula.js/issues/2102)) ([ed611f7](https://github.com/qlik-oss/nebula.js/commit/ed611f78138b33f78722d4e685bec80efb6c33e2))
+- **deps:** update dependency html-webpack-plugin to v5.6.8 ([#2208](https://github.com/qlik-oss/nebula.js/issues/2208)) ([72c05ff](https://github.com/qlik-oss/nebula.js/commit/72c05ffbcbd14bf6fdb77be4721a5b6e4fbdec0d))
+- **deps:** update dependency puppeteer to v25.2.0 ([#2119](https://github.com/qlik-oss/nebula.js/issues/2119)) ([39cee0e](https://github.com/qlik-oss/nebula.js/commit/39cee0e7a4a428539f6b4046d9bcd330af1e1ad8))
+- **deps:** update dependency puppeteer to v25.2.1 ([#2124](https://github.com/qlik-oss/nebula.js/issues/2124)) ([8e53416](https://github.com/qlik-oss/nebula.js/commit/8e53416971e2672d9021de1b7afadf774fd740a3))
+- **deps:** update dependency puppeteer to v25.3.0 ([#2145](https://github.com/qlik-oss/nebula.js/issues/2145)) ([5f73d34](https://github.com/qlik-oss/nebula.js/commit/5f73d348b21bca49a9676256193f00667e161050))
+- **deps:** update dependency puppeteer to v25.4.0 ([#2215](https://github.com/qlik-oss/nebula.js/issues/2215)) ([535097b](https://github.com/qlik-oss/nebula.js/commit/535097be0a397741701697bf60639fcf42c39e53))
+- **deps:** update dependency webpack to v5.108.0 ([#2127](https://github.com/qlik-oss/nebula.js/issues/2127)) ([15217d5](https://github.com/qlik-oss/nebula.js/commit/15217d5ae8321b8203001659f95c3b7aca4c76c1))
+- **deps:** update dependency webpack to v5.108.3 ([#2138](https://github.com/qlik-oss/nebula.js/issues/2138)) ([93ae216](https://github.com/qlik-oss/nebula.js/commit/93ae216f6a886bb00f5a90a9711e4b95a9547dc2))
+- **deps:** update dependency webpack to v5.108.4 ([#2148](https://github.com/qlik-oss/nebula.js/issues/2148)) ([753d0ba](https://github.com/qlik-oss/nebula.js/commit/753d0ba20b5a7906a67d9453cb9e89ef9d139931))
+- **deps:** update dependency webpack to v5.109.0 ([#2207](https://github.com/qlik-oss/nebula.js/issues/2207)) ([6b1a1b7](https://github.com/qlik-oss/nebula.js/commit/6b1a1b7399493973d73deb04210ee35aac0bfd2c))
+- **deps:** update dependency webpack to v5.109.1 ([#2218](https://github.com/qlik-oss/nebula.js/issues/2218)) ([61d35c1](https://github.com/qlik-oss/nebula.js/commit/61d35c1fe67256d978c7dcf8fa106c2e68b76f29))
+- **deps:** update dependency webpack-cli to v7.1.0 ([#2130](https://github.com/qlik-oss/nebula.js/issues/2130)) ([34d3295](https://github.com/qlik-oss/nebula.js/commit/34d329500b8754db2cdcaab15f6c6da664e76e3b))
+- **deps:** update dependency webpack-cli to v7.2.0 ([#2149](https://github.com/qlik-oss/nebula.js/issues/2149)) ([362a60f](https://github.com/qlik-oss/nebula.js/commit/362a60f6004c0218a908576824ae63021111f03c))
+- **deps:** update dependency webpack-dev-server to v5.2.6 ([#2146](https://github.com/qlik-oss/nebula.js/issues/2146)) ([aee4a1b](https://github.com/qlik-oss/nebula.js/commit/aee4a1bf72a6ed2aba864c06809a37823b9bdd07))
+- **deps:** update dependency webpack-dev-server to v6 ([#2147](https://github.com/qlik-oss/nebula.js/issues/2147)) ([f7beebd](https://github.com/qlik-oss/nebula.js/commit/f7beebddb491fed4d32b299353f5443ec4ba2ca2))
+- **deps:** update dependency ws to v8.21.1 ([#2169](https://github.com/qlik-oss/nebula.js/issues/2169)) ([7a8cd53](https://github.com/qlik-oss/nebula.js/commit/7a8cd53da361c817d43d89f17cf970d9cde9d05e))
+- **deps:** update dependency yargs to v18.1.0 ([#2209](https://github.com/qlik-oss/nebula.js/issues/2209)) ([b2677b7](https://github.com/qlik-oss/nebula.js/commit/b2677b799ee6247a3bca87e672e90468150cdd01))
+
+## [7.1.1](https://github.com/qlik-oss/nebula.js/compare/v7.1.0...v7.1.1) (2026-06-22)
+
+**Note:** Version bump only for package @nebula.js/cli-serve
+
+# [7.1.0](https://github.com/qlik-oss/nebula.js/compare/v7.0.1...v7.1.0) (2026-06-22)
+
+### Bug Fixes
+
+- **deps:** update babel monorepo to v7.29.7 ([#2061](https://github.com/qlik-oss/nebula.js/issues/2061)) ([259f9e8](https://github.com/qlik-oss/nebula.js/commit/259f9e8754f88aaa01552d94cd45465ad3724cba))
+- **deps:** update dependency @qlik/api to v2.10.0 ([#2077](https://github.com/qlik-oss/nebula.js/issues/2077)) ([ef46b4a](https://github.com/qlik-oss/nebula.js/commit/ef46b4a1d02406740ee0911ae8eaa96eaab3ce59))
+- **deps:** update dependency @qlik/api to v2.11.0 ([#2088](https://github.com/qlik-oss/nebula.js/issues/2088)) ([35b3294](https://github.com/qlik-oss/nebula.js/commit/35b32943796dccf33d151510d5edc85c703dc8af))
+- **deps:** update dependency puppeteer to v25.1.0 ([#2064](https://github.com/qlik-oss/nebula.js/issues/2064)) ([b98d352](https://github.com/qlik-oss/nebula.js/commit/b98d352c98d56919530d948a58a5a1f5bfdac195))
+- **deps:** update dependency webpack to v5.107.1 ([#2057](https://github.com/qlik-oss/nebula.js/issues/2057)) ([57ae742](https://github.com/qlik-oss/nebula.js/commit/57ae742bda843bb4f713d650b1b1f1a12c8a48fd))
+- **deps:** update dependency webpack to v5.107.2 ([#2060](https://github.com/qlik-oss/nebula.js/issues/2060)) ([0a8f939](https://github.com/qlik-oss/nebula.js/commit/0a8f939007ebb600c1914969ba622712486fe22a))
+- **deps:** update dependency webpack-cli to v7.0.3 ([#2068](https://github.com/qlik-oss/nebula.js/issues/2068)) ([c9f71b8](https://github.com/qlik-oss/nebula.js/commit/c9f71b817fcfe16b82ddf77421b9a35e1776afad))
+- **deps:** update dependency webpack-dev-server to v5.2.5 [security] ([#2091](https://github.com/qlik-oss/nebula.js/issues/2091)) ([425bae7](https://github.com/qlik-oss/nebula.js/commit/425bae728906727f5bdda37fec1dd8fccc58e1af))
+- **deps:** update dependency ws to v8.21.0 ([#2059](https://github.com/qlik-oss/nebula.js/issues/2059)) ([4646a44](https://github.com/qlik-oss/nebula.js/commit/4646a4479fe35b128ffc90b82d808165b15bccfe))
+
+## [7.0.1](https://github.com/qlik-oss/nebula.js/compare/v7.0.0...v7.0.1) (2026-05-27)
+
+### Bug Fixes
+
+- **deps:** update dependency @qlik/api to v2.9.0 ([#2054](https://github.com/qlik-oss/nebula.js/issues/2054)) ([b0424f2](https://github.com/qlik-oss/nebula.js/commit/b0424f2983688bf0eeb89a363535608fd7007e03))
+- **deps:** update dependency puppeteer to v24.43.1 ([#2036](https://github.com/qlik-oss/nebula.js/issues/2036)) ([28600f2](https://github.com/qlik-oss/nebula.js/commit/28600f2d7d541997d460ea82dc2db8b27be087de))
+- **deps:** update dependency puppeteer to v25 ([#2048](https://github.com/qlik-oss/nebula.js/issues/2048)) ([03d8c22](https://github.com/qlik-oss/nebula.js/commit/03d8c22e36fa7f5125c15a293df3e631d08ea097))
+- **deps:** update dependency webpack to v5.107.0 ([#2055](https://github.com/qlik-oss/nebula.js/issues/2055)) ([a10e61e](https://github.com/qlik-oss/nebula.js/commit/a10e61e4a1b9635a293dd87fff8c71b0e2e0f070))
+
+### Features
+
+- **serve:** add rerender and simulatedMemLeakKB options ([#2030](https://github.com/qlik-oss/nebula.js/issues/2030)) ([02fc826](https://github.com/qlik-oss/nebula.js/commit/02fc82657da54b383788e93e606b49b83585033a))
+
 # [7.0.0](https://github.com/qlik-oss/nebula.js/compare/v6.8.0...v7.0.0) (2026-05-21)
 
 ### Bug Fixes

@@ -7,6 +7,7 @@ import * as rowsKeyboardNavigation from '../../../interactions/keyboard-navigati
 import ListBoxCheckbox from '../components/ListBoxCheckbox';
 import * as screenReaders from '../../screen-reader/value-label';
 import ListBoxRadioButton from '../components/ListBoxRadioButton';
+import Image from '../components/Image';
 import ListBoxRowColumn from '..';
 
 async function render(content) {
@@ -1148,6 +1149,112 @@ describe('<ListBoxRowColumn />', () => {
       const testInstance = testRenderer.root;
       const types = testInstance.findAllByType(ListBoxRadioButton);
       expect(types).toHaveLength(1);
+    });
+  });
+
+  describe('image representation', () => {
+    // Per-value expressions arrive as extra columns in the row: row = [dimCell, exprCell0, ...].
+    // listExprIndex maps an expression's qLabel (e.g. 'imageUrl') to its column.
+    const renderImageCell = async ({ representation, qText = 'field-value', exprValues = [], listExprIndex = {} }) => {
+      const row = [{ qState: 'A', qText, qElemNumber: 0 }, ...exprValues.map((qv) => ({ qText: qv }))];
+      const data = {
+        styles,
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
+        keyboard,
+        actions,
+        dataOffset: 0,
+        sizes: { itemPadding: 2 },
+        representation,
+        listExprIndex,
+        pages: [
+          {
+            qArea: { qTop: 0, qHeight: 1 },
+            qMatrix: [row],
+          },
+        ],
+        focusListItems: () => ({ first: false, last: false }),
+      };
+      const testRenderer = await render(
+        <ThemeProvider theme={theme}>
+          <ListBoxRowColumn index={0} style={{}} data={data} />
+        </ThemeProvider>
+      );
+      return testRenderer;
+    };
+
+    test('label mode: uses the field value as src and the imageLabel expression as alt text', async () => {
+      const testRenderer = await renderImageCell({
+        representation: { type: 'image', imageSetting: 'label', imageSize: 'fitHeight' },
+        qText: 'http://foo/bar.png',
+        listExprIndex: { imageLabel: 1 },
+        exprValues: ['a nice picture'],
+      });
+      const image = testRenderer.root.findByType(Image);
+      expect(image.props.src).toBe('http://foo/bar.png');
+      expect(image.props.label).toBe('a nice picture');
+      await testRenderer.unmount();
+    });
+
+    test('label mode: falls back to the field value as alt text when imageLabel is empty', async () => {
+      const testRenderer = await renderImageCell({
+        representation: { type: 'image', imageSetting: 'label', imageSize: 'fitHeight' },
+        qText: 'http://foo/bar.png',
+      });
+      const image = testRenderer.root.findByType(Image);
+      expect(image.props.src).toBe('http://foo/bar.png');
+      expect(image.props.label).toBe('http://foo/bar.png');
+      await testRenderer.unmount();
+    });
+
+    test('label mode is the default when imageSetting is missing', async () => {
+      const testRenderer = await renderImageCell({
+        representation: { type: 'image', imageSize: 'fitHeight' },
+        qText: 'http://foo/bar.png',
+      });
+      const image = testRenderer.root.findByType(Image);
+      expect(image.props.src).toBe('http://foo/bar.png');
+      await testRenderer.unmount();
+    });
+
+    test('url mode: uses the imageUrl expression column as src and the field value as alt text', async () => {
+      const testRenderer = await renderImageCell({
+        representation: { type: 'image', imageSetting: 'url', imageSize: 'fitHeight' },
+        qText: 'A country name',
+        listExprIndex: { imageUrl: 1 },
+        exprValues: ['http://foo/from-url.png'],
+      });
+      const image = testRenderer.root.findByType(Image);
+      expect(image.props.src).toBe('http://foo/from-url.png');
+      expect(image.props.label).toBe('A country name');
+      // With a resolved url the underlying <img> renders.
+      expect(testRenderer.root.findAllByType('img')).toHaveLength(1);
+      await testRenderer.unmount();
+    });
+
+    test('url mode: falls back to the field value as src when the expression column has no value', async () => {
+      // If the expression column isn't present/resolved, url mode falls back to the field value
+      // (qText) so images still render when the field value itself is the url.
+      const testRenderer = await renderImageCell({
+        representation: { type: 'image', imageSetting: 'url', imageSize: 'fitHeight' },
+        qText: 'http://foo/field-value.png',
+      });
+      const image = testRenderer.root.findByType(Image);
+      expect(image.props.src).toBe('http://foo/field-value.png');
+      expect(image.props.label).toBe('http://foo/field-value.png');
+      expect(testRenderer.root.findAllByType('img')).toHaveLength(1);
+      await testRenderer.unmount();
+    });
+
+    test('non-image representation does not render an Image', async () => {
+      const testRenderer = await renderImageCell({
+        representation: { type: 'text' },
+        qText: 'plain text',
+      });
+      expect(testRenderer.root.findAllByType(Image)).toHaveLength(0);
+      await testRenderer.unmount();
     });
   });
 });

@@ -85,7 +85,9 @@ describe('useRect - window resize', () => {
         getBoundingClientRect: () => ({ left: 100, top: 200, width: 300, height: 400 }),
       });
     });
-    renderer.unmount();
+    act(() => {
+      renderer.unmount();
+    });
     expect(removeEventListener).toHaveBeenCalledTimes(1);
   });
 });
@@ -116,7 +118,11 @@ describe('useRect - resize observer', () => {
     };
   });
   afterEach(() => {
-    renderer.unmount();
+    if (renderer) {
+      act(() => {
+        renderer.unmount();
+      });
+    }
   });
 
   test('should set rect', async () => {
@@ -142,7 +148,9 @@ describe('useRect - resize observer', () => {
       });
     });
 
-    renderer.unmount();
+    act(() => {
+      renderer.unmount();
+    });
 
     expect(observer.unobserve).toHaveBeenCalledTimes(1);
     expect(observer.disconnect).toHaveBeenCalledTimes(1);

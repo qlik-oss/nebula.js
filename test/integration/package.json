@@ -1,0 +1,9 @@
+{
+  "name": "@nebula.js/test-integration",
+  "private": true,
+  "devDependencies": {
+    "@playwright/test": "1.62.1",
+    "@nebula.js/cli-serve": "workspace:*",
+    "@nebula.js/stardust": "workspace:*"
+  }
+}

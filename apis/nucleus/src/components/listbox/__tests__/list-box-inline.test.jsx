@@ -89,9 +89,12 @@ describe('<ListboxInline />', () => {
     jest.spyOn(lockModule, 'default').mockImplementation(() => 'lock');
     jest.spyOn(useLayoutModule, 'default').mockImplementation(() => [layout]);
     jest.spyOn(listboxKeyboardNavigationModule, 'default').mockImplementation(getListboxInlineKeyboardNavigation);
-    jest
-      .spyOn(styling, 'default')
-      .mockImplementation(() => ({ backgroundColor: '#FFFFFF', header: {}, content: {}, selections: {} }));
+    jest.spyOn(styling, 'default').mockImplementation(() => ({
+      backgroundColor: '#FFFFFF',
+      header: {},
+      content: {},
+      selections: {},
+    }));
     jest.spyOn(isDirectQueryEnabled, 'default').mockImplementation(() => false);
     jest.spyOn(useAppSelection, 'default').mockImplementation(() => [{ isInModal: jest.fn().mockReturnValue(false) }]);
 
@@ -125,6 +128,9 @@ describe('<ListboxInline />', () => {
       fetchStart: 'fetchStart',
       isPopover: false,
       components: [],
+      flags: {
+        isEnabled: () => false,
+      },
     };
 
     useRef.mockReturnValue({ current: 'current' });
@@ -188,7 +194,7 @@ describe('<ListboxInline />', () => {
       expect(ListBoxSearch.mock.calls[0][0]).toMatchObject({
         visible: true,
       });
-      expect(getListboxInlineKeyboardNavigation).toHaveBeenCalledTimes(3);
+      expect(getListboxInlineKeyboardNavigation).toHaveBeenCalledTimes(2);
 
       // TODO: MUIv5
       // expect(renderer.toJSON().props.onKeyDown).toBe('keyboard-navigation');
@@ -222,6 +228,17 @@ describe('<ListboxInline />', () => {
 
       const listBoxSearches = await renderer.findAllByText('ListBoxSearch');
       expect(listBoxSearches).toHaveLength(1);
+    });
+
+    test('should not render toolbar when toolbar is false even if toolbarMode is detach', async () => {
+      const options = { toolbar: false, toolbarMode: 'detach' };
+      await render(options);
+
+      const actionToolbars = await renderer.queryAllByText('ActionsToolbar');
+      expect(actionToolbars).toHaveLength(0);
+
+      const typographs = await renderer.queryAllByText('title');
+      expect(typographs).toHaveLength(0);
     });
 
     test('should render without toolbar', async () => {

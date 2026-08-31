@@ -37,7 +37,9 @@ exports[`grid-list-components should create a Grid component 1`] = `
       "layoutOptions": {
         "layoutOrder": "column",
       },
+      "listExprIndex": {},
       "pages": "pages",
+      "representation": undefined,
       "rowCount": 200,
       "showGray": true,
       "showSearch": undefined,
@@ -61,6 +63,7 @@ exports[`grid-list-components should create a Grid component 1`] = `
     }
   }
   onItemsRendered={[Function]}
+  ref="ref"
   rowCount={200}
   rowHeight={100}
   style={
@@ -110,7 +113,9 @@ exports[`grid-list-components should create a List component 1`] = `
         "layoutOrder": "column",
       },
       "listCount": undefined,
+      "listExprIndex": {},
       "pages": "pages",
+      "representation": undefined,
       "showGray": true,
       "showSearch": undefined,
       "showTick": true,
@@ -133,9 +138,8 @@ exports[`grid-list-components should create a List component 1`] = `
     }
   }
   itemSize={100}
-  layout="vertical"
   onItemsRendered={[Function]}
-  overscanCount={2}
+  ref="ref"
   useIsScrolling={true}
   width={100}
 >
