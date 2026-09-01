@@ -156,7 +156,13 @@ const config = ({
         },
       },
     ],
-    [babelPresetReact, { runtime: 'automatic' }],
+  ];
+
+  const babelOverrides = [
+    {
+      test: /\.[jt]sx$/,
+      presets: [[babelPresetReact, { runtime: 'automatic' }]],
+    },
   ];
 
   if (typescript) {
@@ -215,6 +221,7 @@ const config = ({
           babelrc: false,
           inputSourceMap: sourcemap,
           extensions,
+          overrides: babelOverrides,
           presets: babelPresets,
         }),
         ...[
