@@ -7,6 +7,7 @@ import {
   CHECKBOX_WIDTH,
   REMOVE_TICK_LIMIT,
   GRID_ITEM_PADDING,
+  GRID_ROW_HEIGHT,
 } from '../../constants';
 import useTextWidth from '../../hooks/useTextWidth';
 import getMeasureText from '../measure-text';
@@ -40,9 +41,12 @@ export default function useListSizes({ layout, width, height, listCount, count, 
   let columnCount;
   let columnWidth;
   let rowCount;
+  let gridGap = 0;
   const isGridMode = dataLayout === 'grid';
+  const representation = layout?.representation;
+  const isImageMode = representation?.type === 'image';
 
-  const itemHeight = getItemHeight({ isGridMode, dense });
+  let itemHeight = getItemHeight({ isGridMode, dense });
 
   const listHeight = height ?? 8 * itemHeight;
 
@@ -75,6 +79,35 @@ export default function useListSizes({ layout, width, height, listCount, count, 
     }
   }
 
+  // In image representation the grid renders a fixed maxColumns × maxVisibleRows viewport whose cells
+  // scale to fill the pane (rather than the fixed text row height), matching the image-grid design.
+  // maxVisibleRows only sizes the cell height here; the full rowCount still spans all data so the
+  // remaining rows scroll into view.
+  if (isImageMode && isGridMode) {
+    // When "Auto" is selected the image grid uses fixed defaults (5 columns, 4 rows); when set to
+    // "Custom" it uses the user-specified counts (falling back to the same defaults if unset).
+    const IMAGE_DEFAULT_COLUMNS = 5;
+    const IMAGE_DEFAULT_ROWS = 4;
+    const columnsAuto = maxVisibleColumns?.auto ?? true;
+    const rowsAuto = maxVisibleRows?.auto ?? true;
+    const imageMaxColumns = Math.max(
+      1,
+      (columnsAuto ? undefined : maxVisibleColumns?.maxColumns) || IMAGE_DEFAULT_COLUMNS
+    );
+    const imageMaxRows = Math.max(1, (rowsAuto ? undefined : maxVisibleRows?.maxRows) || IMAGE_DEFAULT_ROWS);
+    columnCount = Math.min(listCount || imageMaxColumns, imageMaxColumns) || 1;
+    columnWidth = Math.max(1, (width - SCROLL_BAR_WIDTH) / columnCount);
+    itemHeight = Math.max(GRID_ROW_HEIGHT + GRID_ITEM_PADDING, Math.floor(listHeight / imageMaxRows));
+    rowCount = Math.ceil((listCount || 1) / columnCount);
+    // Row-major image grid scrolls vertically.
+    overflowStyling = { overflowX: 'hidden' };
+    // Grid gap is authored as a percentage of the grid width
+
+    const gridGapPct = Math.max(0, representation?.gridGap ?? 0.5);
+    gridGap = Math.min(Math.round((gridGapPct / 100) * width), columnWidth - 1, itemHeight - 1);
+    gridGap = Math.max(0, gridGap);
+  }
+
   columnCount = (dataLayout === 'singleColumn' ? 1 : columnCount) || 1;
   rowCount = (dataLayout === 'singleColumn' ? count : rowCount) || listCount;
   const maxRowCount = layoutOptions.dense ? 838000 : 577000; // Styling breaks on items above this number: https://github.com/bvaughn/react-window/issues/659
@@ -99,6 +132,7 @@ export default function useListSizes({ layout, width, height, listCount, count, 
     listCount: limitedListCount,
     maxCount: { row: maxRowCount, column: maxColumnCount },
     itemPadding: GRID_ITEM_PADDING,
+    gridGap,
     textWidth,
     freqMinWidth,
     freqMaxWidth,

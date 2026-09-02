@@ -1248,6 +1248,247 @@ describe('<ListBoxRowColumn />', () => {
       await testRenderer.unmount();
     });
 
+    test('renders row-major even when layoutOrder is column (fills every column)', async () => {
+      const qMatrix = Array.from({ length: 12 }, (_, i) => [{ qState: 'A', qText: `m${i}`, qElemNumber: i }]);
+      const data = {
+        styles,
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
+        keyboard,
+        actions,
+        dataOffset: 0,
+        sizes: { itemPadding: 2 },
+        representation: { type: 'image', imageSetting: 'label', imageSize: 'fitHeight' },
+        layoutOptions: { dataLayout: 'grid', layoutOrder: 'column' },
+        columnCount: 3,
+        rowCount: 10,
+        pages: [{ qArea: { qTop: 0, qHeight: 12 }, qMatrix }],
+        focusListItems: () => ({ first: false, last: false }),
+      };
+      const testRenderer = await render(
+        <ThemeProvider theme={theme}>
+          <ListBoxRowColumn rowIndex={0} columnIndex={1} style={{}} data={data} />
+        </ThemeProvider>
+      );
+      const image = testRenderer.root.findByType(Image);
+      // row-major: cellIndex = rowIndex*columnCount + columnIndex = 0*3 + 1 = 1 -> 'm1'
+      // (column-major would be columnIndex*rowCount + rowIndex = 1*10 + 0 = 10 -> 'm10', an unloaded far index)
+      expect(image.props.src).toBe('m1');
+      await testRenderer.unmount();
+    });
+
+    test('passes the dimension value as the title and the subtitle/cellBgColor expression columns to Image', async () => {
+      const testRenderer = await renderImageCell({
+        representation: { type: 'image', imageSetting: 'url', imageSize: 'alwaysFill' },
+        qText: 'Amadeus',
+        listExprIndex: { imageUrl: 1, subtitle: 2, cellBgColor: 3 },
+        exprValues: ['http://foo/poster.png', 'Milos Forman', '#ff0000'],
+      });
+      const image = testRenderer.root.findByType(Image);
+      expect(image.props.title).toBe('Amadeus');
+      expect(image.props.subtitle).toBe('Milos Forman');
+      expect(image.props.cellBgColor).toBe('#ff0000');
+      await testRenderer.unmount();
+    });
+
+    test('uses the tooltip expression column as the cell title, falling back to the dimension value', async () => {
+      const withTooltip = await renderImageCell({
+        representation: { type: 'image', imageSetting: 'url', imageSize: 'alwaysFill' },
+        qText: 'Amadeus',
+        listExprIndex: { imageUrl: 1, tooltip: 2 },
+        exprValues: ['http://foo/poster.png', 'A film by Milos Forman'],
+      });
+      expect(withTooltip.root.findAllByProps({ title: 'A film by Milos Forman' }).length).toBeGreaterThan(0);
+      await withTooltip.unmount();
+
+      const withoutTooltip = await renderImageCell({
+        representation: { type: 'image', imageSetting: 'url', imageSize: 'alwaysFill' },
+        qText: 'Amadeus',
+        listExprIndex: { imageUrl: 1 },
+        exprValues: ['http://foo/poster.png'],
+      });
+      expect(withoutTooltip.root.findAllByProps({ title: 'Amadeus' }).length).toBeGreaterThan(0);
+      await withoutTooltip.unmount();
+    });
+
+    test('insets each image cell by the grid gap (centered in its cell stride)', async () => {
+      const qMatrix = Array.from({ length: 6 }, (_, i) => [{ qState: 'A', qText: `m${i}`, qElemNumber: i }]);
+      const data = {
+        styles,
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
+        keyboard,
+        actions,
+        dataOffset: 0,
+        sizes: { itemPadding: 2, gridGap: 10 },
+        representation: { type: 'image', imageSetting: 'label', imageSize: 'alwaysFill' },
+        layoutOptions: { dataLayout: 'grid', layoutOrder: 'row' },
+        columnCount: 3,
+        rowCount: 2,
+        pages: [{ qArea: { qTop: 0, qHeight: 6 }, qMatrix }],
+        focusListItems: () => ({ first: false, last: false }),
+      };
+      const testRenderer = await render(
+        <ThemeProvider theme={theme}>
+          <ListBoxRowColumn
+            rowIndex={0}
+            columnIndex={0}
+            style={{ left: 0, top: 0, width: 90, height: 120 }}
+            data={data}
+          />
+        </ThemeProvider>
+      );
+      const root = testRenderer.root.findByProps({ 'data-testid': 'listbox.item' });
+      // width/height reduced by the gap, position offset by half the gap.
+      expect(root.props.style.width).toBe(80);
+      expect(root.props.style.height).toBe(110);
+      expect(root.props.style.left).toBe(5);
+      expect(root.props.style.top).toBe(5);
+      // No tick/lock column reserving 24px on image cells (posters fill the card).
+      const iconCols = testRenderer.root.findAll(
+        (n) => typeof n.props.className === 'string' && n.props.className.includes('RowColumn-icon')
+      );
+      expect(iconCols).toHaveLength(0);
+      await testRenderer.unmount();
+    });
+
+    test.each([
+      ['S', true, 1, '#f0f0f0'],
+      ['A', false, 0.4, '#e0e0e0'],
+      ['X', false, 0.3, '#f0f0f0'],
+      ['O', false, 1, '#f0f0f0'],
+    ])(
+      'qState %s → selected=%s, opacity=%s, placeholder=%s on the Image',
+      async (qState, selected, opacity, placeholderBackground) => {
+        const row = [{ qState, qText: 'Amadeus', qElemNumber: 0 }];
+        const data = {
+          styles,
+          onMouseDown: jest.fn(),
+          onMouseUp: jest.fn(),
+          onMouseEnter: jest.fn(),
+          onClick: jest.fn(),
+          keyboard,
+          actions,
+          dataOffset: 0,
+          sizes: { itemPadding: 2 },
+          representation: { type: 'image', imageSetting: 'label', imageSize: 'alwaysFill' },
+          listExprIndex: {},
+          pages: [{ qArea: { qTop: 0, qHeight: 1 }, qMatrix: [row] }],
+          focusListItems: () => ({ first: false, last: false }),
+        };
+        const testRenderer = await render(
+          <ThemeProvider theme={theme}>
+            <ListBoxRowColumn index={0} style={{}} data={data} />
+          </ThemeProvider>
+        );
+        const image = testRenderer.root.findByType(Image);
+        expect(image.props.selected).toBe(selected);
+        expect(image.props.opacity).toBe(opacity);
+        expect(image.props.placeholderBackground).toBe(placeholderBackground);
+        await testRenderer.unmount();
+      }
+    );
+
+    test('caches the url expression so an excluded value keeps its image after selection', async () => {
+      const exprCache = {};
+      const dataFor = (urlValue) => ({
+        styles,
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
+        keyboard,
+        actions,
+        dataOffset: 0,
+        sizes: { itemPadding: 2 },
+        representation: { type: 'image', imageSetting: 'url', imageSize: 'alwaysFill' },
+        listExprIndex: { imageUrl: 1 },
+        exprCache,
+        pages: [
+          {
+            qArea: { qTop: 0, qHeight: 1 },
+            qMatrix: [[{ qState: 'O', qText: 'Amadeus', qElemNumber: 0 }, { qText: urlValue }]],
+          },
+        ],
+        focusListItems: () => ({ first: false, last: false }),
+      });
+
+      // First render: value is possible, the url resolves and is cached.
+      const first = await render(
+        <ThemeProvider theme={theme}>
+          <ListBoxRowColumn index={0} style={{}} data={dataFor('http://foo/poster.png')} />
+        </ThemeProvider>
+      );
+      expect(first.root.findByType(Image).props.src).toBe('http://foo/poster.png');
+      await first.unmount();
+
+      // After selection the value is excluded and the engine returns an empty url; the cache fills in.
+      const second = await render(
+        <ThemeProvider theme={theme}>
+          <ListBoxRowColumn index={0} style={{}} data={dataFor('')} />
+        </ThemeProvider>
+      );
+      expect(second.root.findByType(Image).props.src).toBe('http://foo/poster.png');
+      await second.unmount();
+    });
+
+    test('per-value cache is keyed by qElemNumber so values with duplicate labels do not collide', async () => {
+      const exprCache = {};
+      const dataFor = (qElemNumber, urlValue) => ({
+        styles,
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
+        keyboard,
+        actions,
+        dataOffset: 0,
+        sizes: { itemPadding: 2 },
+        representation: { type: 'image', imageSetting: 'url', imageSize: 'alwaysFill' },
+        listExprIndex: { imageUrl: 1 },
+        exprCache,
+        pages: [
+          {
+            qArea: { qTop: 0, qHeight: 1 },
+            // Two distinct values share the same display text ('Amadeus').
+            qMatrix: [[{ qState: 'O', qText: 'Amadeus', qElemNumber }, { qText: urlValue }]],
+          },
+        ],
+        focusListItems: () => ({ first: false, last: false }),
+      });
+
+      // Value #0 resolves and caches its own url.
+      const a = await render(
+        <ThemeProvider theme={theme}>
+          <ListBoxRowColumn index={0} style={{}} data={dataFor(0, 'http://foo/a.png')} />
+        </ThemeProvider>
+      );
+      expect(a.root.findByType(Image).props.src).toBe('http://foo/a.png');
+      await a.unmount();
+
+      // A different value with the SAME label caches its own (different) url.
+      const b = await render(
+        <ThemeProvider theme={theme}>
+          <ListBoxRowColumn index={0} style={{}} data={dataFor(1, 'http://foo/b.png')} />
+        </ThemeProvider>
+      );
+      expect(b.root.findByType(Image).props.src).toBe('http://foo/b.png');
+      await b.unmount();
+
+      // Value #0 is now excluded (empty url) — it must recover ITS OWN cached url, not value #1's.
+      const aExcluded = await render(
+        <ThemeProvider theme={theme}>
+          <ListBoxRowColumn index={0} style={{}} data={dataFor(0, '')} />
+        </ThemeProvider>
+      );
+      expect(aExcluded.root.findByType(Image).props.src).toBe('http://foo/a.png');
+      await aExcluded.unmount();
+    });
+
     test('non-image representation does not render an Image', async () => {
       const testRenderer = await renderImageCell({
         representation: { type: 'text' },

@@ -25,8 +25,15 @@
  * @property {('url'|'label')} [imageSetting='label'] When `type` is 'image', choose whether the
  *   per-value expression (qExpressions.qLabel='imageUrl'/'imageLabel') provides the image URL
  *   (`'url'`) or the image label (`'label'`).
- * @property {('alwaysFit'|'fitWidth'|'fitHeight'|'fill'|'originalSize')} [imageSize='fitHeight'] Image sizing mode. Only used when `type` is 'image'.
+ * @property {('alwaysFit'|'fitWidth'|'fitHeight'|'stretch'|'alwaysFill')} [imageSize='alwaysFit'] Image sizing mode. Only used when `type` is 'image'.
  * @property {string} [imagePosition='topCenter'] Image position within the cell. Only used when `type` is 'image' and `imageSize` is not 'fill'.
+ * @property {string} [titlePosition='top-center'] Overlay text alignment as `{vertical}-{horizontal}` (e.g. 'top-left', 'center-center', 'bottom-right'). Only used when `type` is 'image'.
+ *  @property {boolean} [textOverlay=true] Whether to render the title/subtitle overlay text. Only used when `type` is 'image'.
+ * @property {boolean} [titleBackground=true] Draw a background behind the title text for legibility. Only used when `type` is 'image'.
+ * @property {number} [gridGap=0.5] Spacing between image grid cells, as a percentage of the grid width. Only used when `type` is 'image'.
+ * @property {('none'|'small'|'medium'|'large'|'full')} [cornerRadius='small'] Corner radius of the image cell (0/4/8/16px or 50%). Only used when `type` is 'image'.
+ * @property {number} [borderWidth=0] Cell border width in px. Only used when `type` is 'image'.
+ * @property {string} [borderColor='#d9d9d9'] Cell border color. Only used when `type` is 'image' and `borderWidth` > 0.
  */
 
 /**

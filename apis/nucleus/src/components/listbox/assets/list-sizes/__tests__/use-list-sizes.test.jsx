@@ -72,6 +72,7 @@ describe('use-list-sizes', () => {
       },
       rowCount: 200,
       scrollBarWidth: 10,
+      gridGap: 0,
     });
   });
 
@@ -107,6 +108,7 @@ describe('use-list-sizes', () => {
       },
       rowCount: 3,
       scrollBarWidth: 10,
+      gridGap: 0,
     });
   });
 
@@ -136,6 +138,7 @@ describe('use-list-sizes', () => {
       },
       rowCount: 3,
       scrollBarWidth: 10,
+      gridGap: 0,
     });
   });
 
@@ -222,6 +225,7 @@ describe('use-list-sizes', () => {
       },
       rowCount: 200,
       scrollBarWidth: 10,
+      gridGap: 0,
     });
   });
 
@@ -256,7 +260,48 @@ describe('use-list-sizes', () => {
       },
       rowCount,
       scrollBarWidth: 10,
+      gridGap: 0,
     });
+  });
+
+  it('image representation fixes columns to maxColumns and scales cell height to fill by maxVisibleRows', () => {
+    args.layout.layoutOptions.dataLayout = 'grid';
+    args.layout.layoutOptions.layoutOrder = 'row';
+    args.layout.representation = { type: 'image' };
+    // maxColumns = 4, maxVisibleRows = 3, width 200, height 300, listCount 100
+    const sizes = useListSizes(args);
+    expect(sizes).toMatchObject({
+      columnCount: 4,
+      columnWidth: (200 - 10) / 4, // (width - scrollbar) / columns
+      itemHeight: 100, // listHeight / maxVisibleRows = 300 / 3, cells fill the pane
+      rowCount: 25, // ceil(listCount / columnCount) => scrolls beyond the visible rows
+      listCount: 100,
+      gridGap: 1, // default 0.5% of width 200 = 1px
+    });
+  });
+
+  it('image representation uses default 5 columns / 4 rows when max visible columns/rows are set to auto', () => {
+    args.layout.layoutOptions.dataLayout = 'grid';
+    args.layout.layoutOptions.layoutOrder = 'row';
+    args.layout.layoutOptions.maxVisibleColumns.auto = true;
+    args.layout.layoutOptions.maxVisibleRows.auto = true;
+    args.layout.representation = { type: 'image' };
+    // auto ignores the custom maxColumns/maxRows and applies the defaults: 5 columns, 4 rows
+    const sizes = useListSizes(args);
+    expect(sizes).toMatchObject({
+      columnCount: 5, // default columns
+      columnWidth: (200 - 10) / 5,
+      itemHeight: 75, // listHeight / default rows = 300 / 4
+      rowCount: 20, // ceil(listCount / columnCount) = ceil(100 / 5)
+    });
+  });
+
+  it('image representation converts the gridGap percentage of width into a pixel gap', () => {
+    args.layout.layoutOptions.dataLayout = 'grid';
+    args.layout.layoutOptions.layoutOrder = 'row';
+    args.layout.representation = { type: 'image', gridGap: 5 };
+    const sizes = useListSizes(args);
+    expect(sizes.gridGap).toBe(10); // 5% of width 200 = 10px
   });
 
   it('Algorithm should reduce rowCount when container height cannot fit all items.', () => {
