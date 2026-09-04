@@ -227,13 +227,18 @@ export default function ListBoxHeader({
 
   return (
     <StyledGridHeader
-      item
       container
       styles={styles}
       isRtl={isRtl}
-      marginY={1}
-      paddingLeft={`${paddingLeft}px`}
-      paddingRight={`${paddingRight}px`}
+      sx={{
+        display: 'flex',
+        flexDirection: isRtl ? 'row-reverse' : 'row',
+        flexWrap: 'nowrap',
+        alignItems: 'center',
+        marginY: 1,
+        paddingLeft: `${paddingLeft}px`,
+        paddingRight: `${paddingRight}px`,
+      }}
       className="header-container"
     >
       {showUnlock && (
@@ -246,7 +251,11 @@ export default function ListBoxHeader({
         />
       )}
       {showLeftIcon && (
-        <Grid container alignItems="center" width={iconsWidth} className="header-action-container">
+        <Grid
+          container
+          sx={{ display: 'flex', alignItems: 'center', width: iconsWidth }}
+          className="header-action-container"
+        >
           {lockedIconComp || (showSearchIcon && searchIconComp)}
           <DimensionIcon
             iconData={iconData}
@@ -258,16 +267,14 @@ export default function ListBoxHeader({
         </Grid>
       )}
       <Grid
-        size="grow"
-        sx={{ minWidth: 0 }} // needed to text-overflow see: https://css-tricks.com/flexbox-truncated-text/
-        justifyContent={isRtl ? 'flex-end' : 'flex-start'}
+        sx={{ flex: 1, minWidth: 0, display: 'flex', justifyContent: isRtl ? 'flex-end' : 'flex-start' }}
         className={classes.listBoxHeader}
       >
         <HeaderTitle variant="h6" noWrap ref={titleRef} title={title ?? layout.title} styles={styles}>
           {title ?? layout.title}
         </HeaderTitle>
       </Grid>
-      <Grid display="flex">{actionsToolbar}</Grid>
+      <Grid sx={{ display: 'flex' }}>{actionsToolbar}</Grid>
     </StyledGridHeader>
   );
 }

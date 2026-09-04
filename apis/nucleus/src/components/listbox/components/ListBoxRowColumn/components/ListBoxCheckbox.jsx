@@ -79,7 +79,7 @@ export default function ListboxCheckbox({ onChange, checked, label, dense, exclu
       checked={checked}
       disableRipple
       className={[classes.checkbox, dense && classes.dense].filter(Boolean).join(' ')}
-      inputProps={{ 'aria-labelledby': label, 'data-n': dataN }}
+      slotProps={{ input: { 'aria-labelledby': label, 'data-n': dataN } }}
       name={label}
       icon={getIcon(classes, showGray, excluded)}
       checkedIcon={<span className={classes.cbIconChecked} />}

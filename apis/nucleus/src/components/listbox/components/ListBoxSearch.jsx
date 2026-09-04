@@ -47,6 +47,7 @@ const StyledOutlinedInput = styled(OutlinedInput, {
     },
     '&.Mui-focused fieldset': {
       borderColor: `${styles.search.highlightBorderColor} !important`,
+      borderWidth: '2px 0 2px 0',
     },
     '& .MuiInputBase-root': {
       ...styles.search,
@@ -314,11 +315,13 @@ function ListBoxSearch(
         onChange={onChange}
         onKeyDown={onKeyDown}
         autoFocus={autoFocus}
-        inputProps={{
-          tabIndex: keyboard.innerTabStops ? 0 : -1,
-          'data-testid': 'search-input-field',
-          'aria-label': translator.get('Listbox.Search'),
-          'aria-describedby': 'listbox-search-instructions',
+        slotProps={{
+          input: {
+            tabIndex: keyboard.innerTabStops ? 0 : -1,
+            'data-testid': 'search-input-field',
+            'aria-label': translator.get('Listbox.Search'),
+            'aria-describedby': 'listbox-search-instructions',
+          },
         }}
       />
       {/* Invisible or visually hidden instructions */}
