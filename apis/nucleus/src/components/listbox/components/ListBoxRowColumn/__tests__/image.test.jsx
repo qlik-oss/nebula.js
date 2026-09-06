@@ -308,6 +308,37 @@ describe('<Image />', () => {
       await testRenderer.unmount();
     });
 
+    test('a numeric corner radius is used as pixels', async () => {
+      const testRenderer = await render(
+        <Image
+          representation={{ imageSize: 'cover', imagePosition: 'topCenter', cornerRadius: 12 }}
+          src="http://foo/bar.png"
+          label="l"
+        />
+      );
+      const container = testRenderer.root.findByProps({ 'data-key': 'image-horizontal-container' });
+      expect(container.props.style.borderRadius).toBe('12px');
+      await testRenderer.unmount();
+    });
+
+    test('a border color given as a color-picker object uses its hex', async () => {
+      const testRenderer = await render(
+        <Image
+          representation={{
+            imageSize: 'cover',
+            imagePosition: 'topCenter',
+            borderWidth: 3,
+            borderColor: { color: '#00ff00' },
+          }}
+          src="http://foo/bar.png"
+          label="l"
+        />
+      );
+      const container = testRenderer.root.findByProps({ 'data-key': 'image-horizontal-container' });
+      expect(container.props.style.border).toBe('3px solid #00ff00');
+      await testRenderer.unmount();
+    });
+
     test('applies the configured border when borderWidth > 0, else a transparent placeholder', async () => {
       const withBorder = await render(
         <Image

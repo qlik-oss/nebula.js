@@ -1281,7 +1281,12 @@ describe('<ListBoxRowColumn />', () => {
 
     test('passes the dimension value as the title and the subtitle/cellBgColor expression columns to Image', async () => {
       const testRenderer = await renderImageCell({
-        representation: { type: 'image', imageSetting: 'url', imageSize: 'alwaysFill' },
+        representation: {
+          type: 'image',
+          imageSetting: 'url',
+          imageSize: 'alwaysFill',
+          cellBgColorMode: 'expression',
+        },
         qText: 'Amadeus',
         listExprIndex: { imageUrl: 1, subtitle: 2, cellBgColor: 3 },
         exprValues: ['http://foo/poster.png', 'Milos Forman', '#ff0000'],
@@ -1290,6 +1295,43 @@ describe('<ListBoxRowColumn />', () => {
       expect(image.props.title).toBe('Amadeus');
       expect(image.props.subtitle).toBe('Milos Forman');
       expect(image.props.cellBgColor).toBe('#ff0000');
+      await testRenderer.unmount();
+    });
+
+    test('single-color mode uses one root color for every cell (ignores the expression column)', async () => {
+      const testRenderer = await renderImageCell({
+        representation: {
+          type: 'image',
+          imageSetting: 'url',
+          imageSize: 'alwaysFill',
+          cellBgColorMode: 'single',
+          cellBgColor: { color: '#123456' },
+        },
+        qText: 'Amadeus',
+        listExprIndex: { imageUrl: 1, cellBgColor: 2 },
+        exprValues: ['http://foo/poster.png', '#ff0000'],
+      });
+      const image = testRenderer.root.findByType(Image);
+      // Uses the single root color, not the per-value expression value.
+      expect(image.props.cellBgColor).toBe('#123456');
+      await testRenderer.unmount();
+    });
+
+    test('single-color mode also accepts a plain hex string', async () => {
+      const testRenderer = await renderImageCell({
+        representation: {
+          type: 'image',
+          imageSetting: 'url',
+          imageSize: 'alwaysFill',
+          cellBgColorMode: 'single',
+          cellBgColor: '#abcdef',
+        },
+        qText: 'Amadeus',
+        listExprIndex: { imageUrl: 1 },
+        exprValues: ['http://foo/poster.png'],
+      });
+      const image = testRenderer.root.findByType(Image);
+      expect(image.props.cellBgColor).toBe('#abcdef');
       await testRenderer.unmount();
     });
 

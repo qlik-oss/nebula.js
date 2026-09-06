@@ -207,7 +207,13 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     const urlExprValue = resolveExpr('imageUrl');
     const labelExprValue = resolveExpr('imageLabel');
     imageSubtitle = resolveExpr('subtitle');
-    imageCellBgColor = resolveExpr('cellBgColor');
+    const cellBgColorMode = representation?.cellBgColorMode ?? 'single';
+    if (cellBgColorMode === 'expression') {
+      imageCellBgColor = resolveExpr('cellBgColor');
+    } else {
+      const singleColor = representation?.cellBgColor;
+      imageCellBgColor = typeof singleColor === 'string' ? singleColor : singleColor?.color;
+    }
     imageTooltip = resolveExpr('tooltip') || label;
 
     if (imageSetting === 'url') {

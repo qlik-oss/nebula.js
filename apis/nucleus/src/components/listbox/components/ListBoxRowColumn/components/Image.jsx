@@ -120,7 +120,7 @@ function Image({
     titlePosition = 'top-center',
     textOverlay = true,
     titleBackground = true,
-    cornerRadius = 'small',
+    cornerRadius = 4,
     borderWidth = 0,
     borderColor = '#d9d9d9',
   } = representation;
@@ -129,13 +129,15 @@ function Image({
   const resolvedImagePosition = resolveImagePosition(imagePosition);
   const maxImageHeight = '200px';
   const safeSrc = isSafeImageSrc(src) ? src : null;
-  const resolvedCornerRadius = cornerRadiusMap[cornerRadius] ?? '4px';
+  const resolvedCornerRadius =
+    typeof cornerRadius === 'number' ? `${cornerRadius}px` : (cornerRadiusMap[cornerRadius] ?? '4px');
+  const resolvedBorderColor = typeof borderColor === 'string' ? borderColor : borderColor?.color || '#d9d9d9';
   // Selected cells get a colored border; otherwise use the configured border
   let border;
   if (selected) {
     border = `2px solid ${selectionColor}`;
   } else if (borderWidth > 0) {
-    border = `${borderWidth}px solid ${borderColor}`;
+    border = `${borderWidth}px solid ${resolvedBorderColor}`;
   } else {
     border = '2px solid transparent';
   }
