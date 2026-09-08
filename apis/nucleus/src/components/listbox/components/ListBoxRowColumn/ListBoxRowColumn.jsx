@@ -211,8 +211,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     if (cellBgColorMode === 'expression') {
       imageCellBgColor = resolveExpr('cellBgColor');
     } else {
-      const singleColor = representation?.cellBgColor;
-      imageCellBgColor = typeof singleColor === 'string' ? singleColor : singleColor?.color;
+      imageCellBgColor = styles?.image?.cellBgColor;
     }
     imageTooltip = resolveExpr('tooltip') || label;
 
@@ -335,6 +334,8 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
               title={label}
               subtitle={imageSubtitle}
               cellBgColor={imageCellBgColor}
+              borderColor={styles?.image?.borderColor}
+              textStyles={styles?.image?.text}
               placeholderBackground={imagePlaceholderBg}
               selected={isSelected}
               selectionColor={imageSelectionColor}

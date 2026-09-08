@@ -1155,10 +1155,16 @@ describe('<ListBoxRowColumn />', () => {
   describe('image representation', () => {
     // Per-value expressions arrive as extra columns in the row: row = [dimCell, exprCell0, ...].
     // listExprIndex maps an expression's qLabel (e.g. 'imageUrl') to its column.
-    const renderImageCell = async ({ representation, qText = 'field-value', exprValues = [], listExprIndex = {} }) => {
+    const renderImageCell = async ({
+      representation,
+      qText = 'field-value',
+      exprValues = [],
+      listExprIndex = {},
+      imageStyles,
+    }) => {
       const row = [{ qState: 'A', qText, qElemNumber: 0 }, ...exprValues.map((qv) => ({ qText: qv }))];
       const data = {
-        styles,
+        styles: imageStyles ? { ...styles, image: imageStyles } : styles,
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
@@ -1298,7 +1304,7 @@ describe('<ListBoxRowColumn />', () => {
       await testRenderer.unmount();
     });
 
-    test('single-color mode uses one root color for every cell (ignores the expression column)', async () => {
+    test('single-color mode uses the theme-resolved color for every cell (ignores the expression column)', async () => {
       const testRenderer = await renderImageCell({
         representation: {
           type: 'image',
@@ -1307,31 +1313,32 @@ describe('<ListBoxRowColumn />', () => {
           cellBgColorMode: 'single',
           cellBgColor: { color: '#123456' },
         },
+        imageStyles: { cellBgColor: '#123456' },
         qText: 'Amadeus',
         listExprIndex: { imageUrl: 1, cellBgColor: 2 },
         exprValues: ['http://foo/poster.png', '#ff0000'],
       });
       const image = testRenderer.root.findByType(Image);
-      // Uses the single root color, not the per-value expression value.
+      // Uses the single (theme-resolved) color, not the per-value expression value.
       expect(image.props.cellBgColor).toBe('#123456');
       await testRenderer.unmount();
     });
 
-    test('single-color mode also accepts a plain hex string', async () => {
+    test('passes the theme-resolved border color down to the Image', async () => {
       const testRenderer = await renderImageCell({
         representation: {
           type: 'image',
           imageSetting: 'url',
           imageSize: 'alwaysFill',
-          cellBgColorMode: 'single',
-          cellBgColor: '#abcdef',
+          borderWidth: 2,
         },
+        imageStyles: { borderColor: 'rgba(0,0,0,0.5)' },
         qText: 'Amadeus',
         listExprIndex: { imageUrl: 1 },
         exprValues: ['http://foo/poster.png'],
       });
       const image = testRenderer.root.findByType(Image);
-      expect(image.props.cellBgColor).toBe('#abcdef');
+      expect(image.props.borderColor).toBe('rgba(0,0,0,0.5)');
       await testRenderer.unmount();
     });
 

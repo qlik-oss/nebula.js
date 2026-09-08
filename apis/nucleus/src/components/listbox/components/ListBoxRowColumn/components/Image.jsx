@@ -109,7 +109,9 @@ function Image({
   title,
   subtitle,
   cellBgColor,
+  borderColor: borderColorProp,
   placeholderBackground,
+  textStyles,
   selected = false,
   selectionColor = '#009845',
   opacity = 1,
@@ -122,7 +124,7 @@ function Image({
     titleBackground = true,
     cornerRadius = 4,
     borderWidth = 0,
-    borderColor = '#d9d9d9',
+    borderColor: representationBorderColor,
   } = representation;
   const isFitHeight = imageSize === 'fitHeight';
   const isFitWidth = imageSize === 'fitWidth';
@@ -131,7 +133,10 @@ function Image({
   const safeSrc = isSafeImageSrc(src) ? src : null;
   const resolvedCornerRadius =
     typeof cornerRadius === 'number' ? `${cornerRadius}px` : (cornerRadiusMap[cornerRadius] ?? '4px');
-  const resolvedBorderColor = typeof borderColor === 'string' ? borderColor : borderColor?.color || '#d9d9d9';
+  const resolvedBorderColor =
+    borderColorProp ??
+    (typeof representationBorderColor === 'string' ? representationBorderColor : representationBorderColor?.color) ??
+    '#d9d9d9';
   // Selected cells get a colored border; otherwise use the configured border
   let border;
   if (selected) {
@@ -163,6 +168,10 @@ function Image({
   // overlaid on top of the image and aligned per the title alignment settings.
   const resolvedTitleAlignment = resolveImagePosition(titlePosition);
   const hasOverlayText = textOverlay !== false && (title || subtitle);
+  const text = textStyles ?? {};
+  const hasImage = Boolean(safeSrc);
+  const textShadow = hasImage && !titleBackground ? (text.shadowOnImage ?? 'none') : 'none';
+
   const overlayNode = hasOverlayText ? (
     <div
       data-key="image-title-overlay"
@@ -180,10 +189,9 @@ function Image({
       <div
         style={{
           maxWidth: '100%',
-          padding: titleBackground ? '2px 6px' : 0,
-          borderRadius: titleBackground ? '2px' : 0,
-          backgroundColor: titleBackground ? 'rgba(255, 255, 255, 0.7)' : 'transparent',
-          color: '#404040',
+          padding: titleBackground && hasImage ? '2px 6px' : 0,
+          borderRadius: titleBackground && hasImage ? '3px' : 0,
+          backgroundColor: titleBackground && hasImage ? (text.backdropColor ?? 'transparent') : 'transparent',
           overflow: 'hidden',
           textAlign: resolvedTitleAlignment.horizontal === 'center' ? 'center' : undefined,
         }}
@@ -191,7 +199,18 @@ function Image({
         {title && (
           <div
             data-key="image-title"
-            style={{ fontWeight: 'bold', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+            style={{
+              fontFamily: text.fontFamily,
+              fontSize: text.fontSize ?? '13px',
+              fontWeight: text.fontWeight ?? 'bold',
+              fontStyle: text.fontStyle ?? 'normal',
+              textDecoration: text.textDecoration ?? 'initial',
+              color: text.color ?? '#333333',
+              textShadow,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
           >
             {title}
           </div>
@@ -200,8 +219,12 @@ function Image({
           <div
             data-key="image-subtitle"
             style={{
-              fontSize: '0.85em',
+              fontFamily: text.fontFamily,
+              fontSize: text.subtitleFontSize ?? '11px',
+              fontStyle: text.fontStyle ?? 'normal',
+              color: text.color ?? '#333333',
               opacity: 0.8,
+              textShadow,
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
