@@ -312,5 +312,67 @@ describe('<Listbox />', () => {
       const disclaimers = renderer.root.findAllByType(ListBoxDisclaimer);
       expect(disclaimers).toHaveLength(0);
     });
+
+    describe('exprCache', () => {
+      const context = {
+        modelStore: initializeStores('app'),
+        selectionStore: initializeSelectionStores('app'),
+        translator: { get: (s) => s, language: () => 'sv' },
+      };
+
+      const element = (layoutToUse) => (
+        <InstanceContext.Provider value={context}>
+          <ListBox
+            model={args.model}
+            layout={layoutToUse}
+            selections={args.selections}
+            selectionState={args.selectionState}
+            direction={args.direction}
+            height={args.height}
+            width={args.width}
+            update={args.update}
+            fetchStart={args.fetchStart}
+            keyScroll={args.keyScroll}
+            currentScrollIndex={args.currentScrollIndex}
+            isModal={isModal}
+            theme={theme}
+          />
+        </InstanceContext.Provider>
+      );
+
+      const lastExprCache = () => getListBoxComponents.default.mock.calls.at(-1)[0].exprCache;
+
+      test('survives an in-place re-render of the same field, but is cleared when the field changes', async () => {
+        layout.qListObject.qDimensionInfo.qGroupFieldDefs = ['Country'];
+        await act(async () => {
+          renderer = create(element(layout));
+        });
+        const initialCache = lastExprCache();
+        initialCache.subtitle = { 7: 'cached-for-Country' };
+
+        // Same field, e.g. a selection changed elsewhere - the cache must survive.
+        const sameFieldLayout = { ...layout, qSelectionInfo: { qInSelections: true } };
+        await act(async () => {
+          renderer.update(element(sameFieldLayout));
+        });
+        expect(lastExprCache()).toBe(initialCache);
+        expect(lastExprCache().subtitle).toEqual({ 7: 'cached-for-Country' });
+
+        // The dimension's field changed - a qElemNumber cached under the old field means nothing
+        // under the new one, so the cache must be cleared rather than carried over.
+        const newFieldLayout = {
+          ...layout,
+          qListObject: {
+            ...layout.qListObject,
+            qDimensionInfo: { ...layout.qListObject.qDimensionInfo, qGroupFieldDefs: ['City'] },
+          },
+        };
+        await act(async () => {
+          renderer.update(element(newFieldLayout));
+        });
+        expect(lastExprCache()).not.toBe(initialCache);
+        expect(lastExprCache()).toEqual({});
+      });
+    });
   });
 });

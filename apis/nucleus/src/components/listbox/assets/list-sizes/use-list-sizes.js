@@ -92,18 +92,18 @@ export default function useListSizes({ layout, width, height, listCount, count, 
     const rowsAuto = maxVisibleRows?.auto ?? true;
     const imageMaxColumns = Math.max(
       1,
-      (columnsAuto ? undefined : maxVisibleColumns?.maxColumns) || IMAGE_DEFAULT_COLUMNS
+      (columnsAuto ? undefined : maxVisibleColumns?.maxColumns) ?? IMAGE_DEFAULT_COLUMNS
     );
-    const imageMaxRows = Math.max(1, (rowsAuto ? undefined : maxVisibleRows?.maxRows) || IMAGE_DEFAULT_ROWS);
-    columnCount = Math.min(listCount || imageMaxColumns, imageMaxColumns) || 1;
+    const imageMaxRows = Math.max(1, (rowsAuto ? undefined : maxVisibleRows?.maxRows) ?? IMAGE_DEFAULT_ROWS);
+    columnCount = imageMaxColumns;
     columnWidth = Math.max(1, (width - SCROLL_BAR_WIDTH) / columnCount);
     itemHeight = Math.max(GRID_ROW_HEIGHT + GRID_ITEM_PADDING, Math.floor(listHeight / imageMaxRows));
     rowCount = Math.ceil((listCount || 1) / columnCount);
     // Row-major image grid scrolls vertically.
     overflowStyling = { overflowX: 'hidden' };
     // Grid gap is authored as a percentage of the grid width
-
-    const gridGapPct = Math.max(0, representation?.gridGap ?? 0.5);
+    const rawGridGap = representation?.gridGap;
+    const gridGapPct = Math.max(0, Number.isFinite(rawGridGap) ? rawGridGap : 0.5);
     gridGap = Math.min(Math.round((gridGapPct / 100) * width), columnWidth - 1, itemHeight - 1);
     gridGap = Math.max(0, gridGap);
   }

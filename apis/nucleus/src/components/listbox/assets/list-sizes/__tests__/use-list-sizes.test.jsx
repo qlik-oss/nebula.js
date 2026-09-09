@@ -296,6 +296,43 @@ describe('use-list-sizes', () => {
     });
   });
 
+  it('image representation keeps columnCount fixed at maxColumns even with fewer items than that', () => {
+    args.layout.layoutOptions.dataLayout = 'grid';
+    args.layout.layoutOptions.layoutOrder = 'row';
+    args.layout.representation = { type: 'image' };
+    args.listCount = 2; // fewer items than maxColumns (4)
+    const sizes = useListSizes(args);
+    expect(sizes).toMatchObject({
+      columnCount: 4, // stays at maxColumns, cells don't stretch to fill fewer/wider columns
+      columnWidth: (200 - 10) / 4,
+      rowCount: 1, // ceil(2 / 4)
+      listCount: 2,
+    });
+  });
+
+  it('image representation treats a custom maxColumns/maxRows of 0 the same as a negative value (clamped to 1)', () => {
+    args.layout.layoutOptions.dataLayout = 'grid';
+    args.layout.layoutOptions.layoutOrder = 'row';
+    args.layout.layoutOptions.maxVisibleColumns.maxColumns = 0;
+    args.layout.layoutOptions.maxVisibleRows.maxRows = -3;
+    args.layout.representation = { type: 'image' };
+    const sizes = useListSizes(args);
+    expect(sizes).toMatchObject({
+      columnCount: 1,
+      itemHeight: 300, // listHeight / 1
+    });
+  });
+
+  it('image representation falls back to the default gridGap for a non-numeric value instead of NaN', () => {
+    args.layout.layoutOptions.dataLayout = 'grid';
+    args.layout.layoutOptions.layoutOrder = 'row';
+    args.layout.representation = { type: 'image', gridGap: 'not-a-number' };
+    const sizes = useListSizes(args);
+    expect(sizes.gridGap).not.toBeNaN();
+    // same as the default (0.5% of width 200 = 1px), since the invalid value falls back to it
+    expect(sizes.gridGap).toBe(1);
+  });
+
   it('image representation converts the gridGap percentage of width into a pixel gap', () => {
     args.layout.layoutOptions.dataLayout = 'grid';
     args.layout.layoutOptions.layoutOrder = 'row';

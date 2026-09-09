@@ -1276,6 +1276,7 @@ describe('<ListBoxRowColumn />', () => {
       // row-major: cellIndex = rowIndex*columnCount + columnIndex = 0*3 + 1 = 1 -> 'm1'
       // (column-major would be columnIndex*rowCount + rowIndex = 1*10 + 0 = 10 -> 'm10', an unloaded far index)
       expect(image.props.src).toBe('m1');
+      expect(getRowsKeyboardNavigation).toHaveBeenCalledWith(expect.objectContaining({ layoutOrder: 'row' }));
       await testRenderer.unmount();
     });
 
@@ -1353,6 +1354,30 @@ describe('<ListBoxRowColumn />', () => {
       });
       expect(withoutTooltip.root.findAllByProps({ title: 'Amadeus' }).length).toBeGreaterThan(0);
       await withoutTooltip.unmount();
+    });
+
+    test('folds the subtitle and resolved tooltip into the accessible label, since both are shown visually but not otherwise announced', async () => {
+      const testRenderer = await renderImageCell({
+        representation: { type: 'image', imageSetting: 'url', imageSize: 'alwaysFill' },
+        qText: 'Amadeus',
+        listExprIndex: { imageUrl: 1, subtitle: 2, tooltip: 3 },
+        exprValues: ['http://foo/poster.png', '1984 · Drama', 'A film by Milos Forman'],
+      });
+      const call = screenReaders.default.mock.calls.at(-1)[0];
+      expect(call.label).toBe('Amadeus, 1984 · Drama, A film by Milos Forman');
+      await testRenderer.unmount();
+    });
+
+    test('accessible label is just the dimension value when there is no subtitle/tooltip expression', async () => {
+      const testRenderer = await renderImageCell({
+        representation: { type: 'image', imageSetting: 'url', imageSize: 'alwaysFill' },
+        qText: 'Amadeus',
+        listExprIndex: { imageUrl: 1 },
+        exprValues: ['http://foo/poster.png'],
+      });
+      const call = screenReaders.default.mock.calls.at(-1)[0];
+      expect(call.label).toBe('Amadeus');
+      await testRenderer.unmount();
     });
 
     test('insets each image cell by the grid gap (centered in its cell stride)', async () => {

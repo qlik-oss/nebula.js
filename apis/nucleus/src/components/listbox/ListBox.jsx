@@ -72,9 +72,14 @@ export default function ListBox({
     pages: [],
   });
 
-  // Per-value expression cache, keyed by expression qLabel -> dimension value (qText) -> last-known
-  // value.
+  // Per-value expression cache, keyed by expression qLabel -> dimension value's qElemNumber-> last-known value.
   const exprCache = useRef({});
+  const dimensionFieldKey = JSON.stringify(layout?.qListObject?.qDimensionInfo?.qGroupFieldDefs);
+  const prevDimensionFieldKey = useRef(dimensionFieldKey);
+  if (prevDimensionFieldKey.current !== dimensionFieldKey) {
+    prevDimensionFieldKey.current = dimensionFieldKey;
+    exprCache.current = {};
+  }
 
   // The time from scroll end until new data is being fetched, may be exposed in API later on.
   const scrollTimeout = 0;
