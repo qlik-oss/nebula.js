@@ -26,7 +26,7 @@
  *   per-value expression (qExpressions.qLabel='imageUrl'/'imageLabel') provides the image URL
  *   (`'url'`) or the image label (`'label'`).
  * @property {('alwaysFit'|'fitWidth'|'fitHeight'|'stretch'|'alwaysFill')} [imageSize='alwaysFit'] Image sizing mode. Only used when `type` is 'image'.
- * @property {string} [imagePosition='topCenter'] Image position within the cell. Only used when `type` is 'image' and `imageSize` is not 'fill'.
+ * @property {string} [imagePosition='topCenter'] Image position within the cell. Only used when `type` is 'image' and `imageSize` is not 'stretch'.
  * @property {string} [titlePosition='top-center'] Overlay text alignment as `{vertical}-{horizontal}` (e.g. 'top-left', 'center-center', 'bottom-right'). Only used when `type` is 'image'.
  *  @property {boolean} [textOverlay=true] Whether to render the title/subtitle overlay text. Only used when `type` is 'image'.
  * @property {boolean} [titleBackground=true] Draw a background behind the title text for legibility. Only used when `type` is 'image'.

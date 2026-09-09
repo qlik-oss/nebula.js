@@ -26,19 +26,7 @@ const resolveImagePosition = (imagePosition) => {
   };
 };
 
-const getImageWidth = (imageSize) => {
-  switch (imageSize) {
-    case 'fitHeight':
-      return 'auto';
-    case 'originalSize':
-      return 'fit-content';
-    case 'fill':
-    case 'alwaysFit':
-    case 'fitWidth':
-    default:
-      return '100%';
-  }
-};
+const getImageWidth = (imageSize) => (imageSize === 'fitHeight' ? 'auto' : '100%');
 
 const getObjectPosition = (resolvedImagePosition) => {
   let verticalPos = 'center';
