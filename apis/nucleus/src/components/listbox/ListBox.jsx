@@ -1,5 +1,5 @@
 /* eslint no-underscore-dangle:0 */
-import React, { useEffect, useState, useCallback, useRef, useContext } from 'react';
+import React, { useEffect, useState, useCallback, useRef, useContext, useMemo } from 'react';
 import InfiniteLoader from 'react-window-infinite-loader';
 import { styled } from '@mui/material';
 import useSelectionsInteractions from './hooks/selections/useSelectionsInteractions';
@@ -17,8 +17,15 @@ import useFrequencyMax from './hooks/useFrequencyMax';
 import getScreenReaderAssertiveText from './components/screen-reader/assertive-screen-reader';
 import InstanceContext from '../../contexts/InstanceContext';
 import deduceFrequencyMode from './utils/deduce-frequency-mode';
+import compactSelectedPages from './helpers/compact-selected-pages';
+import { getListExprIndex, cacheExprValue } from './helpers/expr-cache';
 
 const DEFAULT_MIN_BATCH_SIZE = 100;
+// Cap on the one-time per-value expression cache warm-up (see the effect below) - a field with a
+// higher cardinality than this falls back to the incidental, render-driven cache population only.
+const EXPR_CACHE_WARMUP_LIMIT = 2000;
+// Engine caps a single qDataPage request at 10,000 cells; page the warm-up fetch to stay under it.
+const EXPR_CACHE_WARMUP_CELL_LIMIT = 10000;
 
 const StyledWrapper = styled('div')(() => ({
   [`& .screenReaderOnly`]: {
@@ -120,18 +127,18 @@ export default function ListBox({
     // All necessary data fetching done - signal rendering done!
     renderedCallback?.();
   }
-
+yu
   const isItemLoaded = useCallback(
     (index) => {
-      if (!pages?.length || !local.current.validPages) {
+      if (!renderPages?.length || !local.current.validPages) {
         return false;
       }
       local.current.checkIdx = index;
       const isLoaded = (p) => p.qArea.qTop <= index && index < p.qArea.qTop + p.qArea.qHeight;
-      const page = pages.filter((p) => isLoaded(p))[0];
+      const page = renderPages.filter((p) => isLoaded(p))[0];
       return page && isLoaded(page);
     },
-    [layout, pages]
+    [layout, renderPages]
   );
 
   const { interactionEvents, select } = useSelectionsInteractions({
@@ -144,7 +151,6 @@ export default function ListBox({
 
   const { layoutOptions = {} } = layout || {};
 
-  const isImageMode = layout?.representation?.type === 'image';
   let isRow = true;
   if (layoutOptions.dataLayout) {
     isRow = layoutOptions.dataLayout === 'singleColumn' || isImageMode ? true : layoutOptions?.layoutOrder === 'row';
@@ -198,19 +204,21 @@ export default function ListBox({
 
   const isVertical = layoutOptions.dataLayout !== 'grid';
 
-  const count = layout?.qListObject.qSize?.qcy;
+  const count = hideActive ? renderCount : layout?.qListObject.qSize?.qcy;
 
-  const unlimitedListCount = getListCount({
-    pages,
-    minimumBatchSize,
-    count,
-    calculatePagesHeight,
-    layoutOptions,
-    model,
-  });
+  const unlimitedListCount = hideActive
+    ? renderCount
+    : getListCount({
+        pages,
+        minimumBatchSize,
+        count,
+        calculatePagesHeight,
+        layoutOptions,
+        model,
+      });
 
   let freqIsAllowed = getFrequencyAllowed({ itemWidth: width, layout, frequencyMode });
-  const deducedFrequencyMode = deduceFrequencyMode(pages);
+  const deducedFrequencyMode = deduceFrequencyMode(renderPages);
   const sizes = useListSizes({
     layout,
     width,
@@ -293,7 +301,7 @@ export default function ListBox({
     onCtrlF,
     textAlign,
     isVertical,
-    pages,
+    pages: renderPages,
     selectionState,
     isSingleSelect,
     selections,

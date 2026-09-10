@@ -374,5 +374,117 @@ describe('<Listbox />', () => {
         expect(lastExprCache()).toEqual({});
       });
     });
+
+    describe('image "show only selected values"', () => {
+      // Two overlapping windows (a stale pre-selection page + the re-fetched top window after the
+      // state re-sort) that both hold the same selected values — the case that used to render
+      // duplicates.
+      const overlappingPages = [
+        {
+          qArea: { qLeft: 0, qTop: 0, qWidth: 1, qHeight: 2 },
+          qMatrix: [[{ qText: 'a', qState: 'S', qElemNumber: 10 }], [{ qText: 'b', qState: 'S', qElemNumber: 20 }]],
+        },
+        {
+          qArea: { qLeft: 0, qTop: 50, qWidth: 1, qHeight: 3 },
+          qMatrix: [
+            [{ qText: 'b', qState: 'S', qElemNumber: 20 }],
+            [{ qText: 'a', qState: 'S', qElemNumber: 10 }],
+            [{ qText: 'c', qState: 'O', qElemNumber: 30 }],
+          ],
+        },
+      ];
+
+      const setUpImageHide = ({ inModal = false, selectedCount = 2 } = {}) => {
+        layout.layoutOptions = { dataLayout: 'grid' };
+        isModal.mockReturnValue(inModal);
+        layout.representation = { type: 'image', showSelected: true };
+        layout.qListObject.qDimensionInfo.qStateCounts = { qSelected: selectedCount, qLocked: 0 };
+        // Populate the pages state once (selectionState.update is what normally sets it); guarding to
+        // a single call avoids a setState-during-render loop.
+        let didSetPages = false;
+        args.selectionState = {
+          update: jest.fn(({ setPages }) => {
+            if (!didSetPages) {
+              didSetPages = true;
+              setPages(overlappingPages);
+            }
+          }),
+          selectDisabled: jest.fn().mockReturnValue(false),
+        };
+      };
+
+      const lastGridProps = () => getListBoxComponents.default.mock.calls.at(-1)[0];
+
+      test('renders each selected value once (de-duplicated, selected-only) once applied', async () => {
+        setUpImageHide({ inModal: false, selectedCount: 2 });
+        await render();
+        const props = lastGridProps();
+        expect(props.pages).toHaveLength(1);
+        expect(props.pages[0].qMatrix.map((r) => r[0].qText)).toEqual(['a', 'b']);
+        expect(props.listCount).toBe(2);
+      });
+
+      test('keeps every value visible while actively picking (modal), so multi-select works', async () => {
+        setUpImageHide({ inModal: true, selectedCount: 2 });
+        await render();
+        // In modal selection the full (uncompacted) pages pass through unchanged.
+        expect(lastGridProps().pages).toBe(overlappingPages);
+      });
+
+      test('does not compact a field with no selections of its own (values stay visible / greyed)', async () => {
+        setUpImageHide({ selectedCount: 0 });
+        await render();
+        // Fields affected by a selection elsewhere have no selected values themselves, so the full
+        // (uncompacted) pages pass through unchanged and render greyed.
+        expect(lastGridProps().pages).toBe(overlappingPages);
+      });
+    });
+
+    describe('exprCache warm-up (whole-field fetch, independent of virtualization)', () => {
+      const lastExprCache = () => getListBoxComponents.default.mock.calls.at(-1)[0].exprCache;
+
+      const setUpWarmup = ({ cardinal = 2 } = {}) => {
+        layout.representation = { type: 'image' };
+        layout.qListObject.qExpressions = [{ qLabel: 'imageUrl' }];
+        layout.qListObject.qDimensionInfo.qCardinal = cardinal;
+        args.model.getListObjectData = jest.fn().mockResolvedValue([
+          {
+            qMatrix: [
+              [{ qText: 'a', qElemNumber: 1 }, { qText: 'url-a' }],
+              [{ qText: 'b', qElemNumber: 2 }, { qText: 'url-b' }],
+            ],
+          },
+        ]);
+      };
+
+      test('fetches the whole field once (qTop 0, qHeight = cardinal) and merges values by qElemNumber', async () => {
+        setUpWarmup();
+        await render();
+        expect(args.model.getListObjectData).toHaveBeenCalledWith('/qListObjectDef', [
+          { qTop: 0, qLeft: 0, qWidth: 2, qHeight: 2 },
+        ]);
+        expect(lastExprCache().imageUrl).toEqual({ 1: 'url-a', 2: 'url-b' });
+      });
+
+      test('does not run for a non-image representation', async () => {
+        setUpWarmup();
+        layout.representation = { type: 'text' };
+        await render();
+        expect(args.model.getListObjectData).not.toHaveBeenCalled();
+      });
+
+      test('does not run for a field with no per-value expressions', async () => {
+        setUpWarmup();
+        layout.qListObject.qExpressions = [];
+        await render();
+        expect(args.model.getListObjectData).not.toHaveBeenCalled();
+      });
+
+      test('does not run when the cardinality exceeds the warm-up cap', async () => {
+        setUpWarmup({ cardinal: 100000 });
+        await render();
+        expect(args.model.getListObjectData).not.toHaveBeenCalled();
+      });
+    });
   });
 });

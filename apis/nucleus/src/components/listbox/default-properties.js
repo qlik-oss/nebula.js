@@ -31,9 +31,10 @@
  *  @property {boolean} [textOverlay=true] Whether to render the title/subtitle overlay text. Only used when `type` is 'image'.
  * @property {boolean} [titleBackground=true] Draw a background behind the title text for legibility. Only used when `type` is 'image'.
  * @property {number} [gridGap=0.5] Spacing between image grid cells, as a percentage of the grid width. Only used when `type` is 'image'.
- * @property {('none'|'small'|'medium'|'large'|'full')} [cornerRadius='small'] Corner radius of the image cell (0/4/8/16px or 50%). Only used when `type` is 'image'.
+ * @property {number} [cornerRadius=4] Corner radius of the image cell (0/4/8/16px or 50%). Only used when `type` is 'image'.
  * @property {number} [borderWidth=0] Cell border width in px. Only used when `type` is 'image'.
  * @property {string} [borderColor='#d9d9d9'] Cell border color. Only used when `type` is 'image' and `borderWidth` > 0.
+ * @property {boolean} [showSelected=true] When `type` is 'image', show only selected values once a selection is applied (while selecting, all values stay visible). Set to false to keep unselected values visible.
  */
 
 /**
