@@ -178,7 +178,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   let imagePlaceholderBg;
   if (isImage) {
     imageSelectionColor = styles?.selections?.selected || '#009845';
-    if (cell.qState === 'X' || cell.qState === 'XS') {
+    if (cell.qState === 'X' || cell.qState === 'XS' || cell.qState === 'XL') {
       imageOpacity = 0.3;
     } else if (cell.qState === 'A') {
       imageOpacity = 0.4;

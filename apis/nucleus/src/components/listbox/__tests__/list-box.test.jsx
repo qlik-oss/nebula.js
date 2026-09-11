@@ -394,11 +394,11 @@ describe('<Listbox />', () => {
         },
       ];
 
-      const setUpImageHide = ({ inModal = false, selectedCount = 2 } = {}) => {
+      const setUpImageHide = ({ inModal = false, selectedCount = 2, stateCounts } = {}) => {
         layout.layoutOptions = { dataLayout: 'grid' };
         isModal.mockReturnValue(inModal);
         layout.representation = { type: 'image', showSelected: true };
-        layout.qListObject.qDimensionInfo.qStateCounts = { qSelected: selectedCount, qLocked: 0 };
+        layout.qListObject.qDimensionInfo.qStateCounts = stateCounts ?? { qSelected: selectedCount, qLocked: 0 };
         // Populate the pages state once (selectionState.update is what normally sets it); guarding to
         // a single call avoids a setState-during-render loop.
         let didSetPages = false;
@@ -437,6 +437,15 @@ describe('<Listbox />', () => {
         // Fields affected by a selection elsewhere have no selected values themselves, so the full
         // (uncompacted) pages pass through unchanged and render greyed.
         expect(lastGridProps().pages).toBe(overlappingPages);
+      });
+
+      test('compacts a field whose only selection state is excluded (XS/XL), not just S/L', async () => {
+        // A selection elsewhere excluded values in this field (qState 'XS'); qSelected/qLocked are
+        // both 0, but qSelectedExcluded is not - the field is still "in selections" for this field.
+        setUpImageHide({ stateCounts: { qSelected: 0, qSelectedExcluded: 2, qLocked: 0, qLockedExcluded: 0 } });
+        await render();
+        expect(lastGridProps().pages).toHaveLength(1);
+        expect(lastGridProps().pages[0].qMatrix.map((r) => r[0].qText)).toEqual(['a', 'b']);
       });
     });
 

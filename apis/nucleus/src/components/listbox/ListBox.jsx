@@ -19,6 +19,7 @@ import InstanceContext from '../../contexts/InstanceContext';
 import deduceFrequencyMode from './utils/deduce-frequency-mode';
 import compactSelectedPages from './helpers/compact-selected-pages';
 import { getListExprIndex, cacheExprValue } from './helpers/expr-cache';
+import hasSelections from './assets/has-selections';
 
 const DEFAULT_MIN_BATCH_SIZE = 100;
 // Cap on the one-time per-value expression cache warm-up (see the effect below) - a field with a
@@ -65,6 +66,7 @@ export default function ListBox({
 }) {
   const { translator: translatorDynamic } = useContext(InstanceContext);
   const [initScrollPosIsSet, setInitScrollPosIsSet] = useState(false);
+  const [exprCacheReady, setExprCacheReady] = useState(false);
   const isSingleSelect = !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
   const { checkboxes = checkboxOption, histogram } = layout ?? {};
 
@@ -82,9 +84,11 @@ export default function ListBox({
   // Per-value expression cache, keyed by expression qLabel -> dimension value's qElemNumber-> last-known value.
   const exprCache = useRef({});
   const dimensionFieldKey = JSON.stringify(layout?.qListObject?.qDimensionInfo?.qGroupFieldDefs);
-  const prevDimensionFieldKey = useRef(dimensionFieldKey);
-  if (prevDimensionFieldKey.current !== dimensionFieldKey) {
-    prevDimensionFieldKey.current = dimensionFieldKey;
+  const exprLabelsKey = JSON.stringify(layout?.qListObject?.qExpressions);
+  const cacheKey = `${dimensionFieldKey}|${exprLabelsKey}`;
+  const prevCacheKey = useRef(cacheKey);
+  if (prevCacheKey.current !== cacheKey) {
+    prevCacheKey.current = cacheKey;
     exprCache.current = {};
   }
 
@@ -133,20 +137,17 @@ export default function ListBox({
   // rows are the selected ones
 
   const representation = layout?.representation;
-  const dimensionInfo = layout?.qListObject?.qDimensionInfo;
   const isImageMode = representation?.type === 'image';
   const showSelected = representation?.showSelected ?? true;
-  const selectedCount = (dimensionInfo?.qStateCounts?.qSelected ?? 0) + (dimensionInfo?.qStateCounts?.qLocked ?? 0);
-  // Compact the field the user selected in (selectedCount > 0) down to just its selected values;
-  const inModal = typeof isModal === 'function' ? isModal() : false;
-  const hideActive = isImageMode && showSelected && !inModal && selectedCount > 0;
+  // Compact the field the user selected in (including XS/XL states) down to just its selected values;
+  const inModal = typeof isModal === 'function' ? isModal() : (selections?.isModal?.(model) ?? false);
+  const hideActive = isImageMode && showSelected && !inModal && hasSelections(layout);
 
   // Warm the per-value expression cache (imageUrl/subtitle/etc.) for the whole field in one go,
   // independent of which rows have actually scrolled into view. Without this, a value that gets
   // excluded before its row is ever rendered has no cached fallback (see helpers/expr-cache.js) -
   // its image/subtitle is lost for good the moment it's excluded, since the engine returns null for
   // excluded values and the render-driven cache never got a chance to capture a valid one.
-  const exprLabelsKey = JSON.stringify(layout?.qListObject?.qExpressions?.map((expr) => expr.qLabel));
   useEffect(() => {
     if (!isImageMode || dataWidth <= 1 || !cardinal || cardinal > EXPR_CACHE_WARMUP_LIMIT) {
       return undefined;
@@ -168,6 +169,7 @@ export default function ListBox({
           });
         });
       }
+      if (!cancelled) setExprCacheReady(true); // ← Signal rerender when done
     })();
     return () => {
       cancelled = true;
@@ -375,6 +377,7 @@ export default function ListBox({
     isModal,
     styles,
     exprCache: exprCache.current,
+    exprCacheReady,
   });
 
   const { columnWidth, listHeight, itemHeight } = sizes || {};
