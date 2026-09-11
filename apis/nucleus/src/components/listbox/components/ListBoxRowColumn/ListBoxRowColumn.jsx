@@ -129,9 +129,9 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
       columnCount,
       rowIndex,
       columnIndex,
-      layoutOrder,
+      layoutOrder: effectiveLayoutOrder,
     }),
-    [actions, keyboard?.innerTabStops, rowCount, columnCount, rowIndex, columnIndex, layoutOrder]
+    [actions, keyboard?.innerTabStops, rowCount, columnCount, rowIndex, columnIndex, effectiveLayoutOrder]
   );
 
   const row = useMemo(() => getRowFromPages({ pages, cellIndex }), [pages, cellIndex]);
@@ -211,7 +211,8 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     if (cellBgColorMode === 'expression') {
       imageCellBgColor = resolveExpr('cellBgColor');
     } else {
-      imageCellBgColor = styles?.image?.cellBgColor;
+      const singleColor = representation?.cellBgColor;
+      imageCellBgColor = typeof singleColor === 'string' ? singleColor : singleColor?.color;
     }
     imageTooltip = resolveExpr('tooltip') || label;
 
@@ -257,9 +258,16 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const showAnyIcon = !checkboxes && sizePermitsTickOrLock && !isImage;
   const cellPaddingRight = checkboxes || !sizePermitsTickOrLock;
 
+  // For image cells the subtitle and the resolved tooltip are shown visually - as the overlay text
+  // and the hover title respectively - but aren't otherwise part of the accessible name. Fold them into the label so screen-reader users get the
+  // same context as sighted users.
+  const accessibleLabel = isImage
+    ? [label, imageSubtitle, imageTooltip !== label ? imageTooltip : null].filter(Boolean).join(', ')
+    : label;
+
   const ariaLabel = getValueLabel({
     translator,
-    label,
+    label: accessibleLabel,
     qState: cell.qState,
     currentIndex: count.currentIndex,
     maxIndex: count.max,

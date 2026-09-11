@@ -1,4 +1,4 @@
-import { CHECKBOX_WIDTH, ITEM_MIN_WIDTH } from '../../../constants';
+import { CHECKBOX_WIDTH, ITEM_MIN_WIDTH, SCROLL_BAR_WIDTH } from '../../../constants';
 import useListSizes from '../use-list-sizes';
 import * as useTextWidthModule from '../../../hooks/useTextWidth';
 import * as getMeasureTextModule from '../../measure-text';
@@ -233,7 +233,8 @@ describe('use-list-sizes', () => {
     const rowCount = 3;
     const itemHeight = 36;
     args.layout.layoutOptions.dataLayout = 'grid';
-    args.height = itemHeight * 3; // ensure height can fit 3 rows, or we will fall back to auto calculation
+    // ensure height can fit 3 rows plus scrollbar reservation, or we will fall back to auto calculation
+    args.height = itemHeight * 3 + SCROLL_BAR_WIDTH;
     args.layout.layoutOptions.layoutOrder = 'column';
     const columnCount = 578448;
     args.listCount = rowCount * columnCount + 1;
@@ -248,7 +249,7 @@ describe('use-list-sizes', () => {
       itemPadding: 4,
       itemHeight,
       listCount: columnCount * rowCount,
-      listHeight: 3 * itemHeight,
+      listHeight: 3 * itemHeight + SCROLL_BAR_WIDTH,
       listWidth: 200,
       maxCount: {
         column: columnCount,
@@ -293,6 +294,43 @@ describe('use-list-sizes', () => {
       itemHeight: 75, // listHeight / default rows = 300 / 4
       rowCount: 20, // ceil(listCount / columnCount) = ceil(100 / 5)
     });
+  });
+
+  it('image representation keeps columnCount fixed at maxColumns even with fewer items than that', () => {
+    args.layout.layoutOptions.dataLayout = 'grid';
+    args.layout.layoutOptions.layoutOrder = 'row';
+    args.layout.representation = { type: 'image' };
+    args.listCount = 2; // fewer items than maxColumns (4)
+    const sizes = useListSizes(args);
+    expect(sizes).toMatchObject({
+      columnCount: 4, // stays at maxColumns, cells don't stretch to fill fewer/wider columns
+      columnWidth: (200 - 10) / 4,
+      rowCount: 1, // ceil(2 / 4)
+      listCount: 2,
+    });
+  });
+
+  it('image representation treats a custom maxColumns/maxRows of 0 the same as a negative value (clamped to 1)', () => {
+    args.layout.layoutOptions.dataLayout = 'grid';
+    args.layout.layoutOptions.layoutOrder = 'row';
+    args.layout.layoutOptions.maxVisibleColumns.maxColumns = 0;
+    args.layout.layoutOptions.maxVisibleRows.maxRows = -3;
+    args.layout.representation = { type: 'image' };
+    const sizes = useListSizes(args);
+    expect(sizes).toMatchObject({
+      columnCount: 1,
+      itemHeight: 300, // listHeight / 1
+    });
+  });
+
+  it('image representation falls back to the default gridGap for a non-numeric value instead of NaN', () => {
+    args.layout.layoutOptions.dataLayout = 'grid';
+    args.layout.layoutOptions.layoutOrder = 'row';
+    args.layout.representation = { type: 'image', gridGap: 'not-a-number' };
+    const sizes = useListSizes(args);
+    expect(sizes.gridGap).not.toBeNaN();
+    // same as the default (0.5% of width 200 = 1px), since the invalid value falls back to it
+    expect(sizes.gridGap).toBe(1);
   });
 
   it('image representation converts the gridGap percentage of width into a pixel gap', () => {

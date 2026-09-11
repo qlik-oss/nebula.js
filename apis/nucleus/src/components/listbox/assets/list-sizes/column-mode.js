@@ -1,4 +1,6 @@
-export default function calculateColumnMode({
+import { SCROLL_BAR_WIDTH } from '../../constants';
+
+function computeColumnLayout({
   maxVisibleRows,
   itemHeight,
   listCount,
@@ -26,4 +28,41 @@ export default function calculateColumnMode({
     columnCount,
     rowCount,
   };
+}
+
+export default function calculateColumnMode({
+  maxVisibleRows,
+  itemHeight,
+  listCount,
+  listHeight,
+  columnAutoWidth,
+  containerWidth,
+  itemMinWidth,
+}) {
+  const layout = computeColumnLayout({
+    maxVisibleRows,
+    itemHeight,
+    listCount,
+    listHeight,
+    columnAutoWidth,
+    containerWidth,
+    itemMinWidth,
+  });
+
+  // A horizontal scrollbar will render when the columns don't fit the container width.
+  // Recompute with less height so a row is freed up for the scrollbar, instead of it covering the last row.
+  const hasHorizontalOverflow = layout.columnWidth * layout.columnCount - containerWidth > 1;
+  if (!hasHorizontalOverflow) {
+    return layout;
+  }
+
+  return computeColumnLayout({
+    maxVisibleRows,
+    itemHeight,
+    listCount,
+    listHeight: listHeight - SCROLL_BAR_WIDTH,
+    columnAutoWidth,
+    containerWidth,
+    itemMinWidth,
+  });
 }

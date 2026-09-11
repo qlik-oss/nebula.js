@@ -44,6 +44,38 @@ describe('<Image />', () => {
     await testRenderer.unmount();
   });
 
+  test('falls back to the placeholder (no img) when the image fails to load, e.g. a 404', async () => {
+    const testRenderer = await render(
+      <Image representation={{ imageSize: 'fitHeight', imagePosition: 'topLeft' }} src="http://foo/broken.png" />
+    );
+    const img = testRenderer.root.findByType('img');
+    await renderer.act(async () => {
+      img.props.onError();
+    });
+    expect(testRenderer.root.findAllByType('img')).toHaveLength(0);
+    await testRenderer.unmount();
+  });
+
+  test('retries a new src on the same cell instance even if the previous src had errored', async () => {
+    const testRenderer = await render(
+      <Image representation={{ imageSize: 'fitHeight', imagePosition: 'topLeft' }} src="http://foo/broken.png" />
+    );
+    await renderer.act(async () => {
+      testRenderer.root.findByType('img').props.onError();
+    });
+    expect(testRenderer.root.findAllByType('img')).toHaveLength(0);
+
+    await renderer.act(async () => {
+      testRenderer.update(
+        <Image representation={{ imageSize: 'fitHeight', imagePosition: 'topLeft' }} src="http://foo/ok.png" />
+      );
+    });
+    const imgs = testRenderer.root.findAllByType('img');
+    expect(imgs).toHaveLength(1);
+    expect(imgs[0].props.src).toBe('http://foo/ok.png');
+    await testRenderer.unmount();
+  });
+
   describe('src security validation', () => {
     test.each([
       ['https URL', 'https://foo/bar.png'],
@@ -88,6 +120,32 @@ describe('<Image />', () => {
       const img = testRenderer.root.findByType('img');
       expect(img.props.style.width).toBe(expected.width);
       expect(img.props.style.objectFit).toBe(expected.objectFit);
+      await testRenderer.unmount();
+    });
+
+    test.each(['alwaysFit', 'stretch', 'alwaysFill'])(
+      '%s fills the full cell height, so it grows/shrinks with maxVisibleRows',
+      async (imageSize) => {
+        const testRenderer = await render(
+          <Image representation={{ imageSize, imagePosition: 'topLeft' }} src="http://foo/bar.png" label="l" />
+        );
+        const img = testRenderer.root.findByType('img');
+        expect(img.props.style.height).toBe('100%');
+        expect(img.props.style.maxHeight).toBeUndefined();
+        await testRenderer.unmount();
+      }
+    );
+
+    it('fitHeight caps both the container and the image at maxImageHeight', async () => {
+      const testRenderer = await render(
+        <Image
+          representation={{ imageSize: 'fitHeight', imagePosition: 'topLeft' }}
+          src="http://foo/bar.png"
+          label="l"
+        />
+      );
+      const img = testRenderer.root.findByType('img');
+      expect(img.props.style.maxHeight).toBe('200px');
       await testRenderer.unmount();
     });
 

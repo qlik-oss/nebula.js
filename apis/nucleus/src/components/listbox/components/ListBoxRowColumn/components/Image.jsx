@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // Position is stored as `{vertical}-{horizontal}` by the position-grid component (e.g. 'top-center',
 // 'center-center', 'bottom-right'); older objects used camelCase ('topCenter'). Accept both and map
@@ -26,19 +26,7 @@ const resolveImagePosition = (imagePosition) => {
   };
 };
 
-const getImageWidth = (imageSize) => {
-  switch (imageSize) {
-    case 'fitHeight':
-      return 'auto';
-    case 'originalSize':
-      return 'fit-content';
-    case 'fill':
-    case 'alwaysFit':
-    case 'fitWidth':
-    default:
-      return '100%';
-  }
-};
+const getImageWidth = (imageSize) => (imageSize === 'fitHeight' ? 'auto' : '100%');
 
 const getObjectPosition = (resolvedImagePosition) => {
   let verticalPos = 'center';
@@ -146,23 +134,36 @@ function Image({
   } else {
     border = '2px solid transparent';
   }
+  // Track the src that failed to load (rather than a plain boolean) so a new src coming in on the
+  // same cell instance (e.g. on scroll, since react-window recycles cells) gets a fresh attempt
+  // instead of staying stuck on a broken-image icon from whatever previously errored here.
+  const [erroredSrc, setErroredSrc] = useState(null);
+  const hasLoadError = safeSrc !== null && safeSrc === erroredSrc;
 
-  const imgNode = safeSrc ? (
-    <img
-      src={safeSrc}
-      alt={label}
-      style={{
-        width: getImageWidth(imageSize),
-        // fitWidth: fill width, height scales proportionally; the container's overflow:hidden clips
-        // any vertical overflow. Other modes fill the cell height (capped at maxImageHeight).
-        height: isFitWidth ? 'auto' : '100%',
-        maxHeight: isFitWidth ? undefined : maxImageHeight,
-        objectFit: getObjectFit(imageSize),
-        objectPosition: getObjectPosition(resolvedImagePosition),
-        overflow: 'hidden',
-      }}
-    />
-  ) : null;
+  const imgNode =
+    safeSrc && !hasLoadError ? (
+      <img
+        src={safeSrc}
+        alt={label}
+        // A 404 or otherwise broken URL should degrade to the same placeholder shown for a missing
+        // src, rather than the browser's native broken-image icon.
+        onError={() => setErroredSrc(safeSrc)}
+        style={{
+          width: getImageWidth(imageSize),
+          // fitWidth: fill width, height scales proportionally; the container's overflow:hidden clips
+          // any vertical overflow. Other modes fill the cell height (capped at maxImageHeight).
+          // fitWidth: fill width, height scales proportionally; the container's overflow:hidden clips
+          // any vertical overflow. fitHeight's container is pinned to maxImageHeight (below), so cap
+          // the image to match. Other modes (alwaysFit/stretch/alwaysFill) fill the full cell height,
+          // which grows/shrinks with the maxVisibleRows setting.
+          height: isFitWidth ? 'auto' : '100%',
+          maxHeight: isFitHeight && !isFitWidth ? maxImageHeight : undefined,
+          objectFit: getObjectFit(imageSize),
+          objectPosition: getObjectPosition(resolvedImagePosition),
+          overflow: 'hidden',
+        }}
+      />
+    ) : null;
 
   // The title is the dimension (cell) value, and the subtitle is a per-value expression. Both are
   // overlaid on top of the image and aligned per the title alignment settings.
