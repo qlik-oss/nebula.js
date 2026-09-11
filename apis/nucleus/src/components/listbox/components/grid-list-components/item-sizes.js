@@ -1,6 +1,7 @@
-export default function getGridItemSizes({ dataLayout, layoutOrder, itemPadding, fillHeight }) {
+export default function getGridItemSizes({ dataLayout, layoutOrder, itemPadding, fillHeight, isImage }) {
   // Simulate margin/padding by making the item smaller than its container.
-  if (dataLayout === 'singleColumn') {
+  // Image cells fill the whole card so the only spacing between them is the grid gap
+  if (dataLayout === 'singleColumn' || isImage) {
     return {
       height: '100%',
       width: '100%',

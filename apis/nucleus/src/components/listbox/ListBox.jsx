@@ -72,6 +72,15 @@ export default function ListBox({
     pages: [],
   });
 
+  // Per-value expression cache, keyed by expression qLabel -> dimension value's qElemNumber-> last-known value.
+  const exprCache = useRef({});
+  const dimensionFieldKey = JSON.stringify(layout?.qListObject?.qDimensionInfo?.qGroupFieldDefs);
+  const prevDimensionFieldKey = useRef(dimensionFieldKey);
+  if (prevDimensionFieldKey.current !== dimensionFieldKey) {
+    prevDimensionFieldKey.current = dimensionFieldKey;
+    exprCache.current = {};
+  }
+
   // The time from scroll end until new data is being fetched, may be exposed in API later on.
   const scrollTimeout = 0;
 
@@ -135,9 +144,10 @@ export default function ListBox({
 
   const { layoutOptions = {} } = layout || {};
 
+  const isImageMode = layout?.representation?.type === 'image';
   let isRow = true;
   if (layoutOptions.dataLayout) {
-    isRow = layoutOptions.dataLayout === 'singleColumn' ? true : layoutOptions?.layoutOrder === 'row';
+    isRow = layoutOptions.dataLayout === 'singleColumn' || isImageMode ? true : layoutOptions?.layoutOrder === 'row';
   }
 
   const isGrid = layoutOptions?.dataLayout === 'grid';
@@ -302,6 +312,7 @@ export default function ListBox({
     showSearch,
     isModal,
     styles,
+    exprCache: exprCache.current,
   });
 
   const { columnWidth, listHeight, itemHeight } = sizes || {};

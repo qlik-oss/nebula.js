@@ -42,6 +42,7 @@ export default function getListBoxComponents({
   showSearch,
   isModal,
   styles,
+  exprCache,
 }) {
   const { layoutOptions = {} } = layout || {};
   const { columnWidth, listHeight, itemHeight, rowCount, columnCount } = sizes || {};
@@ -86,6 +87,7 @@ export default function getListBoxComponents({
     sizes,
     representation,
     listExprIndex,
+    exprCache,
     actions: {
       select,
       confirm: () => selections?.confirm.call(selections),
@@ -150,12 +152,13 @@ export default function getListBoxComponents({
   const Grid = ({ onItemsRendered, ref }) => {
     const { overflowStyling, scrollBarWidth } = sizes;
     const { layoutOrder } = layoutOptions || {};
+    const effectiveLayoutOrder = representation?.type === 'image' ? 'row' : layoutOrder;
     const gridHeight = Math.min(listHeight, rowCount * itemHeight + scrollBarWidth);
     // eslint-disable-next-line no-param-reassign
     local.current.listRef = ref;
 
     const handleGridItemsRendered = (renderProps) => {
-      const isRow = layoutOrder === 'row';
+      const isRow = effectiveLayoutOrder === 'row';
       setCurrentScrollIndex({
         start: isRow ? renderProps.visibleRowStartIndex : renderProps.visibleColumnStartIndex,
         stop: isRow ? renderProps.visibleRowStopIndex : renderProps.visibleColumnStopIndex,
@@ -163,7 +166,7 @@ export default function getListBoxComponents({
       const renderOptions = deriveRenderOptions({
         renderProps,
         scrollState,
-        layoutOrder,
+        layoutOrder: effectiveLayoutOrder,
         rowCount,
         columnCount,
       });
