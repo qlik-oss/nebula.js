@@ -94,11 +94,7 @@ export default function useListSizes({ layout, width, height, listCount, count, 
       1,
       (columnsAuto ? undefined : maxVisibleColumns?.maxColumns) ?? IMAGE_DEFAULT_COLUMNS
     );
-    const imageMaxRows = Math.max(1, (rowsAuto ? undefined : maxVisibleRows?.maxRows) || IMAGE_DEFAULT_ROWS);
-    // The column count is fixed at the configured max columns so the cell size stays constant — a
-    // grid with fewer items (e.g. after "show selected" collapses to the selected values) keeps
-    // the same cell width and simply leaves the trailing columns empty, rather than stretching the
-    // remaining cells to fill the pane.
+    const imageMaxRows = Math.max(1, (rowsAuto ? undefined : maxVisibleRows?.maxRows) ?? IMAGE_DEFAULT_ROWS);
     columnCount = imageMaxColumns;
     columnWidth = Math.max(1, (width - SCROLL_BAR_WIDTH) / columnCount);
     itemHeight = Math.max(GRID_ROW_HEIGHT + GRID_ITEM_PADDING, Math.floor(listHeight / imageMaxRows));
