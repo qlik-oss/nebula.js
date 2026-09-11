@@ -127,7 +127,61 @@ export default function ListBox({
     // All necessary data fetching done - signal rendering done!
     renderedCallback?.();
   }
-yu
+
+  // "Show only selected values" for the image grid: once a selection is applied
+  // render only the selected values. They sort to the top (qSortByState) so the already-loaded top
+  // rows are the selected ones
+
+  const representation = layout?.representation;
+  const dimensionInfo = layout?.qListObject?.qDimensionInfo;
+  const isImageMode = representation?.type === 'image';
+  const showSelected = representation?.showSelected ?? true;
+  const selectedCount = (dimensionInfo?.qStateCounts?.qSelected ?? 0) + (dimensionInfo?.qStateCounts?.qLocked ?? 0);
+  // Compact the field the user selected in (selectedCount > 0) down to just its selected values;
+  const inModal = typeof isModal === 'function' ? isModal() : false;
+  const hideActive = isImageMode && showSelected && !inModal && selectedCount > 0;
+
+  // Warm the per-value expression cache (imageUrl/subtitle/etc.) for the whole field in one go,
+  // independent of which rows have actually scrolled into view. Without this, a value that gets
+  // excluded before its row is ever rendered has no cached fallback (see helpers/expr-cache.js) -
+  // its image/subtitle is lost for good the moment it's excluded, since the engine returns null for
+  // excluded values and the render-driven cache never got a chance to capture a valid one.
+  const exprLabelsKey = JSON.stringify(layout?.qListObject?.qExpressions?.map((expr) => expr.qLabel));
+  useEffect(() => {
+    if (!isImageMode || dataWidth <= 1 || !cardinal || cardinal > EXPR_CACHE_WARMUP_LIMIT) {
+      return undefined;
+    }
+    let cancelled = false;
+    const exprIndex = getListExprIndex(layout);
+    const pageHeight = Math.max(1, Math.floor(EXPR_CACHE_WARMUP_CELL_LIMIT / dataWidth));
+    (async () => {
+      for (let top = 0; top < cardinal && !cancelled; top += pageHeight) {
+        // eslint-disable-next-line no-await-in-loop
+        const [page] = await model.getListObjectData('/qListObjectDef', [
+          { qTop: top, qLeft: 0, qWidth: dataWidth, qHeight: Math.min(pageHeight, cardinal - top) },
+        ]);
+        if (cancelled) return;
+        (page?.qMatrix || []).forEach((row) => {
+          const valueKey = row[0]?.qElemNumber ?? row[0]?.qText;
+          Object.entries(exprIndex).forEach(([key, col]) => {
+            cacheExprValue(exprCache.current, key, valueKey, row[col]?.qText);
+          });
+        });
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+    // dimensionFieldKey/exprLabelsKey are stable string keys standing in for layout identity, so
+    // this only re-runs when the field or its expressions actually change, not on every layout tick.
+  }, [model, isImageMode, dataWidth, cardinal, dimensionFieldKey, exprLabelsKey]);
+
+  const renderPages = useMemo(
+    () => (hideActive ? compactSelectedPages(pages, dataWidth) : pages),
+    [hideActive, pages, dataWidth]
+  );
+  const renderCount = hideActive ? renderPages[0].qMatrix.length : undefined;
+
   const isItemLoaded = useCallback(
     (index) => {
       if (!renderPages?.length || !local.current.validPages) {

@@ -8,7 +8,7 @@
 //
 // A row is `[dimensionCell, exprCell0, exprCell1, ...]`; the dimension cell is at index 0 and its
 // qState tells us whether the value is selected ('S') or locked ('L').
-const SELECTED_STATES = { S: true, L: true };
+const SELECTED_STATES = { S: true, XS: true, L: true, XL: true };
 
 export default function compactSelectedPages(pages, dataWidth) {
   const rows = [];

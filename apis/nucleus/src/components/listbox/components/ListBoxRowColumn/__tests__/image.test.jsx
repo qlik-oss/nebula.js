@@ -119,9 +119,9 @@ describe('<Image />', () => {
         <Image representation={{ imageSize, imagePosition: 'top-left' }} src="http://foo/bar.png" label="l" />
       );
       const img = testRenderer.root.findByType('img');
-      expect(img.props.style.width).toBe('100%');
-      expect(img.props.style.height).toBe('100%');
-      expect(img.props.style.objectFit).toBe(expectedFit);
+      expect(img.props.style.width).toBe(expected.width);
+      expect(img.props.style.height).toBe(imageSize === 'fitWidth' ? 'auto' : '100%');
+      expect(img.props.style.objectFit).toBe(expected.objectFit);
       await testRenderer.unmount();
     });
 
@@ -368,11 +368,10 @@ describe('<Image />', () => {
 
   describe('corner radius and border', () => {
     test.each([
-      ['none', '0px'],
-      ['small', '4px'],
-      ['medium', '8px'],
-      ['large', '16px'],
-      ['full', '50%'],
+      [0, '0px'],
+      [4, '4px'],
+      [8, '8px'],
+      [16, '16px'],
     ])('cornerRadius %s maps to border-radius %s', async (cornerRadius, expected) => {
       const testRenderer = await render(
         <Image
@@ -386,7 +385,7 @@ describe('<Image />', () => {
       await testRenderer.unmount();
     });
 
-    test('defaults to a small (4px) corner radius', async () => {
+    test('defaults to a 4px corner radius', async () => {
       const testRenderer = await render(
         <Image
           representation={{ imageSize: 'alwaysFill', imagePosition: 'top-center' }}

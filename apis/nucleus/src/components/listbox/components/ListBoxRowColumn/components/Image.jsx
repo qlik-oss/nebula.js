@@ -81,15 +81,6 @@ const isSafeImageSrc = (src) => {
   }
 };
 
-// Corner radius options (matching the property-panel dropdown) mapped to CSS border-radius values.
-const cornerRadiusMap = {
-  none: '0px',
-  small: '4px',
-  medium: '8px',
-  large: '16px',
-  full: '50%',
-};
-
 function Image({
   representation,
   src,
@@ -122,8 +113,7 @@ function Image({
   // instead of staying stuck on a broken-image icon from whatever previously errored here.
   const [erroredSrc, setErroredSrc] = useState(null);
   const hasLoadError = safeSrc !== null && safeSrc === erroredSrc;
-  const resolvedCornerRadius =
-    typeof cornerRadius === 'number' ? `${cornerRadius}px` : (cornerRadiusMap[cornerRadius] ?? '4px');
+  const resolvedCornerRadius = `${cornerRadius}px`;
   const resolvedBorderColor = typeof borderColor === 'string' ? borderColor : borderColor?.color || '#d9d9d9';
   // Selected cells get a colored border; otherwise use the configured border
   let border;
