@@ -115,6 +115,7 @@ export default function ListBox({
   const showOverflowDisclaimer = (show) => setOverflowDisclaimer((state) => ({ ...state, show }));
 
   const [pages, setPages] = useState([]);
+  const [selectedValuesPage, setSelectedValuesPage] = useState(null);
 
   if (itemsLoader?.pages) {
     selectionState.update({
@@ -127,7 +128,16 @@ export default function ListBox({
 
   const cardinal = layout?.qListObject.qDimensionInfo.qCardinal;
 
-  if ((itemsLoader?.pages.length && !awaitingFrequencyMax) || cardinal === 0) {
+  // Determine if we're in image mode early (needed for render readiness check)
+  const representation = layout?.representation;
+  const isImageMode = representation?.type === 'image';
+
+  // Only signal render readiness once both data and expression cache are ready.
+  // The warm-up effect runs asynchronously when in image mode with a fetchable cardinality.
+  const needsExprWarmup = isImageMode && dataWidth > 1 && cardinal && cardinal <= EXPR_CACHE_WARMUP_LIMIT;
+  const exprWarmupReady = !needsExprWarmup || exprCacheReady;
+
+  if ((itemsLoader?.pages.length && !awaitingFrequencyMax && exprWarmupReady) || cardinal === 0) {
     // All necessary data fetching done - signal rendering done!
     renderedCallback?.();
   }
@@ -136,8 +146,6 @@ export default function ListBox({
   // render only the selected values. They sort to the top (qSortByState) so the already-loaded top
   // rows are the selected ones
 
-  const representation = layout?.representation;
-  const isImageMode = representation?.type === 'image';
   const showSelected = representation?.showSelected ?? true;
   // Compact the field the user selected in (including XS/XL states) down to just its selected values;
   const inModal = typeof isModal === 'function' ? isModal() : (selections?.isModal?.(model) ?? false);
@@ -156,20 +164,29 @@ export default function ListBox({
     const exprIndex = getListExprIndex(layout);
     const pageHeight = Math.max(1, Math.floor(EXPR_CACHE_WARMUP_CELL_LIMIT / dataWidth));
     (async () => {
-      for (let top = 0; top < cardinal && !cancelled; top += pageHeight) {
-        // eslint-disable-next-line no-await-in-loop
-        const [page] = await model.getListObjectData('/qListObjectDef', [
-          { qTop: top, qLeft: 0, qWidth: dataWidth, qHeight: Math.min(pageHeight, cardinal - top) },
-        ]);
-        if (cancelled) return;
-        (page?.qMatrix || []).forEach((row) => {
-          const valueKey = row[0]?.qElemNumber ?? row[0]?.qText;
-          Object.entries(exprIndex).forEach(([key, col]) => {
-            cacheExprValue(exprCache.current, key, valueKey, row[col]?.qText);
+      try {
+        for (let top = 0; top < cardinal && !cancelled; top += pageHeight) {
+          // eslint-disable-next-line no-await-in-loop
+          const [page] = await model.getListObjectData('/qListObjectDef', [
+            { qTop: top, qLeft: 0, qWidth: dataWidth, qHeight: Math.min(pageHeight, cardinal - top) },
+          ]);
+          if (cancelled) return;
+          (page?.qMatrix || []).forEach((row) => {
+            const valueKey = row[0]?.qElemNumber ?? row[0]?.qText;
+            Object.entries(exprIndex).forEach(([key, col]) => {
+              cacheExprValue(exprCache.current, key, valueKey, row[col]?.qText);
+            });
           });
-        });
+        }
+      } catch (error) {
+        if (!cancelled) {
+          // Log non-cancellation errors; listbox rendering will proceed with partial cache
+          // eslint-disable-next-line no-console
+          console.error('ListBox expression cache warm-up failed:', error);
+        }
       }
-      if (!cancelled) setExprCacheReady(true); // ← Signal rerender when done
+      // Always mark ready (success or error) so rendering is not indefinitely blocked
+      if (!cancelled) setExprCacheReady(true);
     })();
     return () => {
       cancelled = true;
@@ -178,10 +195,71 @@ export default function ListBox({
     // this only re-runs when the field or its expressions actually change, not on every layout tick.
   }, [model, isImageMode, dataWidth, cardinal, dimensionFieldKey, exprLabelsKey]);
 
-  const renderPages = useMemo(
-    () => (hideActive ? compactSelectedPages(pages, dataWidth) : pages),
-    [hideActive, pages, dataWidth]
-  );
+  // Fetch all selected/locked values before compacting for "show only selected" mode.
+  // Without this, selected values beyond the currently loaded pages would be lost since
+  // compactSelectedPages only works with loaded pages. We reconcile this page with the loaded
+  // pages to ensure renderPages includes all selected values.
+  // Additionally, warm the expression cache for selected values even if the full field warm-up
+  // was skipped (cardinality > EXPR_CACHE_WARMUP_LIMIT), so their images/subtitles are available.
+  useEffect(() => {
+    if (!hideActive) {
+      setSelectedValuesPage(null);
+      return undefined;
+    }
+    let cancelled = false;
+    const counts = layout?.qListObject.qDimensionInfo.qStateCounts || {};
+    const selectedCount =
+      (counts.qSelected || 0) + (counts.qSelectedExcluded || 0) + (counts.qLocked || 0) + (counts.qLockedExcluded || 0);
+    if (selectedCount === 0) {
+      setSelectedValuesPage(null);
+      return undefined;
+    }
+    (async () => {
+      try {
+        // Fetch a page with all selected/locked values (they sort to the top via qSortByState)
+        const [page] = await model.getListObjectData('/qListObjectDef', [
+          { qTop: 0, qLeft: 0, qWidth: dataWidth, qHeight: selectedCount },
+        ]);
+        if (!cancelled) {
+          // Warm expression cache for selected values (on demand, regardless of cardinality limit)
+          const exprIndex = getListExprIndex(layout);
+          (page?.qMatrix || []).forEach((row) => {
+            const valueKey = row[0]?.qElemNumber ?? row[0]?.qText;
+            Object.entries(exprIndex).forEach(([key, col]) => {
+              cacheExprValue(exprCache.current, key, valueKey, row[col]?.qText);
+            });
+          });
+          setSelectedValuesPage(page || null);
+        }
+      } catch (error) {
+        if (!cancelled) {
+          // Log non-cancellation errors; compaction will proceed with just loaded pages
+          // eslint-disable-next-line no-console
+          console.error('ListBox selected values fetch failed:', error);
+          setSelectedValuesPage(null);
+        }
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [hideActive, layout, dataWidth, model]);
+
+  // Reset scroll offset when entering compacted mode to prevent misaligned indices.
+  // The compacted page is rebased to qTop: 0, so all row indices start from 0.
+  // If we kept the old dataOffset, rendering would add it to all indices and look past the page.
+  useEffect(() => {
+    if (hideActive) {
+      local.current.dataOffset = 0;
+    }
+  }, [hideActive]);
+
+  const renderPages = useMemo(() => {
+    if (!hideActive) return pages;
+    // Merge selected values page with loaded pages before compacting
+    const pagesToCompact = selectedValuesPage ? [selectedValuesPage, ...pages] : pages;
+    return compactSelectedPages(pagesToCompact, dataWidth);
+  }, [hideActive, pages, selectedValuesPage, dataWidth]);
   const renderCount = hideActive ? renderPages[0].qMatrix.length : undefined;
 
   const isItemLoaded = useCallback(

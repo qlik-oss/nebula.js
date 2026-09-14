@@ -440,12 +440,64 @@ describe('<Listbox />', () => {
       });
 
       test('compacts a field whose only selection state is excluded (XS/XL), not just S/L', async () => {
-        // A selection elsewhere excluded values in this field (qState 'XS'); qSelected/qLocked are
-        // both 0, but qSelectedExcluded is not - the field is still "in selections" for this field.
-        setUpImageHide({ stateCounts: { qSelected: 0, qSelectedExcluded: 2, qLocked: 0, qLockedExcluded: 0 } });
+        // A selection elsewhere excluded values in this field (qState 'XS'/'XL'); qSelected/qLocked are
+        // both 0, but qSelectedExcluded/qLockedExcluded are not - the field is still "in selections".
+        const xsXlPages = [
+          {
+            qArea: { qLeft: 0, qTop: 0, qWidth: 1, qHeight: 3 },
+            qMatrix: [
+              [{ qText: 'a', qState: 'XS', qElemNumber: 10 }], // excluded from selection
+              [{ qText: 'b', qState: 'XL', qElemNumber: 20 }], // excluded from lock
+              [{ qText: 'c', qState: 'O', qElemNumber: 30 }], // other (not selected/locked)
+            ],
+          },
+        ];
+        let didSetPages = false;
+        args.selectionState = {
+          update: jest.fn(({ setPages }) => {
+            if (!didSetPages) {
+              didSetPages = true;
+              setPages(xsXlPages);
+            }
+          }),
+          selectDisabled: jest.fn().mockReturnValue(false),
+        };
+        layout.layoutOptions = { dataLayout: 'grid' };
+        isModal.mockReturnValue(false);
+        layout.representation = { type: 'image', showSelected: true };
+        layout.qListObject.qDimensionInfo.qStateCounts = {
+          qSelected: 0,
+          qSelectedExcluded: 1,
+          qLocked: 0,
+          qLockedExcluded: 1,
+        };
         await render();
+        // XS and XL states should be retained, O state should be filtered out
         expect(lastGridProps().pages).toHaveLength(1);
+        expect(lastGridProps().pages[0].qMatrix.map((r) => r[0].qState)).toEqual(['XS', 'XL']);
         expect(lastGridProps().pages[0].qMatrix.map((r) => r[0].qText)).toEqual(['a', 'b']);
+      });
+
+      test('does not compact when showSelected is false, even with selections present', async () => {
+        // Explicit opt-out: showSelected: false means keep all values visible (including unselected).
+        // Even though image mode, selections present, and not in modal, compaction should not occur.
+        layout.layoutOptions = { dataLayout: 'grid' };
+        isModal.mockReturnValue(false);
+        layout.representation = { type: 'image', showSelected: false };
+        layout.qListObject.qDimensionInfo.qStateCounts = { qSelected: 2, qLocked: 0 };
+        let didSetPages = false;
+        args.selectionState = {
+          update: jest.fn(({ setPages }) => {
+            if (!didSetPages) {
+              didSetPages = true;
+              setPages(overlappingPages);
+            }
+          }),
+          selectDisabled: jest.fn().mockReturnValue(false),
+        };
+        await render();
+        // With showSelected: false, the full (uncompacted) pages pass through unchanged.
+        expect(lastGridProps().pages).toBe(overlappingPages);
       });
     });
 
