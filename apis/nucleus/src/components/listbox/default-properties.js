@@ -203,115 +203,26 @@ const listdef = {
     },
   },
   /**
-   * Representation settings for the dimension values.
    * @type {Representation}
    */
   representation: {
-    /**
-     * How the dimension values are presented.
-     * @type {('text'|'image')=}
-     * @default
-     */
     type: 'text',
-    /**
-     * Per-value image URL expression. Only used when `type` is 'image' and `imageSetting` is 'url'.
-     * Stored in qListObjectDef.qExpressions with qLabel='imageUrl'.
-     * @type {ValueExpression=}
-     */
     imageUrl: '',
-    /**
-     * Per-value image label expression. Only used when `type` is 'image' and `imageSetting` is 'label'.
-     * Stored in qListObjectDef.qExpressions with qLabel='imageLabel'.
-     * @type {ValueExpression=}
-     */
     imageLabel: '',
-    /**
-     * When `type` is 'image', choose whether the per-value expression provides the image URL or label.
-     * @type {('url'|'label')=}
-     * @default
-     */
     imageSetting: 'label',
-    /**
-     * Image sizing mode. Only used when `type` is 'image'.
-     * @type {('alwaysFit'|'fitWidth'|'fitHeight'|'stretch'|'alwaysFill')=}
-     * @default
-     */
     imageSize: 'alwaysFit',
-    /**
-     * Image position within the cell. Only used when `type` is 'image' and `imageSize` is not 'stretch'.
-     * @type {string=}
-     * @default
-     */
     imagePosition: 'top-center',
-    /**
-     * Overlay text alignment as `{vertical}-{horizontal}`. Only used when `type` is 'image'.
-     * @type {string=}
-     * @default
-     */
     titlePosition: 'top-center',
-    /**
-     * Whether to render the title/subtitle overlay text. Only used when `type` is 'image'.
-     * @type {boolean=}
-     * @default
-     */
     textOverlay: true,
-    /**
-     * Draw a background behind the title text for legibility. Only used when `type` is 'image'.
-     * @type {boolean=}
-     * @default
-     */
     titleBackground: true,
-    /**
-     * Spacing between image grid cells, as a percentage of the grid width. Only used when `type` is 'image'.
-     * @type {number=}
-     * @default
-     */
     gridGap: 0.5,
-    /**
-     * Corner radius of the image cell in pixels. Only used when `type` is 'image'.
-     * @type {number=}
-     * @default
-     */
     cornerRadius: 4,
-    /**
-     * Cell border width in px. Only used when `type` is 'image'.
-     * @type {number=}
-     * @default
-     */
     borderWidth: 0,
-    /**
-     * Cell border color. Only used when `type` is 'image' and `borderWidth` > 0.
-     * @type {string=}
-     * @default
-     */
     borderColor: '#d9d9d9',
-    /**
-     * Cell background color mode: 'single' for a fixed color, 'expression' for per-value expression. Only used when `type` is 'image'.
-     * @type {('single'|'expression')=}
-     * @default
-     */
     cellBgColorMode: 'single',
-    /**
-     * Cell background color (when cellBgColorMode is 'single') or expression (when 'expression'). Only used when `type` is 'image'.
-     * @type {(string|object|ValueExpression)=}
-     * @default
-     */
     cellBgColor: '#ffffff',
-    /**
-     * Per-value subtitle expression. Only used when `type` is 'image' and `textOverlay` is not false.
-     * @type {ValueExpression=}
-     */
     subtitle: '',
-    /**
-     * Per-value tooltip expression. Only used when `type` is 'image'.
-     * @type {ValueExpression=}
-     */
     tooltip: '',
-    /**
-     * When `type` is 'image', show only selected values once a selection is applied.
-     * @type {boolean=}
-     * @default
-     */
     showSelected: true,
   },
   /**
