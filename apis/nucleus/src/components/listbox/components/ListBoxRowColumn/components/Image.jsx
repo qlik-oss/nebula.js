@@ -81,15 +81,6 @@ const isSafeImageSrc = (src) => {
   }
 };
 
-// Corner radius options (matching the property-panel dropdown) mapped to CSS border-radius values.
-const cornerRadiusMap = {
-  none: '0px',
-  small: '4px',
-  medium: '8px',
-  large: '16px',
-  full: '50%',
-};
-
 function Image({
   representation,
   src,
@@ -119,8 +110,12 @@ function Image({
   const resolvedImagePosition = resolveImagePosition(imagePosition);
   const maxImageHeight = '200px';
   const safeSrc = isSafeImageSrc(src) ? src : null;
-  const resolvedCornerRadius =
-    typeof cornerRadius === 'number' ? `${cornerRadius}px` : (cornerRadiusMap[cornerRadius] ?? '4px');
+  // Track the src that failed to load (rather than a plain boolean) so a new src coming in on the
+  // same cell instance (e.g. on scroll, since react-window recycles cells) gets a fresh attempt
+  // instead of staying stuck on a broken-image icon from whatever previously errored here.
+  const [erroredSrc, setErroredSrc] = useState(null);
+  const hasLoadError = safeSrc !== null && safeSrc === erroredSrc;
+  const resolvedCornerRadius = `${cornerRadius}px`;
   const resolvedBorderColor =
     borderColorProp ??
     (typeof representationBorderColor === 'string' ? representationBorderColor : representationBorderColor?.color) ??
@@ -134,11 +129,6 @@ function Image({
   } else {
     border = '2px solid transparent';
   }
-  // Track the src that failed to load (rather than a plain boolean) so a new src coming in on the
-  // same cell instance (e.g. on scroll, since react-window recycles cells) gets a fresh attempt
-  // instead of staying stuck on a broken-image icon from whatever previously errored here.
-  const [erroredSrc, setErroredSrc] = useState(null);
-  const hasLoadError = safeSrc !== null && safeSrc === erroredSrc;
 
   const imgNode =
     safeSrc && !hasLoadError ? (
