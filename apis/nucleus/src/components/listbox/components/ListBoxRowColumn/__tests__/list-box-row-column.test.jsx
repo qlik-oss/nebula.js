@@ -1155,10 +1155,16 @@ describe('<ListBoxRowColumn />', () => {
   describe('image representation', () => {
     // Per-value expressions arrive as extra columns in the row: row = [dimCell, exprCell0, ...].
     // listExprIndex maps an expression's qLabel (e.g. 'imageUrl') to its column.
-    const renderImageCell = async ({ representation, qText = 'field-value', exprValues = [], listExprIndex = {} }) => {
+    const renderImageCell = async ({
+      representation,
+      qText = 'field-value',
+      exprValues = [],
+      listExprIndex = {},
+      imageStyles,
+    }) => {
       const row = [{ qState: 'A', qText, qElemNumber: 0 }, ...exprValues.map((qv) => ({ qText: qv }))];
       const data = {
-        styles,
+        styles: imageStyles ? { ...styles, image: imageStyles } : styles,
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
