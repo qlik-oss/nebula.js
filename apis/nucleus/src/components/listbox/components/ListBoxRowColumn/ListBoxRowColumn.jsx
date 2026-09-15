@@ -337,6 +337,8 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
               title={label}
               subtitle={imageSubtitle}
               cellBgColor={imageCellBgColor}
+              borderColor={styles?.image?.borderColor}
+              textStyles={styles?.image?.text}
               placeholderBackground={imagePlaceholderBg}
               selected={isSelected}
               selectionColor={imageSelectionColor}

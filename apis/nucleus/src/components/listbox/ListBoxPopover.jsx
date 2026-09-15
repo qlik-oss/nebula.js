@@ -102,7 +102,7 @@ export default function ListBoxPopover({
   const keyboard = useTempKeyboard({ containerRef, enabled: keyboardNavigation });
   const { checkboxes = checkboxesOption } = layout || {};
 
-  const styles = useListboxStyling({ themeApi, theme, hostConfig, components, checkboxes });
+  const styles = useListboxStyling({ themeApi, theme, hostConfig, components, checkboxes, layout });
 
   useEffect(() => {
     if (selections && open) {

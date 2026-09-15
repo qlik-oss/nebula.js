@@ -1,4 +1,4 @@
-import { createColor, getContrastingColor } from 'qlik-chart-modules';
+import { createColor, getContrastingColor, isDark } from 'qlik-chart-modules';
 import { resolveBgColor, resolveBgImage } from '../../../utils/style/styling-props';
 
 export const DEFAULT_SELECTION_COLORS = {
@@ -90,10 +90,46 @@ function getSearchBGColor(bgCol, getListboxStyle) {
   return searchBgColorObj.isInvalid() ? bgCol : searchBgColorObj.getRGBA();
 }
 
-export function getStyles({ app, themeApi, theme, queryParams, components = [], checkboxes = false, hostConfig }) {
+function getImageTextStyles(content, fontColor) {
+  const color = fontColor ?? content?.color ?? '#333333';
+  const fontSize = content?.fontSize ?? '13px';
+  const fontIsDark = color ? isDark(color) : true;
+  return {
+    color,
+    fontFamily: content?.fontFamily,
+    fontSize,
+    subtitleFontSize: `${Math.max(9, Math.round(parseInt(String(fontSize), 10) * 0.85))}px`,
+    fontWeight: content?.fontWeight ?? 'bold',
+    fontStyle: content?.fontStyle ?? 'normal',
+    textDecoration: content?.textDecoration ?? 'initial',
+    backdropColor: fontIsDark ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.5)',
+    shadowOnImage: fontIsDark ? '0 0 3px rgba(255, 255, 255, 0.8)' : '0 1px 2px rgba(0, 0, 0, 0.6)',
+  };
+}
+
+export function getStyles({
+  app,
+  themeApi,
+  theme,
+  queryParams,
+  components = [],
+  checkboxes = false,
+  hostConfig,
+  layout,
+}) {
   const overrides = getOverridesAsObject(components);
   const getListboxStyle = (path, prop) => themeApi.getStyle('object.listBox', path, prop);
   const getColorPickerColor = (c) => (c?.index > 0 || c?.color ? themeApi.getColorPickerColor(c) : undefined);
+  const representation = layout?.representation;
+  const resolveImageColor = (c) => (typeof c === 'string' ? c : getColorPickerColor(c));
+  const image =
+    representation?.type === 'image'
+      ? {
+          cellBgColor:
+            representation.cellBgColorMode === 'expression' ? undefined : resolveImageColor(representation.cellBgColor),
+          borderColor: resolveImageColor(representation.borderColor),
+        }
+      : undefined;
 
   const selections = getSelectionColors({
     getColorPickerColor,
@@ -124,6 +160,28 @@ export function getStyles({ app, themeApi, theme, queryParams, components = [], 
   const getWithFallback = (value, trueValue, falseValue) =>
     (value === true && trueValue) || (value === false && falseValue) || undefined;
 
+  const content = {
+    backgroundColor: checkboxes ? undefined : selections.possible,
+    color: selections.possibleContrast || getListboxStyle('content', 'color'),
+    fontSize: themeOverrides.content?.fontSize || getListboxStyle('content', 'fontSize'),
+    fontFamily: themeOverrides.content?.fontFamily || getListboxStyle('content', 'fontFamily'),
+    fontWeight:
+      getWithFallback(contentFontStyle.bold, 'bold', 'normal') || getListboxStyle('content', 'fontWeight') || 'normal',
+    textDecoration: contentFontStyle.underline ? 'underline' : 'initial',
+    fontStyle:
+      getWithFallback(contentFontStyle.italic, 'italic', 'normal') ||
+      getListboxStyle('content', 'fontStyle') ||
+      'initial',
+  };
+
+  if (image) {
+    const contentFontColor =
+      getColorPickerColor(themeOverrides.content?.fontColor) ||
+      getListboxStyle('content', 'color') ||
+      theme.palette?.text?.primary;
+    image.text = getImageTextStyles(content, contentFontColor);
+  }
+
   return {
     background: {
       backgroundColor: bgColor,
@@ -146,21 +204,7 @@ export function getStyles({ app, themeApi, theme, queryParams, components = [], 
         getListboxStyle('title.main', 'fontStyle') ||
         'initial',
     },
-    content: {
-      backgroundColor: checkboxes ? undefined : selections.possible,
-      color: selections.possibleContrast || getListboxStyle('content', 'color'),
-      fontSize: themeOverrides.content?.fontSize || getListboxStyle('content', 'fontSize'),
-      fontFamily: themeOverrides.content?.fontFamily || getListboxStyle('content', 'fontFamily'),
-      fontWeight:
-        getWithFallback(contentFontStyle.bold, 'bold', 'normal') ||
-        getListboxStyle('content', 'fontWeight') ||
-        'normal',
-      textDecoration: contentFontStyle.underline ? 'underline' : 'initial',
-      fontStyle:
-        getWithFallback(contentFontStyle.italic, 'italic', 'normal') ||
-        getListboxStyle('content', 'fontStyle') ||
-        'initial',
-    },
+    content,
     search: {
       color: searchColor,
       borderColor: theme.palette.divider,
@@ -169,9 +213,19 @@ export function getStyles({ app, themeApi, theme, queryParams, components = [], 
       backdropFilter: 'blur(8px)',
     },
     selections,
+    image,
   };
 }
 
-export default function useListboxStyling({ app, themeApi, theme, queryParams, components, checkboxes, hostConfig }) {
-  return getStyles({ app, themeApi, theme, queryParams, components, checkboxes, hostConfig });
+export default function useListboxStyling({
+  app,
+  themeApi,
+  theme,
+  queryParams,
+  components,
+  checkboxes,
+  hostConfig,
+  layout,
+}) {
+  return getStyles({ app, themeApi, theme, queryParams, components, checkboxes, hostConfig, layout });
 }

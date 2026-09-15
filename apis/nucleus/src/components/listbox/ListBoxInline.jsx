@@ -107,6 +107,7 @@ function ListBoxInline({ options, layout }) {
     components,
     checkboxes,
     hostConfig,
+    layout,
   });
 
   const isDirectQuery = isDirectQueryEnabled({ appLayout: app?.layout });
