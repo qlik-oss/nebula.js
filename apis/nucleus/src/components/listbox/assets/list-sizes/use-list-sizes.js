@@ -103,7 +103,7 @@ export default function useListSizes({ layout, width, height, listCount, count, 
     overflowStyling = { overflowX: 'hidden' };
     // Grid gap is authored as a percentage of the grid width
     const rawGridGap = representation?.gridGap;
-    const gridGapPct = Math.max(0, Number.isFinite(rawGridGap) ? rawGridGap : 0.5);
+    const gridGapPct = Math.max(0, Number.isFinite(rawGridGap) ? rawGridGap : 1);
     gridGap = Math.min(Math.round((gridGapPct / 100) * width), columnWidth - 1, itemHeight - 1);
     gridGap = Math.max(0, gridGap);
   }

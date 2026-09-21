@@ -130,6 +130,9 @@
         "qListObjectDef": {
           "type": "#/definitions/ListObjectDef"
         },
+        "representation": {
+          "type": "#/definitions/Representation"
+        },
         "searchEnabled": {
           "description": "Enables search.",
           "optional": true,
@@ -171,6 +174,120 @@
           "optional": true,
           "defaultValue": false,
           "type": "boolean"
+        }
+      }
+    },
+    "Representation": {
+      "description": "Representation settings for the dimension values, set on the listbox object root `representation`\n(a sibling of `qListObjectDef`, alongside `layoutOptions`).\n\nNotes on image representation:\n-   * When `type` is `'image'` the values are rendered as images. Image metadata is resolved from\nlist-object expressions (`qListObjectDef.qExpressions`) using their `qLabel` keys.",
+      "kind": "interface",
+      "entries": {
+        "borderColor": {
+          "description": "Cell border color. Only used when `type` is 'image' and `borderWidth` > 0.",
+          "optional": true,
+          "defaultValue": "'#d9d9d9'",
+          "type": "string"
+        },
+        "borderWidth": {
+          "description": "Cell border width in px. Only used when `type` is 'image'.",
+          "optional": true,
+          "defaultValue": 0,
+          "type": "number"
+        },
+        "cornerRadius": {
+          "description": "Corner radius of the image cell in pixels. Only used when `type` is 'image'.",
+          "optional": true,
+          "defaultValue": 4,
+          "type": "number"
+        },
+        "gridGap": {
+          "description": "Spacing between image grid cells, as a percentage of the grid width. Only used when `type` is 'image'.",
+          "optional": true,
+          "defaultValue": 1,
+          "type": "number"
+        },
+        "imagePosition": {
+          "description": "Image position within the cell. Only used when `type` is 'image' and `imageSize` is not 'stretch'.",
+          "optional": true,
+          "defaultValue": "'topCenter'",
+          "type": "string"
+        },
+        "imageSetting": {
+          "description": "When `type` is 'image', choose whether the\n  per-value expression (qExpressions.qLabel='imageUrl'/'imageLabel') provides the image URL\n  (`'url'`) or the image label (`'label'`).",
+          "optional": true,
+          "defaultValue": "'label'",
+          "kind": "union",
+          "items": [
+            {
+              "kind": "literal",
+              "value": "'url'"
+            },
+            {
+              "kind": "literal",
+              "value": "'label'"
+            }
+          ]
+        },
+        "imageSize": {
+          "description": "Image sizing mode. Only used when `type` is 'image'.",
+          "optional": true,
+          "defaultValue": "'alwaysFit'",
+          "kind": "union",
+          "items": [
+            {
+              "kind": "literal",
+              "value": "'alwaysFit'"
+            },
+            {
+              "kind": "literal",
+              "value": "'fitWidth'"
+            },
+            {
+              "kind": "literal",
+              "value": "'fitHeight'"
+            },
+            {
+              "kind": "literal",
+              "value": "'stretch'"
+            },
+            {
+              "kind": "literal",
+              "value": "'alwaysFill'"
+            }
+          ]
+        },
+        "textOverlay": {
+          "description": "Whether to render the title/subtitle overlay text. Only used when `type` is 'image'.",
+          "optional": true,
+          "defaultValue": true,
+          "type": "boolean"
+        },
+        "titleBackground": {
+          "description": "Draw a background behind the title text for legibility. Only used when `type` is 'image'.",
+          "optional": true,
+          "defaultValue": true,
+          "type": "boolean"
+        },
+        "titlePosition": {
+          "description": "Overlay text alignment as `{vertical}-{horizontal}` (e.g. 'top-left', 'center-center', 'bottom-right'). Only used when `type` is 'image'.",
+          "optional": true,
+          "defaultValue": "'top-center'",
+          "type": "string"
+        },
+        "type": {
+          "description": "How the dimension values are presented.",
+          "optional": true,
+          "defaultValue": "'text'",
+          "kind": "union",
+          "items": [
+            {
+              "kind": "literal",
+              "value": "'text'"
+            },
+            {
+              "kind": "literal",
+              "value": "'image'"
+            }
+          ]
         }
       }
     },
