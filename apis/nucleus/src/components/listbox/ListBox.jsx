@@ -114,8 +114,13 @@ export default function ListBox({
   const [overflowDisclaimer, setOverflowDisclaimer] = useState({ show: false, dismissed: false });
   const showOverflowDisclaimer = (show) => setOverflowDisclaimer((state) => ({ ...state, show }));
 
+  const representation = layout?.representation;
+  const isImageMode = representation?.type === 'image';
+  const showSelected = representation?.showSelected ?? false;
+
   const [pages, setPages] = useState([]);
   const [selectedValuesPage, setSelectedValuesPage] = useState(null);
+  const [hideActive, setHideActive] = useState(false);
 
   if (itemsLoader?.pages) {
     selectionState.update({
@@ -128,10 +133,6 @@ export default function ListBox({
 
   const cardinal = layout?.qListObject.qDimensionInfo.qCardinal;
 
-  // Determine if we're in image mode early (needed for render readiness check)
-  const representation = layout?.representation;
-  const isImageMode = representation?.type === 'image';
-
   // Only signal render readiness once both data and expression cache are ready.
   // The warm-up effect runs asynchronously when in image mode with a fetchable cardinality.
   const needsExprWarmup = isImageMode && dataWidth > 1 && cardinal && cardinal <= EXPR_CACHE_WARMUP_LIMIT;
@@ -142,14 +143,10 @@ export default function ListBox({
     renderedCallback?.();
   }
 
-  // "Show only selected values" for the image grid: once a selection is applied
-  // render only the selected values. They sort to the top (qSortByState) so the already-loaded top
-  // rows are the selected ones
-
-  const showSelected = representation?.showSelected ?? true;
   // Compact the field the user selected in (including XS/XL states) down to just its selected values;
-  const inModal = typeof isModal === 'function' ? isModal() : (selections?.isModal?.(model) ?? false);
-  const hideActive = isImageMode && showSelected && !inModal && hasSelections(layout);
+  useMemo(() => {
+    setHideActive(isImageMode && showSelected && hasSelections(layout));
+  }, [isModal?.(), selections, showSelected, isImageMode, hideActive]);
 
   // Warm the per-value expression cache (imageUrl/subtitle/etc.) for the whole field in one go,
   // independent of which rows have actually scrolled into view. Without this, a value that gets
@@ -195,11 +192,7 @@ export default function ListBox({
     // this only re-runs when the field or its expressions actually change, not on every layout tick.
   }, [model, isImageMode, dataWidth, cardinal, dimensionFieldKey, exprLabelsKey]);
 
-  // Fetch all selected/locked values before compacting for "show only selected" mode.
-  // Without this, selected values beyond the currently loaded pages would be lost since
-  // compactSelectedPages only works with loaded pages. We reconcile this page with the loaded
-  // pages to ensure renderPages includes all selected values.
-  // Additionally, warm the expression cache for selected values even if the full field warm-up
+  // Warm the expression cache for selected values even if the full field warm-up
   // was skipped (cardinality > EXPR_CACHE_WARMUP_LIMIT), so their images/subtitles are available.
   useEffect(() => {
     if (!hideActive) {
