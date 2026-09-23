@@ -14,6 +14,7 @@ import * as ErrorModule from '../Error';
 import * as superNovaModule from '../Supernova';
 import * as HeaderModule from '../Header';
 import * as InstanceContextModule from '../../contexts/InstanceContext';
+import * as useStylingModule from '../../hooks/useStyling';
 
 describe('<Cell />', () => {
   let render;
@@ -315,6 +316,44 @@ describe('<Cell />', () => {
 
       const ftypes = renderer.root.findAllByType(Supernova);
       expect(ftypes).toHaveLength(1);
+    });
+
+    test('should suppress frame styles when disableFrameStyles is enabled', async () => {
+      jest.spyOn(useStylingModule, 'default').mockImplementation(({ disableFrameStyles }) => ({
+        titleStyles: {},
+        bgColor: 'white',
+        bgImage: undefined,
+        border: disableFrameStyles ? undefined : '1px solid red',
+        borderRadius: disableFrameStyles ? '0px' : '12px',
+        boxShadow: disableFrameStyles ? 'none' : '0 2px 4px black',
+      }));
+
+      await render({ initialSnOptions: { disableFrameStyles: true } });
+
+      const cell = renderer.root.find((node) => node.props.id === 'njs-cell-currentId');
+      expect(cell.props.style.border).toBeUndefined();
+      expect(cell.props.style.borderRadius).toBe('0px');
+      expect(cell.props.style.boxShadow).toBe('none');
+      expect(useStylingModule.default).toHaveBeenCalledWith(expect.objectContaining({ disableFrameStyles: true }));
+    });
+
+    test('should preserve frame styles when disableFrameStyles is not enabled', async () => {
+      jest.spyOn(useStylingModule, 'default').mockReturnValue({
+        titleStyles: {},
+        bgColor: 'white',
+        bgImage: undefined,
+        border: '1px solid red',
+        borderRadius: '12px',
+        boxShadow: '0 2px 4px black',
+      });
+
+      await render();
+
+      const cell = renderer.root.find((node) => node.props.id === 'njs-cell-currentId');
+      expect(cell.props.style.border).toBe('1px solid red');
+      expect(cell.props.style.borderRadius).toBe('12px');
+      expect(cell.props.style.boxShadow).toBe('0 2px 4px black');
+      expect(useStylingModule.default).toHaveBeenCalledWith(expect.objectContaining({ disableFrameStyles: undefined }));
     });
 
     test('should render new type', async () => {
