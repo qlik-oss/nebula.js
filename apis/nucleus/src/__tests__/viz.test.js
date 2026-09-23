@@ -134,8 +134,9 @@ describe('viz', () => {
 
     test('should mount', async () => {
       mounted = api.__DO_NOT_USE__.mount(mockElement);
-      const { onMount } = glue.mock.lastCall[0];
+      const { onMount, onReady } = glue.mock.lastCall[0];
       onMount();
+      onReady();
       await mounted;
       expect(glue).toHaveBeenCalledTimes(1);
     });
@@ -320,9 +321,7 @@ describe('viz', () => {
   });
 
   describe('getHypercubePropertyHandler', () => {
-    test('should return default HyperCubeHandler when no custom propertyHandler exists', async () => {
-      const opts = { onInitialRender: jest.fn() };
-      api.__DO_NOT_USE__.options(opts);
+    test('should return default HyperCubeHandler before the initial render', async () => {
       await mounted;
 
       cellRef.current.getExtensionDefinition = jest.fn().mockReturnValue({
@@ -332,9 +331,6 @@ describe('viz', () => {
         },
         definition: {},
       });
-
-      const args = cellRef.current.setSnOptions.mock.lastCall[0];
-      args.onInitialRender();
 
       const handler = await api.getHypercubePropertyHandler();
 
