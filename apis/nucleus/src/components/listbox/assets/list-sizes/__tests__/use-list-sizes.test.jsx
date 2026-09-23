@@ -276,7 +276,7 @@ describe('use-list-sizes', () => {
       itemHeight: 100, // listHeight / maxVisibleRows = 300 / 3, cells fill the pane
       rowCount: 25, // ceil(listCount / columnCount) => scrolls beyond the visible rows
       listCount: 100,
-      gridGap: 1, // default 0.5% of width 200 = 1px
+      gridGap: 2, // default 1% of width 200 = 2px
     });
   });
 
@@ -329,8 +329,8 @@ describe('use-list-sizes', () => {
     args.layout.representation = { type: 'image', gridGap: 'not-a-number' };
     const sizes = useListSizes(args);
     expect(sizes.gridGap).not.toBeNaN();
-    // same as the default (0.5% of width 200 = 1px), since the invalid value falls back to it
-    expect(sizes.gridGap).toBe(1);
+    // same as the default (1% of width 200 = 2px), since the invalid value falls back to it
+    expect(sizes.gridGap).toBe(2);
   });
 
   it('image representation converts the gridGap percentage of width into a pixel gap', () => {
