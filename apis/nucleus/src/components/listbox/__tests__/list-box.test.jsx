@@ -397,6 +397,8 @@ describe('<Listbox />', () => {
       const setUpImageHide = ({ inModal = false, selectedCount = 2, stateCounts } = {}) => {
         layout.layoutOptions = { dataLayout: 'grid' };
         isModal.mockReturnValue(inModal);
+        // hideActive freezes on this field's own qInSelections, not the app-wide isModal() flag.
+        layout.qSelectionInfo = { qInSelections: inModal };
         layout.representation = { type: 'image', showSelected: true };
         layout.qListObject.qDimensionInfo.qStateCounts = stateCounts ?? { qSelected: selectedCount, qLocked: 0 };
         // Populate the pages state once (selectionState.update is what normally sets it); guarding to
@@ -440,69 +442,6 @@ describe('<Listbox />', () => {
         // the full list visible until the user confirms a selection.
         expect(lastGridProps().pages).toBe(overlappingPages);
       });
-
-      test('keeps compacting after a modal selection is confirmed once, even if it is cleared again', async () => {
-        setUpImageHide({ inModal: true, selectedCount: 2 });
-        const testContext = {
-          modelStore: initializeStores('app'),
-          selectionStore: initializeSelectionStores('app'),
-          translator: { get: (s) => s, language: () => 'sv' },
-        };
-        const element = () => (
-          <InstanceContext.Provider value={testContext}>
-            <ListBox
-              model={args.model}
-              layout={layout}
-              selections={args.selections}
-              selectionState={args.selectionState}
-              direction={args.direction}
-              height={args.height}
-              width={args.width}
-              update={args.update}
-              fetchStart={args.fetchStart}
-              keyScroll={args.keyScroll}
-              currentScrollIndex={args.currentScrollIndex}
-              isModal={isModal}
-              theme={theme}
-            />
-          </InstanceContext.Provider>
-        );
-
-        let localRenderer;
-        await act(async () => {
-          localRenderer = create(element());
-        });
-        expect(lastGridProps().pages[0].qMatrix.map((r) => r[0].qText)).toEqual(['a', 'b']);
-
-        // Selection is cleared while still in the modal - the compacted view must follow the new
-        // (empty) selection rather than staying pinned to the stale one, and must stay compacted
-        // rather than flashing the full unselected list back in.
-        const clearedPages = [
-          {
-            qArea: { qLeft: 0, qTop: 0, qWidth: 1, qHeight: 3 },
-            qMatrix: [
-              [{ qText: 'a', qState: 'O', qElemNumber: 10 }],
-              [{ qText: 'b', qState: 'O', qElemNumber: 20 }],
-              [{ qText: 'c', qState: 'O', qElemNumber: 30 }],
-            ],
-          },
-        ];
-        layout.qListObject.qDimensionInfo.qStateCounts = { qSelected: 0, qLocked: 0 };
-        let didSetClearedPages = false;
-        args.selectionState.update = jest.fn(({ setPages }) => {
-          if (!didSetClearedPages) {
-            didSetClearedPages = true;
-            setPages(clearedPages);
-          }
-        });
-        await act(async () => {
-          localRenderer.update(element());
-        });
-        expect(lastGridProps().pages[0].qMatrix).toHaveLength(0);
-
-        localRenderer.unmount();
-      });
-
       test('does not compact a field with no selections of its own (values stay visible / greyed)', async () => {
         setUpImageHide({ selectedCount: 0 });
         await render();

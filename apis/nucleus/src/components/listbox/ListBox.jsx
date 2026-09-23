@@ -7,6 +7,7 @@ import getListBoxComponents from './components/grid-list-components/grid-list-co
 import useListSizes from './assets/list-sizes';
 import getHorizontalMinBatchSize from './assets/horizontal-minimum-batch-size';
 import useItemsLoader from './hooks/useItemsLoader';
+import useStaleLayout from './hooks/useStaleLayout';
 import getListCount from './components/list-count';
 import useDataStore from './hooks/useDataStore';
 import ListBoxDisclaimer from './components/ListBoxDisclaimer';
@@ -117,10 +118,12 @@ export default function ListBox({
   const representation = layout?.representation;
   const isImageMode = representation?.type === 'image';
   const showSelected = representation?.showSelected ?? false;
+  const staleLayout = useStaleLayout(layout);
 
   const [pages, setPages] = useState([]);
   const [selectedValuesPage, setSelectedValuesPage] = useState(null);
-  const [hideActive, setHideActive] = useState(false);
+  // Frozen against staleLayout so compaction doesn't flicker on/off on every tick while picking.
+  const hideActive = isImageMode && showSelected && hasSelections(staleLayout);
 
   if (itemsLoader?.pages) {
     selectionState.update({
@@ -142,11 +145,6 @@ export default function ListBox({
     // All necessary data fetching done - signal rendering done!
     renderedCallback?.();
   }
-
-  // Compact the field the user selected in (including XS/XL states) down to just its selected values;
-  useMemo(() => {
-    setHideActive(isImageMode && showSelected && hasSelections(layout));
-  }, [isModal?.(), selections, showSelected, isImageMode, hideActive]);
 
   // Warm the per-value expression cache (imageUrl/subtitle/etc.) for the whole field in one go,
   // independent of which rows have actually scrolled into view. Without this, a value that gets
@@ -200,7 +198,7 @@ export default function ListBox({
       return undefined;
     }
     let cancelled = false;
-    const counts = layout?.qListObject.qDimensionInfo.qStateCounts || {};
+    const counts = staleLayout?.qListObject.qDimensionInfo.qStateCounts || {};
     const selectedCount =
       (counts.qSelected || 0) + (counts.qSelectedExcluded || 0) + (counts.qLocked || 0) + (counts.qLockedExcluded || 0);
     if (selectedCount === 0) {
@@ -215,7 +213,7 @@ export default function ListBox({
         ]);
         if (!cancelled) {
           // Warm expression cache for selected values (on demand, regardless of cardinality limit)
-          const exprIndex = getListExprIndex(layout);
+          const exprIndex = getListExprIndex(staleLayout);
           (page?.qMatrix || []).forEach((row) => {
             const valueKey = row[0]?.qElemNumber ?? row[0]?.qText;
             Object.entries(exprIndex).forEach(([key, col]) => {
@@ -236,7 +234,7 @@ export default function ListBox({
     return () => {
       cancelled = true;
     };
-  }, [hideActive, layout, dataWidth, model]);
+  }, [hideActive, staleLayout, dataWidth, model]);
 
   // Reset scroll offset when entering compacted mode to prevent misaligned indices.
   // The compacted page is rebased to qTop: 0, so all row indices start from 0.
