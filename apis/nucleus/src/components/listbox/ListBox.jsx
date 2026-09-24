@@ -199,8 +199,7 @@ export default function ListBox({
     }
     let cancelled = false;
     const counts = staleLayout?.qListObject.qDimensionInfo.qStateCounts || {};
-    const selectedCount =
-      (counts.qSelected || 0) + (counts.qSelectedExcluded || 0) + (counts.qLocked || 0) + (counts.qLockedExcluded || 0);
+    const selectedCount = (counts.qSelected || 0) + (counts.qLocked || 0);
     if (selectedCount === 0) {
       setSelectedValuesPage(null);
       return undefined;
