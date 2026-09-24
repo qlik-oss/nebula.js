@@ -23,6 +23,7 @@ export default function viz({
   let cellRef = null;
   let mountedReference = null;
   let onMount = null;
+  let onReady = null;
   let onRenderResolve = null;
   let viewDataObjectId;
   let originalExtensionDef;
@@ -31,6 +32,10 @@ export default function viz({
 
   const mounted = new Promise((resolve) => {
     onMount = resolve;
+  });
+
+  const ready = new Promise((resolve) => {
+    onReady = resolve;
   });
 
   const rendered = new Promise((resolve) => {
@@ -118,7 +123,7 @@ export default function viz({
        * @returns {Promise<object|undefined>} methods to handle hypercube dimensions and measures definitions and properties.
        */
       async getHypercubePropertyHandler() {
-        await rendered;
+        await ready;
 
         const extensionDefinition = cellRef.current.getExtensionDefinition();
         const dataDefinition = extensionDefinition.data;
@@ -342,6 +347,7 @@ export default function viz({
           initialSnPlugins,
           initialError,
           onMount,
+          onReady,
           emitter,
           navigation,
           onError,
