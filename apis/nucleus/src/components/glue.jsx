@@ -10,6 +10,7 @@ export default function glue({
   initialSnOptions,
   initialSnPlugins,
   onMount,
+  onReady,
   emitter,
   initialError,
   navigation,
@@ -28,6 +29,7 @@ export default function glue({
       initialSnPlugins={initialSnPlugins}
       initialError={initialError}
       onMount={onMount}
+      onReady={onReady}
       emitter={emitter}
       navigation={navigation}
       onError={onError}
