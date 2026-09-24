@@ -20,7 +20,6 @@ import InstanceContext from '../../contexts/InstanceContext';
 import deduceFrequencyMode from './utils/deduce-frequency-mode';
 import compactSelectedPages from './helpers/compact-selected-pages';
 import { getListExprIndex, cacheExprValue } from './helpers/expr-cache';
-import hasSelections from './assets/has-selections';
 
 const DEFAULT_MIN_BATCH_SIZE = 100;
 // Cap on the one-time per-value expression cache warm-up (see the effect below) - a field with a
@@ -122,8 +121,13 @@ export default function ListBox({
 
   const [pages, setPages] = useState([]);
   const [selectedValuesPage, setSelectedValuesPage] = useState(null);
+  // Own qSelected/qLocked count - matches SELECTED_STATES in compact-selected-pages.js.
+  const selectedCount = (() => {
+    const counts = staleLayout?.qListObject.qDimensionInfo.qStateCounts || {};
+    return (counts.qSelected || 0) + (counts.qLocked || 0);
+  })();
   // Frozen against staleLayout so compaction doesn't flicker on/off on every tick while picking.
-  const hideActive = isImageMode && showSelected && hasSelections(staleLayout);
+  const hideActive = isImageMode && showSelected && selectedCount > 0;
 
   if (itemsLoader?.pages) {
     selectionState.update({
@@ -198,9 +202,6 @@ export default function ListBox({
       return undefined;
     }
     let cancelled = false;
-    const counts = staleLayout?.qListObject.qDimensionInfo.qStateCounts || {};
-    const selectedCount =
-      (counts.qSelected || 0) + (counts.qSelectedExcluded || 0) + (counts.qLocked || 0) + (counts.qLockedExcluded || 0);
     if (selectedCount === 0) {
       setSelectedValuesPage(null);
       return undefined;
@@ -234,7 +235,7 @@ export default function ListBox({
     return () => {
       cancelled = true;
     };
-  }, [hideActive, staleLayout, dataWidth, model]);
+  }, [hideActive, staleLayout, selectedCount, dataWidth, model]);
 
   // Reset scroll offset when entering compacted mode to prevent misaligned indices.
   // The compacted page is rebased to qTop: 0, so all row indices start from 0.

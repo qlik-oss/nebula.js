@@ -6,8 +6,19 @@ describe('compactSelectedPages', () => {
   it('keeps only selected and locked values, dropping optional/alternative/excluded ones', () => {
     const pages = [
       {
-        qArea: { qLeft: 0, qTop: 0, qWidth: 1, qHeight: 5 },
-        qMatrix: [[dimCell(0, 'S')], [dimCell(1, 'L')], [dimCell(2, 'O')], [dimCell(3, 'A')], [dimCell(4, 'X')]],
+        qArea: { qLeft: 0, qTop: 0, qWidth: 1, qHeight: 7 },
+        qMatrix: [
+          [dimCell(0, 'S')],
+          [dimCell(1, 'L')],
+          [dimCell(2, 'O')],
+          [dimCell(3, 'A')],
+          [dimCell(4, 'X')],
+          // A value selected in this field, but now excluded due to a selection elsewhere, is no
+          // longer treated as "selected" for display purposes - it should be dropped like any
+          // other excluded value, not kept because it was once S/L.
+          [dimCell(5, 'XS')],
+          [dimCell(6, 'XL')],
+        ],
       },
     ];
 
