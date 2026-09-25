@@ -101,10 +101,10 @@ export default function useListSizes({ layout, width, height, listCount, count, 
     rowCount = Math.ceil((listCount || 1) / columnCount);
     // Row-major image grid scrolls vertically.
     overflowStyling = { overflowX: 'hidden' };
-    // Grid gap is authored as a percentage of the grid width
+    // Grid gap is authored as a percentage of the column width
     const rawGridGap = representation?.gridGap;
     const gridGapPct = Math.max(0, Number.isFinite(rawGridGap) ? rawGridGap : 1);
-    gridGap = Math.min(Math.round((gridGapPct / 100) * width), columnWidth - 1, itemHeight - 1);
+    gridGap = (gridGapPct / 100) * columnWidth;
     gridGap = Math.max(0, gridGap);
   }
 
