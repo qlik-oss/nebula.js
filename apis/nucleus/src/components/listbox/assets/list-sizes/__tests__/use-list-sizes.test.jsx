@@ -276,8 +276,8 @@ describe('use-list-sizes', () => {
       itemHeight: 100, // listHeight / maxVisibleRows = 300 / 3, cells fill the pane
       rowCount: 25, // ceil(listCount / columnCount) => scrolls beyond the visible rows
       listCount: 100,
-      gridGap: 1, // default 0.5% of width 200 = 1px
     });
+    expect(sizes.gridGap).toBeCloseTo(0.475, 5); // default 1% of column width 47.5 = 0.475 px
   });
 
   it('image representation uses default 5 columns / 4 rows when max visible columns/rows are set to auto', () => {
@@ -329,8 +329,8 @@ describe('use-list-sizes', () => {
     args.layout.representation = { type: 'image', gridGap: 'not-a-number' };
     const sizes = useListSizes(args);
     expect(sizes.gridGap).not.toBeNaN();
-    // same as the default (0.5% of width 200 = 1px), since the invalid value falls back to it
-    expect(sizes.gridGap).toBe(1);
+    // same as the default (1% of column width 47.5 = 0.475 px), since the invalid value falls back to it
+    expect(sizes.gridGap).toBeCloseTo(0.475);
   });
 
   it('image representation converts the gridGap percentage of width into a pixel gap', () => {
@@ -338,7 +338,7 @@ describe('use-list-sizes', () => {
     args.layout.layoutOptions.layoutOrder = 'row';
     args.layout.representation = { type: 'image', gridGap: 5 };
     const sizes = useListSizes(args);
-    expect(sizes.gridGap).toBe(10); // 5% of width 200 = 10px
+    expect(sizes.gridGap).toBe(2.375); // 5% of column width 47.5 = 2.375 px
   });
 
   it('Algorithm should reduce rowCount when container height cannot fit all items.', () => {
