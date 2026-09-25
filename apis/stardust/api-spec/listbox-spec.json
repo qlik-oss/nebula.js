@@ -130,6 +130,9 @@
         "qListObjectDef": {
           "type": "#/definitions/ListObjectDef"
         },
+        "representation": {
+          "type": "#/definitions/Representation"
+        },
         "searchEnabled": {
           "description": "Enables search.",
           "optional": true,
@@ -171,6 +174,178 @@
           "optional": true,
           "defaultValue": false,
           "type": "boolean"
+        }
+      }
+    },
+    "Representation": {
+      "description": "Representation settings for the dimension values, set on the listbox object root `representation`\n(a sibling of `qListObjectDef`, alongside `layoutOptions`).\n\nNotes on image representation:\n-   * When `type` is `'image'` the values are rendered as images. Image metadata is resolved from\nlist-object expressions (`qListObjectDef.qExpressions`) using their `qLabel` keys.",
+      "kind": "interface",
+      "entries": {
+        "borderColor": {
+          "description": "Cell border color. Only used when `type` is 'image' and `borderWidth` > 0.",
+          "optional": true,
+          "defaultValue": "'#d9d9d9'",
+          "type": "string"
+        },
+        "borderWidth": {
+          "description": "Cell border width in px. Only used when `type` is 'image'.",
+          "optional": true,
+          "defaultValue": 0,
+          "type": "number"
+        },
+        "cellBgColor": {
+          "description": "Cell background color (hex string or color object when cellBgColorMode='single') or expression (when cellBgColorMode='expression'). Only used when `type` is 'image'.",
+          "optional": true,
+          "kind": "union",
+          "items": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object"
+            },
+            {
+              "type": "#/definitions/ValueExpression"
+            }
+          ]
+        },
+        "cellBgColorMode": {
+          "description": "Cell background color mode. Only used when `type` is 'image'.",
+          "optional": true,
+          "defaultValue": "'single'",
+          "kind": "union",
+          "items": [
+            {
+              "kind": "literal",
+              "value": "'single'"
+            },
+            {
+              "kind": "literal",
+              "value": "'expression'"
+            }
+          ]
+        },
+        "cornerRadius": {
+          "description": "Corner radius of the image cell in pixels. Only used when `type` is 'image'.",
+          "optional": true,
+          "defaultValue": 4,
+          "type": "number"
+        },
+        "gridGap": {
+          "description": "Spacing between image grid cells, as a percentage of the grid width. Only used when `type` is 'image'.",
+          "optional": true,
+          "defaultValue": 0.5,
+          "type": "number"
+        },
+        "imageLabel": {
+          "description": "Per-value image label expression. Only used when `type` is 'image' and `imageSetting` is 'label'. Stored in qExpressions with qLabel='imageLabel'.",
+          "optional": true,
+          "type": "#/definitions/ValueExpression"
+        },
+        "imagePosition": {
+          "description": "Image position within the cell. Only used when `type` is 'image' and `imageSize` is not 'stretch'.",
+          "optional": true,
+          "defaultValue": "'topCenter'",
+          "type": "string"
+        },
+        "imageSetting": {
+          "description": "When `type` is 'image', choose whether the\n  per-value expression (qExpressions.qLabel='imageUrl'/'imageLabel') provides the image URL\n  (`'url'`) or the image label (`'label'`).",
+          "optional": true,
+          "defaultValue": "'label'",
+          "kind": "union",
+          "items": [
+            {
+              "kind": "literal",
+              "value": "'url'"
+            },
+            {
+              "kind": "literal",
+              "value": "'label'"
+            }
+          ]
+        },
+        "imageSize": {
+          "description": "Image sizing mode. Only used when `type` is 'image'.",
+          "optional": true,
+          "defaultValue": "'alwaysFit'",
+          "kind": "union",
+          "items": [
+            {
+              "kind": "literal",
+              "value": "'alwaysFit'"
+            },
+            {
+              "kind": "literal",
+              "value": "'fitWidth'"
+            },
+            {
+              "kind": "literal",
+              "value": "'fitHeight'"
+            },
+            {
+              "kind": "literal",
+              "value": "'stretch'"
+            },
+            {
+              "kind": "literal",
+              "value": "'alwaysFill'"
+            }
+          ]
+        },
+        "imageUrl": {
+          "description": "Per-value image URL expression. Only used when `type` is 'image' and `imageSetting` is 'url'. Stored in qExpressions with qLabel='imageUrl'.",
+          "optional": true,
+          "type": "#/definitions/ValueExpression"
+        },
+        "showSelected": {
+          "description": "When `type` is 'image', show only selected values once a selection is applied (while selecting, all values stay visible). Set to false to keep unselected values visible.",
+          "optional": true,
+          "defaultValue": true,
+          "type": "boolean"
+        },
+        "subtitle": {
+          "description": "Per-value subtitle expression. Only used when `type` is 'image' and `textOverlay` is not false.",
+          "optional": true,
+          "type": "#/definitions/ValueExpression"
+        },
+        "textOverlay": {
+          "description": "Whether to render the title/subtitle overlay text. Only used when `type` is 'image'.",
+          "optional": true,
+          "defaultValue": true,
+          "type": "boolean"
+        },
+        "titleBackground": {
+          "description": "Draw a background behind the title text for legibility. Only used when `type` is 'image'.",
+          "optional": true,
+          "defaultValue": true,
+          "type": "boolean"
+        },
+        "titlePosition": {
+          "description": "Overlay text alignment as `{vertical}-{horizontal}` (e.g. 'top-left', 'center-center', 'bottom-right'). Only used when `type` is 'image'.",
+          "optional": true,
+          "defaultValue": "'top-center'",
+          "type": "string"
+        },
+        "tooltip": {
+          "description": "Per-value tooltip expression. Only used when `type` is 'image'.",
+          "optional": true,
+          "type": "#/definitions/ValueExpression"
+        },
+        "type": {
+          "description": "How the dimension values are presented.",
+          "optional": true,
+          "defaultValue": "'text'",
+          "kind": "union",
+          "items": [
+            {
+              "kind": "literal",
+              "value": "'text'"
+            },
+            {
+              "kind": "literal",
+              "value": "'image'"
+            }
+          ]
         }
       }
     },
