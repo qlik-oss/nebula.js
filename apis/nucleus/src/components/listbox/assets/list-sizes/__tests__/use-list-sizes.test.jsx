@@ -333,6 +333,21 @@ describe('use-list-sizes', () => {
     expect(sizes.gridGap).toBe(1);
   });
 
+  it('image representation keeps the cell size constant when there are fewer items than max columns', () => {
+    args.layout.layoutOptions.dataLayout = 'grid';
+    args.layout.layoutOptions.layoutOrder = 'row';
+    args.layout.layoutOptions.maxVisibleColumns = { maxColumns: 5, auto: false };
+    args.layout.representation = { type: 'image' };
+    // e.g. after "show selected" collapses the grid to 2 selected values
+    args.listCount = 2;
+    const sizes = useListSizes(args);
+    expect(sizes).toMatchObject({
+      columnCount: 5, // stays at max columns, not clamped down to the 2 items
+      columnWidth: (200 - 10) / 5, // cell width unchanged (trailing columns are left empty)
+      rowCount: 1, // ceil(2 / 5)
+    });
+  });
+
   it('image representation converts the gridGap percentage of width into a pixel gap', () => {
     args.layout.layoutOptions.dataLayout = 'grid';
     args.layout.layoutOptions.layoutOrder = 'row';

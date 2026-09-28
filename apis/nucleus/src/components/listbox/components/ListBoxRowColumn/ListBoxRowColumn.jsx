@@ -20,6 +20,7 @@ import getRowFromPages from './helpers/get-row-from-pages';
 import getRowsKeyboardNavigation from '../../interactions/keyboard-navigation/keyboard-nav-rows';
 import getValueTextAlign from './helpers/get-value-text-align';
 import getValueLabel from '../screen-reader/value-label';
+import { cacheExprValue } from '../../helpers/expr-cache';
 
 function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const {
@@ -177,7 +178,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   let imagePlaceholderBg;
   if (isImage) {
     imageSelectionColor = styles?.selections?.selected || '#009845';
-    if (cell.qState === 'X' || cell.qState === 'XS') {
+    if (cell.qState === 'X' || cell.qState === 'XS' || cell.qState === 'XL') {
       imageOpacity = 0.3;
     } else if (cell.qState === 'A') {
       imageOpacity = 0.4;
@@ -194,13 +195,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     const resolveExpr = (key) => {
       const col = listExprIndex[key];
       if (col == null) return undefined;
-      const raw = row?.[col]?.qText;
-      const bucket = exprCache[key] || (exprCache[key] = {});
-      if (raw != null && raw !== '') {
-        bucket[valueKey] = raw;
-        return raw;
-      }
-      return bucket[valueKey];
+      return cacheExprValue(exprCache, key, valueKey, row?.[col]?.qText);
     };
 
     const imageSetting = representation?.imageSetting ?? 'label';

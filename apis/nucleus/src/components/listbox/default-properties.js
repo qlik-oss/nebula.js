@@ -22,6 +22,8 @@
  *
  * @interface Representation
  * @property {('text'|'image')} [type='text'] How the dimension values are presented.
+ * @property {ValueExpression} [imageUrl] Per-value image URL expression. Only used when `type` is 'image' and `imageSetting` is 'url'. Stored in qExpressions with qLabel='imageUrl'.
+ * @property {ValueExpression} [imageLabel] Per-value image label expression. Only used when `type` is 'image' and `imageSetting` is 'label'. Stored in qExpressions with qLabel='imageLabel'.
  * @property {('url'|'label')} [imageSetting='label'] When `type` is 'image', choose whether the
  *   per-value expression (qExpressions.qLabel='imageUrl'/'imageLabel') provides the image URL
  *   (`'url'`) or the image label (`'label'`).
@@ -31,9 +33,14 @@
  *  @property {boolean} [textOverlay=true] Whether to render the title/subtitle overlay text. Only used when `type` is 'image'.
  * @property {boolean} [titleBackground=true] Draw a background behind the title text for legibility. Only used when `type` is 'image'.
  * @property {number} [gridGap=0.5] Spacing between image grid cells, as a percentage of the grid width. Only used when `type` is 'image'.
- * @property {('none'|'small'|'medium'|'large'|'full')} [cornerRadius='small'] Corner radius of the image cell (0/4/8/16px or 50%). Only used when `type` is 'image'.
+ * @property {number} [cornerRadius=4] Corner radius of the image cell in pixels. Only used when `type` is 'image'.
  * @property {number} [borderWidth=0] Cell border width in px. Only used when `type` is 'image'.
  * @property {string} [borderColor='#d9d9d9'] Cell border color. Only used when `type` is 'image' and `borderWidth` > 0.
+ * @property {('single'|'expression')} [cellBgColorMode='single'] Cell background color mode. Only used when `type` is 'image'.
+ * @property {(string|object|ValueExpression)} [cellBgColor] Cell background color (hex string or color object when cellBgColorMode='single') or expression (when cellBgColorMode='expression'). Only used when `type` is 'image'.
+ * @property {ValueExpression} [subtitle] Per-value subtitle expression. Only used when `type` is 'image' and `textOverlay` is not false.
+ * @property {ValueExpression} [tooltip] Per-value tooltip expression. Only used when `type` is 'image'.
+ * @property {boolean} [showSelected=true] When `type` is 'image', show only selected values once a selection is applied (while selecting, all values stay visible). Set to false to keep unselected values visible.
  */
 
 /**
@@ -194,6 +201,29 @@ const listdef = {
        */
       maxRows: 3,
     },
+  },
+  /**
+   * @type {Representation}
+   */
+  representation: {
+    type: 'text',
+    imageUrl: '',
+    imageLabel: '',
+    imageSetting: 'label',
+    imageSize: 'alwaysFit',
+    imagePosition: 'top-center',
+    titlePosition: 'top-center',
+    textOverlay: true,
+    titleBackground: true,
+    gridGap: 0.5,
+    cornerRadius: 4,
+    borderWidth: 0,
+    borderColor: '#d9d9d9',
+    cellBgColorMode: 'single',
+    cellBgColor: '#ffffff',
+    subtitle: '',
+    tooltip: '',
+    showSelected: true,
   },
   /**
    * Listbox title
