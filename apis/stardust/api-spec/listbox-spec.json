@@ -200,7 +200,7 @@
           "type": "number"
         },
         "gridGap": {
-          "description": "Spacing between image grid cells, as a percentage of the grid width. Only used when `type` is 'image'.",
+          "description": "Spacing between image grid cells, as a percentage of the column width. Only used when `type` is 'image'.",
           "optional": true,
           "defaultValue": 1,
           "type": "number"
