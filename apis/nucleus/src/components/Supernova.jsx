@@ -19,7 +19,7 @@ const VizElement = {
   className: 'njs-viz',
 };
 
-function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayout, halo, cellId }) {
+function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayout, halo, cellId, onMount }) {
   const { component } = sn;
 
   const { theme: themeName, language, constraints, interactions, keyboardNavigation } = useContext(InstanceContext);
@@ -41,6 +41,7 @@ function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
     if (!snNode) return undefined;
     component.created({ options });
     component.mounted(snNode);
+    onMount?.();
     setIsMounted(true);
     return () => {
       renderDebouncer.stop();

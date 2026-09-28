@@ -321,7 +321,6 @@ const loadType = async ({
 
     if (sn) {
       dispatch({ type: 'LOADED', sn, visualization });
-      onMount();
     }
   } catch (err) {
     if (!version) {
@@ -351,7 +350,6 @@ const Cell = forwardRef(
       initialSnPlugins,
       initialError,
       onMount,
-      onReady,
       currentId,
       emitter,
       navigation,
@@ -588,13 +586,6 @@ const Cell = forwardRef(
       }),
       [state.sn, contentRect, cellRect, layout, theme.name, appLayout]
     );
-
-    useEffect(() => {
-      if (state.loaded) {
-        onReady?.();
-      }
-    }, [onReady, state.loaded]);
-
     // console.log('content', state);
     let Content = null;
     if (state.loading && !state.longRunningQuery) {
@@ -613,6 +604,7 @@ const Cell = forwardRef(
           halo={halo}
           snOptions={snOptions}
           snPlugins={snPlugins}
+          onMount={onMount}
           layout={layout}
           appLayout={appLayout}
           cellId={currentId}
