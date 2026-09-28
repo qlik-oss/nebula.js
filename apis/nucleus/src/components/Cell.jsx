@@ -351,6 +351,7 @@ const Cell = forwardRef(
       initialSnPlugins,
       initialError,
       onMount,
+      onReady,
       currentId,
       emitter,
       navigation,
@@ -587,6 +588,12 @@ const Cell = forwardRef(
       }),
       [state.sn, contentRect, cellRect, layout, theme.name, appLayout]
     );
+
+    useEffect(() => {
+      if (state.loaded) {
+        onReady?.();
+      }
+    }, [onReady, state.loaded]);
 
     // console.log('content', state);
     let Content = null;

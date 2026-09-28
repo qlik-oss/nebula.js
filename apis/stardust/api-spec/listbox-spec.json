@@ -193,6 +193,38 @@
           "defaultValue": 0,
           "type": "number"
         },
+        "cellBgColor": {
+          "description": "Cell background color (hex string or color object when cellBgColorMode='single') or expression (when cellBgColorMode='expression'). Only used when `type` is 'image'.",
+          "optional": true,
+          "kind": "union",
+          "items": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object"
+            },
+            {
+              "type": "#/definitions/ValueExpression"
+            }
+          ]
+        },
+        "cellBgColorMode": {
+          "description": "Cell background color mode. Only used when `type` is 'image'.",
+          "optional": true,
+          "defaultValue": "'single'",
+          "kind": "union",
+          "items": [
+            {
+              "kind": "literal",
+              "value": "'single'"
+            },
+            {
+              "kind": "literal",
+              "value": "'expression'"
+            }
+          ]
+        },
         "cornerRadius": {
           "description": "Corner radius of the image cell in pixels. Only used when `type` is 'image'.",
           "optional": true,
@@ -204,6 +236,11 @@
           "optional": true,
           "defaultValue": 1,
           "type": "number"
+        },
+        "imageLabel": {
+          "description": "Per-value image label expression. Only used when `type` is 'image' and `imageSetting` is 'label'. Stored in qExpressions with qLabel='imageLabel'.",
+          "optional": true,
+          "type": "#/definitions/ValueExpression"
         },
         "imagePosition": {
           "description": "Image position within the cell. Only used when `type` is 'image' and `imageSize` is not 'stretch'.",
@@ -255,6 +292,22 @@
             }
           ]
         },
+        "imageUrl": {
+          "description": "Per-value image URL expression. Only used when `type` is 'image' and `imageSetting` is 'url'. Stored in qExpressions with qLabel='imageUrl'.",
+          "optional": true,
+          "type": "#/definitions/ValueExpression"
+        },
+        "showSelected": {
+          "description": "When `type` is 'image', show only selected values once a selection is applied (while selecting, all values stay visible). Set to false to keep unselected values visible.",
+          "optional": true,
+          "defaultValue": true,
+          "type": "boolean"
+        },
+        "subtitle": {
+          "description": "Per-value subtitle expression. Only used when `type` is 'image' and `textOverlay` is not false.",
+          "optional": true,
+          "type": "#/definitions/ValueExpression"
+        },
         "textOverlay": {
           "description": "Whether to render the title/subtitle overlay text. Only used when `type` is 'image'.",
           "optional": true,
@@ -272,6 +325,11 @@
           "optional": true,
           "defaultValue": "'top-center'",
           "type": "string"
+        },
+        "tooltip": {
+          "description": "Per-value tooltip expression. Only used when `type` is 'image'.",
+          "optional": true,
+          "type": "#/definitions/ValueExpression"
         },
         "type": {
           "description": "How the dimension values are presented.",

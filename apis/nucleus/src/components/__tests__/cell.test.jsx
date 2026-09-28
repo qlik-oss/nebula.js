@@ -109,6 +109,7 @@ describe('<Cell />', () => {
       types = defaultHalo.types,
       initialSnOptions = {},
       onMount = jest.fn(),
+      onReady = jest.fn(),
       theme = createTheme('dark'),
       cellRef,
       config = {},
@@ -134,6 +135,7 @@ describe('<Cell />', () => {
                   model={model}
                   initialSnOptions={initialSnOptions}
                   onMount={onMount}
+                  onReady={onReady}
                   currentId="currentId"
                 />
               </InstanceContext.Provider>
@@ -173,6 +175,7 @@ describe('<Cell />', () => {
       types = defaultHalo.types,
       initialSnOptions = {},
       onMount = jest.fn(),
+      onReady = jest.fn(),
       theme = createTheme('dark'),
       cellRef,
       config = {},
@@ -198,6 +201,7 @@ describe('<Cell />', () => {
                   model={model}
                   initialSnOptions={initialSnOptions}
                   onMount={onMount}
+                  onReady={onReady}
                   currentId="currentId"
                 />
               </InstanceContext.Provider>
@@ -296,6 +300,7 @@ describe('<Cell />', () => {
     });
 
     test('should render', async () => {
+      const onReady = jest.fn();
       const sn = {
         generator: {
           qae: {
@@ -311,10 +316,11 @@ describe('<Cell />', () => {
         }),
         getSupportedVersion: jest.fn().mockReturnValue('1.0.0'),
       };
-      await render({ types });
+      await render({ types, onReady });
 
       const ftypes = renderer.root.findAllByType(Supernova);
       expect(ftypes).toHaveLength(1);
+      expect(onReady).toHaveBeenCalledTimes(1);
     });
 
     test('should render new type', async () => {

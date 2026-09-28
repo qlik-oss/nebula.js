@@ -5,6 +5,7 @@ import deriveRenderOptions from './derive-render-options';
 import getStyledComponents, { classes } from './styled-components';
 import handleSetOverflowDisclaimer from './set-overflow-disclaimer';
 import { REMOVE_TICK_LIMIT } from '../../constants';
+import { getListExprIndex } from '../../helpers/expr-cache';
 
 const { StyledFixedSizeList, StyledFixedSizeGrid } = getStyledComponents();
 
@@ -50,13 +51,7 @@ export default function getListBoxComponents({
   // Representation settings live at the listbox object root (sibling of qListObjectDef, alongside
   // layoutOptions); the per-value expression index map comes from the list object's qExpressions.
   const representation = layout?.representation;
-  // Per-value list-object expressions (qListObjectDef.qExpressions) arrive as extra data columns:
-  // qMatrix[row] = [dimensionCell, exprCell0, ...]. Map an expression's qLabel (e.g. 'imageUrl') to
-  // its column index (offset by 1 for the dimension column).
-  const listExprIndex = (layout?.qListObject?.qExpressions || []).reduce((acc, expr, i) => {
-    acc[expr.qLabel] = i + 1;
-    return acc;
-  }, {});
+  const listExprIndex = getListExprIndex(layout);
 
   const itemWidth = layoutOptions.dataLayout === 'grid' ? columnWidth : width;
   const showTick = itemWidth > REMOVE_TICK_LIMIT;
