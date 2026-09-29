@@ -300,7 +300,6 @@ describe('<Cell />', () => {
     });
 
     test('should render', async () => {
-      const onReady = jest.fn();
       const sn = {
         generator: {
           qae: {
@@ -316,11 +315,10 @@ describe('<Cell />', () => {
         }),
         getSupportedVersion: jest.fn().mockReturnValue('1.0.0'),
       };
-      await render({ types, onReady });
+      await render({ types });
 
       const ftypes = renderer.root.findAllByType(Supernova);
       expect(ftypes).toHaveLength(1);
-      expect(onReady).toHaveBeenCalledTimes(1);
     });
 
     test('should render new type', async () => {

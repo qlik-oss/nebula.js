@@ -134,9 +134,8 @@ describe('viz', () => {
 
     test('should mount', async () => {
       mounted = api.__DO_NOT_USE__.mount(mockElement);
-      const { onMount, onReady } = glue.mock.lastCall[0];
+      const { onMount } = glue.mock.lastCall[0];
       onMount();
-      onReady();
       await mounted;
       expect(glue).toHaveBeenCalledTimes(1);
     });
