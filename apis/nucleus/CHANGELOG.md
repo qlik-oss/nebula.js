@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.5.0](https://github.com/qlik-oss/nebula.js/compare/v7.4.0...v7.5.0) (2026-09-29)
+
+### Bug Fixes
+
+- getHypercubePropertyHandler should not wait for rendered promise ([#2244](https://github.com/qlik-oss/nebula.js/issues/2244)) ([6e98844](https://github.com/qlik-oss/nebula.js/commit/6e98844e23d98d0c7149ab0b7f4b034434c50b12))
+- **listbox:** adjust row count to avoid scrollbar from covering last row ([#2234](https://github.com/qlik-oss/nebula.js/issues/2234)) ([60baa14](https://github.com/qlik-oss/nebula.js/commit/60baa14618cd406ff3e3973293d5006b0fb69d27))
+
+### Features
+
+- add number of rows & columns for grid mode Images ([#2193](https://github.com/qlik-oss/nebula.js/issues/2193)) ([d93761f](https://github.com/qlik-oss/nebula.js/commit/d93761f470313bdd764154be60a3648d1c9d39c8)), closes [#2199](https://github.com/qlik-oss/nebula.js/issues/2199)
+- apply theme based styling for images ([#2236](https://github.com/qlik-oss/nebula.js/issues/2236)) ([4ff575b](https://github.com/qlik-oss/nebula.js/commit/4ff575b25133ae857a0c179509193ca9605e2d67)), closes [#2199](https://github.com/qlik-oss/nebula.js/issues/2199)
+- images in listbox ([#2086](https://github.com/qlik-oss/nebula.js/issues/2086)) ([c3abcc3](https://github.com/qlik-oss/nebula.js/commit/c3abcc3ce3bc5fc0ea55edaf635221e4af7476b7))
+- show only selected values ([#2238](https://github.com/qlik-oss/nebula.js/issues/2238)) ([379f2c1](https://github.com/qlik-oss/nebula.js/commit/379f2c10bf7b8b7c285332eb62f256d3864a6065)), closes [#2199](https://github.com/qlik-oss/nebula.js/issues/2199)
+
 # [7.4.0](https://github.com/qlik-oss/nebula.js/compare/v7.3.0...v7.4.0) (2026-08-21)
 
 **Note:** Version bump only for package @nebula.js/nucleus
