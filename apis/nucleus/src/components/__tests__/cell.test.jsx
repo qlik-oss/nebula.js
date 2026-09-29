@@ -300,7 +300,6 @@ describe('<Cell />', () => {
     });
 
     test('should render', async () => {
-      const onReady = jest.fn();
       const sn = {
         generator: {
           qae: {
