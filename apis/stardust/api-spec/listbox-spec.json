@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust:listbox",
     "description": "nebula listbox properties definition",
-    "version": "7.4.0",
+    "version": "7.5.0",
     "license": "MIT",
     "stability": "stable",
     "x-qlik-visibility": "public"
@@ -232,9 +232,9 @@
           "type": "number"
         },
         "gridGap": {
-          "description": "Spacing between image grid cells, as a percentage of the column width. Only used when `type` is 'image'.",
+          "description": "Spacing between image grid cells, as a percentage of the grid width. Only used when `type` is 'image'.",
           "optional": true,
-          "defaultValue": 1,
+          "defaultValue": 0.5,
           "type": "number"
         },
         "imageLabel": {
