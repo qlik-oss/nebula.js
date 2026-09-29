@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.5.0](https://github.com/qlik-oss/nebula.js/compare/v7.4.0...v7.5.0) (2026-09-29)
+
+### Bug Fixes
+
+- sort stardust spec ([#2246](https://github.com/qlik-oss/nebula.js/issues/2246)) ([5f695e6](https://github.com/qlik-oss/nebula.js/commit/5f695e62583488a5494a587835325e3d76d74c91))
+
+### Features
+
+- show only selected values ([#2238](https://github.com/qlik-oss/nebula.js/issues/2238)) ([379f2c1](https://github.com/qlik-oss/nebula.js/commit/379f2c10bf7b8b7c285332eb62f256d3864a6065)), closes [#2199](https://github.com/qlik-oss/nebula.js/issues/2199)
+
 # [7.4.0](https://github.com/qlik-oss/nebula.js/compare/v7.3.0...v7.4.0) (2026-08-21)
 
 ### Features

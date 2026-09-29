@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.5.0](https://github.com/qlik-oss/nebula.js/compare/v7.4.0...v7.5.0) (2026-09-29)
+
+### Features
+
+- apply theme based styling for images ([#2236](https://github.com/qlik-oss/nebula.js/issues/2236)) ([4ff575b](https://github.com/qlik-oss/nebula.js/commit/4ff575b25133ae857a0c179509193ca9605e2d67)), closes [#2199](https://github.com/qlik-oss/nebula.js/issues/2199)
+
 # [7.4.0](https://github.com/qlik-oss/nebula.js/compare/v7.3.0...v7.4.0) (2026-08-21)
 
 **Note:** Version bump only for package @nebula.js/ui

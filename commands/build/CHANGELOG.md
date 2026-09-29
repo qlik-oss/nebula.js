@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.5.0](https://github.com/qlik-oss/nebula.js/compare/v7.4.0...v7.5.0) (2026-09-29)
+
+### Bug Fixes
+
+- **build:** scope React Babel preset to JSX files ([#2235](https://github.com/qlik-oss/nebula.js/issues/2235)) ([6d38301](https://github.com/qlik-oss/nebula.js/commit/6d38301c845ad96c2c8e4f680efd2f59134e608a))
+
 # [7.4.0](https://github.com/qlik-oss/nebula.js/compare/v7.3.0...v7.4.0) (2026-08-21)
 
 ### Features
