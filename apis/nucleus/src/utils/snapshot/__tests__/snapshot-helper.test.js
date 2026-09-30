@@ -1,4 +1,4 @@
-import buildSnapshot, { resolveSnapshotFormat, generateId } from '../snapshot-helper';
+import buildSnapshot, { resolveSnapshotFormat } from '../snapshot-helper';
 
 describe('snapshot-helper', () => {
   let layout;
@@ -24,15 +24,11 @@ describe('snapshot-helper', () => {
     jest.restoreAllMocks();
   });
 
-  test('resolveSnapshotFormat should default to legacy and pick first valid candidate', () => {
-    expect(resolveSnapshotFormat(undefined, 'nope')).toBe('legacy');
-    expect(resolveSnapshotFormat(undefined, 'client')).toBe('client');
-    expect(resolveSnapshotFormat('legacy', 'client')).toBe('legacy');
-  });
-
-  test('generateId should generate ids of given length', () => {
-    expect(generateId()).toHaveLength(7);
-    expect(generateId(3)).toHaveLength(3);
+  test('resolveSnapshotFormat should default to legacy and accept supported formats', () => {
+    expect(resolveSnapshotFormat(undefined)).toBe('legacy');
+    expect(resolveSnapshotFormat('nope')).toBe('legacy');
+    expect(resolveSnapshotFormat('client')).toBe('client');
+    expect(resolveSnapshotFormat('legacy')).toBe('legacy');
   });
 
   describe('legacy', () => {
@@ -58,12 +54,10 @@ describe('snapshot-helper', () => {
   });
 
   describe('client', () => {
-    const parent = () => ({ w: window.innerWidth, h: window.innerHeight });
-
     test('should return bare layout', async () => {
       const res = await buildSnapshot({ format: 'client', ...params });
       expect(res).toEqual({
-        qInfo: { qId: expect.stringMatching(/^[a-zA-Z0-9]{7}$/), qType: 'bar' },
+        qInfo: { qId: expect.any(String), qType: 'bar' },
         title: 'My title',
         foo: 'bar',
         visualizationType: 'bar',
@@ -76,7 +70,6 @@ describe('snapshot-helper', () => {
           object: { size: { w: 300, h: 401 } },
           rtl: true,
           appLocaleInfo: { qDecimalSep: ',' },
-          parent: parent(),
           language: 'sv',
           theme: 'dark',
         },
@@ -108,7 +101,6 @@ describe('snapshot-helper', () => {
         object: { size: { w: 300, h: 401 } },
         rtl: true,
         appLocaleInfo: { qDecimalSep: ',' },
-        parent: parent(),
         language: 'sv',
         theme: 'dark',
       });

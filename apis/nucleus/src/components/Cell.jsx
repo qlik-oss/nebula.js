@@ -22,7 +22,7 @@ import RenderError from '../utils/render-error';
 import getPadding from '../utils/cell-padding';
 import translationKeys from '../utils/extension-translation-keys';
 import hiddenScreenReaderText from '../utils/style/screen-reader';
-import buildSnapshot, { resolveSnapshotFormat } from '../utils/snapshot/snapshot-helper';
+import buildSnapshot from '../utils/snapshot/snapshot-helper';
 
 /**
  * @interface
@@ -549,16 +549,15 @@ const Cell = forwardRef(
         },
         async takeSnapshot() {
           // hidden option, set through render options (snOptions.snapshotFormat)
-          const format = resolveSnapshotFormat(snOptions?.snapshotFormat);
           return buildSnapshot({
-            format,
+            format: snOptions?.snapshotFormat,
             layout,
             sn: state.sn,
             cellRect,
             language: translator.language(),
             themeName: theme.name,
             appLayout,
-            supportExport: format === 'client' && this.support('exportData'), // eslint-disable-line
+            supportExport: this.support('exportData'), // eslint-disable-line
           });
         },
         async exportImage() {

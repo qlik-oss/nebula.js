@@ -8,32 +8,13 @@
  * `qMetaDef.title` lookups from sense-client are intentionally left out. Charts are expected to handle
  * static content themselves in `onTakeSnapshot`.
  */
-export const SNAPSHOT_FORMATS = { LEGACY: 'legacy', CLIENT: 'client' };
+import uid from '../../object/uid';
 
-export const DEFAULT_SNAPSHOT_FORMAT = SNAPSHOT_FORMATS.LEGACY;
+const SNAPSHOT_FORMATS = { LEGACY: 'legacy', CLIENT: 'client' };
+const DEFAULT_SNAPSHOT_FORMAT = SNAPSHOT_FORMATS.LEGACY;
 
-export function resolveSnapshotFormat(...candidates) {
-  const found = candidates.find((c) => Object.values(SNAPSHOT_FORMATS).includes(c));
-  return found || DEFAULT_SNAPSHOT_FORMAT;
-}
-
-const ID_CHARS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-
-export function generateId(length = 7) {
-  let id = '';
-  for (let i = 0; i < length; i++) {
-    id += ID_CHARS.charAt(Math.floor(Math.random() * ID_CHARS.length));
-  }
-  return id;
-}
-
-function getParentSize() {
-  const sheetPanel = typeof document !== 'undefined' ? document.querySelector('.qv-panel-sheet') : null;
-  if (sheetPanel) {
-    const { width, height } = sheetPanel.getBoundingClientRect();
-    return { w: Math.round(width), h: Math.round(height) };
-  }
-  return { w: window.innerWidth, h: window.innerHeight };
+export function resolveSnapshotFormat(format) {
+  return Object.values(SNAPSHOT_FORMATS).includes(format) ? format : DEFAULT_SNAPSHOT_FORMAT;
 }
 
 async function applyChartHook(sn, layout) {
@@ -77,14 +58,15 @@ async function buildClientSnapshot({ layout, sn, cellRect, language, themeName, 
     object: { size: { w: width, h: height } },
     rtl: appLayout?.rtl !== undefined ? appLayout.rtl : false,
     appLocaleInfo: appLayout?.qLocaleInfo,
-    parent: getParentSize(),
     language,
     theme: themeName,
   };
 
   const snapshotLayout = await applyChartHook(sn, clonedLayout);
 
-  snapshotLayout.qInfo = { ...snapshotLayout.qInfo, qId: generateId() };
+  // Generate a unique ID to prevent multiple objects with the same ID.
+  // Snapshots in storytelling doesn't care about this ID - this is a safe guard from other types of usages.
+  snapshotLayout.qInfo = { ...snapshotLayout.qInfo, qId: uid() };
   snapshotLayout.visualizationType =
     layout.qInfo?.qType === 'masterobject' ? layout.visualization : layout.qInfo?.qType;
   snapshotLayout.sourceObjectId = layout.qInfo?.qId;
@@ -103,5 +85,7 @@ async function buildClientSnapshot({ layout, sn, cellRect, language, themeName, 
  * @returns {Promise<object>}
  */
 export default function buildSnapshot({ format, ...params }) {
-  return format === SNAPSHOT_FORMATS.CLIENT ? buildClientSnapshot(params) : buildLegacySnapshot(params);
+  return resolveSnapshotFormat(format) === SNAPSHOT_FORMATS.CLIENT
+    ? buildClientSnapshot(params)
+    : buildLegacySnapshot(params);
 }
