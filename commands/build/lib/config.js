@@ -161,7 +161,7 @@ const config = ({
   const babelOverrides = [
     {
       test: /\.[jt]sx$/,
-      presets: [[babelPresetReact, { runtime: 'automatic' }]],
+      presets: [[babelPresetReact, { runtime: 'automatic', development: mode === 'development' }]],
     },
   ];
 
@@ -224,7 +224,7 @@ const config = ({
           overrides: babelOverrides,
           presets: babelPresets,
         }),
-        ...[
+        [
           mode === 'production'
             ? terser({
                 output: {
@@ -233,7 +233,7 @@ const config = ({
               })
             : false,
         ],
-        ...[
+        [
           mode === 'development'
             ? visualizer({
                 filename: 'bundle-analysis.html',
