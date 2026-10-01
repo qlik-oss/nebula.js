@@ -82,7 +82,7 @@ export default function More({ items = [], api }) {
     <StyledGrid container gap={0} className={classes.item} onClick={handleShowMoreItems}>
       <Grid>
         <Box
-          borderRadius={theme.shape.borderRadius}
+          sx={{ borderRadius: theme.shape.borderRadius }}
           style={{
             padding: '4px 8px 4px 8px',
             backgroundColor: theme.palette.selected.main,
@@ -112,11 +112,13 @@ export default function More({ items = [], api }) {
             vertical: 'top',
             horizontal: 'center',
           }}
-          PaperProps={{
-            style: {
-              minWidth: '200px',
-              width: '200px',
-              pointerEvents: 'auto',
+          slotProps={{
+            paper: {
+              style: {
+                minWidth: '200px',
+                width: '200px',
+                pointerEvents: 'auto',
+              },
             },
           }}
         >
@@ -124,7 +126,7 @@ export default function More({ items = [], api }) {
             {items.map((s, ix) => (
               // eslint-disable-next-line react/no-array-index-key
               <ListItem key={ix} title={s.name} onClick={(e) => handleShowItem(e, ix)}>
-                <Box border={1} width="100%" borderRadius={1} borderColor="divider">
+                <Box sx={{ border: 1, width: '100%', borderRadius: 1, borderColor: 'divider' }}>
                   {s.states.length > 1 ? <MultiState field={s} api={api} /> : <OneField field={s} api={api} />}
                 </Box>
               </ListItem>
