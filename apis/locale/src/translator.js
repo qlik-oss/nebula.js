@@ -1,3 +1,5 @@
+import normalizeLanguage from './normalize-language';
+
 const format = (message = '', args = []) => {
   const arr = typeof args === 'string' || typeof args === 'number' ? [args] : args;
 
@@ -6,7 +8,7 @@ const format = (message = '', args = []) => {
 
 export default function translator({ initial = 'en-US', fallback = 'en-US' } = {}) {
   const dictionaries = {};
-  let currentLocale = initial;
+  let currentLocale = normalizeLanguage(initial);
 
   /**
    * @class Translator
@@ -19,7 +21,7 @@ export default function translator({ initial = 'en-US', fallback = 'en-US' } = {
      */
     language: (lang) => {
       if (lang) {
-        currentLocale = lang;
+        currentLocale = normalizeLanguage(lang);
       }
       return currentLocale;
     },
