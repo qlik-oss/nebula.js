@@ -15,7 +15,7 @@ export default function translator({ initial = 'en-US', fallback = 'en-US' } = {
    */
   const api = /** @lends Translator# */ {
     /**
-     * Returns current locale. Short codes such as `sv` are expanded to `sv-SE`.
+     * Returns current locale.
      * @param {string=} lang - language Locale to updated the currentLocale value
      * @returns {string} current locale.
      */
