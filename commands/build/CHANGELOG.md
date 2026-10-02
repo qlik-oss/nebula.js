@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.5.2](https://github.com/qlik-oss/nebula.js/compare/v7.5.1...v7.5.2) (2026-10-02)
+
+### Bug Fixes
+
+- make sure that babelPresetReact uses specified build mode ([#2250](https://github.com/qlik-oss/nebula.js/issues/2250)) ([ed5db11](https://github.com/qlik-oss/nebula.js/commit/ed5db11f08deea2a00d65a049a38fee91f036a68))
+
 ## [7.5.1](https://github.com/qlik-oss/nebula.js/compare/v7.5.0...v7.5.1) (2026-10-02)
 
 **Note:** Version bump only for package @nebula.js/cli-build
