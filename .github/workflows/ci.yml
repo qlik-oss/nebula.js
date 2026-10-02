@@ -244,11 +244,6 @@ jobs:
         with:
           name: workspace
           path: .
-      - name: TEMP revert babelPresetReact fix to prove the test fails
-        run: |
-          git fetch --depth=1 origin 5924c9f1b16b79e034e6fe5a2c64e32b3fa5d886
-          git checkout 5924c9f1b16b79e034e6fe5a2c64e32b3fa5d886 -- commands/build/lib/config.js
-          grep -c "development: mode" commands/build/lib/config.js || true
       - name: Build and test React based chart
         run: .github/scripts/nebula_react.sh "$(mktemp -d)/react-chart"
 
