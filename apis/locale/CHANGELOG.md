@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.5.1](https://github.com/qlik-oss/nebula.js/compare/v7.5.0...v7.5.1) (2026-10-02)
+
+### Features
+
+- normalize language input ([#2249](https://github.com/qlik-oss/nebula.js/issues/2249)) ([34a6516](https://github.com/qlik-oss/nebula.js/commit/34a6516362292ec101b00e6ca7b44c0d9be73120))
+
 # [7.5.0](https://github.com/qlik-oss/nebula.js/compare/v7.4.0...v7.5.0) (2026-09-29)
 
 **Note:** Version bump only for package @nebula.js/locale
