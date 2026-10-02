@@ -145,7 +145,6 @@ describe('<Cell />', () => {
         );
       });
     };
-
   });
 
   afterEach(() => {
