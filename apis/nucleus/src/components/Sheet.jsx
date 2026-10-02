@@ -102,7 +102,7 @@ const Sheet = forwardRef(
             root.removeCell(c.currentId);
           });
 
-          const lCells = layout.cells;
+          const lCells = layout.cells.filter((c) => c.visible !== false);
           renderState.cellCount = lCells.length;
           renderState.cellsRendered = 0;
 

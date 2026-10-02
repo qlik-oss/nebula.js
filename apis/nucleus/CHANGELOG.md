@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.5.2](https://github.com/qlik-oss/nebula.js/compare/v7.5.1...v7.5.2) (2026-10-02)
+
+**Note:** Version bump only for package @nebula.js/nucleus
+
+## [7.5.1](https://github.com/qlik-oss/nebula.js/compare/v7.5.0...v7.5.1) (2026-10-02)
+
+### Bug Fixes
+
+- filter hidden cells on the sheet ([#2248](https://github.com/qlik-oss/nebula.js/issues/2248)) ([93ca054](https://github.com/qlik-oss/nebula.js/commit/93ca054dac0d4f48165808ae26b89f67ed0d3d71))
+
 # [7.5.0](https://github.com/qlik-oss/nebula.js/compare/v7.4.0...v7.5.0) (2026-09-29)
 
 ### Bug Fixes
