@@ -389,6 +389,7 @@ const Cell = forwardRef(
       app: halo.app,
       themeName,
       disableThemeBorder: snOptions?.disableThemeBorder,
+      disableFrameStyles: snOptions?.disableFrameStyles,
       queryParams,
     });
     const isRtl = !!(snOptions?.direction === 'rtl');
