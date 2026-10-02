@@ -1,0 +1,25 @@
+{
+  "name": "react-chart",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "main": "dist/react-chart.js",
+  "scripts": {
+    "build": "nebula build",
+    "start": "nebula serve",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.62.0"
+  },
+  "peerDependencies": {
+    "@nebula.js/stardust": ">=7.0.0"
+  }
+}
