@@ -22,6 +22,7 @@ import RenderError from '../utils/render-error';
 import getPadding from '../utils/cell-padding';
 import translationKeys from '../utils/extension-translation-keys';
 import hiddenScreenReaderText from '../utils/style/screen-reader';
+import buildSnapshot from '../utils/snapshot/snapshot-helper';
 
 /**
  * @interface
@@ -547,31 +548,17 @@ const Cell = forwardRef(
           return state.sn?.component.onContextMenu(...args);
         },
         async takeSnapshot() {
-          const { width, height } = cellRect;
-
-          // clone layout to avoid mutation
-          let clonedLayout = JSON.parse(JSON.stringify(layout));
-          if (typeof state.sn.component.setSnapshotData === 'function') {
-            if (!clonedLayout.snapshotData) {
-              clonedLayout.snapshotData = {};
-            }
-            clonedLayout = (await state.sn.component.setSnapshotData(clonedLayout)) || clonedLayout;
-          }
-          return {
-            // TODO - this snapshot format needs to be documented and governed
-            key: String(+Date.now()),
-            meta: {
-              language: translator.language(),
-              theme: theme.name,
-              appLayout,
-              // direction: 'ltr',
-              size: {
-                width: Math.round(width),
-                height: Math.round(height),
-              },
-            },
-            layout: clonedLayout,
-          };
+          // hidden option, set through render options (snOptions.snapshotFormat)
+          return buildSnapshot({
+            format: snOptions?.snapshotFormat,
+            layout,
+            sn: state.sn,
+            cellRect,
+            language: translator.language(),
+            themeName: theme.name,
+            appLayout,
+            supportExport: this.support('exportData'), // eslint-disable-line
+          });
         },
         async exportImage() {
           if (typeof halo.config.snapshot.capture !== 'function') {
@@ -584,7 +571,7 @@ const Cell = forwardRef(
           return state.sn.generator.definition.ext?.options?.hypercubePath;
         },
       }),
-      [state.sn, contentRect, cellRect, layout, theme.name, appLayout]
+      [state.sn, contentRect, cellRect, layout, theme.name, appLayout, snOptions]
     );
     // console.log('content', state);
     let Content = null;
