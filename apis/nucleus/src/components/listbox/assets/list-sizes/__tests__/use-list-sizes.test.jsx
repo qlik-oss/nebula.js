@@ -276,8 +276,9 @@ describe('use-list-sizes', () => {
       itemHeight: 100, // listHeight / maxVisibleRows = 300 / 3, cells fill the pane
       rowCount: 25, // ceil(listCount / columnCount) => scrolls beyond the visible rows
       listCount: 100,
-      gridGap: 1, // default 0.5% of width 200 = 1px
     });
+    // default 1% of column width 47.5 = 0.475px, floored to 1px so the gap stays visible
+    expect(sizes.gridGap).toBe(1);
   });
 
   it('image representation uses default 5 columns / 4 rows when max visible columns/rows are set to auto', () => {
@@ -329,7 +330,15 @@ describe('use-list-sizes', () => {
     args.layout.representation = { type: 'image', gridGap: 'not-a-number' };
     const sizes = useListSizes(args);
     expect(sizes.gridGap).not.toBeNaN();
-    // same as the default (0.5% of width 200 = 1px), since the invalid value falls back to it
+    // same as the default (1% of column width 47.5 = 0.475px, floored up to 1px), since the invalid value falls back to it
+    expect(sizes.gridGap).toBe(1);
+  });
+
+  it('image representation never rounds a requested gridGap away to an invisible 0px', () => {
+    args.layout.layoutOptions.dataLayout = 'grid';
+    args.layout.layoutOptions.layoutOrder = 'row';
+    args.layout.representation = { type: 'image', gridGap: 0.1 }; // 0.1% of column width 47.5 = 0.0475px
+    const sizes = useListSizes(args);
     expect(sizes.gridGap).toBe(1);
   });
 
@@ -348,12 +357,21 @@ describe('use-list-sizes', () => {
     });
   });
 
+  it('image representation clamps an out-of-range gridGap percentage to the cell size', () => {
+    args.layout.layoutOptions.dataLayout = 'grid';
+    args.layout.layoutOptions.layoutOrder = 'row';
+    args.layout.representation = { type: 'image', gridGap: 500 }; // above the documented 0-100 range
+    const sizes = useListSizes(args);
+    const columnWidth = (200 - 10) / 4;
+    expect(sizes.gridGap).toBe(Math.floor(columnWidth - 1));
+  });
+
   it('image representation converts the gridGap percentage of width into a pixel gap', () => {
     args.layout.layoutOptions.dataLayout = 'grid';
     args.layout.layoutOptions.layoutOrder = 'row';
     args.layout.representation = { type: 'image', gridGap: 5 };
     const sizes = useListSizes(args);
-    expect(sizes.gridGap).toBe(10); // 5% of width 200 = 10px
+    expect(sizes.gridGap).toBe(2); // 5% of column width 47.5 = 2.375px, rounded to 2
   });
 
   it('Algorithm should reduce rowCount when container height cannot fit all items.', () => {

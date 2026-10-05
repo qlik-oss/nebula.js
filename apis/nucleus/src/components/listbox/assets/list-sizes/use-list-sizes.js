@@ -101,11 +101,12 @@ export default function useListSizes({ layout, width, height, listCount, count, 
     rowCount = Math.ceil((listCount || 1) / columnCount);
     // Row-major image grid scrolls vertically.
     overflowStyling = { overflowX: 'hidden' };
-    // Grid gap is authored as a percentage of the grid width
+    // Grid gap is authored as a percentage of the column width
     const rawGridGap = representation?.gridGap;
-    const gridGapPct = Math.max(0, Number.isFinite(rawGridGap) ? rawGridGap : 0.5);
-    gridGap = Math.min(Math.round((gridGapPct / 100) * width), columnWidth - 1, itemHeight - 1);
-    gridGap = Math.max(0, gridGap);
+    const gridGapPct = Math.min(100, Math.max(0, Number.isFinite(rawGridGap) ? rawGridGap : 1));
+    const maxGridGap = Math.max(0, Math.floor(Math.min(columnWidth, itemHeight) - 1));
+    const requestedGridGap = Math.round((gridGapPct / 100) * columnWidth);
+    gridGap = gridGapPct > 0 ? Math.min(Math.max(1, requestedGridGap), maxGridGap) : 0;
   }
 
   columnCount = (dataLayout === 'singleColumn' ? 1 : columnCount) || 1;
