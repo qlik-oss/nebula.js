@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.6.0](https://github.com/qlik-oss/nebula.js/compare/v7.5.2...v7.6.0) (2026-10-05)
+
+### Features
+
+- add disableFrameStyles prop ([#2242](https://github.com/qlik-oss/nebula.js/issues/2242)) ([3963583](https://github.com/qlik-oss/nebula.js/commit/39635836b0a0efa97579c42e8f209a310e069726))
+- add hidden client snapshot format for takeSnapshot ([#2247](https://github.com/qlik-oss/nebula.js/issues/2247)) ([81c8a5c](https://github.com/qlik-oss/nebula.js/commit/81c8a5cbe8446c0eb94650d6bbe026015246c065))
+- grid gap as a percentage value between 0-100 ([#2239](https://github.com/qlik-oss/nebula.js/issues/2239)) ([ad39efe](https://github.com/qlik-oss/nebula.js/commit/ad39efe65e22bd65e72d5315a77aab527fe26152))
+
 ## [7.5.2](https://github.com/qlik-oss/nebula.js/compare/v7.5.1...v7.5.2) (2026-10-02)
 
 ### Bug Fixes
