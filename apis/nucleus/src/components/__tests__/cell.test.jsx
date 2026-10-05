@@ -145,72 +145,6 @@ describe('<Cell />', () => {
         );
       });
     };
-
-    defaultModel = {
-      id: ++id,
-      on: jest.fn(),
-      removeListener: jest.fn(),
-      getLayout: jest.fn().mockReturnValue(
-        new Promise(() => {
-          // Do not resolve
-        })
-      ),
-    };
-    defaultHalo = {
-      app: {
-        id: 'app-id',
-        getAppLayout: () => Promise.resolve(appLayout),
-      },
-      public: {
-        nebbie: {},
-      },
-      types: {
-        getSupportedVersion: jest.fn(),
-      },
-    };
-    render = async ({
-      model = {},
-      app = {},
-      nebbie = {},
-      types = defaultHalo.types,
-      initialSnOptions = {},
-      onMount = jest.fn(),
-      onReady = jest.fn(),
-      theme = createTheme('dark'),
-      cellRef,
-      config = {},
-      rendererOptions,
-    } = {}) => {
-      model = { ...defaultModel, ...model };
-      const halo = {
-        ...defaultHalo,
-        ...app,
-        public: { nebbie },
-        config: { ...config },
-        types,
-      };
-
-      await act(async () => {
-        renderer = create(
-          <StyledEngineProvider injectFirst>
-            <ThemeProvider theme={theme}>
-              <InstanceContext.Provider value={{ translator: { get: (s) => s, language: () => 'sv' } }}>
-                <Cell
-                  ref={cellRef}
-                  halo={halo}
-                  model={model}
-                  initialSnOptions={initialSnOptions}
-                  onMount={onMount}
-                  onReady={onReady}
-                  currentId="currentId"
-                />
-              </InstanceContext.Provider>
-            </ThemeProvider>
-          </StyledEngineProvider>,
-          rendererOptions || null
-        );
-      });
-    };
   });
 
   afterEach(() => {
@@ -777,6 +711,7 @@ describe('<Cell />', () => {
               targets: [],
             },
           },
+          definition: {},
         },
         component: {},
       };
@@ -818,6 +753,30 @@ describe('<Cell />', () => {
       });
     });
 
+    test('should take snapshot in client format when snapshotFormat option is set', async () => {
+      const cellRef = React.createRef();
+      const sn = { generator: { qae: { data: { targets: [] } }, definition: {} }, component: {} };
+      const types = {
+        get: jest.fn().mockReturnValue({
+          supernova: async () => ({ create: () => sn }),
+        }),
+        getSupportedVersion: jest.fn().mockReturnValue('1.0.0'),
+      };
+      await render({
+        types,
+        cellRef,
+        initialSnOptions: { snapshotFormat: 'client' },
+        rendererOptions: {
+          createNodeMock: (/* e */) => ({
+            getBoundingClientRect: () => ({ left: 100, top: 200, width: 300, height: 400 }),
+          }),
+        },
+      });
+      const snapshot = await cellRef.current.takeSnapshot();
+      expect(snapshot.meta).toBeUndefined();
+      expect(snapshot.snapshotData.object.size).toEqual({ w: 300, h: 400 });
+    });
+
     test('should take snapshot and call setSnapshotData', async () => {
       const cellRef = React.createRef();
       const sn = {
@@ -827,6 +786,7 @@ describe('<Cell />', () => {
               targets: [],
             },
           },
+          definition: {},
         },
         component: {
           setSnapshotData: () => ({
