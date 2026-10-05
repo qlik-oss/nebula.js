@@ -40,7 +40,7 @@ const getThemeObjectType = (visualization) => {
   return visualization;
 };
 
-const useStyling = ({ layout, theme, app, themeName, disableThemeBorder, queryParams }) => {
+const useStyling = ({ layout, theme, app, themeName, disableThemeBorder, disableFrameStyles, queryParams }) => {
   const { hostConfig } = useContext(InstanceContext);
   const styling = useMemo(() => {
     if (layout && theme) {
@@ -53,13 +53,13 @@ const useStyling = ({ layout, theme, app, themeName, disableThemeBorder, queryPa
       };
       const bgColor = resolveBgColor(generalComp, theme, objectType);
       const bgImage = resolveBgImage(generalComp, app, queryParams, hostConfig?.host);
-      const border = resolveBorder(generalComp, theme, objectType, disableThemeBorder);
-      const borderRadius = resolveBorderRadius(generalComp, theme, objectType);
-      const boxShadow = resolveBoxShadow(generalComp, theme, objectType);
+      const border = disableFrameStyles ? undefined : resolveBorder(generalComp, theme, objectType, disableThemeBorder);
+      const borderRadius = disableFrameStyles ? '0px' : resolveBorderRadius(generalComp, theme, objectType);
+      const boxShadow = disableFrameStyles ? 'none' : resolveBoxShadow(generalComp, theme, objectType);
       return { titleStyles, bgColor, bgImage, border, borderRadius, boxShadow };
     }
     return {};
-  }, [layout, theme, app, themeName, disableThemeBorder]);
+  }, [layout, theme, app, themeName, disableThemeBorder, disableFrameStyles]);
   return styling;
 };
 
