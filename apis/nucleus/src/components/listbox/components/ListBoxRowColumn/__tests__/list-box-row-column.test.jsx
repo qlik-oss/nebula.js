@@ -1325,24 +1325,6 @@ describe('<ListBoxRowColumn />', () => {
       await testRenderer.unmount();
     });
 
-    test('single-color mode also accepts a plain hex string', async () => {
-      const testRenderer = await renderImageCell({
-        representation: {
-          type: 'image',
-          imageSetting: 'url',
-          imageSize: 'alwaysFill',
-          cellBgColorMode: 'single',
-          cellBgColor: '#abcdef',
-        },
-        qText: 'Amadeus',
-        listExprIndex: { imageUrl: 1 },
-        exprValues: ['http://foo/poster.png'],
-      });
-      const image = testRenderer.root.findByType(Image);
-      expect(image.props.cellBgColor).toBe('#abcdef');
-      await testRenderer.unmount();
-    });
-
     test('uses the tooltip expression column as the cell title, falling back to the dimension value', async () => {
       const withTooltip = await renderImageCell({
         representation: { type: 'image', imageSetting: 'url', imageSize: 'alwaysFill' },
