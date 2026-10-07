@@ -206,8 +206,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     if (cellBgColorMode === 'expression') {
       imageCellBgColor = resolveExpr('cellBgColor');
     } else {
-      const singleColor = representation?.cellBgColor;
-      imageCellBgColor = typeof singleColor === 'string' ? singleColor : singleColor?.color;
+      imageCellBgColor = styles?.image?.cellBgColor;
     }
     imageTooltip = resolveExpr('tooltip') || label;
 
