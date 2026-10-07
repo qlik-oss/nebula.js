@@ -23,7 +23,7 @@ export default function ListBoxDisclaimer({ width, text, dense, tooltip }) {
 
   return (
     <Tooltip title={tooltip ? translatorDynamic.get(text) : ''}>
-      <StyledText width={width} dense={dense} component="div" variant="body1" py="12px">
+      <StyledText width={width} dense={dense} component="div" variant="body1" sx={{ py: '12px' }}>
         {translatorDynamic.get(text)}
       </StyledText>
     </Tooltip>

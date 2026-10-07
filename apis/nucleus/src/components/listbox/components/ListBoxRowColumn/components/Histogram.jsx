@@ -19,7 +19,7 @@ function Histogram({ qFrequency, histogram, checkboxes, isSelected, frequencyMax
         isSelected && (checkboxes ? classes.barSelectedWithCheckbox : classes.barSelected),
       ])}
     >
-      <Box className="bar-filled" width={width} />
+      <Box className="bar-filled" sx={{ width }} />
     </Box>
   );
 }
