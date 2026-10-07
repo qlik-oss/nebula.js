@@ -1305,22 +1305,23 @@ describe('<ListBoxRowColumn />', () => {
       await testRenderer.unmount();
     });
 
-    test('single-color mode uses one root color for every cell (ignores the expression column)', async () => {
+    test('single-color mode uses the theme-resolved background color', async () => {
       const testRenderer = await renderImageCell({
         representation: {
           type: 'image',
           imageSetting: 'url',
           imageSize: 'alwaysFill',
           cellBgColorMode: 'single',
-          cellBgColor: { color: '#123456' },
+          cellBgColor: { color: '#123456', alpha: 0.5 },
         },
         qText: 'Amadeus',
         listExprIndex: { imageUrl: 1, cellBgColor: 2 },
         exprValues: ['http://foo/poster.png', '#ff0000'],
+        imageStyles: { cellBgColor: 'rgba(18, 52, 86, 0.5)' },
       });
       const image = testRenderer.root.findByType(Image);
-      // Uses the single root color, not the per-value expression value.
-      expect(image.props.cellBgColor).toBe('#123456');
+      // Uses the theme-resolved color (with alpha preserved),
+      expect(image.props.cellBgColor).toBe('rgba(18, 52, 86, 0.5)');
       await testRenderer.unmount();
     });
 
