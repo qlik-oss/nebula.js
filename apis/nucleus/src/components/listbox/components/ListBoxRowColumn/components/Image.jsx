@@ -26,8 +26,6 @@ const resolveImagePosition = (imagePosition) => {
   };
 };
 
-const getImageWidth = (imageSize) => (imageSize === 'fitHeight' ? 'auto' : '100%');
-
 const getObjectPosition = (resolvedImagePosition) => {
   let verticalPos = 'center';
   let horizontalPos = 'center';
@@ -50,10 +48,7 @@ const getObjectPosition = (resolvedImagePosition) => {
 const getObjectFit = (imageSize) => {
   switch (imageSize) {
     case 'alwaysFit':
-    case 'fitHeight':
       return 'contain';
-    // 'fitWidth' fills the width and lets the height scale proportionally (via width:100% +
-    // height:auto, the object-fit equivalent of background-size: 100% auto), so no object-fit here.
     case 'stretch':
       return 'fill';
     case 'alwaysFill':
@@ -108,7 +103,6 @@ function Image({
   const isFitHeight = imageSize === 'fitHeight';
   const isFitWidth = imageSize === 'fitWidth';
   const resolvedImagePosition = resolveImagePosition(imagePosition);
-  const maxImageHeight = '200px';
   const safeSrc = isSafeImageSrc(src) ? src : null;
   // Track the src that failed to load (rather than a plain boolean) so a new src coming in on the
   // same cell instance (e.g. on scroll, since react-window recycles cells) gets a fresh attempt
@@ -135,22 +129,17 @@ function Image({
       <img
         src={safeSrc}
         alt={label}
+        draggable={false}
         // A 404 or otherwise broken URL should degrade to the same placeholder shown for a missing
         // src, rather than the browser's native broken-image icon.
         onError={() => setErroredSrc(safeSrc)}
         style={{
-          width: getImageWidth(imageSize),
-          // fitWidth: fill width, height scales proportionally; the container's overflow:hidden clips
-          // any vertical overflow. Other modes fill the cell height (capped at maxImageHeight).
-          // fitWidth: fill width, height scales proportionally; the container's overflow:hidden clips
-          // any vertical overflow. fitHeight's container is pinned to maxImageHeight (below), so cap
-          // the image to match. Other modes (alwaysFit/stretch/alwaysFill) fill the full cell height,
-          // which grows/shrinks with the maxVisibleRows setting.
+          width: isFitHeight ? 'auto' : '100%',
           height: isFitWidth ? 'auto' : '100%',
-          maxHeight: isFitHeight && !isFitWidth ? maxImageHeight : undefined,
           objectFit: getObjectFit(imageSize),
           objectPosition: getObjectPosition(resolvedImagePosition),
-          overflow: 'hidden',
+          userSelect: 'none',
+          WebkitUserSelect: 'none',
         }}
       />
     ) : null;
@@ -234,15 +223,16 @@ function Image({
       style={{
         position: 'relative',
         width: '100%',
-        height: isFitHeight ? maxImageHeight : '100%',
+        height: '100%',
         overflow: 'hidden',
         display: 'flex',
-        justifyContent: isFitHeight ? resolvedImagePosition?.horizontal : undefined,
+        justifyContent: resolvedImagePosition.horizontal,
         backgroundColor: cellBgColor || placeholderBackground || undefined,
         borderRadius: resolvedCornerRadius,
         border,
         opacity,
         boxSizing: 'border-box',
+        alignItems: resolvedImagePosition.vertical,
       }}
     >
       {imgNode}
