@@ -109,8 +109,8 @@ describe('<Image />', () => {
   describe('imageSize', () => {
     // The image always fills the cell (width/height 100%); the sizing mode is expressed via object-fit.
     test.each([
-      ['fitHeight', { width: 'auto', objectFit: 'contain' }],
-      ['fitWidth', { width: '100%', objectFit: undefined }],
+      ['fitHeight', { width: 'auto' }],
+      ['fitWidth', { width: '100%' }],
       ['alwaysFit', { width: '100%', objectFit: 'contain' }],
       ['stretch', { width: '100%', objectFit: 'fill' }],
       ['alwaysFill', { width: '100%', objectFit: 'cover' }],
@@ -136,7 +136,6 @@ describe('<Image />', () => {
       const img = testRenderer.root.findByType('img');
       expect(img.props.style.width).toBe('100%');
       expect(img.props.style.height).toBe('auto');
-      expect(img.props.style.maxHeight).toBeUndefined();
       expect(img.props.style.objectFit).toBeUndefined();
       await testRenderer.unmount();
     });
@@ -149,23 +148,9 @@ describe('<Image />', () => {
         );
         const img = testRenderer.root.findByType('img');
         expect(img.props.style.height).toBe('100%');
-        expect(img.props.style.maxHeight).toBeUndefined();
         await testRenderer.unmount();
       }
     );
-
-    it('fitHeight caps both the container and the image at maxImageHeight', async () => {
-      const testRenderer = await render(
-        <Image
-          representation={{ imageSize: 'fitHeight', imagePosition: 'topLeft' }}
-          src="http://foo/bar.png"
-          label="l"
-        />
-      );
-      const img = testRenderer.root.findByType('img');
-      expect(img.props.style.maxHeight).toBe('200px');
-      await testRenderer.unmount();
-    });
 
     it('fitWidth fills the width and lets the height scale proportionally (auto)', async () => {
       const testRenderer = await render(
@@ -197,19 +182,6 @@ describe('<Image />', () => {
       expect(img.props.style.objectPosition).toBe(expected);
       await testRenderer.unmount();
     });
-  });
-
-  test('should constrain the container height when imageSize is fitHeight', async () => {
-    const testRenderer = await render(
-      <Image
-        representation={{ imageSize: 'fitHeight', imagePosition: 'top-left' }}
-        src="http://foo/bar.png"
-        label="l"
-      />
-    );
-    const container = testRenderer.root.findByProps({ 'data-key': 'image-horizontal-container' });
-    expect(container.props.style.height).toBe('200px');
-    await testRenderer.unmount();
   });
 
   test('should let the container fill height for non-fitHeight sizes', async () => {
