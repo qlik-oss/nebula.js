@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.7.0](https://github.com/qlik-oss/nebula.js/compare/v7.6.0...v7.7.0) (2026-10-08)
+
+**Note:** Version bump only for package @nebula.js/cli-create
+
 # [7.6.0](https://github.com/qlik-oss/nebula.js/compare/v7.5.2...v7.6.0) (2026-10-05)
 
 **Note:** Version bump only for package @nebula.js/cli-create

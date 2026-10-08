@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.7.0](https://github.com/qlik-oss/nebula.js/compare/v7.6.0...v7.7.0) (2026-10-08)
+
+### Bug Fixes
+
+- double bottom border in certain cases ([#2254](https://github.com/qlik-oss/nebula.js/issues/2254)) ([f0619a2](https://github.com/qlik-oss/nebula.js/commit/f0619a2bd6a90c8f07b801882c28bad32659fd19))
+- fit width & fit height to behave correctly ([#2253](https://github.com/qlik-oss/nebula.js/issues/2253)) ([26d1ad0](https://github.com/qlik-oss/nebula.js/commit/26d1ad060326e4392b57d922ea8e367a2408f0b2))
+- use theme based background color to preserve opacity ([#2252](https://github.com/qlik-oss/nebula.js/issues/2252)) ([6c59e76](https://github.com/qlik-oss/nebula.js/commit/6c59e762fe0c7cbea834d3633c15d83bb8de038d))
+
+### Features
+
+- listbox option showTitle ([#2255](https://github.com/qlik-oss/nebula.js/issues/2255)) ([eb93659](https://github.com/qlik-oss/nebula.js/commit/eb936598c175962282256418d0bf846aad72c8c3))
+
 # [7.6.0](https://github.com/qlik-oss/nebula.js/compare/v7.5.2...v7.6.0) (2026-10-05)
 
 ### Features
