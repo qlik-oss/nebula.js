@@ -28,13 +28,13 @@ function getSelectionStateClass({ cell, showGray }) {
   return selectionStateClass;
 }
 
-export const getValueStateClasses = ({ column, histogram, cell, showGray }) => {
+export const getValueStateClasses = ({ column, histogram, cell, showGray, skipBottomDivider }) => {
   if (!cell) {
     return [];
   }
 
   const clazzArr = [column ? classes.column : classes.row];
-  if (!histogram) {
+  if (!histogram && !skipBottomDivider) {
     clazzArr.push(classes.rowBorderBottom);
   }
 
