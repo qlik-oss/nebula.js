@@ -1579,7 +1579,9 @@ describe('<ListBoxRowColumn />', () => {
       listHeight = 40,
       hideLastRowDivider,
       extraData = {},
-      rowProps = {},
+      rowIndex,
+      columnIndex,
+      style = {},
     }) => {
       const data = {
         styles,
@@ -1604,7 +1606,7 @@ describe('<ListBoxRowColumn />', () => {
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
-          <ListBoxRowColumn index={index} style={{}} data={data} {...rowProps} />
+          <ListBoxRowColumn index={index} rowIndex={rowIndex} columnIndex={columnIndex} style={style} data={data} />
         </ThemeProvider>
       );
       const hasDivider = testRenderer.root.findByType(Grid).props.className.includes('RowColumn-rowBorderBottom');
@@ -1639,8 +1641,15 @@ describe('<ListBoxRowColumn />', () => {
         columnCount: 2,
         rowCount: 1,
       };
-      const rowProps = { rowIndex: 0, columnIndex: 1, style: { left: 0, top: 0 } };
-      expect(await renderRow({ hideLastRowDivider: true, extraData, rowProps })).toBe(true);
+      expect(
+        await renderRow({
+          hideLastRowDivider: true,
+          extraData,
+          rowIndex: 0,
+          columnIndex: 1,
+          style: { left: 0, top: 0 },
+        })
+      ).toBe(true);
     });
   });
 });
