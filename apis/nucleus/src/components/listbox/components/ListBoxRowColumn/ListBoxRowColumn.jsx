@@ -62,11 +62,13 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     representation,
     listExprIndex = {},
     exprCache = {},
+    hideLastRowDivider = false,
   } = data;
 
   const { dense = false, dataLayout = 'singleColumn', layoutOrder } = layoutOptions;
-  const { itemPadding, gridGap = 0 } = sizes;
+  const { itemPadding, gridGap = 0, itemHeight, listHeight } = sizes;
   const isImageRepr = representation?.type === 'image';
+  const isGridCol = dataLayout === 'grid' && layoutOrder === 'column';
   const effectiveLayoutOrder = isImageRepr ? 'row' : layoutOrder;
 
   let cellIndex;
@@ -139,9 +141,15 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const cell = row?.[0];
   const isSelected = cell?.qState === 'S' || cell?.qState === 'XS' || cell?.qState === 'L' || cell?.qState === 'XL';
 
+  // When the rows fill the list, the last row sits against the container's own bottom border and its divider would
+  // double up. With empty space below the rows, the divider is what closes the data, so it is kept.
+  const rowsFillList = count.max * itemHeight >= listHeight;
+  const skipBottomDivider =
+    hideLastRowDivider && !isImageRepr && !isGridCol && rowsFillList && count.currentIndex === count.max - 1;
+
   const classArr = useMemo(
-    () => getValueStateClasses({ column, histogram, cell, showGray }),
-    [cell?.qState, histogram, dense]
+    () => getValueStateClasses({ column, histogram, cell, showGray, skipBottomDivider }),
+    [cell?.qState, histogram, dense, skipBottomDivider]
   );
 
   const preventContextMenu = useCallback(
@@ -159,8 +167,6 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   if (!cell) {
     return null; // prevent rendering empty rows
   }
-
-  const isGridCol = dataLayout === 'grid' && layoutOrder === 'column';
 
   const label = cell?.qText ?? '';
 

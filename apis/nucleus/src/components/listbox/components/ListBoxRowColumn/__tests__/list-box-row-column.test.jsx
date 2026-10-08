@@ -1554,4 +1554,85 @@ describe('<ListBoxRowColumn />', () => {
       await testRenderer.unmount();
     });
   });
+
+  describe('hideLastRowDivider', () => {
+    const renderRow = async ({
+      index = 0,
+      listCount = 1,
+      listHeight = 40,
+      hideLastRowDivider,
+      extraData = {},
+      rowIndex,
+      columnIndex,
+      style = {},
+    }) => {
+      const data = {
+        styles,
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
+        keyboard,
+        actions,
+        dataOffset: 0,
+        sizes: { itemPadding: 2, itemHeight: 20, listHeight },
+        listCount,
+        hideLastRowDivider,
+        pages: [
+          {
+            qArea: { qTop: 0, qHeight: 2 },
+            qMatrix: [[{ qState: 'A', qText: 'a' }], [{ qState: 'A', qText: 'b' }]],
+          },
+        ],
+        focusListItems: () => ({ first: false, last: false }),
+        ...extraData,
+      };
+      const testRenderer = await render(
+        <ThemeProvider theme={theme}>
+          <ListBoxRowColumn index={index} rowIndex={rowIndex} columnIndex={columnIndex} style={style} data={data} />
+        </ThemeProvider>
+      );
+      const hasDivider = testRenderer.root.findByType(Grid).props.className.includes('RowColumn-rowBorderBottom');
+      await testRenderer.unmount();
+      return hasDivider;
+    };
+
+    test('should omit the divider on the last row when enabled', async () => {
+      expect(await renderRow({ index: 1, listCount: 2, hideLastRowDivider: true })).toBe(false);
+    });
+
+    test('should keep the divider on the last row when there is empty space below the rows', async () => {
+      expect(await renderRow({ index: 1, listCount: 2, listHeight: 100, hideLastRowDivider: true })).toBe(true);
+    });
+
+    test('should keep the divider on other rows when enabled', async () => {
+      expect(await renderRow({ index: 0, listCount: 2, hideLastRowDivider: true })).toBe(true);
+    });
+
+    test('should keep the divider on the last row when not enabled', async () => {
+      expect(await renderRow({ index: 1, listCount: 2, hideLastRowDivider: false })).toBe(true);
+    });
+
+    test('should keep the divider on the last row for image representation', async () => {
+      const extraData = { representation: { type: 'image' } };
+      expect(await renderRow({ index: 1, listCount: 2, hideLastRowDivider: true, extraData })).toBe(true);
+    });
+
+    test('should keep the divider on the last column in grid mode with column order', async () => {
+      const extraData = {
+        layoutOptions: { dataLayout: 'grid', layoutOrder: 'column' },
+        columnCount: 2,
+        rowCount: 1,
+      };
+      expect(
+        await renderRow({
+          hideLastRowDivider: true,
+          extraData,
+          rowIndex: 0,
+          columnIndex: 1,
+          style: { left: 0, top: 0 },
+        })
+      ).toBe(true);
+    });
+  });
 });

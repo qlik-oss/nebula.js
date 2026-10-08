@@ -382,6 +382,7 @@ function ListBoxInline({ options, layout }) {
                     calculatePagesHeight={calculatePagesHeight}
                     keyboard={keyboard}
                     showGray={showGray}
+                    hideLastRowDivider={!!flags?.isEnabled('VIZ-412_LISTBOX_BORDER_STYLING')}
                     scrollState={scrollState}
                     keyScroll={{
                       state: keyScroll,
