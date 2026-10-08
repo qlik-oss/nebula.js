@@ -179,45 +179,34 @@ const connect = async () => {
   }
 };
 
+// Builds a qlik-api compatible host config from the connection info
+const getHostConfig = ({ clientId, webIntegrationId, engine: { host, port, secure } }) => {
+  if (webIntegrationId) {
+    return { authType: 'cookie', webIntegrationId, host };
+  }
+
+  if (clientId) {
+    return {
+      authType: 'oauth2',
+      clientId,
+      host,
+      redirectUri: `${window.location.origin}/auth/login/callback`,
+      accessTokenStorage: 'session',
+    };
+  }
+
+  // Local / no-auth engine (e.g. qlik-core, docker engine)
+  const scheme = secure !== false ? 'https' : 'http';
+  return { authType: 'noauth', host: `${scheme}://${host}${port ? `:${port}` : ''}` };
+};
+
 const openApp = async (id) => {
   try {
-    const {
-      clientId,
-      webIntegrationId,
-      engine: engineConfig,
-      engine: { host },
-    } = await getConnectionInfo();
-
-    if (webIntegrationId) {
-      return openAppSession({
-        appId: id,
-        hostConfig: { authType: 'cookie', webIntegrationId, host },
-      }).getDoc();
-    }
-
-    if (clientId) {
-      return openAppSession({
-        appId: id,
-        hostConfig: {
-          authType: 'oauth2',
-          clientId,
-          host,
-          redirectUri: `${window.location.origin}/auth/login/callback`,
-          accessTokenStorage: 'session',
-        },
-      }).getDoc();
-    }
-
-    // Local / no-auth engine (e.g. qlik-core, docker engine)
-    const scheme = engineConfig.secure !== false ? 'https' : 'http';
-    const localHost = `${scheme}://${engineConfig.host}${engineConfig.port ? `:${engineConfig.port}` : ''}`;
-    return openAppSession({
-      appId: id,
-      hostConfig: { authType: 'noauth', host: localHost },
-    }).getDoc();
+    const info = await getConnectionInfo();
+    return openAppSession({ appId: id, hostConfig: getHostConfig(info) }).getDoc();
   } catch (error) {
     throw new Error('Failed to open app!', { cause: error });
   }
 };
 
-export { connect, openApp, getParams, getConnectionInfo, setHostConfig, parseEngineURL };
+export { connect, openApp, getParams, getConnectionInfo, getHostConfig, setHostConfig, parseEngineURL };
