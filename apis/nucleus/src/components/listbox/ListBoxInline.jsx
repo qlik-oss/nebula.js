@@ -81,6 +81,7 @@ function ListBoxInline({ options, layout }) {
     postProcessPages = undefined,
     calculatePagesHeight,
     showGray = true,
+    showTitle = true,
     scrollState = undefined,
     renderedCallback,
     toolbar = true,
@@ -291,6 +292,7 @@ function ListBoxInline({ options, layout }) {
       containerRect={containerRect}
       containerRef={containerRef}
       model={model}
+      showTitle={showTitle}
       selectionState={selectionState}
       selections={selections}
       keyboard={keyboard}

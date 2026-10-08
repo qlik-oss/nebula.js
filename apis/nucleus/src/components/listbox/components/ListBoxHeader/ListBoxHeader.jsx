@@ -74,6 +74,7 @@ export default function ListBoxHeader({
   isPopover,
   showToolbar,
   toolbarMode = 'auto',
+  showTitle = true,
   containerRef,
   model,
   selectionState,
@@ -257,6 +258,7 @@ export default function ListBoxHeader({
           />
         </Grid>
       )}
+
       <Grid
         size="grow"
         sx={{ minWidth: 0 }} // needed to text-overflow see: https://css-tricks.com/flexbox-truncated-text/
@@ -264,7 +266,7 @@ export default function ListBoxHeader({
         className={classes.listBoxHeader}
       >
         <HeaderTitle variant="h6" noWrap ref={titleRef} title={title ?? layout.title} styles={styles}>
-          {title ?? layout.title}
+          {showTitle && (title ?? layout.title)}
         </HeaderTitle>
       </Grid>
       <Grid display="flex">{actionsToolbar}</Grid>
