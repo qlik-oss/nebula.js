@@ -179,11 +179,9 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   let imageSubtitle;
   let imageCellBgColor;
   let imageTooltip;
-  let imageSelectionColor;
   let imageOpacity = 1;
   let imagePlaceholderBg;
   if (isImage) {
-    imageSelectionColor = styles?.selections?.selected || '#009845';
     if (cell.qState === 'X' || cell.qState === 'XS' || cell.qState === 'XL') {
       imageOpacity = 0.3;
     } else if (cell.qState === 'A') {
@@ -283,6 +281,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
       style={styleOverrides}
       styles={styles}
       isGridCol={isGridCol}
+      isImage={isImage}
       isGridMode={dataLayout === 'grid'}
       dense={dense}
       direction={direction}
@@ -345,9 +344,9 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
               borderColor={styles?.image?.borderColor}
               textStyles={styles?.image?.text}
               placeholderBackground={imagePlaceholderBg}
-              selected={isSelected}
-              selectionColor={imageSelectionColor}
               opacity={imageOpacity}
+              selectionState={cell?.qState}
+              selectionStyles={styles.selections}
             />
           ) : labels ? (
             <FieldWithRanges

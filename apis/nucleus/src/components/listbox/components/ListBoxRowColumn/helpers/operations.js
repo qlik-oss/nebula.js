@@ -15,3 +15,27 @@ export const getBarWidth = ({ qFrequency, frequencyMax }) => {
 };
 
 export const getFrequencyText = (qFrequency) => qFrequency || frequencyTextNone;
+
+export const getSelectionState = (qState) => {
+  switch (qState) {
+    case 'S':
+    case 'L':
+      return 'selected';
+
+    case 'XS':
+    case 'XL':
+      return 'selectedExcluded';
+
+    case 'A':
+      return 'alternative';
+
+    case 'X':
+      return 'excluded';
+
+    case 'O':
+      return 'possible';
+
+    default:
+      return undefined;
+  }
+};
