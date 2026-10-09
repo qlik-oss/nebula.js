@@ -423,11 +423,12 @@ describe('<Image />', () => {
           representation={{ imageSize: 'alwaysFill', imagePosition: 'top-center', borderWidth: 0 }}
           src="http://foo/bar.png"
           label="l"
+          selectionState="O"
         />
       );
       const noContainer = noBorder.root.findByProps({ 'data-key': 'image-horizontal-container' });
-      // Transparent border of the same width avoids a layout shift when a cell becomes selected.
-      expect(noContainer.props.style.border).toBe('2px solid transparent');
+      // No border configured and no selection, so border is undefined
+      expect(noContainer.props.style.border).toBeUndefined();
       await noBorder.unmount();
     });
   });
@@ -439,8 +440,8 @@ describe('<Image />', () => {
           representation={{ imageSize: 'alwaysFill', imagePosition: 'top-center', borderWidth: 0 }}
           src="http://foo/bar.png"
           label="l"
-          selected
-          selectionColor="#009845"
+          selectionState="S"
+          selectionStyles={{ selected: '#009845' }}
           opacity={1}
         />
       );
@@ -461,12 +462,13 @@ describe('<Image />', () => {
           }}
           src="http://foo/bar.png"
           label="l"
-          selected
-          selectionColor="#009845"
+          selectionState="S"
+          selectionStyles={{ selected: '#009845' }}
         />
       );
       const container = testRenderer.root.findByProps({ 'data-key': 'image-horizontal-container' });
-      expect(container.props.style.border).toBe('2px solid #009845');
+      // When a selection color is provided, it takes precedence and overrides the configured border color
+      expect(container.props.style.border).toBe('4px solid #009845');
       await testRenderer.unmount();
     });
 
