@@ -35,6 +35,11 @@ export default function useExistingModel({ app, qId, options = {} }) {
         m.once('closed', onClosed);
         cleanupFn = () => {
           m.removeListener('closed', onClosed);
+          // The model can be invalidated without a 'closed' event (e.g. delete + undo recreates the object with
+          // the same id), so don't leave an entry behind that nothing is listening to anymore.
+          if (modelStore.get(m.id) === m) {
+            modelStore.clear(m.id);
+          }
         };
       }
       setModel(m);
