@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { getSelectionState } from '../helpers/operations';
 
 // Position is stored as `{vertical}-{horizontal}` by the position-grid component (e.g. 'top-center',
 // 'center-center', 'bottom-right'); older objects used camelCase ('topCenter'). Accept both and map
@@ -86,8 +87,8 @@ function Image({
   borderColor: borderColorProp,
   placeholderBackground,
   textStyles,
-  selected = false,
-  selectionColor = '#009845',
+  selectionState,
+  selectionStyles,
   opacity = 1,
 }) {
   const {
@@ -114,14 +115,20 @@ function Image({
     borderColorProp ??
     (typeof representationBorderColor === 'string' ? representationBorderColor : representationBorderColor?.color) ??
     '#d9d9d9';
-  // Selected cells get a colored border; otherwise use the configured border
+  // Selected cells get a selection style based border color; otherwise use the configured border
+  const selectionBorderColor =
+    getSelectionState(selectionState) && selectionStyles
+      ? selectionStyles[getSelectionState(selectionState)]
+      : undefined;
+  const borderColorToApply =
+    selectionState === 'O' && selectionBorderColor === '#ffffff'
+      ? resolvedBorderColor
+      : (selectionBorderColor ?? resolvedBorderColor);
   let border;
-  if (selected) {
-    border = `2px solid ${selectionColor}`;
-  } else if (borderWidth > 0) {
-    border = `${borderWidth}px solid ${resolvedBorderColor}`;
-  } else {
-    border = '2px solid transparent';
+  if (borderWidth > 0) {
+    border = `${borderWidth}px solid ${borderColorToApply}`;
+  } else if (selectionBorderColor) {
+    border = `2px solid ${borderColorToApply}`;
   }
 
   const imgNode =

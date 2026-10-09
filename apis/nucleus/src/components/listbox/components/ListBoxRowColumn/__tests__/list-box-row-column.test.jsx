@@ -1418,8 +1418,8 @@ describe('<ListBoxRowColumn />', () => {
       ['X', false, 0.3, '#f0f0f0'],
       ['O', false, 1, '#f0f0f0'],
     ])(
-      'qState %s → selected=%s, opacity=%s, placeholder=%s on the Image',
-      async (qState, selected, opacity, placeholderBackground) => {
+      'qState %s → selectionState=%s, opacity=%s, placeholderBackground=%s on the Image',
+      async (qState, _selectionState, opacity, placeholderBackground) => {
         const row = [{ qState, qText: 'Amadeus', qElemNumber: 0 }];
         const data = {
           styles,
@@ -1442,7 +1442,7 @@ describe('<ListBoxRowColumn />', () => {
           </ThemeProvider>
         );
         const image = testRenderer.root.findByType(Image);
-        expect(image.props.selected).toBe(selected);
+        expect(image.props.selectionState).toBe(qState);
         expect(image.props.opacity).toBe(opacity);
         expect(image.props.placeholderBackground).toBe(placeholderBackground);
         await testRenderer.unmount();
