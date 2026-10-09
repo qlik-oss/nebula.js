@@ -2,12 +2,13 @@
 import { embed } from '@nebula.js/stardust';
 import snapshooter from '@nebula.js/snapshooter/client';
 
-import { openApp, getParams, getConnectionInfo } from './connect';
+import { openApp, getParams, getConnectionInfo, getHostConfig } from './connect';
 import initiateWatch from './hot';
 import renderFixture from './render-fixture';
 
-const nuke = async ({ app, supernova: { name }, themes, theme, language }) => {
+const nuke = async ({ app, supernova: { name }, themes, theme, language, hostConfig }) => {
   const nuked = embed.createConfiguration({
+    hostConfig,
     themes: themes
       ? themes.map((t) => ({
           id: t,
@@ -38,7 +39,13 @@ async function renderWithEngine() {
   }
   const params = getParams();
   const app = await openApp(info.engine.appId);
-  const nebbie = await nuke({ app, ...info, theme: params.theme, language: params.language });
+  const nebbie = await nuke({
+    app,
+    ...info,
+    hostConfig: getHostConfig(info),
+    theme: params.theme,
+    language: params.language,
+  });
   const element = document.querySelector('#chart-container');
   let cfg;
   if (params['render-config']) {
@@ -87,6 +94,7 @@ async function renderSnapshot() {
   element.classList.toggle('full', true);
 
   const n = embed.createConfiguration({
+    hostConfig: getHostConfig(info),
     themes: themes
       ? themes.map((t) => ({
           key: t,
