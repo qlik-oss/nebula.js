@@ -84,4 +84,21 @@ describe('', () => {
     await act(async () => ref.current.store.dispatch(true));
     expect(ref.current.count).toBe(2);
   });
+
+  test('should run the middleware cleanup and null the value on remove', () => {
+    const unsubscribe = jest.fn();
+    const [, store] = createKeyStore({}, () => unsubscribe);
+    store.set('foo', {});
+    store.remove('foo');
+    expect(unsubscribe).toHaveBeenCalledTimes(1);
+    expect(store.get('foo')).toBe(null);
+    store.destroy();
+    expect(unsubscribe).toHaveBeenCalledTimes(1);
+  });
+
+  test('should throw when removing with invalid key', () => {
+    const [, store] = createKeyStore();
+    expect(() => store.remove({})).toThrow();
+    expect(() => store.remove(undefined)).toThrow();
+  });
 });

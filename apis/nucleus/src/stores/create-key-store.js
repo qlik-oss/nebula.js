@@ -21,6 +21,16 @@ export default (initialState = {}, applyMiddleware = () => {}) => {
       }
       sharedState[key] = null;
     },
+    remove: (key) => {
+      if (typeof key === 'undefined' || typeof key === 'object') {
+        throw new Error(`Invalid key: ${JSON.stringify(key)}`);
+      }
+      const unsubscribe = subscribedListeners[key];
+      delete subscribedListeners[key];
+      // oxlint-disable-next-line no-unused-expressions
+      unsubscribe && unsubscribe();
+      sharedState[key] = null;
+    },
     dispatch: (forceNewState) => {
       hookListeners.forEach((listener) => listener(forceNewState ? {} : sharedState));
     },

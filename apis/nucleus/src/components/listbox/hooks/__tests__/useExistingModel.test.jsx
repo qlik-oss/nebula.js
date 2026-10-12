@@ -1,13 +1,15 @@
 import React from 'react';
-import { act } from 'react-test-renderer';
+import { act, create } from 'react-test-renderer';
 import useExistingModel from '../useExistingModel';
 import render from '../../../../hooks/__tests__/test-hook';
+import initializeStores from '../../../../stores/new-model-store';
+import InstanceContext from '../../../../contexts/InstanceContext';
 
 describe('useExistingModel', () => {
   let useModelStoreMock;
   let app;
   let setMock;
-  let clearMock;
+  let removeMock;
   let getMock;
   let renderer;
   let doRender;
@@ -17,9 +19,12 @@ describe('useExistingModel', () => {
   beforeEach(() => {
     jest.useFakeTimers();
 
-    setMock = jest.fn();
-    clearMock = jest.fn();
-    getMock = jest.fn();
+    let cached;
+    setMock = jest.fn((id, m) => {
+      cached = m;
+    });
+    removeMock = jest.fn();
+    getMock = jest.fn(() => cached);
     once = jest.fn();
     app = {
       getObject: jest.fn().mockResolvedValue({ id: 'generic-id', once, removeListener: jest.fn() }),
@@ -28,7 +33,7 @@ describe('useExistingModel', () => {
       {
         set: setMock,
         get: getMock,
-        clear: clearMock,
+        remove: removeMock,
       },
     ]);
 
@@ -66,24 +71,101 @@ describe('useExistingModel', () => {
     expect(once.mock.calls[0][0]).toEqual('closed');
   });
 
-  test('should clear the cached model on unmount so a recreated object with the same id is fetched anew', async () => {
+  test('should remove the cached model on unmount so a recreated object with the same id is fetched anew', async () => {
     const model = { id: 'generic-id', once, removeListener: jest.fn() };
     app.getObject.mockResolvedValue(model);
     // the first two lookups (fetch, then 'is it cached') miss, the one on unmount finds our model
     getMock.mockReturnValueOnce(undefined).mockReturnValueOnce(undefined).mockReturnValue(model);
     await doRender(useExistingModel, { app, qId: 'generic-id' });
-    expect(clearMock).not.toHaveBeenCalled();
+    expect(removeMock).not.toHaveBeenCalled();
     await act(async () => renderer.unmount());
     expect(model.removeListener).toHaveBeenCalledWith('closed', expect.any(Function));
-    expect(clearMock).toHaveBeenCalledWith('generic-id');
+    expect(removeMock).toHaveBeenCalledWith('generic-id');
   });
 
-  test('should not clear a cache entry that holds another model on unmount', async () => {
+  test('should not remove a cache entry that holds another model on unmount', async () => {
     const model = { id: 'generic-id', once, removeListener: jest.fn() };
     app.getObject.mockResolvedValue(model);
     getMock.mockReturnValueOnce(undefined).mockReturnValueOnce(undefined).mockReturnValue({ id: 'generic-id' });
     await doRender(useExistingModel, { app, qId: 'generic-id' });
     await act(async () => renderer.unmount());
-    expect(clearMock).not.toHaveBeenCalled();
+    expect(removeMock).not.toHaveBeenCalled();
+  });
+
+  describe('with the real model stores', () => {
+    const createModel = (id) => {
+      const listeners = {};
+      return {
+        id,
+        on: jest.fn((evt, fn) => {
+          (listeners[evt] = listeners[evt] || []).push(fn);
+        }),
+        once: jest.fn((evt, fn) => {
+          (listeners[evt] = listeners[evt] || []).push(fn);
+        }),
+        removeListener: jest.fn((evt, fn) => {
+          listeners[evt] = (listeners[evt] || []).filter((f) => f !== fn);
+        }),
+        emit: (evt) => [...(listeners[evt] || [])].forEach((fn) => fn()),
+      };
+    };
+
+    test('should attach listeners to a model recreated with the same id after remount', async () => {
+      const stores = initializeStores('app-id');
+      const oldModel = createModel('generic-id');
+      const newModel = createModel('generic-id');
+      app.getObject.mockResolvedValueOnce(oldModel).mockResolvedValueOnce(newModel);
+      useModelStoreMock.mockReturnValue([stores.modelStore]);
+
+      await doRender(useExistingModel, { app, qId: 'generic-id' });
+      expect(oldModel.on).toHaveBeenCalledWith('changed', expect.any(Function));
+      await act(async () => renderer.unmount());
+      expect(oldModel.removeListener).toHaveBeenCalledWith('changed', expect.any(Function));
+      expect(stores.modelStore.get('generic-id')).toBeNull();
+
+      await doRender(useExistingModel, { app, qId: 'generic-id' });
+      expect(newModel.on).toHaveBeenCalledWith('changed', expect.any(Function));
+
+      // a late 'closed' from the old model must not wipe state of the new one
+      stores.rpcResultStore.set('generic-id', { some: 'result' });
+      oldModel.emit('closed');
+      expect(stores.rpcResultStore.get('generic-id')).toEqual({ some: 'result' });
+    });
+
+    test('should keep a model working for a second consumer when the first one unmounts', async () => {
+      const stores = initializeStores('app-id');
+      const model = createModel('generic-id');
+      app.getObject.mockResolvedValue(model);
+      const context = { modelStore: stores };
+      const Consumer = () => {
+        useExistingModel({ app, qId: 'generic-id' });
+        return null;
+      };
+      const mount = async () => {
+        let r;
+        await act(async () => {
+          r = create(
+            <InstanceContext.Provider value={context}>
+              <Consumer />
+            </InstanceContext.Provider>
+          );
+        });
+        return r;
+      };
+      const first = await mount();
+      const second = await mount();
+
+      await act(async () => first.unmount());
+
+      expect(model.removeListener).not.toHaveBeenCalledWith('changed', expect.any(Function));
+      expect(stores.modelStore.get('generic-id')).toBe(model);
+      model.emit('changed');
+      expect(stores.modelChangedStore.get('generic-id')).toEqual({});
+
+      await act(async () => second.unmount());
+
+      expect(model.removeListener).toHaveBeenCalledWith('changed', expect.any(Function));
+      expect(stores.modelStore.get('generic-id')).toBeNull();
+    });
   });
 });
