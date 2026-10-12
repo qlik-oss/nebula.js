@@ -176,6 +176,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const isImage = isImageRepr;
   let imageSrc;
   let imageAlt;
+  let imageTitle;
   let imageSubtitle;
   let imageCellBgColor;
   let imageTooltip;
@@ -215,6 +216,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
       imageCellBgColor = styles?.image?.cellBgColor;
     }
     imageTooltip = resolveExpr('tooltip') || label;
+    imageTitle = imageSetting === 'url' ? label : (labelExprValue ?? label);
 
     if (imageSetting === 'url') {
       imageSrc = urlExprValue || label;
@@ -339,7 +341,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
               representation={representation}
               src={imageSrc}
               label={imageAlt}
-              title={label}
+              title={imageTitle}
               subtitle={imageSubtitle}
               cellBgColor={imageCellBgColor}
               borderColor={styles?.image?.borderColor}
