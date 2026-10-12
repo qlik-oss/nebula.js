@@ -137,10 +137,10 @@ describe('useExistingModel', () => {
       const model = createModel('generic-id');
       app.getObject.mockResolvedValue(model);
       const context = { modelStore: stores };
-      const Consumer = () => {
+      function Consumer() {
         useExistingModel({ app, qId: 'generic-id' });
         return null;
-      };
+      }
       const mount = async () => {
         let r;
         await act(async () => {
