@@ -284,6 +284,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
       styles={styles}
       isGridCol={isGridCol}
       isGridMode={dataLayout === 'grid'}
+      isImage={isImage}
       dense={dense}
       direction={direction}
       sizes={sizes}
