@@ -466,7 +466,7 @@ describe('<Image />', () => {
         />
       );
       const container = testRenderer.root.findByProps({ 'data-key': 'image-horizontal-container' });
-      expect(container.props.style.border).toBe('2px solid #009845');
+      expect(container.props.style.border).toBe('4px solid #009845');
       await testRenderer.unmount();
     });
 

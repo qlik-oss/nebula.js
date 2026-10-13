@@ -115,14 +115,14 @@ function Image({
     (typeof representationBorderColor === 'string' ? representationBorderColor : representationBorderColor?.color) ??
     '#d9d9d9';
   // Selected cells get a colored border; otherwise use the configured border
-  let border;
+  const width = borderWidth > 0 ? borderWidth : 2;
+  let color = 'transparent';
   if (selected) {
-    border = `2px solid ${selectionColor}`;
+    color = selectionColor;
   } else if (borderWidth > 0) {
-    border = `${borderWidth}px solid ${resolvedBorderColor}`;
-  } else {
-    border = '2px solid transparent';
+    color = resolvedBorderColor;
   }
+  const border = `${width}px solid ${color}`;
 
   const imgNode =
     safeSrc && !hasLoadError ? (

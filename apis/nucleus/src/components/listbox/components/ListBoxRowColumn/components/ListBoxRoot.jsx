@@ -22,7 +22,13 @@ const getMaxFreqWidth = ({ sizes, frequencyMode, isGridMode }) => {
   return sizes.freqMaxWidth;
 };
 
-const getRowSelectionStyle = ({ checkboxes, styles, selectionState }) => {
+const getRowSelectionStyle = ({ checkboxes, styles, selectionState, isImage }) => {
+  if (isImage) {
+    return {
+      background: 'transparent !important',
+      color: styles?.content?.color,
+    };
+  }
   if (checkboxes) {
     if (selectionState === 'selected') {
       return {
@@ -69,6 +75,7 @@ const RowColRoot = styled('div', {
       'checkboxes',
       'isGridMode',
       'isGridCol',
+      'isImage',
       'dense',
       'direction',
       'sizes',
@@ -77,12 +84,24 @@ const RowColRoot = styled('div', {
       'layout',
       'styles',
     ].includes(prop),
-})(({ theme, checkboxes, isGridMode, isGridCol, dense, direction, sizes, frequencyMode, freqHitsValue, styles }) => {
+})(({
+  theme,
+  checkboxes,
+  isGridMode,
+  isGridCol,
+  isImage,
+  dense,
+  direction,
+  sizes,
+  frequencyMode,
+  freqHitsValue,
+  styles,
+}) => {
   // eslint-disable-next-line no-unused-vars
   const { backgroundColor: _, ...contentFontStyles } = styles.content;
 
-  const rowSelectionStyle = getRowSelectionStyle({ theme, styles, checkboxes, selectionState: 'selected' });
-  const rowExcludedStyle = getRowSelectionStyle({ theme, styles, checkboxes, selectionState: 'excluded' });
+  const rowSelectionStyle = getRowSelectionStyle({ theme, styles, checkboxes, selectionState: 'selected', isImage });
+  const rowExcludedStyle = getRowSelectionStyle({ theme, styles, checkboxes, selectionState: 'excluded', isImage });
   const barDefaultFilledStyle = {
     height: '100%',
     transition: 'width 0.2s',
@@ -92,6 +111,20 @@ const RowColRoot = styled('div', {
   };
   const barSelectedFilledStyle = {
     opacity: '30%',
+  };
+
+  // Helper function for minWidth calculation to avoid nested ternary
+  const getCellMinWidth = () => {
+    if (isImage) return 0;
+    if (checkboxes) return '52px';
+    return '26px';
+  };
+
+  // Helper function for border calculation to avoid nested ternary
+  const getCellBorder = () => {
+    if (isImage) return 'none !important';
+    if (isGridMode) return 'none';
+    return undefined;
   };
 
   return {
@@ -105,18 +138,18 @@ const RowColRoot = styled('div', {
 
     [`& .${classes.row}`]: {
       flexWrap: 'nowrap',
-      ...styles.content,
+      ...(isImage ? {} : styles.content),
     },
 
     [`& .${classes.rowBorderBottom}`]: {
-      borderBottom: isGridCol ? 'none' : `1px solid ${theme.palette.divider}`,
-      borderLeft: isGridCol ? `1px solid ${theme.palette.divider}` : 'none',
+      borderBottom: isGridCol || isImage ? 'none' : `1px solid ${theme.palette.divider}`,
+      borderLeft: isGridCol && !isImage ? `1px solid ${theme.palette.divider}` : 'none',
     },
 
     [`& .${classes.column}`]: {
       flexWrap: 'nowrap',
-      borderRight: `1px solid ${theme.palette.divider}`,
-      ...styles.content,
+      borderRight: isImage ? 'none' : `1px solid ${theme.palette.divider}`,
+      ...(isImage ? {} : styles.content),
     },
 
     // The interior wrapper for all field content.
@@ -125,10 +158,12 @@ const RowColRoot = styled('div', {
       display: 'flex',
       alignItems: 'center',
       flexGrow: 1,
-      minWidth: checkboxes ? '52px' : '26px', // these numbers are just enough to show one letter and ellipsis: A…
+      width: isImage ? '100%' : undefined,
+      height: isImage ? '100%' : undefined,
+      minWidth: getCellMinWidth(), // these numbers are just enough to show one letter and ellipsis: A…
       flexBasis: checkboxes ? 'auto' : 'max-content',
       // Note that this padding is overridden when using checkboxes.
-      paddingLeft: `${CELL_PADDING_LEFT}px`,
+      paddingLeft: isImage ? 0 : `${CELL_PADDING_LEFT}px`,
       paddingRight: 0,
     },
 
@@ -184,33 +219,33 @@ const RowColRoot = styled('div', {
 
     // Selection styles (S=Selected, XS=ExcludedSelected, A=Alternative, X=Excluded).
     [`& .${classes.S}`]: {
-      ...rowSelectionStyle,
+      ...(isImage ? { background: 'transparent !important', border: 'none !important' } : rowSelectionStyle),
       '&:focus-visible': {
         boxShadow: `inset 0 0 0 2px ${theme.palette.custom.newFocusBorder}, inset 0 0 0 4px ${theme.palette.custom.whiteBorder} !important`,
         borderRadius: '4px',
         outline: 'none',
       },
-      border: isGridMode ? 'none' : undefined,
+      border: getCellBorder(),
     },
 
     [`& .${classes.XS}`]: {
-      ...getRowSelectionStyle({ theme, styles, checkboxes, selectionState: 'selectedExcluded' }),
-      border: isGridMode ? 'none' : undefined,
+      ...getRowSelectionStyle({ theme, styles, checkboxes, selectionState: 'selectedExcluded', isImage }),
+      border: getCellBorder(),
     },
 
     [`& .${classes.A}`]: {
-      ...getRowSelectionStyle({ theme, styles, checkboxes, selectionState: 'alternative' }),
-      border: isGridMode ? 'none' : undefined,
+      ...getRowSelectionStyle({ theme, styles, checkboxes, selectionState: 'alternative', isImage }),
+      border: getCellBorder(),
     },
 
     [`& .${classes.X}`]: {
       ...rowExcludedStyle,
-      border: isGridMode ? 'none' : undefined,
+      border: getCellBorder(),
     },
 
     [`& .${classes.X}, & .${classes.XS}`]: {
       // Override the selected color for bar-filled, when the value is selected and excluded.
-      border: isGridMode ? 'none' : undefined,
+      border: getCellBorder(),
       [`& .${classes.barSelected} .bar-filled`]: {
         ...barDefaultFilledStyle,
       },
