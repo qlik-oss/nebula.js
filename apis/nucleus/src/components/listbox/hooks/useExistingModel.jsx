@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { useModelStore } from '../../../hooks/useModelStore';
 
 // Per model store: number of mounted consumers of each model whose cache entry was created by this hook, so the
-// entry is only removed by the last one. Entries created elsewhere (e.g. by a rendered visualization) are not
-// tracked and never removed here, since their owner still relies on the listeners attached to them.
+// entry is only removed on unmount by the last one. Entries created elsewhere (e.g. by a rendered visualization) are
+// not tracked and not removed on unmount, since their owner still relies on the listeners attached to them.
 const consumers = new WeakMap();
 
 export default function useExistingModel({ app, qId, options = {} }) {
@@ -40,8 +40,11 @@ export default function useExistingModel({ app, qId, options = {} }) {
         modelStore.set(m.id, m);
         storeConsumers.set(m, 0);
       }
-      if (storeConsumers.has(m) && modelStore.get(m.id) === m) {
-        storeConsumers.set(m, storeConsumers.get(m) + 1);
+      if (modelStore.get(m.id) === m) {
+        if (storeConsumers.has(m)) {
+          storeConsumers.set(m, storeConsumers.get(m) + 1);
+        }
+        // A closed model must not stay cached, whoever created the entry.
         const onClosed = () => {
           if (modelStore.get(m.id) === m) {
             storeConsumers.delete(m);

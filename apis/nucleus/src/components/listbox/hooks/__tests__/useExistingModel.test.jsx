@@ -187,6 +187,19 @@ describe('useExistingModel', () => {
       expect(stores.modelChangedStore.get('generic-id')).toEqual({});
     });
 
+    test('should drop a model cached by someone else from the cache when it closes', async () => {
+      const stores = initializeStores('app-id');
+      const model = createModel('generic-id');
+      stores.modelStore.set('generic-id', model);
+      app.getObject.mockResolvedValue(model);
+      useModelStoreMock.mockReturnValue([stores.modelStore]);
+
+      await doRender(useExistingModel, { app, qId: 'generic-id' });
+      model.emit('closed');
+
+      expect(stores.modelStore.get('generic-id')).toBeNull();
+    });
+
     test('should release the cache entry of each model store independently for a shared session model', async () => {
       const storesA = initializeStores('app-id');
       const storesB = initializeStores('app-id');
