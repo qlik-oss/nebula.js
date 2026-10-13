@@ -119,6 +119,8 @@ describe('useExistingModel', () => {
 
       await doRender(useExistingModel, { app, qId: 'generic-id' });
       expect(oldModel.on).toHaveBeenCalledWith('changed', expect.any(Function));
+      // the hook's own 'closed' handler is the last one registered (the store middleware registers its own first)
+      const lateOnClosed = oldModel.once.mock.calls.filter(([evt]) => evt === 'closed').at(-1)[1];
       await act(async () => renderer.unmount());
       expect(oldModel.removeListener).toHaveBeenCalledWith('changed', expect.any(Function));
       expect(stores.modelStore.get('generic-id')).toBeNull();
@@ -128,8 +130,9 @@ describe('useExistingModel', () => {
 
       // a late 'closed' from the old model must not wipe state of the new one
       stores.rpcResultStore.set('generic-id', { some: 'result' });
-      oldModel.emit('closed');
+      lateOnClosed();
       expect(stores.rpcResultStore.get('generic-id')).toEqual({ some: 'result' });
+      expect(stores.modelStore.get('generic-id')).toBe(newModel);
     });
 
     test('should keep a model working for a second consumer when the first one unmounts', async () => {
@@ -166,6 +169,52 @@ describe('useExistingModel', () => {
 
       expect(model.removeListener).toHaveBeenCalledWith('changed', expect.any(Function));
       expect(stores.modelStore.get('generic-id')).toBeNull();
+    });
+
+    test('should not remove a model that was cached by someone else, e.g. a visualization', async () => {
+      const stores = initializeStores('app-id');
+      const model = createModel('generic-id');
+      stores.modelStore.set('generic-id', model);
+      app.getObject.mockResolvedValue(model);
+      useModelStoreMock.mockReturnValue([stores.modelStore]);
+
+      await doRender(useExistingModel, { app, qId: 'generic-id' });
+      await act(async () => renderer.unmount());
+
+      expect(model.removeListener).not.toHaveBeenCalledWith('changed', expect.any(Function));
+      expect(stores.modelStore.get('generic-id')).toBe(model);
+      model.emit('changed');
+      expect(stores.modelChangedStore.get('generic-id')).toEqual({});
+    });
+
+    test('should release the cache entry of each model store independently for a shared session model', async () => {
+      const storesA = initializeStores('app-id');
+      const storesB = initializeStores('app-id');
+      const sessionModel = createModel('session-id');
+      const mount = async (stores) => {
+        let r;
+        function Consumer() {
+          useExistingModel({ app, options: { sessionModel } });
+          return null;
+        }
+        await act(async () => {
+          r = create(
+            <InstanceContext.Provider value={{ modelStore: stores }}>
+              <Consumer />
+            </InstanceContext.Provider>
+          );
+        });
+        return r;
+      };
+      const a = await mount(storesA);
+      const b = await mount(storesB);
+
+      await act(async () => a.unmount());
+      expect(storesA.modelStore.get('session-id')).toBeNull();
+      expect(storesB.modelStore.get('session-id')).toBe(sessionModel);
+
+      await act(async () => b.unmount());
+      expect(storesB.modelStore.get('session-id')).toBeNull();
     });
   });
 });
