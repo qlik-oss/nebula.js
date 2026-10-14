@@ -22,7 +22,7 @@ jobs:
       - name: Remove node_modules
         run: find . -name node_modules -type d -prune -exec rm -rf {} +
       - name: Upload workspace
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: workspace
           path: |
@@ -58,7 +58,7 @@ jobs:
           JEST_JUNIT_OUTPUT_DIR: ./coverage/junit/
         run: pnpm test:unit --coverage
       - name: Store junit results
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: junit
           path: coverage/junit
@@ -105,7 +105,7 @@ jobs:
         run: pnpm run test:mashup
       - name: Store mashup artifacts
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: mashup
           path: |
@@ -135,7 +135,7 @@ jobs:
         run: pnpm run test:rendering
       - name: Store rendering artifacts
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: rendering
           path: |
@@ -159,7 +159,7 @@ jobs:
         run: pnpm test:visual:update-missing
       - name: Upload visual snapshots
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: visual-snapshots
           # Upload the full snapshot directory so newly-generated linux baselines
@@ -226,7 +226,7 @@ jobs:
           echo "PROJECT_FOLDER=$PROJECT_FOLDER" >> $GITHUB_OUTPUT
       - name: Store project screenshots
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: screenshots-${{ matrix.picasso-template }}-${{ matrix.mashup && 'mashup' || 'visualization' }}
           path: ${{ steps.create-project.outputs.PROJECT_FOLDER }}/screenshots
