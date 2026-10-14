@@ -30,7 +30,7 @@
     "@babel/preset-env": "8.0.2",
     "@babel/preset-react": "8.0.1",
     "@babel/preset-typescript": "8.0.1",
-    "@qlik/browserslist-config": "^3.0.1",
+    "@qlik/browserslist-config": "^3.1.0",
     "@rollup/plugin-babel": "7.1.0",
     "@rollup/plugin-commonjs": "29.0.3",
     "@rollup/plugin-json": "6.1.0",
