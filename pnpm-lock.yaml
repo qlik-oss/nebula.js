@@ -498,11 +498,11 @@ importers:
         specifier: 11.4.0
         version: 11.4.0
       picasso-plugin-q:
-        specifier: 2.11.5
-        version: 2.11.5
+        specifier: 2.11.7
+        version: 2.11.7
       picasso.js:
-        specifier: 2.11.5
-        version: 2.11.5
+        specifier: 2.11.7
+        version: 2.11.7
 
   commands/sense:
     dependencies:
@@ -7835,8 +7835,14 @@ packages:
   picasso-plugin-q@2.11.5:
     resolution: {integrity: sha512-JliuiOk8DUYCYhE7iRKzVtMTNNeX3+NEoqiSERuAi1/9C53E2l+UcVT2jY2vK57/h2s2DGk5MOxeJwCe0sxD5g==}
 
+  picasso-plugin-q@2.11.7:
+    resolution: {integrity: sha512-Zjr9+N/2AHtpEENQrinoPOtgpA4lWjVxQQcVZTHG4p/kU+RQ9zUMBCxiWGvpMxXXpf/dvjynKku1L66zxeZ+HQ==}
+
   picasso.js@2.11.5:
     resolution: {integrity: sha512-5x+7duPtERO2QICshsVTYMf/pQRXYaNQy8+AzSJBGw9ZrNUenCDrL0hkbdJkQW71F3L9fHEXoMB7bW34rDWv/A==}
+
+  picasso.js@2.11.7:
+    resolution: {integrity: sha512-xq9thKTct2PXRgb84haCSebp0xIF7FqOdruTUz4/xwwWO+ZaUEWPKWGrCyq0v/IfePuCIBk21PY9jfima4bh+Q==}
 
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
@@ -18480,7 +18486,11 @@ snapshots:
 
   picasso-plugin-q@2.11.5: {}
 
+  picasso-plugin-q@2.11.7: {}
+
   picasso.js@2.11.5: {}
+
+  picasso.js@2.11.7: {}
 
   picocolors@1.1.1: {}
 
