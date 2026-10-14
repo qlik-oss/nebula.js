@@ -160,8 +160,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/ui
       '@qlik/api':
-        specifier: 2.14.1
-        version: 2.14.1
+        specifier: 2.19.0
+        version: 2.19.0
       '@testing-library/dom':
         specifier: ^10.4.1
         version: 10.4.1
@@ -256,8 +256,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/ui
       '@qlik/api':
-        specifier: 2.14.1
-        version: 2.14.1
+        specifier: 2.19.0
+        version: 2.19.0
       '@rollup/plugin-babel':
         specifier: 7.1.0
         version: 7.1.0(@babel/core@7.29.7(supports-color@8.1.1))(@types/babel__core@7.20.5)(rollup@4.62.3)(supports-color@8.1.1)
@@ -561,8 +561,8 @@ importers:
         specifier: workspace:*
         version: link:../build
       '@qlik/api':
-        specifier: 2.14.1
-        version: 2.14.1
+        specifier: 2.19.0
+        version: 2.19.0
       body-parser:
         specifier: 2.3.0
         version: 2.3.0(supports-color@8.1.1)
@@ -3403,8 +3403,8 @@ packages:
       yauzl:
         optional: true
 
-  '@qlik/api@2.14.1':
-    resolution: {integrity: sha512-UPmHUdzTDRa+0gn1SeLTXekku+qAe2KJcZ4/lowQUR8bnO63Tz3Bu29bRvJzNjYbdISSPaNTXDxX0cow5K30GA==}
+  '@qlik/api@2.19.0':
+    resolution: {integrity: sha512-e6mmhXfkPxhBbl0js8a64a78Yt0cRXYlJT/7MGQOIdr5kOMQEbBf2ET3W8SERz12cy0jwR6dpKtK6QR8v/6cwQ==}
     engines: {node: '>=20.0.0'}
 
   '@qlik/browserslist-config@3.0.1':
@@ -9578,6 +9578,18 @@ packages:
       utf-8-validate:
         optional: true
 
+  ws@8.22.0:
+    resolution: {integrity: sha512-Ydggc987+RO0AnWtZ/7Wq9FtNvcrL1b/RO0ud9mWjUPgDrsAAwQSF51sm2hm1XofbU/4jkpGEsLFsZZxU+1DOg==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+
   wsl-utils@0.1.0:
     resolution: {integrity: sha512-h3Fbisa2nKGPxCpm89Hk33lBLsnaGBvctQopaBSOW/uIs6FTe1ATyAnKFJrzVs9vpGdsTe73WF3V4lIsk4Gacw==}
     engines: {node: '>=18'}
@@ -12941,7 +12953,7 @@ snapshots:
   '@nebula.js/cli-serve@7.1.1(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.25))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(html-minifier-terser@6.1.0)(postcss@8.5.25)(supports-color@8.1.1)(uglify-js@3.19.3)':
     dependencies:
       '@nebula.js/cli-build': 7.1.1(@types/babel__core@7.20.5)(supports-color@8.1.1)
-      '@qlik/api': 2.14.1
+      '@qlik/api': 2.19.0
       body-parser: 2.2.2(supports-color@8.1.1)
       chalk: 4.1.2
       chokidar: 5.0.0
@@ -13427,12 +13439,12 @@ snapshots:
       modern-tar: 0.7.7
       yargs: 18.1.0
 
-  '@qlik/api@2.14.1':
+  '@qlik/api@2.19.0':
     dependencies:
       enigma.js: 2.15.0
       extend: 3.0.2
       lodash-es: 4.18.1
-      ws: 8.21.1
+      ws: 8.22.0
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -20574,6 +20586,8 @@ snapshots:
   ws@8.21.0: {}
 
   ws@8.21.1: {}
+
+  ws@8.22.0: {}
 
   wsl-utils@0.1.0:
     dependencies:
