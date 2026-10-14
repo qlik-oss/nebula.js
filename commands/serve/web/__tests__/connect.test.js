@@ -4,7 +4,7 @@ import auth from '@qlik/api/auth';
 import { getItems } from '@qlik/api/items';
 import { openAppSession } from '@qlik/api/qix';
 import * as getCsrfToken from '../utils/getCsrfToken';
-import { connect, openApp, getConnectionInfo, getParams, parseEngineURL } from '../connect';
+import { connect, openApp, getConnectionInfo, getParams, getHostConfig, parseEngineURL } from '../connect';
 
 jest.mock('../utils/getCsrfToken', () => jest.fn());
 
@@ -611,6 +611,46 @@ describe('connect.js', () => {
         }),
         engineUrl: expect.any(String),
         appUrl: url,
+      });
+    });
+  });
+
+  describe('getHostConfig', () => {
+    test('should return cookie config for `webIntegrationId`', () => {
+      expect(getHostConfig({ webIntegrationId: 'wid', engine: { host: 'tenant.qlikcloud.com' } })).toEqual({
+        authType: 'cookie',
+        webIntegrationId: 'wid',
+        host: 'tenant.qlikcloud.com',
+      });
+    });
+
+    test('should return oauth2 config for `clientId`', () => {
+      expect(getHostConfig({ clientId: 'cid', engine: { host: 'tenant.qlikcloud.com' } })).toEqual({
+        authType: 'oauth2',
+        clientId: 'cid',
+        host: 'tenant.qlikcloud.com',
+        redirectUri: `${window.location.origin}/auth/login/callback`,
+        accessTokenStorage: 'session',
+      });
+    });
+
+    test('should prefer cookie config when both `webIntegrationId` and `clientId` are set', () => {
+      expect(getHostConfig({ webIntegrationId: 'wid', clientId: 'cid', engine: { host: 'h' } }).authType).toBe(
+        'cookie'
+      );
+    });
+
+    test('should return noauth config with https for a secure local engine', () => {
+      expect(getHostConfig({ engine: { host: 'localhost', port: '9076' } })).toEqual({
+        authType: 'noauth',
+        host: 'https://localhost:9076',
+      });
+    });
+
+    test('should return noauth config with http and no port for an insecure engine', () => {
+      expect(getHostConfig({ engine: { host: 'myengine.internal', secure: false } })).toEqual({
+        authType: 'noauth',
+        host: 'http://myengine.internal',
       });
     });
   });

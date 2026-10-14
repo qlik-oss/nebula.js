@@ -23,6 +23,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 import initiateWatch from '../../hot';
+import { getHostConfig } from '../../connect';
 
 import Properties from './Properties';
 import Stage from './Stage';
@@ -114,6 +115,7 @@ export default function Visualize() {
   useEffect(() => {
     if (waiting || !initialized) return;
     const n = embed(app, {
+      hostConfig: info?.engine ? getHostConfig(info) : undefined,
       context: {
         theme: currentThemeName,
         language: currentLanguage,

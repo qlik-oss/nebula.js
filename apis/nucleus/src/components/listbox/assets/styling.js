@@ -102,7 +102,7 @@ function getImageTextStyles(content, fontColor) {
     fontWeight: content?.fontWeight ?? 'bold',
     fontStyle: content?.fontStyle ?? 'normal',
     textDecoration: content?.textDecoration ?? 'initial',
-    backdropColor: fontIsDark ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.5)',
+    backdropColor: fontIsDark ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.8)',
     shadowOnImage: fontIsDark ? '0 0 3px rgba(255, 255, 255, 0.8)' : '0 1px 2px rgba(0, 0, 0, 0.6)',
   };
 }
