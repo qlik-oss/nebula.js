@@ -407,8 +407,8 @@ importers:
         specifier: 8.0.1
         version: 8.0.1(@babel/core@8.0.1)
       '@qlik/browserslist-config':
-        specifier: ^3.0.1
-        version: 3.0.1
+        specifier: ^3.1.0
+        version: 3.1.0
       '@rollup/plugin-babel':
         specifier: 7.1.0
         version: 7.1.0(@babel/core@8.0.1)(@types/babel__core@7.20.5)(rollup@4.62.3)(supports-color@8.1.1)
@@ -3407,8 +3407,8 @@ packages:
     resolution: {integrity: sha512-UPmHUdzTDRa+0gn1SeLTXekku+qAe2KJcZ4/lowQUR8bnO63Tz3Bu29bRvJzNjYbdISSPaNTXDxX0cow5K30GA==}
     engines: {node: '>=20.0.0'}
 
-  '@qlik/browserslist-config@3.0.1':
-    resolution: {integrity: sha512-CShWvy6bjacz4GBNnMwp4j5tiwatJZqViLB8RgLJcgLMhfBqmilQKWKdRGdE2Gqm5ufA48gxZemOBWb0+TmXnQ==}
+  '@qlik/browserslist-config@3.1.0':
+    resolution: {integrity: sha512-cu9asSOoJhSl5B2hiyNOD3WPDxZ1eMjhaB5f1Q0RtZ/ca5IA0gz6w6nNTb9iF0PseT/uTqwwpQcXOeuMkT8wJA==}
 
   '@rollup/plugin-babel@7.1.0':
     resolution: {integrity: sha512-h9Y+xYha6p4wKO+FwdiPIkE+eIYCm8MzZPpX1iARIoFBnmKP9CnpT1p9dDf/DTFm6fyN8PmuLyRI5qZgchnitw==}
@@ -12898,7 +12898,7 @@ snapshots:
       '@babel/preset-env': 7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1)
       '@babel/preset-react': 7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1)
       '@babel/preset-typescript': 7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1)
-      '@qlik/browserslist-config': 3.0.1
+      '@qlik/browserslist-config': 3.1.0
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7(supports-color@8.1.1))(@types/babel__core@7.20.5)(rollup@4.62.0)(supports-color@8.1.1)
       '@rollup/plugin-commonjs': 29.0.3(rollup@4.62.0)
       '@rollup/plugin-json': 6.1.0(rollup@4.62.0)
@@ -13437,7 +13437,7 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@qlik/browserslist-config@3.0.1': {}
+  '@qlik/browserslist-config@3.1.0': {}
 
   '@rollup/plugin-babel@7.1.0(@babel/core@7.29.7(supports-color@8.1.1))(@types/babel__core@7.20.5)(rollup@4.62.0)(supports-color@8.1.1)':
     dependencies:
