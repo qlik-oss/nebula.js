@@ -337,8 +337,8 @@ importers:
   apis/test-utils:
     dependencies:
       '@nebula.js/stardust':
-        specifier: '>=7.0.0'
-        version: 7.1.1
+        specifier: '>=7.6.0'
+        version: 7.7.0
     devDependencies:
       '@babel/preset-env':
         specifier: 8.0.2
@@ -3022,8 +3022,8 @@ packages:
     resolution: {integrity: sha512-NISBSPC9SNFg4s2lYhFcINlbrUvW/E+9ZmZ+Ja7KwG/Jg/sdW0f/ZEDk8vXKXb9BsGgd6p8Sm2x3nTADXfVMJg==}
     engines: {node: '>=24.0.0'}
 
-  '@nebula.js/stardust@7.1.1':
-    resolution: {integrity: sha512-98FOj02gpa9rgZF7B/RLxPw1IMH3G0L4D1QtLGu4JmkO05lfHyJjgwNyyvMo06HcdAeUqaqCATyzHZiLDvy4rQ==}
+  '@nebula.js/stardust@7.7.0':
+    resolution: {integrity: sha512-PFqKc3ew10SrxhvwFd1ID1qw1JB62VZNkZbxg97TXBNMFCpPq7JF7zkLs6Q7U5PaHOuP8tGwCQigqhym5FCjXg==}
 
   '@nicolo-ribaudo/chokidar-2@2.1.8-no-fsevents.3':
     resolution: {integrity: sha512-s88O1aVtXftvp5bCPB7WnmXc5IwOZZ7YPuwNPt+GtOOXpPvad1LfbmjYv+qII7zP6RU2QGnqve27dnLycEnyEQ==}
@@ -12923,7 +12923,7 @@ snapshots:
       '@babel/cli': 7.29.7(@babel/core@7.29.7(supports-color@8.1.1))
       '@babel/core': 7.29.7(supports-color@8.1.1)
       '@babel/preset-env': 7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1)
-      '@nebula.js/stardust': 7.1.1
+      '@nebula.js/stardust': 7.7.0
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7(supports-color@8.1.1))(@types/babel__core@7.20.5)(rollup@4.62.0)(supports-color@8.1.1)
       '@rollup/plugin-commonjs': 29.0.3(rollup@4.62.0)
       '@rollup/plugin-node-resolve': 16.0.3(rollup@4.62.0)
@@ -12982,7 +12982,7 @@ snapshots:
       - utf-8-validate
       - webpack-bundle-analyzer
 
-  '@nebula.js/stardust@7.1.1': {}
+  '@nebula.js/stardust@7.7.0': {}
 
   '@nicolo-ribaudo/chokidar-2@2.1.8-no-fsevents.3':
     optional: true
