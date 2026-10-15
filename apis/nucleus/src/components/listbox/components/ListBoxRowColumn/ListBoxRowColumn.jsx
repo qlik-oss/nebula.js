@@ -20,7 +20,6 @@ import getRowFromPages from './helpers/get-row-from-pages';
 import getRowsKeyboardNavigation from '../../interactions/keyboard-navigation/keyboard-nav-rows';
 import getValueTextAlign from './helpers/get-value-text-align';
 import getValueLabel from '../screen-reader/value-label';
-import { cacheExprValue } from '../../helpers/expr-cache';
 
 function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const {
@@ -61,7 +60,6 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     fillHeight,
     representation,
     listExprIndex = {},
-    exprCache = {},
     hideLastRowDivider = false,
   } = data;
 
@@ -193,15 +191,11 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     // alternatives); the cell background color expression, when set, takes precedence over this.
     imagePlaceholderBg = cell.qState === 'A' ? '#e0e0e0' : '#f0f0f0';
 
-    // Resolve a per-value expression column, caching the last non-empty value per dimension value so
-    // it survives once the value becomes excluded (the engine returns null for excluded values).
-    // Key by the stable element number rather than the display text (qText/label), which is not
-    // guaranteed unique — duplicate labels would otherwise overwrite each other's cached values.
-    const valueKey = cell?.qElemNumber ?? label;
+    // Resolve a per-value expression column (imageUrl/subtitle/etc.); listExprIndex maps the
+    // expression's qLabel to its column index in the row.
     const resolveExpr = (key) => {
       const col = listExprIndex[key];
-      if (col == null) return undefined;
-      return cacheExprValue(exprCache, key, valueKey, row?.[col]?.qText);
+      return col == null ? undefined : row?.[col]?.qText;
     };
 
     const imageSetting = representation?.imageSetting ?? 'label';
