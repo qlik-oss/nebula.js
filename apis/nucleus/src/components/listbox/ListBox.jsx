@@ -158,7 +158,7 @@ export default function ListBox({
     return () => {
       cancelled = true;
     };
-  }, [hideActive, selectedCount, dataWidth, model]);
+  }, [hideActive, selectedCount, staleLayout, dataWidth, model]);
 
   // Reset scroll offset when entering compacted mode to prevent misaligned indices.
   // The compacted page is rebased to qTop: 0, so all row indices start from 0.
