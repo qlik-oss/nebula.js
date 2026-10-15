@@ -8,7 +8,7 @@ import Tick from '@nebula.js/ui/icons/tick';
 import getSegmentsFromRanges from '../listbox-highlight';
 import classes from './helpers/classes';
 import { getValueStateClasses } from './helpers/cell-states';
-import { joinClassNames } from './helpers/operations';
+import { joinClassNames, getSelectionState } from './helpers/operations';
 import RowColRoot from './components/ListBoxRoot';
 import FieldWithRanges from './components/FieldWithRanges';
 import Field from './components/Field';
@@ -178,20 +178,22 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   let imageAlt;
   let imageSubtitle;
   let imageCellBgColor;
+  let imgCellBorderColor;
+  let imageBorder;
   let imageTooltip;
   let imageSelectionColor;
   let imageOpacity = 1;
-  let imagePlaceholderBg;
   if (isImage) {
-    imageSelectionColor = styles?.selections?.selected || '#009845';
+    const selectionStyles = styles.selections;
+    imageSelectionColor =
+      getSelectionState(cell?.qState) && selectionStyles
+        ? selectionStyles[getSelectionState(cell?.qState)]
+        : 'undefined';
     if (cell.qState === 'X' || cell.qState === 'XS' || cell.qState === 'XL') {
       imageOpacity = 0.3;
     } else if (cell.qState === 'A') {
       imageOpacity = 0.4;
     }
-    // Neutral backdrop shown while the image loads and behind any letterboxing (a touch darker for
-    // alternatives); the cell background color expression, when set, takes precedence over this.
-    imagePlaceholderBg = cell.qState === 'A' ? '#e0e0e0' : '#f0f0f0';
 
     // Resolve a per-value expression column, caching the last non-empty value per dimension value so
     // it survives once the value becomes excluded (the engine returns null for excluded values).
@@ -211,9 +213,20 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     const cellBgColorMode = representation?.cellBgColorMode ?? 'single';
     if (cellBgColorMode === 'expression') {
       imageCellBgColor = resolveExpr('cellBgColor');
+    } else if (cellBgColorMode === 'selectionState') {
+      imageCellBgColor = imageSelectionColor;
     } else {
-      imageCellBgColor = styles?.image?.cellBgColor;
+      imageCellBgColor = styles?.image?.cellBgColor === '#d9d9d9';
     }
+    const cellBorderColorMode = representation?.borderColorMode ?? 'single';
+    if (cellBorderColorMode === 'expression') {
+      imgCellBorderColor = resolveExpr('borderColor') ?? 'transparent';
+    } else if (cellBorderColorMode === 'selectionState') {
+      imgCellBorderColor = imageSelectionColor;
+    } else {
+      imgCellBorderColor = styles?.image?.borderColor;
+    }
+    imageBorder = `${representation?.borderWidth}px solid ${imgCellBorderColor}`;
     imageTooltip = resolveExpr('tooltip') || label;
 
     if (imageSetting === 'url') {
@@ -343,11 +356,8 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
               title={label}
               subtitle={imageSubtitle}
               cellBgColor={imageCellBgColor}
-              borderColor={styles?.image?.borderColor}
+              border={imageBorder}
               textStyles={styles?.image?.text}
-              placeholderBackground={imagePlaceholderBg}
-              selected={isSelected}
-              selectionColor={imageSelectionColor}
               opacity={imageOpacity}
             />
           ) : labels ? (

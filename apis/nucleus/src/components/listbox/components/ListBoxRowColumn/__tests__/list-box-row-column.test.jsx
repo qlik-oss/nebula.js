@@ -1158,13 +1158,15 @@ describe('<ListBoxRowColumn />', () => {
     const renderImageCell = async ({
       representation,
       qText = 'field-value',
+      qState = 'A',
       exprValues = [],
       listExprIndex = {},
       imageStyles,
+      selectionStyles = styles.selections,
     }) => {
-      const row = [{ qState: 'A', qText, qElemNumber: 0 }, ...exprValues.map((qv) => ({ qText: qv }))];
+      const row = [{ qState, qText, qElemNumber: 0 }, ...exprValues.map((qv) => ({ qText: qv }))];
       const data = {
-        styles: imageStyles ? { ...styles, image: imageStyles } : styles,
+        styles: { ...styles, ...(imageStyles ? { image: imageStyles } : {}), selections: selectionStyles },
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
@@ -1325,6 +1327,48 @@ describe('<ListBoxRowColumn />', () => {
       await testRenderer.unmount();
     });
 
+    test('single border mode passes the resolved style color to Image', async () => {
+      const testRenderer = await renderImageCell({
+        representation: { type: 'image', borderWidth: 3, borderColorMode: 'single' },
+        imageStyles: { borderColor: '#123456' },
+      });
+      expect(testRenderer.root.findByType(Image).props.border).toBe('3px solid #123456');
+      await testRenderer.unmount();
+    });
+
+    test('expression border mode passes the per-value expression color to Image', async () => {
+      const testRenderer = await renderImageCell({
+        representation: { type: 'image', borderWidth: 3, borderColorMode: 'expression' },
+        listExprIndex: { borderColor: 1 },
+        exprValues: ['#cbe989'],
+        imageStyles: { borderColor: '#123456' },
+      });
+      expect(testRenderer.root.findByType(Image).props.border).toBe('3px solid #cbe989');
+      await testRenderer.unmount();
+    });
+
+    test('empty expression border does not fall back to the single-mode color', async () => {
+      const testRenderer = await renderImageCell({
+        representation: { type: 'image', borderWidth: 3, borderColorMode: 'expression' },
+        listExprIndex: { borderColor: 1 },
+        exprValues: [''],
+        imageStyles: { borderColor: '#123456' },
+      });
+      expect(testRenderer.root.findByType(Image).props.border).toBe('3px solid transparent');
+      await testRenderer.unmount();
+    });
+
+    test('selection-state border mode passes the matching selection color to Image', async () => {
+      const testRenderer = await renderImageCell({
+        representation: { type: 'image', borderWidth: 3, borderColorMode: 'selectionState' },
+        qState: 'S',
+        selectionStyles: { selected: '#009845' },
+        imageStyles: { borderColor: '#123456' },
+      });
+      expect(testRenderer.root.findByType(Image).props.border).toBe('3px solid #009845');
+      await testRenderer.unmount();
+    });
+
     test('uses the tooltip expression column as the cell title, falling back to the dimension value', async () => {
       const withTooltip = await renderImageCell({
         representation: { type: 'image', imageSetting: 'url', imageSize: 'alwaysFill' },
@@ -1417,37 +1461,32 @@ describe('<ListBoxRowColumn />', () => {
       ['A', false, 0.4, '#e0e0e0'],
       ['X', false, 0.3, '#f0f0f0'],
       ['O', false, 1, '#f0f0f0'],
-    ])(
-      'qState %s → selected=%s, opacity=%s, placeholder=%s on the Image',
-      async (qState, selected, opacity, placeholderBackground) => {
-        const row = [{ qState, qText: 'Amadeus', qElemNumber: 0 }];
-        const data = {
-          styles,
-          onMouseDown: jest.fn(),
-          onMouseUp: jest.fn(),
-          onMouseEnter: jest.fn(),
-          onClick: jest.fn(),
-          keyboard,
-          actions,
-          dataOffset: 0,
-          sizes: { itemPadding: 2 },
-          representation: { type: 'image', imageSetting: 'label', imageSize: 'alwaysFill' },
-          listExprIndex: {},
-          pages: [{ qArea: { qTop: 0, qHeight: 1 }, qMatrix: [row] }],
-          focusListItems: () => ({ first: false, last: false }),
-        };
-        const testRenderer = await render(
-          <ThemeProvider theme={theme}>
-            <ListBoxRowColumn index={0} style={{}} data={data} />
-          </ThemeProvider>
-        );
-        const image = testRenderer.root.findByType(Image);
-        expect(image.props.selected).toBe(selected);
-        expect(image.props.opacity).toBe(opacity);
-        expect(image.props.placeholderBackground).toBe(placeholderBackground);
-        await testRenderer.unmount();
-      }
-    );
+    ])('qState %s sets opacity=%s on the Image', async (qState, _selectionState, opacity) => {
+      const row = [{ qState, qText: 'Amadeus', qElemNumber: 0 }];
+      const data = {
+        styles,
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
+        keyboard,
+        actions,
+        dataOffset: 0,
+        sizes: { itemPadding: 2 },
+        representation: { type: 'image', imageSetting: 'label', imageSize: 'alwaysFill' },
+        listExprIndex: {},
+        pages: [{ qArea: { qTop: 0, qHeight: 1 }, qMatrix: [row] }],
+        focusListItems: () => ({ first: false, last: false }),
+      };
+      const testRenderer = await render(
+        <ThemeProvider theme={theme}>
+          <ListBoxRowColumn index={0} style={{}} data={data} />
+        </ThemeProvider>
+      );
+      const image = testRenderer.root.findByType(Image);
+      expect(image.props.opacity).toBe(opacity);
+      await testRenderer.unmount();
+    });
 
     test('caches the url expression so an excluded value keeps its image after selection', async () => {
       const exprCache = {};

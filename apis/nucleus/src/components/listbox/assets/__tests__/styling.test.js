@@ -192,6 +192,23 @@ describe('styling', () => {
       expect(inputComponents).toHaveLength(5);
       expect(Object.keys(getOverridesAsObject(inputComponents)).sort()).toEqual(['selections', 'theme']);
     });
+
+    it('clears the resolved single border color in expression mode', async () => {
+      const styles = await getStyles({
+        app,
+        themeApi,
+        theme,
+        layout: {
+          representation: {
+            type: 'image',
+            borderColorMode: 'expression',
+            borderColor: { color: '#cbe989' },
+          },
+        },
+      });
+
+      expect(styles.image.borderColor).toBeUndefined();
+    });
   });
 
   describe('getSelectionColors', () => {
