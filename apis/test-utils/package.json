@@ -25,7 +25,7 @@
     "prepublishOnly": "rm -rf dist && pnpm run build"
   },
   "peerDependencies": {
-    "@nebula.js/stardust": ">=7.6.0"
+    "@nebula.js/stardust": ">=7.7.0"
   },
   "devDependencies": {
     "@babel/preset-env": "8.0.2",
