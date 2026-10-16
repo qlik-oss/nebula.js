@@ -53,7 +53,7 @@
     "@nebula.js/supernova": "workspace:*",
     "@nebula.js/theme": "workspace:*",
     "@nebula.js/ui": "workspace:*",
-    "@qlik/api": "2.14.1",
+    "@qlik/api": "2.19.0",
     "@rollup/plugin-babel": "7.1.0",
     "@rollup/plugin-commonjs": "29.0.3",
     "@rollup/plugin-json": "6.1.0",

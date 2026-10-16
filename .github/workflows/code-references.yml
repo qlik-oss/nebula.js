@@ -17,7 +17,7 @@ jobs:
         with:
           fetch-depth: 11
       - name: LaunchDarkly Code References
-        uses: launchdarkly/find-code-references@a68d7da46aeffd66af43253b2d3619914508235b # v2
+        uses: launchdarkly/find-code-references@5d95481114aab85ab56671002d11218cfc7f9b23 # v2
         with:
           accessToken: ${{ secrets.LD_ACCESS_TOKEN }}
           projKey: QCS
