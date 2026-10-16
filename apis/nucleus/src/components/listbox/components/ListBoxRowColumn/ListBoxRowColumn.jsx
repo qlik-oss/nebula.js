@@ -210,15 +210,15 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     } else if (cellBgColorMode === 'selectionState') {
       imageCellBgColor = imageSelectionColor;
     } else {
-      imageCellBgColor = styles?.image?.cellBgColor === '#d9d9d9';
+      imageCellBgColor = styles?.image?.cellBgColor;
     }
     const cellBorderColorMode = representation?.borderColorMode ?? 'single';
     if (cellBorderColorMode === 'expression') {
-      imgCellBorderColor = resolveExpr('borderColor') ?? 'transparent';
+      imgCellBorderColor = resolveExpr('borderColor') || 'transparent';
     } else if (cellBorderColorMode === 'selectionState') {
       imgCellBorderColor = imageSelectionColor;
     } else {
-      imgCellBorderColor = styles?.image?.borderColor;
+      imgCellBorderColor = styles?.image?.borderColor || '#d9d9d9';
     }
     imageBorder = `${representation?.borderWidth}px solid ${imgCellBorderColor}`;
     imageTooltip = resolveExpr('tooltip') || label;

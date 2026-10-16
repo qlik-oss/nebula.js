@@ -1327,6 +1327,62 @@ describe('<ListBoxRowColumn />', () => {
       await testRenderer.unmount();
     });
 
+    test.each([
+      ['S', 'selected', '#009845'],
+      ['L', 'selected', '#009845'],
+      ['XS', 'selectedExcluded', '#ff6b6b'],
+      ['XL', 'selectedExcluded', '#ff6b6b'],
+      ['A', 'alternative', '#e0e0e0'],
+      ['X', 'excluded', '#cccccc'],
+      ['O', 'possible', '#f0f0f0'],
+    ])('selection-state background mode maps qState %s to %s color', async (qState, _colorKey, expectedColor) => {
+      const selectionStyles = {
+        selected: '#009845',
+        selectedExcluded: '#ff6b6b',
+        alternative: '#e0e0e0',
+        excluded: '#cccccc',
+        possible: '#f0f0f0',
+      };
+      const testRenderer = await renderImageCell({
+        representation: {
+          type: 'image',
+          imageSetting: 'url',
+          imageSize: 'alwaysFill',
+          cellBgColorMode: 'selectionState',
+        },
+        qState,
+        qText: 'Amadeus',
+        listExprIndex: { imageUrl: 1 },
+        exprValues: ['http://foo/poster.png'],
+        selectionStyles,
+      });
+      const image = testRenderer.root.findByType(Image);
+      expect(image.props.cellBgColor).toBe(expectedColor);
+      await testRenderer.unmount();
+    });
+
+    test('selection-state background with expression border uses the matching colors for both', async () => {
+      const testRenderer = await renderImageCell({
+        representation: {
+          type: 'image',
+          imageSetting: 'url',
+          imageSize: 'alwaysFill',
+          borderWidth: 3,
+          cellBgColorMode: 'selectionState',
+          borderColorMode: 'expression',
+        },
+        qState: 'S',
+        qText: 'Amadeus',
+        listExprIndex: { imageUrl: 1, borderColor: 2 },
+        exprValues: ['http://foo/poster.png', '#ff0000'],
+        selectionStyles: { selected: '#009845' },
+      });
+      const image = testRenderer.root.findByType(Image);
+      expect(image.props.cellBgColor).toBe('#009845');
+      expect(image.props.border).toBe('3px solid #ff0000');
+      await testRenderer.unmount();
+    });
+
     test('single border mode passes the resolved style color to Image', async () => {
       const testRenderer = await renderImageCell({
         representation: { type: 'image', borderWidth: 3, borderColorMode: 'single' },
