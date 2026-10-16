@@ -661,8 +661,8 @@ importers:
         specifier: 10.1.0
         version: 10.1.0
       css-loader:
-        specifier: 7.1.4
-        version: 7.1.4(webpack@5.109.1)
+        specifier: 7.1.5
+        version: 7.1.5(webpack@5.109.1)
       d3-require:
         specifier: 1.3.0
         version: 1.3.0
@@ -5045,8 +5045,8 @@ packages:
     peerDependencies:
       postcss: ^8.0.9
 
-  css-loader@7.1.4:
-    resolution: {integrity: sha512-vv3J9tlOl04WjiMvHQI/9tmIrCxVrj6PFbHemBB1iihpeRbi/I4h033eoFIhwxBBqLhI0KYFS7yvynBFhIZfTw==}
+  css-loader@7.1.5:
+    resolution: {integrity: sha512-Q7iAfQkU2twNBryKX/vGAlE+GAmkF7quhSzAGNK8fBimxk3+tqg245rH52UPb9dioBolBc8rP0ihmHBaDTJQBA==}
     engines: {node: '>= 18.12.0'}
     peerDependencies:
       '@rspack/core': 0.x || ^1.0.0 || ^2.0.0-0
@@ -15158,7 +15158,7 @@ snapshots:
     dependencies:
       postcss: 8.5.25
 
-  css-loader@7.1.4(webpack@5.109.1):
+  css-loader@7.1.5(webpack@5.109.1):
     dependencies:
       icss-utils: 5.1.0(postcss@8.5.25)
       postcss: 8.5.25
