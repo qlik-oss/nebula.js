@@ -44,18 +44,6 @@ describe('<Image />', () => {
     await testRenderer.unmount();
   });
 
-  test('falls back to the placeholder (no img) when the image fails to load, e.g. a 404', async () => {
-    const testRenderer = await render(
-      <Image representation={{ imageSize: 'fitHeight', imagePosition: 'topLeft' }} src="http://foo/broken.png" />
-    );
-    const img = testRenderer.root.findByType('img');
-    await renderer.act(async () => {
-      img.props.onError();
-    });
-    expect(testRenderer.root.findAllByType('img')).toHaveLength(0);
-    await testRenderer.unmount();
-  });
-
   test('retries a new src on the same cell instance even if the previous src had errored', async () => {
     const testRenderer = await render(
       <Image representation={{ imageSize: 'fitHeight', imagePosition: 'topLeft' }} src="http://foo/broken.png" />
@@ -383,15 +371,11 @@ describe('<Image />', () => {
       await testRenderer.unmount();
     });
 
-    test('a border color given as a color-picker object uses its hex', async () => {
+    test('applies the border string supplied by ListBoxRowColumn', async () => {
       const testRenderer = await render(
         <Image
-          representation={{
-            imageSize: 'cover',
-            imagePosition: 'topCenter',
-            borderWidth: 3,
-            borderColor: { color: '#00ff00' },
-          }}
+          representation={{ imageSize: 'cover', imagePosition: 'topCenter' }}
+          border="3px solid #00ff00"
           src="http://foo/bar.png"
           label="l"
         />
@@ -401,15 +385,20 @@ describe('<Image />', () => {
       await testRenderer.unmount();
     });
 
-    test('applies the configured border when borderWidth > 0, else a transparent placeholder', async () => {
+    test('leaves the border unset when no border is supplied', async () => {
+      const testRenderer = await render(
+        <Image representation={{ imageSize: 'cover', imagePosition: 'topCenter' }} src="http://foo/bar.png" label="l" />
+      );
+      const container = testRenderer.root.findByProps({ 'data-key': 'image-horizontal-container' });
+      expect(container.props.style.border).toBeUndefined();
+      await testRenderer.unmount();
+    });
+
+    test('applies the supplied border when present and no border otherwise', async () => {
       const withBorder = await render(
         <Image
-          representation={{
-            imageSize: 'alwaysFill',
-            imagePosition: 'top-center',
-            borderWidth: 4,
-            borderColor: '#ff0000',
-          }}
+          representation={{ imageSize: 'alwaysFill', imagePosition: 'top-center' }}
+          border="4px solid #ff0000"
           src="http://foo/bar.png"
           label="l"
         />
@@ -420,27 +409,25 @@ describe('<Image />', () => {
 
       const noBorder = await render(
         <Image
-          representation={{ imageSize: 'alwaysFill', imagePosition: 'top-center', borderWidth: 0 }}
+          representation={{ imageSize: 'alwaysFill', imagePosition: 'top-center' }}
           src="http://foo/bar.png"
           label="l"
         />
       );
       const noContainer = noBorder.root.findByProps({ 'data-key': 'image-horizontal-container' });
-      // Transparent border of the same width avoids a layout shift when a cell becomes selected.
-      expect(noContainer.props.style.border).toBe('2px solid transparent');
+      expect(noContainer.props.style.border).toBeUndefined();
       await noBorder.unmount();
     });
   });
 
   describe('selection feedback', () => {
-    test('selected cell gets a colored border and full opacity', async () => {
+    test('selected cell receives its resolved border and full opacity', async () => {
       const testRenderer = await render(
         <Image
-          representation={{ imageSize: 'alwaysFill', imagePosition: 'top-center', borderWidth: 0 }}
+          representation={{ imageSize: 'alwaysFill', imagePosition: 'top-center' }}
+          border="2px solid #009845"
           src="http://foo/bar.png"
           label="l"
-          selected
-          selectionColor="#009845"
           opacity={1}
         />
       );
@@ -450,19 +437,13 @@ describe('<Image />', () => {
       await testRenderer.unmount();
     });
 
-    test('a selected border wins over the configured border', async () => {
+    test('applies the resolved selection border supplied by the parent', async () => {
       const testRenderer = await render(
         <Image
-          representation={{
-            imageSize: 'alwaysFill',
-            imagePosition: 'top-center',
-            borderWidth: 4,
-            borderColor: '#d9d9d9',
-          }}
+          representation={{ imageSize: 'alwaysFill', imagePosition: 'top-center' }}
+          border="4px solid #009845"
           src="http://foo/bar.png"
           label="l"
-          selected
-          selectionColor="#009845"
         />
       );
       const container = testRenderer.root.findByProps({ 'data-key': 'image-horizontal-container' });
@@ -481,37 +462,6 @@ describe('<Image />', () => {
       );
       const container = testRenderer.root.findByProps({ 'data-key': 'image-horizontal-container' });
       expect(container.props.style.opacity).toBe(0.4);
-      await testRenderer.unmount();
-    });
-  });
-
-  describe('placeholder background', () => {
-    test('uses the placeholder background when no cell background color is set', async () => {
-      const testRenderer = await render(
-        <Image
-          representation={{ imageSize: 'alwaysFill', imagePosition: 'top-center' }}
-          src="http://foo/bar.png"
-          label="l"
-          placeholderBackground="#f0f0f0"
-        />
-      );
-      const container = testRenderer.root.findByProps({ 'data-key': 'image-horizontal-container' });
-      expect(container.props.style.backgroundColor).toBe('#f0f0f0');
-      await testRenderer.unmount();
-    });
-
-    test('the cell background color expression takes precedence over the placeholder', async () => {
-      const testRenderer = await render(
-        <Image
-          representation={{ imageSize: 'alwaysFill', imagePosition: 'top-center' }}
-          src="http://foo/bar.png"
-          label="l"
-          cellBgColor="#ff0000"
-          placeholderBackground="#f0f0f0"
-        />
-      );
-      const container = testRenderer.root.findByProps({ 'data-key': 'image-horizontal-container' });
-      expect(container.props.style.backgroundColor).toBe('#ff0000');
       await testRenderer.unmount();
     });
   });

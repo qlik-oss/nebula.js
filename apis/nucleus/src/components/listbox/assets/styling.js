@@ -127,7 +127,8 @@ export function getStyles({
       ? {
           cellBgColor:
             representation.cellBgColorMode === 'expression' ? undefined : resolveImageColor(representation.cellBgColor),
-          borderColor: resolveImageColor(representation.borderColor),
+          borderColor:
+            representation.borderColorMode === 'expression' ? undefined : resolveImageColor(representation.borderColor),
         }
       : undefined;
 
