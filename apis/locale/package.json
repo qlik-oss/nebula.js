@@ -8,6 +8,6 @@
     "locale:generate": "node scripts/generate-all.mjs"
   },
   "devDependencies": {
-    "globby": "16.2.2"
+    "globby": "16.2.4"
   }
 }
