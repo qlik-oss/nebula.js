@@ -428,8 +428,8 @@ importers:
         specifier: 1.0.0
         version: 1.0.0(rollup@4.62.3)
       chalk:
-        specifier: 6.0.0
-        version: 6.0.0
+        specifier: 6.0.1
+        version: 6.0.1
       extend:
         specifier: 3.0.2
         version: 3.0.2
@@ -489,8 +489,8 @@ importers:
         specifier: 8.5.2
         version: 8.5.2(@types/node@26.1.2)
       chalk:
-        specifier: 6.0.0
-        version: 6.0.0
+        specifier: 6.0.1
+        version: 6.0.1
       ejs:
         specifier: 6.0.1
         version: 6.0.1
@@ -567,8 +567,8 @@ importers:
         specifier: 2.3.0
         version: 2.3.0(supports-color@8.1.1)
       chalk:
-        specifier: 6.0.0
-        version: 6.0.0
+        specifier: 6.0.1
+        version: 6.0.1
       chokidar:
         specifier: 5.0.0
         version: 5.0.0
@@ -4722,8 +4722,8 @@ packages:
     resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
     engines: {node: '>=10'}
 
-  chalk@6.0.0:
-    resolution: {integrity: sha512-2uNTXIuTTxk7ciZgAU1BQcgnchcG0xXnrs6jzkQfj9SsRa9M2s5zE8WT96hS6KmG4MzWHSrvH43DF1m4XRkrFg==}
+  chalk@6.0.1:
+    resolution: {integrity: sha512-/Ce6KNm3vIbWdMlNna6RVIZ/ICQxnJxCicet5LBKK9ZffBkqzDw0xh9EiKSljdRtiIQ1S1z4YgcscUUGzNCWrA==}
     engines: {node: '>=22'}
 
   char-regex@1.0.2:
@@ -14878,7 +14878,7 @@ snapshots:
       ansi-styles: 4.3.0
       supports-color: 8.1.1
 
-  chalk@6.0.0: {}
+  chalk@6.0.1: {}
 
   char-regex@1.0.2: {}
 
