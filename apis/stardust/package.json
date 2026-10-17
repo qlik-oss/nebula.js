@@ -41,7 +41,7 @@
     "version": "pnpm run spec && pnpm run ts && git add ./api-spec/spec.json ./api-spec/listbox-spec.json ./types/index.d.ts"
   },
   "devDependencies": {
-    "@babel/preset-env": "8.0.2",
+    "@babel/preset-env": "8.0.7",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^7.3.11",
