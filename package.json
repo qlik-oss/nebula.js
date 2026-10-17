@@ -44,7 +44,7 @@
     "@eslint/js": "^10.0.1",
     "@jest/globals": "^30.4.1",
     "@playwright/test": "^1.62.0",
-    "@testing-library/jest-dom": "^7.0.0",
+    "@testing-library/jest-dom": "^7.0.1",
     "babel-plugin-istanbul": "8.0.0",
     "cross-env": "10.1.0",
     "eslint": "9.39.5",
