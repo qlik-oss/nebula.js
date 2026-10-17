@@ -28,11 +28,11 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@babel/cli": "8.0.4",
-    "@babel/core": "8.0.1",
+    "@babel/cli": "8.0.6",
+    "@babel/core": "8.0.7",
     "@babel/helper-plugin-utils": "8.0.1",
     "@babel/plugin-proposal-object-rest-spread": "7.20.7",
-    "@babel/preset-env": "8.0.2",
+    "@babel/preset-env": "8.0.7",
     "@nebula.js/stardust": "workspace:*",
     "@rollup/plugin-babel": "7.1.0",
     "@rollup/plugin-commonjs": "29.0.3",
