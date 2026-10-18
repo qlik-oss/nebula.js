@@ -691,8 +691,8 @@ importers:
         specifier: 19.2.8
         version: 19.2.8(react@19.2.8)
       react-router:
-        specifier: 8.3.0
-        version: 8.3.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        specifier: 8.4.0
+        version: 8.4.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       style-loader:
         specifier: 4.0.0
         version: 4.0.0(webpack@5.109.1)
@@ -3412,6 +3412,9 @@ packages:
 
   '@qlik/browserslist-config@3.1.0':
     resolution: {integrity: sha512-cu9asSOoJhSl5B2hiyNOD3WPDxZ1eMjhaB5f1Q0RtZ/ca5IA0gz6w6nNTb9iF0PseT/uTqwwpQcXOeuMkT8wJA==}
+
+  '@remix-run/route-pattern@0.22.1':
+    resolution: {integrity: sha512-czdGJWh09Lapvcqt7Vb09KlrU2PhRJ8xQaI+AItTuD9aDJ5MAgxnS38lnys6Ll+6RJEqPiaUqTwIQhVLwFvv+w==}
 
   '@rollup/plugin-babel@7.1.0':
     resolution: {integrity: sha512-h9Y+xYha6p4wKO+FwdiPIkE+eIYCm8MzZPpX1iARIoFBnmKP9CnpT1p9dDf/DTFm6fyN8PmuLyRI5qZgchnitw==}
@@ -8301,8 +8304,8 @@ packages:
   react-is@19.2.8:
     resolution: {integrity: sha512-s5un28nYxKJw5gvUHyW5PCC28CvBqLu9r3cWgzHT4Vo/5fqqkFcdRYsGcKf50WMPpjjFZS5d76fn3YCo2njKwQ==}
 
-  react-router@8.3.0:
-    resolution: {integrity: sha512-qyPMvW83jGIct3yiieisxdk9M745anqhpIMKN5m1t6yBMfgVPpt77aHOqs5fUlEJRMCGffg9BaQLH9oPVOL7xQ==}
+  react-router@8.4.0:
+    resolution: {integrity: sha512-JtydAkBvU9UTEe5qNC+POhu+ZBNM7rlKY2IegwXc7Idj7xfRG16x5RZrw3mju+XlqBxfvb2ky9P3jUp9WyWC1g==}
     engines: {node: '>=22.22.0'}
     peerDependencies:
       react: 19.2.8
@@ -13485,6 +13488,8 @@ snapshots:
       - utf-8-validate
 
   '@qlik/browserslist-config@3.1.0': {}
+
+  '@remix-run/route-pattern@0.22.1': {}
 
   '@rollup/plugin-babel@7.1.0(@babel/core@7.29.7(supports-color@8.1.1))(@types/babel__core@7.20.5)(rollup@4.62.0)(supports-color@8.1.1)':
     dependencies:
@@ -18985,8 +18990,9 @@ snapshots:
 
   react-is@19.2.8: {}
 
-  react-router@8.3.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
+  react-router@8.4.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
     dependencies:
+      '@remix-run/route-pattern': 0.22.1
       cookie-es: 3.1.1
       react: 19.2.8
     optionalDependencies:

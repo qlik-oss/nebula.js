@@ -83,7 +83,7 @@
     "monaco-editor": "0.57.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "react-router": "8.3.0",
+    "react-router": "8.4.0",
     "style-loader": "4.0.0"
   }
 }
