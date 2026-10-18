@@ -70,9 +70,9 @@
   "resolutions": {
     "dts-dom": "3.7.0",
     "caniuse-lite": "1.0.30001815",
-    "react": "19.2.8",
-    "react-dom": "19.2.8",
-    "react-is": "19.2.8",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-is": "19.3.0",
     "@playwright/test": "^1.64.0",
     "minimatch@npm:^3.0.0": "^10.2.6",
     "minimatch@npm:^5.0.0": "^10.2.6",
