@@ -334,7 +334,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
               representation={representation}
               src={imageSrc}
               label={imageAlt}
-              title={label}
+              title={imageAlt}
               subtitle={imageSubtitle}
               cellBgColor={imageCellBgColor}
               borderColor={styles?.image?.borderColor}
