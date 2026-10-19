@@ -43,6 +43,6 @@
     "fs-extra": "11.4.1",
     "node-event-emitter": "0.0.1",
     "rollup": "4.64.5",
-    "yargs": "18.1.0"
+    "yargs": "18.2.0"
   }
 }
