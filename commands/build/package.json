@@ -44,7 +44,7 @@
     "rollup-plugin-postcss": "4.0.2",
     "rollup-plugin-sass": "1.15.3",
     "rollup-plugin-visualizer": "7.1.1",
-    "yargs": "18.1.0"
+    "yargs": "18.2.0"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "12.3.0",
