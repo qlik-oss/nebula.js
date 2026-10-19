@@ -76,20 +76,7 @@ const isSafeImageSrc = (src) => {
   }
 };
 
-function Image({
-  representation,
-  src,
-  label,
-  title,
-  subtitle,
-  cellBgColor,
-  borderColor: borderColorProp,
-  placeholderBackground,
-  textStyles,
-  selected = false,
-  selectionColor = '#009845',
-  opacity = 1,
-}) {
+function Image({ representation, src, label, title, subtitle, cellBgColor, border, textStyles, opacity = 1 }) {
   const {
     imageSize = 'alwaysFit',
     imagePosition,
@@ -97,8 +84,6 @@ function Image({
     textOverlay = true,
     titleBackground = true,
     cornerRadius = 4,
-    borderWidth = 0,
-    borderColor: representationBorderColor,
   } = representation;
   const isFitHeight = imageSize === 'fitHeight';
   const isFitWidth = imageSize === 'fitWidth';
@@ -110,19 +95,6 @@ function Image({
   const [erroredSrc, setErroredSrc] = useState(null);
   const hasLoadError = safeSrc !== null && safeSrc === erroredSrc;
   const resolvedCornerRadius = `${cornerRadius}px`;
-  const resolvedBorderColor =
-    borderColorProp ??
-    (typeof representationBorderColor === 'string' ? representationBorderColor : representationBorderColor?.color) ??
-    '#d9d9d9';
-  // Selected cells get a colored border; otherwise use the configured border
-  const width = borderWidth > 0 ? borderWidth : 2;
-  let color = 'transparent';
-  if (selected) {
-    color = selectionColor;
-  } else if (borderWidth > 0) {
-    color = resolvedBorderColor;
-  }
-  const border = `${width}px solid ${color}`;
 
   const imgNode =
     safeSrc && !hasLoadError ? (
@@ -227,7 +199,7 @@ function Image({
         overflow: 'hidden',
         display: 'flex',
         justifyContent: resolvedImagePosition.horizontal,
-        backgroundColor: cellBgColor || placeholderBackground || undefined,
+        backgroundColor: cellBgColor || undefined,
         borderRadius: resolvedCornerRadius,
         border,
         opacity,
