@@ -446,8 +446,8 @@ importers:
         specifier: 1.15.3
         version: 1.15.3(rollup@4.64.5)
       rollup-plugin-visualizer:
-        specifier: 7.0.1
-        version: 7.0.1(rollup@4.64.5)
+        specifier: 7.1.1
+        version: 7.1.1(rollup@4.64.5)
       yargs:
         specifier: 18.1.0
         version: 18.1.0
@@ -8540,6 +8540,19 @@ packages:
       rollup:
         optional: true
 
+  rollup-plugin-visualizer@7.1.1:
+    resolution: {integrity: sha512-ThaGiHTU8XW02OkK80TrTHATraJmM9OAduU4otal+7gyXLpYEtmGBLfx5kW+EHvvLwn03YGW2NnwKUIqsYlJAA==}
+    engines: {node: '>=22'}
+    hasBin: true
+    peerDependencies:
+      rolldown: 1.x || ^1.0.0-beta || ^1.0.0-rc
+      rollup: 2.x || 3.x || 4.x
+    peerDependenciesMeta:
+      rolldown:
+        optional: true
+      rollup:
+        optional: true
+
   rollup-pluginutils@2.8.2:
     resolution: {integrity: sha512-EEp9NhnUkwY8aif6bxgovPHMoMoNr2FulJziTndpt5H9RdwC47GSGuII9XxpSdzVGM0GWrNPHV6ie1LTNJPaLQ==}
 
@@ -8796,6 +8809,10 @@ packages:
 
   source-map@0.7.6:
     resolution: {integrity: sha512-i5uvt8C3ikiWeNZSVZNWcfZPItFQOsYTUAOkcUPGd8DqDy1uOUikjt5dG+uRlwyvR108Fb9DOd4GvXfT0N2/uQ==}
+    engines: {node: '>= 12'}
+
+  source-map@0.8.0:
+    resolution: {integrity: sha512-d8EqvL+k/SOXCreS/SUzg2ciyHqBBLcN/yuRjFsbvVhHTE2pgei7oAhmPM7kWFbkX6OSMQfUq4KbkF3au9lhYQ==}
     engines: {node: '>= 12'}
 
   spdx-correct@3.2.0:
@@ -19274,11 +19291,11 @@ snapshots:
     optionalDependencies:
       rollup: 4.62.0
 
-  rollup-plugin-visualizer@7.0.1(rollup@4.64.5):
+  rollup-plugin-visualizer@7.1.1(rollup@4.64.5):
     dependencies:
       open: 11.0.0
       picomatch: 4.0.7
-      source-map: 0.7.6
+      source-map: 0.8.0
       yargs: 18.1.0
     optionalDependencies:
       rollup: 4.64.5
@@ -19649,6 +19666,8 @@ snapshots:
   source-map@0.6.1: {}
 
   source-map@0.7.6: {}
+
+  source-map@0.8.0: {}
 
   spdx-correct@3.2.0:
     dependencies:
