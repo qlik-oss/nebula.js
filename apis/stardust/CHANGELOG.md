@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.8.0](https://github.com/qlik-oss/nebula.js/compare/v7.7.0...v7.8.0) (2026-10-19)
+
+### Bug Fixes
+
+- **deps:** update babel monorepo ([#2288](https://github.com/qlik-oss/nebula.js/issues/2288)) ([bfb50db](https://github.com/qlik-oss/nebula.js/commit/bfb50dbf71fd09593d37509561d9458fa3ce502a))
+- **deps:** update dependency @qlik/api to v2.19.0 ([#2265](https://github.com/qlik-oss/nebula.js/issues/2265)) ([cc3182f](https://github.com/qlik-oss/nebula.js/commit/cc3182f983756cfc5bd8fb68f80e119078ec0f7d))
+- **deps:** update dependency rollup to v4.64.5 ([#2309](https://github.com/qlik-oss/nebula.js/issues/2309)) ([564242f](https://github.com/qlik-oss/nebula.js/commit/564242f16314cb906f3bee2280860be98e16b4cf))
+
+### Features
+
+- add selection state & expression to background & border color ([#2273](https://github.com/qlik-oss/nebula.js/issues/2273)) ([cdce20a](https://github.com/qlik-oss/nebula.js/commit/cdce20a38844e95c41406eab61065c41bcbf4cf6))
+
 # [7.7.0](https://github.com/qlik-oss/nebula.js/compare/v7.6.0...v7.7.0) (2026-10-08)
 
 **Note:** Version bump only for package @nebula.js/stardust

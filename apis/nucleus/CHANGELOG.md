@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.8.0](https://github.com/qlik-oss/nebula.js/compare/v7.7.0...v7.8.0) (2026-10-19)
+
+### Bug Fixes
+
+- **deps:** update dependency @qlik/api to v2.19.0 ([#2265](https://github.com/qlik-oss/nebula.js/issues/2265)) ([cc3182f](https://github.com/qlik-oss/nebula.js/commit/cc3182f983756cfc5bd8fb68f80e119078ec0f7d))
+- maintain image outline & corner radius on selection ([#2257](https://github.com/qlik-oss/nebula.js/issues/2257)) ([a053aa8](https://github.com/qlik-oss/nebula.js/commit/a053aa8e3795bef7ec0007689548a792f9dc25bd))
+- remove expr cache images in filterpane ([#2276](https://github.com/qlik-oss/nebula.js/issues/2276)) ([90936dc](https://github.com/qlik-oss/nebula.js/commit/90936dcebb84559a42bf366619cea37a738ad0c2))
+
+### Features
+
+- add selection state & expression to background & border color ([#2273](https://github.com/qlik-oss/nebula.js/issues/2273)) ([cdce20a](https://github.com/qlik-oss/nebula.js/commit/cdce20a38844e95c41406eab61065c41bcbf4cf6))
+- image label expression to be set as image overlay text title ([#2259](https://github.com/qlik-oss/nebula.js/issues/2259)) ([345e8b5](https://github.com/qlik-oss/nebula.js/commit/345e8b57116711a344018f94d12fd9cf0c15f034))
+
 # [7.7.0](https://github.com/qlik-oss/nebula.js/compare/v7.6.0...v7.7.0) (2026-10-08)
 
 ### Bug Fixes

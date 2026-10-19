@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.8.0](https://github.com/qlik-oss/nebula.js/compare/v7.7.0...v7.8.0) (2026-10-19)
+
+### Bug Fixes
+
+- **deps:** update dependency yargs to v18.2.0 ([#2313](https://github.com/qlik-oss/nebula.js/issues/2313)) ([9314569](https://github.com/qlik-oss/nebula.js/commit/9314569cb556129ae23a8a24d5c37edf6c499c07))
+
 # [7.7.0](https://github.com/qlik-oss/nebula.js/compare/v7.6.0...v7.7.0) (2026-10-08)
 
 **Note:** Version bump only for package @nebula.js/cli
