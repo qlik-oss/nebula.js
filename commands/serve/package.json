@@ -69,7 +69,7 @@
     "@playwright/test": "^1.64.0",
     "@testing-library/dom": "^10.4.2",
     "@testing-library/react": "^16.3.3",
-    "@testing-library/user-event": "^14.6.7",
+    "@testing-library/user-event": "^14.6.8",
     "autosuggest-highlight": "3.3.4",
     "babel-loader": "10.1.1",
     "cross-env": "10.1.0",
