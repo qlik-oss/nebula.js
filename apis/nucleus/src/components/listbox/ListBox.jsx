@@ -374,7 +374,6 @@ export default function ListBox({
     showSearch,
     isModal,
     styles,
-    flags,
   });
 
   const { columnWidth, listHeight, itemHeight } = sizes || {};

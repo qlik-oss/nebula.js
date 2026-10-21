@@ -44,7 +44,6 @@ export default function getListBoxComponents({
   showSearch,
   isModal,
   styles,
-  flags,
 }) {
   const { layoutOptions = {} } = layout || {};
   const { columnWidth, listHeight, itemHeight, rowCount, columnCount } = sizes || {};
@@ -105,7 +104,6 @@ export default function getListBoxComponents({
     isModal,
     styles,
     fillHeight,
-    flags,
   };
 
   const List = ({ onItemsRendered, ref }) => {
