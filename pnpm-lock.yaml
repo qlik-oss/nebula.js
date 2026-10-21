@@ -434,7 +434,7 @@ importers:
         specifier: 3.0.2
         version: 3.0.2
       postcss:
-        specifier: ^8.5.29
+        specifier: ^8.5.30
         version: 8.5.30
       rollup:
         specifier: 4.64.5
