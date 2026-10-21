@@ -11,7 +11,7 @@ overrides:
   react: 19.3.0
   react-dom: 19.3.0
   react-is: 19.3.0
-  '@playwright/test': ^1.64.0
+  '@playwright/test': ^1.64.1
   minimatch@npm:^3.0.0: ^3.1.5
   minimatch@npm:^5.0.0: ^5.1.9
   minimatch@npm:^9.0.0: ^9.0.9
@@ -40,7 +40,7 @@ importers:
         specifier: ^30.5.2
         version: 30.5.2(supports-color@8.1.1)
       '@playwright/test':
-        specifier: ^1.64.0
+        specifier: ^1.64.1
         version: 1.64.1
       '@testing-library/jest-dom':
         specifier: ^7.0.1
@@ -640,7 +640,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/ui
       '@playwright/test':
-        specifier: ^1.64.0
+        specifier: ^1.64.1
         version: 1.64.1
       '@testing-library/dom':
         specifier: ^10.4.2
@@ -730,7 +730,7 @@ importers:
         specifier: workspace:*
         version: link:../../apis/stardust
       '@playwright/test':
-        specifier: ^1.64.0
+        specifier: ^1.64.1
         version: 1.64.1
       picasso-plugin-q:
         specifier: 2.11.5
@@ -757,7 +757,7 @@ importers:
         specifier: workspace:*
         version: link:../../apis/stardust
       '@playwright/test':
-        specifier: ^1.64.0
+        specifier: ^1.64.1
         version: 1.64.1
 
   test/mashup:
@@ -766,7 +766,7 @@ importers:
         specifier: workspace:*
         version: link:../../commands/serve
       '@playwright/test':
-        specifier: ^1.64.0
+        specifier: ^1.64.1
         version: 1.64.1
       body-parser:
         specifier: 2.3.0
@@ -784,7 +784,7 @@ importers:
         specifier: workspace:*
         version: link:../../commands/serve
       '@playwright/test':
-        specifier: ^1.64.0
+        specifier: ^1.64.1
         version: 1.64.1
       '@testing-library/dom':
         specifier: ^10.4.1
