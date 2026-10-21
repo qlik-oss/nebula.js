@@ -4,12 +4,17 @@ import { selectValues, fillRange, getElemNumbersFromPages } from './listbox-sele
 import rowColClasses from '../../components/ListBoxRowColumn/helpers/classes';
 
 const dataItemSelector = `.${rowColClasses.fieldRoot}`;
-const getKeyAsToggleSelected = (event) => !(event?.metaKey || event?.ctrlKey);
+// 'add' keeps today's behavior (plain click adds/toggles, modifier replaces); 'replace' inverts it.
+const getToggle = (event, selectionMode) => {
+  const modifierPressed = !!(event?.metaKey || event?.ctrlKey);
+  return selectionMode === 'replace' ? modifierPressed : !modifierPressed;
+};
 
 export default function useSelectionsInteractions({
   selectionState,
   selections,
   checkboxes = false,
+  selectionMode = 'add',
   doc = document,
   loaderRef,
 }) {
@@ -73,7 +78,7 @@ export default function useSelectionsInteractions({
     if (selectionState.selectDisabled?.()) {
       return false;
     }
-    const toggle = !selectionState.isSingleSelect && getKeyAsToggleSelected(event?.nativeEvent);
+    const toggle = !selectionState.isSingleSelect && getToggle(event?.nativeEvent, selectionMode);
     if (!toggle) {
       selectionState.clearItemStates(true);
     }
@@ -102,7 +107,7 @@ export default function useSelectionsInteractions({
       return;
     }
     const elemNumber = +event.target.getAttribute('data-n');
-    const toggle = !selectionState.isSingleSelect && getKeyAsToggleSelected(event.nativeEvent);
+    const toggle = !selectionState.isSingleSelect && getToggle(event.nativeEvent, selectionMode);
     currentSelect.current.elemNumbers = [elemNumber];
     currentSelect.current.toggle = toggle;
 
@@ -120,7 +125,7 @@ export default function useSelectionsInteractions({
       return;
     }
     const elemNumber = +event.currentTarget.getAttribute('data-n');
-    const toggle = !selectionState.isSingleSelect && getKeyAsToggleSelected(event);
+    const toggle = !selectionState.isSingleSelect && getToggle(event, selectionMode);
     currentSelect.current.isRange = false;
     currentSelect.current.startElemNumber = elemNumber;
     currentSelect.current.elemNumbers = [elemNumber];

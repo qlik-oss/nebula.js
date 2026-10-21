@@ -139,6 +139,22 @@
           "defaultValue": true,
           "type": "boolean"
         },
+        "selectionMode": {
+          "description": "Controls what a click does to the current selection. 'add' (default) adds/toggles the clicked\nvalue while keeping other selections (holding ctrl/cmd replaces the selection with just that\nvalue). 'replace' inverts this: a plain click replaces the selection with just the clicked\nvalue, while holding ctrl/cmd adds/toggles it into the current selection.",
+          "optional": true,
+          "defaultValue": "add",
+          "kind": "union",
+          "items": [
+            {
+              "kind": "literal",
+              "value": "'add'"
+            },
+            {
+              "kind": "literal",
+              "value": "'replace'"
+            }
+          ]
+        },
         "showTitle": {
           "description": "Show title.",
           "optional": true,
