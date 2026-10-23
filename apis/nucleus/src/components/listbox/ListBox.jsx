@@ -58,11 +58,14 @@ export default function ListBox({
   showSearch,
   isModal,
   styles,
+  flags = {},
 }) {
   const { translator: translatorDynamic } = useContext(InstanceContext);
   const [initScrollPosIsSet, setInitScrollPosIsSet] = useState(false);
   const isSingleSelect = !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
-  const { checkboxes = checkboxOption, histogram } = layout ?? {};
+  const { checkboxes = checkboxOption, histogram, selectionMode } = layout ?? {};
+  // Keep legacy click behavior until VIZ-410 is enabled
+  const resolvedSelectionMode = flags?.isEnabled?.('VIZ-410-SELECTION_BEHAVIOR_LISTBOXES') ? selectionMode : 'add';
 
   const loaderRef = useRef(null);
   const local = useRef({
@@ -194,6 +197,7 @@ export default function ListBox({
     selectionState,
     selections,
     checkboxes,
+    selectionMode: resolvedSelectionMode,
     doc: document,
     loaderRef,
   });

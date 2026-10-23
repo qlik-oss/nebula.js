@@ -4,12 +4,17 @@ import { selectValues, fillRange, getElemNumbersFromPages } from './listbox-sele
 import rowColClasses from '../../components/ListBoxRowColumn/helpers/classes';
 
 const dataItemSelector = `.${rowColClasses.fieldRoot}`;
-const getKeyAsToggleSelected = (event) => !(event?.metaKey || event?.ctrlKey);
+// 'add' keeps today's behavior (plain click adds/toggles, modifier replaces); 'replace' inverts it.
+const getToggle = (event, selectionMode) => {
+  const modifierPressed = !!(event?.metaKey || event?.ctrlKey);
+  return selectionMode === 'replace' ? modifierPressed : !modifierPressed;
+};
 
 export default function useSelectionsInteractions({
   selectionState,
   selections,
   checkboxes = false,
+  selectionMode = 'add',
   doc = document,
   loaderRef,
 }) {
@@ -73,7 +78,7 @@ export default function useSelectionsInteractions({
     if (selectionState.selectDisabled?.()) {
       return false;
     }
-    const toggle = !selectionState.isSingleSelect && getKeyAsToggleSelected(event?.nativeEvent);
+    const toggle = !selectionState.isSingleSelect && (additive || getToggle(event?.nativeEvent, selectionMode));
     if (!toggle) {
       selectionState.clearItemStates(true);
     }
@@ -97,48 +102,54 @@ export default function useSelectionsInteractions({
     }
   };
 
-  const onChange = useCallback((event) => {
-    if (selectionState.selectDisabled()) {
-      return;
-    }
-    const elemNumber = +event.target.getAttribute('data-n');
-    const toggle = !selectionState.isSingleSelect && getKeyAsToggleSelected(event.nativeEvent);
-    currentSelect.current.elemNumbers = [elemNumber];
-    currentSelect.current.toggle = toggle;
+  const onChange = useCallback(
+    (event) => {
+      if (selectionState.selectDisabled()) {
+        return;
+      }
+      const elemNumber = +event.target.getAttribute('data-n');
+      const toggle = !selectionState.isSingleSelect && getToggle(event.nativeEvent, selectionMode);
+      currentSelect.current.elemNumbers = [elemNumber];
+      currentSelect.current.toggle = toggle;
 
-    if (!toggle) {
-      selectionState.clearItemStates(true);
-    }
-    selectionState.updateItem(elemNumber);
+      if (!toggle) {
+        selectionState.clearItemStates(true);
+      }
+      selectionState.updateItem(elemNumber);
 
-    currentSelect.current.active = false;
-    doSelect();
-  }, []);
-
-  const onMouseDown = useCallback((event) => {
-    if (event.button !== 0 || selectionState.selectDisabled()) {
-      return;
-    }
-    const elemNumber = +event.currentTarget.getAttribute('data-n');
-    const toggle = !selectionState.isSingleSelect && getKeyAsToggleSelected(event);
-    currentSelect.current.isRange = false;
-    currentSelect.current.startElemNumber = elemNumber;
-    currentSelect.current.elemNumbers = [elemNumber];
-    currentSelect.current.toggle = toggle;
-    currentSelect.current.active = true;
-
-    if (!toggle) {
-      selectionState.clearItemStates(true);
-    }
-    selectionState.updateItem(elemNumber);
-
-    if (selectionState.isSingleSelect) {
       currentSelect.current.active = false;
       doSelect();
-    }
+    },
+    [selectionMode]
+  );
 
-    handleSingleSelectKey(event, event.currentTarget);
-  }, []);
+  const onMouseDown = useCallback(
+    (event) => {
+      if (event.button !== 0 || selectionState.selectDisabled()) {
+        return;
+      }
+      const elemNumber = +event.currentTarget.getAttribute('data-n');
+      const toggle = !selectionState.isSingleSelect && getToggle(event, selectionMode);
+      currentSelect.current.isRange = false;
+      currentSelect.current.startElemNumber = elemNumber;
+      currentSelect.current.elemNumbers = [elemNumber];
+      currentSelect.current.toggle = toggle;
+      currentSelect.current.active = true;
+
+      if (!toggle) {
+        selectionState.clearItemStates(true);
+      }
+      selectionState.updateItem(elemNumber);
+
+      if (selectionState.isSingleSelect) {
+        currentSelect.current.active = false;
+        doSelect();
+      }
+
+      handleSingleSelectKey(event, event.currentTarget);
+    },
+    [selectionMode]
+  );
 
   const onMouseUp = useCallback((event) => {
     if (event.button !== 0 || !currentSelect.current.active) {

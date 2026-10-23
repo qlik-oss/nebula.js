@@ -129,6 +129,15 @@ const listdef = {
    */
   autoConfirm: false,
   /**
+   * Controls what a click does to the current selection. 'add' (default) adds/toggles the clicked
+   * value while keeping other selections (holding ctrl/cmd replaces the selection with just that
+   * value). 'replace' inverts this: a plain click replaces the selection with just the clicked
+   * value, while holding ctrl/cmd adds/toggles it into the current selection.
+   * @type {('add' | 'replace')=}
+   * @default
+   */
+  selectionMode: 'add',
+  /**
    * Layout settings.
    * @type {object=}
    */
