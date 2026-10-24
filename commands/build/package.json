@@ -40,7 +40,7 @@
     "chalk": "6.0.1",
     "extend": "3.0.2",
     "postcss": "^8.5.30",
-    "rollup": "4.64.8",
+    "rollup": "4.64.9",
     "rollup-plugin-postcss": "4.0.2",
     "rollup-plugin-sass": "1.15.3",
     "rollup-plugin-visualizer": "7.1.1",
