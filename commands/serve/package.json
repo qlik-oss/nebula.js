@@ -51,7 +51,7 @@
     "source-map-loader": "5.0.0",
     "webpack": "5.112.0",
     "webpack-cli": "7.2.3",
-    "webpack-dev-server": "6.0.0",
+    "webpack-dev-server": "6.1.0",
     "ws": "8.22.0",
     "yargs": "18.2.0"
   },
