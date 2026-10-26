@@ -17,6 +17,7 @@ export default function getRowsKeyboardNavigation({
   rowIndex,
   columnIndex,
   layoutOrder,
+  selectionMode = 'add',
 }) {
   const getElement = (keyCode, elm, next = false) => {
     if (
@@ -94,28 +95,49 @@ export default function getRowsKeyboardNavigation({
         setStartedRange(true);
         break;
       case KEYS.SPACE:
+        // selectionMode is already resolved internally via the passed event's modifier keys
         select([getElementIndex(currentTarget)], false, event);
         break;
       case KEYS.ARROW_DOWN:
       case KEYS.ARROW_RIGHT:
         elementToFocus = getElement(keyCode, currentTarget, true);
         if (shiftKey && elementToFocus) {
+          const currentIndex = getElementIndex(currentTarget);
+          const targetIndex = getElementIndex(elementToFocus);
           if (startedRange) {
-            select([getElementIndex(currentTarget)], true);
+            if (selectionMode === 'replace') {
+              // Combine both endpoints in one call; two replace calls would wipe each other out
+              select([currentIndex, targetIndex], false);
+            } else {
+              select([currentIndex], true);
+              select([targetIndex], true);
+            }
             setStartedRange(false);
+          } else {
+            // Range already established, keep extending without replacing it
+            select([targetIndex], true);
           }
-          select([getElementIndex(elementToFocus)], true);
         }
         break;
       case KEYS.ARROW_UP:
       case KEYS.ARROW_LEFT:
         elementToFocus = getElement(keyCode, currentTarget, false);
         if (shiftKey && elementToFocus) {
+          const currentIndex = getElementIndex(currentTarget);
+          const targetIndex = getElementIndex(elementToFocus);
           if (startedRange) {
-            select([getElementIndex(currentTarget)], true);
+            if (selectionMode === 'replace') {
+              // Combine both endpoints in one call; two replace calls would wipe each other out
+              select([currentIndex, targetIndex], false);
+            } else {
+              select([currentIndex], true);
+              select([targetIndex], true);
+            }
             setStartedRange(false);
+          } else {
+            // Range already established, keep extending without replacing it
+            select([targetIndex], true);
           }
-          select([getElementIndex(elementToFocus)], true);
         }
         break;
       case KEYS.ENTER:

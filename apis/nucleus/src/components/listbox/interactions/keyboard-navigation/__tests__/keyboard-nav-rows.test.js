@@ -250,4 +250,124 @@ describe('keyboard navigation', () => {
       expect(focusListItems.setFirst).toHaveBeenCalledWith(true);
     });
   });
+
+  describe('handle keyboard navigation with selectionMode "replace"', () => {
+    beforeEach(() => {
+      handleKeyDownForRow = getRowsKeyboardNavigation({
+        select: actions.select,
+        cancel: actions.cancel,
+        confirm: actions.confirm,
+        setScrollPosition,
+        focusListItems,
+        keyboard,
+        isModal,
+        selectionMode: 'replace',
+      });
+    });
+
+    test('select values with Space defers to select so ctrl/meta can still invert the mode', () => {
+      const event = {
+        nativeEvent: { keyCode: KEYS.SPACE },
+        currentTarget: { getAttribute: jest.fn().mockReturnValue(1) },
+        preventDefault: jest.fn(),
+        stopPropagation: jest.fn(),
+      };
+      handleKeyDownForRow(event);
+      expect(actions.select).toHaveBeenCalledTimes(1);
+      expect(actions.select).toHaveBeenCalledWith([1], false, event);
+    });
+
+    test('arrow down with Shift should select both endpoints in one call to avoid self-overwrite', () => {
+      const focus = jest.fn();
+      const eventShift = {
+        nativeEvent: { keyCode: KEYS.SHIFT },
+        preventDefault: jest.fn(),
+        stopPropagation: jest.fn(),
+      };
+      const eventArrowDown = {
+        nativeEvent: { keyCode: KEYS.ARROW_DOWN, shiftKey: true },
+        currentTarget: {
+          parentElement: {
+            nextElementSibling: {
+              querySelector: () => ({ focus, getAttribute: jest.fn().mockReturnValue(2) }),
+            },
+          },
+          getAttribute: jest.fn().mockReturnValue(1),
+        },
+        preventDefault: jest.fn(),
+        stopPropagation: jest.fn(),
+      };
+      handleKeyDownForRow(eventShift);
+      handleKeyDownForRow(eventArrowDown);
+      expect(actions.select).toHaveBeenCalledTimes(1);
+      expect(actions.select).toHaveBeenCalledWith([1, 2], false);
+    });
+
+    test('arrow up with Shift should select both endpoints in one call to avoid self-overwrite', () => {
+      const focus = jest.fn();
+      const eventShift = {
+        nativeEvent: { keyCode: KEYS.SHIFT },
+        preventDefault: jest.fn(),
+        stopPropagation: jest.fn(),
+      };
+      const eventArrowUp = {
+        nativeEvent: { keyCode: KEYS.ARROW_UP, shiftKey: true },
+        currentTarget: {
+          getAttribute: jest.fn().mockReturnValue(2),
+          parentElement: {
+            previousElementSibling: {
+              querySelector: () => ({ focus, getAttribute: jest.fn().mockReturnValue(1) }),
+            },
+          },
+        },
+        preventDefault: jest.fn(),
+        stopPropagation: jest.fn(),
+      };
+      handleKeyDownForRow(eventShift);
+      handleKeyDownForRow(eventArrowUp);
+      expect(actions.select).toHaveBeenCalledTimes(1);
+      expect(actions.select).toHaveBeenCalledWith([2, 1], false);
+    });
+
+    test('continuing to extend a range after the initial Shift+Arrow should add, not replace', () => {
+      const focus = jest.fn();
+      const eventShift = {
+        nativeEvent: { keyCode: KEYS.SHIFT },
+        preventDefault: jest.fn(),
+        stopPropagation: jest.fn(),
+      };
+      const firstArrowDown = {
+        nativeEvent: { keyCode: KEYS.ARROW_DOWN, shiftKey: true },
+        currentTarget: {
+          parentElement: {
+            nextElementSibling: {
+              querySelector: () => ({ focus, getAttribute: jest.fn().mockReturnValue(2) }),
+            },
+          },
+          getAttribute: jest.fn().mockReturnValue(1),
+        },
+        preventDefault: jest.fn(),
+        stopPropagation: jest.fn(),
+      };
+      const secondArrowDown = {
+        nativeEvent: { keyCode: KEYS.ARROW_DOWN, shiftKey: true },
+        currentTarget: {
+          parentElement: {
+            nextElementSibling: {
+              querySelector: () => ({ focus, getAttribute: jest.fn().mockReturnValue(3) }),
+            },
+          },
+          getAttribute: jest.fn().mockReturnValue(2),
+        },
+        preventDefault: jest.fn(),
+        stopPropagation: jest.fn(),
+      };
+      handleKeyDownForRow(eventShift);
+      handleKeyDownForRow(firstArrowDown);
+      handleKeyDownForRow(secondArrowDown);
+      expect(actions.select).toHaveBeenCalledTimes(2);
+      expect(actions.select).toHaveBeenNthCalledWith(1, [1, 2], false);
+      expect(actions.select).toHaveBeenNthCalledWith(2, [3], true);
+    });
+  });
 });

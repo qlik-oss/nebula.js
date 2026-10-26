@@ -138,6 +138,57 @@ describe('<ListBoxRowColumn />', () => {
       expect(getRowsKeyboardNavigation).toHaveBeenCalled();
     });
 
+    test('defaults selectionMode to "add" when not provided on data', async () => {
+      const index = 0;
+      const style = {};
+      const data = {
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
+        keyboard,
+        pages: defaultPages,
+        actions,
+        dataOffset: 0,
+        sizes: { itemPadding: 2 },
+        styles,
+        focusListItems: () => ({ first: false, last: false }),
+      };
+      const testRenderer = await render(
+        <ThemeProvider theme={theme}>
+          <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
+        </ThemeProvider>
+      );
+      expect(getRowsKeyboardNavigation).toHaveBeenCalledWith(expect.objectContaining({ selectionMode: 'add' }));
+      await testRenderer.unmount();
+    });
+
+    test('propagates selectionMode "replace" from data to getRowsKeyboardNavigation', async () => {
+      const index = 0;
+      const style = {};
+      const data = {
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
+        keyboard,
+        pages: defaultPages,
+        actions,
+        dataOffset: 0,
+        sizes: { itemPadding: 2 },
+        styles,
+        selectionMode: 'replace',
+        focusListItems: () => ({ first: false, last: false }),
+      };
+      const testRenderer = await render(
+        <ThemeProvider theme={theme}>
+          <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
+        </ThemeProvider>
+      );
+      expect(getRowsKeyboardNavigation).toHaveBeenCalledWith(expect.objectContaining({ selectionMode: 'replace' }));
+      await testRenderer.unmount();
+    });
+
     test('should have css class `value`', async () => {
       const index = 0;
       const style = {};

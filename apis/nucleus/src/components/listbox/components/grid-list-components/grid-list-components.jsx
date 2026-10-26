@@ -43,6 +43,7 @@ export default function getListBoxComponents({
   translator,
   showSearch,
   isModal,
+  selectionMode = 'add',
   styles,
 }) {
   const { layoutOptions = {} } = layout || {};
@@ -104,6 +105,7 @@ export default function getListBoxComponents({
     isModal,
     styles,
     fillHeight,
+    selectionMode,
   };
 
   const List = ({ onItemsRendered, ref }) => {
