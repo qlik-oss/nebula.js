@@ -18,6 +18,7 @@ export default function getRowsKeyboardNavigation({
   columnIndex,
   layoutOrder,
   selectionMode = 'add',
+  isSingleSelect = false,
 }) {
   const getElement = (keyCode, elm, next = false) => {
     if (
@@ -106,8 +107,13 @@ export default function getRowsKeyboardNavigation({
           const targetIndex = getElementIndex(elementToFocus);
           if (startedRange) {
             if (selectionMode === 'replace') {
-              // Combine both endpoints in one call; two replace calls would wipe each other out
-              select([currentIndex, targetIndex], false);
+              // Single-select fields can only hold targetIndex
+              if (isSingleSelect) {
+                select([targetIndex], false);
+              } else {
+                // Combine both endpoints in one call; two replace calls would wipe each other out
+                select([currentIndex, targetIndex], false);
+              }
             } else {
               select([currentIndex], true);
               select([targetIndex], true);
@@ -127,8 +133,13 @@ export default function getRowsKeyboardNavigation({
           const targetIndex = getElementIndex(elementToFocus);
           if (startedRange) {
             if (selectionMode === 'replace') {
-              // Combine both endpoints in one call; two replace calls would wipe each other out
-              select([currentIndex, targetIndex], false);
+              // Single-select fields can only hold targetIndex; combining endpoints would violate that
+              if (isSingleSelect) {
+                select([targetIndex], false);
+              } else {
+                // Combine both endpoints in one call; two replace calls would wipe each other out
+                select([currentIndex, targetIndex], false);
+              }
             } else {
               select([currentIndex], true);
               select([targetIndex], true);

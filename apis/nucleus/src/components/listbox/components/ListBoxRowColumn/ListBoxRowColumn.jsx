@@ -133,6 +133,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
       columnIndex,
       layoutOrder: effectiveLayoutOrder,
       selectionMode,
+      isSingleSelect,
     }),
     [
       actions,
@@ -143,6 +144,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
       columnIndex,
       effectiveLayoutOrder,
       selectionMode,
+      isSingleSelect,
     ]
   );
 
