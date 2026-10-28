@@ -373,6 +373,7 @@ export default function ListBox({
     translator: translatorDynamic,
     showSearch,
     isModal,
+    selectionMode: resolvedSelectionMode,
     styles,
   });
 

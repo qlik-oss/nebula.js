@@ -61,6 +61,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     representation,
     listExprIndex = {},
     hideLastRowDivider = false,
+    selectionMode = 'add',
   } = data;
 
   const { dense = false, dataLayout = 'singleColumn', layoutOrder } = layoutOptions;
@@ -131,8 +132,20 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
       rowIndex,
       columnIndex,
       layoutOrder: effectiveLayoutOrder,
+      selectionMode,
+      isSingleSelect,
     }),
-    [actions, keyboard?.innerTabStops, rowCount, columnCount, rowIndex, columnIndex, effectiveLayoutOrder]
+    [
+      actions,
+      keyboard?.innerTabStops,
+      rowCount,
+      columnCount,
+      rowIndex,
+      columnIndex,
+      effectiveLayoutOrder,
+      selectionMode,
+      isSingleSelect,
+    ]
   );
 
   const row = useMemo(() => getRowFromPages({ pages, cellIndex }), [pages, cellIndex]);
