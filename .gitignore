@@ -35,3 +35,4 @@ test-results
 test/rendering/test/rendering/reports
 commands/serve/test/reports
 playwright-report/
+.turbo

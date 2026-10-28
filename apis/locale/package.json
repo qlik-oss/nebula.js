@@ -5,7 +5,9 @@
   "main": "src/index.js",
   "scripts": {
     "build": "node scripts/generate-all.mjs",
-    "locale:generate": "node scripts/generate-all.mjs"
+    "build:dev": "node scripts/generate-all.mjs",
+    "locale:generate": "node scripts/generate-all.mjs",
+    "locale:verify": "node scripts/verify-translations.cjs"
   },
   "devDependencies": {
     "globby": "16.2.4"

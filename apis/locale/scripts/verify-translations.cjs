@@ -1,4 +1,4 @@
-const vars = require('../apis/locale/all');
+const vars = require('../all.json');
 
 const languages = [
   'en-US',
@@ -26,6 +26,7 @@ Object.keys(vars).forEach((key) => {
   }
   for (let i = 0; i < languages.length; i++) {
     if (supportLanguagesForString.indexOf(languages[i]) === -1) {
+      // eslint-disable-next-line no-console
       console.warn(`String '${vars[key].id}' is missing value for '${languages[i]}'`);
     }
   }

@@ -54,16 +54,18 @@ This is a multi-package repository which uses [lerna](https://github.com/lerna/l
 
 ### Visualizing packages
 
-To better understand packages' relations, you can use Nx's capabilities to open an interactive visualization of the package graph.
+To better understand packages' relations, you can use Turborepo to generate a visualization of the task graph.
 
-To open the visualization, run:
+To print the graph for the build task, run:
 
-    npx nx graph
+    pnpm exec turbo run build --graph
+
+Add a file name such as `--graph=graph.html` to write it to a file.
 
 ### Development workflow
 
 - `pnpm` install all dependencies
-- `pnpm run build` generate UMD bundles for all packages and an ESM bundle for stardust
+- `pnpm run build` generate UMD bundles for all packages and an ESM bundle for stardust. Tasks are orchestrated by [Turborepo](https://turborepo.dev) in dependency order, and outputs are cached in `.turbo/cache`, so unchanged packages are restored instead of rebuilt
 - `pnpm run lint` check code style
 - `pnpm run format` format code style
 - `pnpm run test` run all tests
