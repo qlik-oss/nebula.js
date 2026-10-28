@@ -3,15 +3,15 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "build": "cross-env NODE_ENV=production pnpm -r --sequential run build",
-    "build:dev": "cross-env NODE_ENV=development pnpm -r run build",
-    "build:watch": "pnpm -r --parallel run build:watch ",
+    "build": "turbo run build",
+    "build:dev": "turbo run build:dev",
+    "build:watch": "turbo run build:watch",
     "format": "prettier --write '**/**/*' --ignore-unknown",
     "format:check": "prettier --check '**/**/*' --ignore-unknown",
     "locale:verify": "node tools/verify-translations.cjs",
-    "locale:generate": "pnpm -r locale:generate",
+    "locale:generate": "turbo run locale:generate",
     "lint": "eslint packages apis commands --ext .js,.jsx",
-    "spec": "pnpm -r --sequential run spec && pnpm -r --sequential run ts",
+    "spec": "turbo run spec ts",
     "mashup": "node scripts/start-mashup.js",
     "test": "pnpm run test:unit",
     "test:unit": "jest --maxWorkers=2",
@@ -65,6 +65,7 @@
     "lerna": "9.0.7",
     "lint-staged": "^17.6.0",
     "prettier": "3.9.10",
+    "turbo": "2.11.10",
     "whatwg-fetch": "^3.6.20"
   },
   "resolutions": {

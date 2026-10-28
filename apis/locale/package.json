@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "build": "node scripts/generate-all.mjs",
+    "build:dev": "node scripts/generate-all.mjs",
     "locale:generate": "node scripts/generate-all.mjs"
   },
   "devDependencies": {

@@ -9,3 +9,4 @@ apis/locale/all.json
 /.nx/workspace-data
 **/.github/**
 **/_package.json
+.turbo

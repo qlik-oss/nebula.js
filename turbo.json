@@ -1,0 +1,33 @@
+{
+  "$schema": "https://turborepo.dev/schema.json",
+  "globalDependencies": ["babel.config.cjs", "rollup.config.js", "pnpm-workspace.yaml"],
+  "tasks": {
+    "transit": {
+      "dependsOn": ["^transit"]
+    },
+    "build": {
+      "dependsOn": ["^build", "transit"],
+      "outputs": ["dist/**"]
+    },
+    "build:dev": {
+      "dependsOn": ["^build:dev", "transit"],
+      "outputs": ["dist/**"]
+    },
+    "build:watch": {
+      "dependsOn": ["^build:dev"],
+      "cache": false,
+      "persistent": true
+    },
+    "locale:generate": {
+      "outputs": ["all.json"]
+    },
+    "spec": {
+      "dependsOn": ["transit"],
+      "outputs": ["api-spec/spec.json", "api-spec/listbox-spec.json"]
+    },
+    "ts": {
+      "dependsOn": ["spec"],
+      "outputs": ["types/index.d.ts"]
+    }
+  }
+}
