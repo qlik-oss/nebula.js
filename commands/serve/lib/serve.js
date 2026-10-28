@@ -10,7 +10,7 @@ import chokidar from 'chokidar';
 import build from '@nebula.js/cli-build';
 
 import initConfig from './init-config.js';
-import webpackServe from './webpack.serve.js';
+import rspackServe from './rspack.serve.js';
 
 const require = createRequire(import.meta.url);
 
@@ -154,7 +154,7 @@ export default async (argv) => {
 
   const ww = snUrl ? null : await initiateWatch({ snPath, snName: serveConfig.type || snName, host });
 
-  const server = await webpackServe({
+  const server = await rspackServe({
     host,
     port,
     disableHostCheck: serveConfig.disableHostCheck,

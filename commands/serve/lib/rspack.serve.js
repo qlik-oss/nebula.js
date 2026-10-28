@@ -6,8 +6,10 @@ import { fileURLToPath } from 'url';
 import chalk from 'chalk';
 import express from 'express';
 
-import webpack from 'webpack';
-import WebpackDevServer from 'webpack-dev-server';
+// eslint-disable-next-line import/no-unresolved -- rspack ships its types via package exports, which the eslint import resolver does not follow
+import { rspack } from '@rspack/core';
+// eslint-disable-next-line import/no-unresolved -- see above
+import { RspackDevServer } from '@rspack/dev-server';
 
 import snapshooterFn from './snapshot-server.js';
 import snapshotRouter from './snapshot-router.js';
@@ -65,26 +67,30 @@ export default async ({
   const renderConfigs = serveConfig.renderConfigs || [];
 
   if (dev) {
-    const webpackConfig = (await import('./webpack.build.js')).default;
+    const rspackConfig = (await import('./rspack.build.js')).default;
     const srcDir = path.resolve(moduleDir, '../web');
     const distDir = path.resolve(srcDir, '../dist');
     contentBase = distDir;
-    config = webpackConfig({
+    config = rspackConfig({
       srcDir,
       distDir,
       dev: true,
       serveConfig,
     });
   } else {
-    const webpackConfig = (await import('./webpack.prod.js')).default;
+    const rspackConfig = (await import('./rspack.prod.js')).default;
     const srcDir = path.resolve(moduleDir, '../dist');
     contentBase = srcDir;
-    config = webpackConfig({
+    config = rspackConfig({
       srcDir,
       serveConfig,
     });
   }
   const options = {
+    // @rspack/dev-server defaults its middleware app to a connect-next app, but the
+    // setupMiddlewares hook below relies on Express-only APIs (app.get, res.json,
+    // res.sendStatus) and entryWatcher.addRoutes also expects an Express app.
+    app: async () => express(),
     client: {
       logging: 'none',
       overlay: {
@@ -180,7 +186,6 @@ export default async ({
         context: '/render',
         target: `${url}/eRender.html`,
         ignorePath: true,
-        logLevel: 'error',
       },
     ],
     server: HTTPS
@@ -199,8 +204,8 @@ export default async ({
     },
   };
 
-  const compiler = webpack(config);
-  const server = new WebpackDevServer(options, compiler);
+  const compiler = rspack(config);
+  const server = new RspackDevServer(options, compiler);
 
   const close = () => {
     server.stop();
@@ -215,10 +220,10 @@ export default async ({
     watcher.on('event', (event) => {
       if (event.code === 'ERROR') {
         inError = true;
-        server.sockWrite(server.sockets, 'errors', [event.error.stack]);
+        server.sendMessage(server.webSocketServer?.clients ?? [], 'errors', [event.error.stack]);
       } else if (event.code === 'BUNDLE_END' && inError) {
         inError = false;
-        server.sockWrite(server.sockets, 'ok');
+        server.sendMessage(server.webSocketServer?.clients ?? [], 'ok');
       }
     });
   }

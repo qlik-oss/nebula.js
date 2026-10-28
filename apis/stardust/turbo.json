@@ -2,8 +2,14 @@
   "$schema": "https://turborepo.dev/schema.json",
   "extends": ["//"],
   "tasks": {
-    "build": { "outputs": ["$TURBO_EXTENDS$", "core/esm/**"] },
-    "build:dev": { "outputs": ["$TURBO_EXTENDS$", "core/esm/**"] },
+    "build": {
+      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/rspack.config.mjs"],
+      "outputs": ["$TURBO_EXTENDS$", "core/esm/**"]
+    },
+    "build:dev": {
+      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/rspack.config.mjs"],
+      "outputs": ["$TURBO_EXTENDS$", "core/esm/**"]
+    },
     "spec": {
       "dependsOn": ["transit"],
       "outputs": ["api-spec/spec.json", "api-spec/listbox-spec.json"]

@@ -2,6 +2,9 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 
+// eslint-disable-next-line import/extensions -- this package is ESM; the extension is required at runtime
+import fixturesAlias from './fixtures-alias.js';
+
 const moduleDir = path.dirname(fileURLToPath(import.meta.url));
 
 const isSrc = /^([.]{2}\/)/;
@@ -49,7 +52,7 @@ const cfg = ({ srcDir = path.resolve(moduleDir, '../dist'), serveConfig = {} }) 
     },
     resolve: {
       alias: {
-        fixtures: path.resolve(process.cwd(), serveConfig.fixturePath),
+        ...fixturesAlias(serveConfig.fixturePath),
       },
     },
     module: {
