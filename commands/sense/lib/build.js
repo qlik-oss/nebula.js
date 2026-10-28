@@ -1,17 +1,62 @@
-/* eslint-disable no-console */
+/* eslint-disable no-console, import/extensions */
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { createRequire } from 'module';
+import { createRequire, builtinModules } from 'module';
 import fs from 'fs-extra';
 
-import * as rollup from 'rollup';
-import { nodeResolve } from '@rollup/plugin-node-resolve';
-import common from '@rollup/plugin-commonjs';
-import babel from '@rollup/plugin-babel';
-import terser from '@rollup/plugin-terser';
+// eslint-disable-next-line import/no-unresolved -- @rspack/core is resolvable at runtime; the lint resolver doesn't know about it
+import { rspack } from '@rspack/core';
+
+import LegalCommentsPlugin from './legal-comments.js';
 
 const require = createRequire(import.meta.url);
 const moduleDir = path.dirname(fileURLToPath(import.meta.url));
+
+const BUILTINS = new Set([...builtinModules, ...builtinModules.map((m) => `node:${m}`)]);
+const PACKAGE_REQUEST = /^(?:@[a-z0-9][\w.-]*\/)?[a-z0-9][\w.-]*(?:\/[^!?]*)?$/i;
+
+// like rollup did for the amd format, a bare import that cannot be resolved (typically a module provided by
+// Qlik Sense such as 'qlik' or 'jquery') and node builtins stay out of the bundle and become amd dependencies
+const externalsFor = (warn) => [
+  async ({ request, getResolve, context }) => {
+    if (!request) {
+      return undefined;
+    }
+    if (BUILTINS.has(request)) {
+      return request;
+    }
+    if (!PACKAGE_REQUEST.test(request)) {
+      return undefined;
+    }
+    try {
+      await new Promise((resolve, reject) => {
+        getResolve()(context, request, (err, result) =>
+          err || !result ? reject(err || new Error()) : resolve(result)
+        );
+      });
+      return undefined;
+    } catch (e) {
+      warn(`'${request}' could not be resolved and is treated as an amd dependency`);
+      return request;
+    }
+  },
+];
+
+const run = (configuration) =>
+  new Promise((resolve, reject) => {
+    const compiler = rspack(configuration);
+    compiler.run((err, stats) => {
+      compiler.close(() => {
+        if (err) {
+          reject(err);
+        } else if (stats.hasErrors()) {
+          reject(new Error(stats.toString({ all: false, errors: true, errorDetails: true, colors: false })));
+        } else {
+          resolve(stats);
+        }
+      });
+    });
+  });
 
 async function build(argv) {
   const cwd = process.cwd();
@@ -93,40 +138,73 @@ async function build(argv) {
   };
 
   if (extDefinition) {
-    const bundle = await rollup.rollup({
-      input: extDefinition,
-      plugins: [
-        nodeResolve(),
-        common(),
-        babel({
-          babelHelpers: 'bundled',
-          babelrc: false,
-          exclude: [/node_modules/],
-          presets: [
-            [
-              '@babel/preset-env',
-              {
-                modules: false,
-                targets: {
-                  browsers: ['chrome 62'],
-                },
+    await run({
+      name: 'sense-ext',
+      mode: 'production',
+      context: cwd,
+      target: ['web', 'es2017'],
+      entry: path.resolve(moduleDir, 'amd-entry.cjs'),
+      devtool: sourcemap ? 'source-map' : false,
+      performance: false,
+      stats: 'errors-warnings',
+      output: {
+        path: qextLegacyTargetDir,
+        filename: `${targetFile}.js`,
+        clean: false,
+        library: { type: 'amd' },
+        // sources are listed relative to the output, as rollup did
+        devtoolModuleFilenameTemplate: (info) =>
+          path.relative(qextLegacyTargetDir, info.absoluteResourcePath).replace(/\\/g, '/'),
+      },
+      externals: externalsFor((message) => console.warn(`  \x1b[33mwarn:\x1b[0m ${message}`)),
+      externalsType: 'amd',
+      resolve: {
+        alias: { __nebula_sense_ext__: extDefinition },
+        extensions: ['.js', '.json'],
+        mainFields: ['module', 'main'],
+      },
+      module: {
+        rules: [
+          { test: /\.m?js$/, resolve: { fullySpecified: false } },
+          {
+            test: /\.m?js$/,
+            exclude: [/node_modules/],
+            use: {
+              loader: require.resolve('babel-loader'),
+              options: {
+                babelrc: false,
+                configFile: false,
+                sourceType: 'unambiguous',
+                sourceMaps: !!sourcemap,
+                presets: [
+                  [
+                    require.resolve('@babel/preset-env'),
+                    {
+                      modules: false,
+                      targets: {
+                        browsers: ['chrome 62'],
+                      },
+                    },
+                  ],
+                ],
               },
-            ],
-          ],
-        }),
-        argv.minify &&
-          terser({
-            output: {
-              comments: /@license|@preserve|Copyright|license/,
             },
+          },
+        ],
+      },
+      optimization: {
+        minimize: !!argv.minify,
+        minimizer: [
+          new rspack.SwcJsMinimizerRspackPlugin({
+            // the legal comments are put back by LegalCommentsPlugin, not left to the minifier
+            minimizerOptions: { format: { comments: false } },
           }),
+        ],
+      },
+      plugins: [
+        new rspack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
+        ...(argv.minify ? [new LegalCommentsPlugin()] : []),
       ],
-    });
-
-    await bundle.write({
-      file: path.resolve(qextLegacyTargetDir, `${targetFile}.js`),
-      format: 'amd',
-      sourcemap,
     });
   }
 
