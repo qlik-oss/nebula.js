@@ -10,8 +10,25 @@ env:
   JEST_JUNIT_OUTPUT_DIR: ./coverage/junit/
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: pnpm/setup@a0881977cd8ea73b1ed212236c99ca10dcc80cf4 # v3
+        with:
+          cache: true
+      - name: Restore and save turbo cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: .turbo/cache
+          key: turbo-${{ runner.os }}-${{ github.sha }}
+          restore-keys: turbo-${{ runner.os }}-
+      - name: Build
+        run: pnpm run build
+
   validate:
     runs-on: ubuntu-latest
+    needs: build
     permissions:
       contents: read
       checks: write
@@ -21,7 +38,7 @@ jobs:
         with:
           cache: true
       - name: Restore turbo cache
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: .turbo/cache
           key: turbo-${{ runner.os }}-${{ github.sha }}
@@ -54,6 +71,7 @@ jobs:
 
   test-integration:
     runs-on: ubuntu-latest
+    needs: build
     permissions:
       contents: read
       checks: write
@@ -63,7 +81,7 @@ jobs:
         with:
           cache: true
       - name: Restore turbo cache
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: .turbo/cache
           key: turbo-${{ runner.os }}-${{ github.sha }}
@@ -154,6 +172,7 @@ jobs:
   test-create:
     name: test-create-${{ matrix['picasso-template'] != 'none' && matrix['picasso-template'] || 'basic' }}${{ matrix.mashup && '-mashup' || '' }}${{ matrix.typescript && '-ts' || '' }}
     runs-on: ubuntu-latest
+    needs: build
     strategy:
       fail-fast: false
       matrix:
@@ -188,7 +207,7 @@ jobs:
         with:
           cache: true
       - name: Restore turbo cache
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: .turbo/cache
           key: turbo-${{ runner.os }}-${{ github.sha }}
@@ -218,13 +237,14 @@ jobs:
 
   test-react:
     runs-on: ubuntu-latest
+    needs: build
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: pnpm/setup@fa36a5ef7dcdefc3a7cb25655c122e00cf6e636e # v3
         with:
           cache: true
       - name: Restore turbo cache
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: .turbo/cache
           key: turbo-${{ runner.os }}-${{ github.sha }}
