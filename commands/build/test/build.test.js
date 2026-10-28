@@ -372,6 +372,29 @@ export default function supernova(): { n: number; kind: string } { return { n: o
       assert.equal(exports(), 'a+b');
     });
 
+    it('does not make a dependency of the bundle of a require of a node builtin in code that is never run', async () => {
+      // random-js, a dependency of real visualizations, is a module that calls require("crypto") in a function that
+      // is only used by an engine nobody asks for. Rollup left the call alone, a dependency on 'crypto' makes a
+      // systemjs or amd host fail to load the bundle.
+      write(
+        'node_modules/rnd/package.json',
+        JSON.stringify({ name: 'rnd', module: 'index.js', main: 'index.js', sideEffects: false })
+      );
+      write(
+        'node_modules/rnd/index.js',
+        `export const browser = () => 'browser';
+export const nodeCrypto = () => require('crypto').randomBytes(4);
+`
+      );
+      write('src/index.js', `import { browser } from 'rnd';\nexport default () => browser();\n`);
+      await run({ esm: true });
+
+      assert.deepEqual(plain(loadUmd('dist/viz.js').required), []);
+      assert.equal(loadUmd('dist/viz.js').exports(), 'browser');
+      assert.deepEqual(plain(loadSystem('dist/viz.systemjs.js').deps), []);
+      assert.doesNotMatch(fs.readFileSync(path.join(dir, 'dist/viz.esm.js'), 'utf8'), /from\s*["']crypto["']/);
+    });
+
     it('keeps the peer dependencies external', async () => {
       createProject({ pkg: { peerDependencies: { '@nebula.js/stardust': '*', lib: '*' } } });
       process.chdir(dir);

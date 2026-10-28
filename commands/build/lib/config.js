@@ -6,7 +6,7 @@ import { createRequire } from 'module';
 // eslint-disable-next-line import/no-unresolved -- @rspack/core is resolvable at runtime; the lint resolver doesn't know about it
 import { rspack } from '@rspack/core';
 
-import createExternals from './externals.js';
+import createExternals, { BUILTINS } from './externals.js';
 import LegalCommentsPlugin from './legal-comments.js';
 
 const require = createRequire(import.meta.url);
@@ -213,6 +213,8 @@ const config = ({
       extensions: reactNative ? extensions.flatMap((e) => [`.native${e}`, e]) : extensions,
       alias: isUmd ? { __nebula_build_entry__: entry } : {},
       mainFields: browser ? ['browser', 'module', 'main'] : ['module', 'main'],
+      // a require() of a node builtin in an esm bundle, see externals.js
+      ...(isEsm && preferBuiltins ? { fallback: Object.fromEntries([...BUILTINS].map((name) => [name, false])) } : {}),
       ...(browser ? {} : { conditionNames: ['module', 'import', 'require', 'default'] }),
     },
     module: {

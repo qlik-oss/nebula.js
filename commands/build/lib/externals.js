@@ -40,7 +40,7 @@ export default function createExternals({ external, format, globals = {}, prefer
 
   const unresolved = new Set();
 
-  const fn = async ({ request, getResolve, context }) => {
+  const fn = async ({ request, getResolve, context, dependencyType }) => {
     if (!request) {
       return undefined;
     }
@@ -48,6 +48,14 @@ export default function createExternals({ external, format, globals = {}, prefer
       return toExternal(request);
     }
     if (preferBuiltins && BUILTINS.has(request)) {
+      if (dependencyType === 'commonjs') {
+        // A require() call, as opposed to an import. Rollup left those alone, which is what makes a library that
+        // calls require('crypto') in a function nothing uses (random-js does) harmless. Declaring it as a
+        // dependency of the bundle instead makes a systemjs or amd host try to load 'crypto' and fail.
+        // Keep it a call that is only made when the code is reached; an esm bundle cannot have a free require,
+        // for that one the module resolves to an empty one, see the resolve.fallback of the build.
+        return format === 'esm' ? undefined : `node-commonjs ${request}`;
+      }
       return toExternal(request);
     }
     if (!isBare(request)) {
@@ -72,4 +80,4 @@ export default function createExternals({ external, format, globals = {}, prefer
   return [fn];
 }
 
-export { guessGlobalName };
+export { guessGlobalName, BUILTINS };

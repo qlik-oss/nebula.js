@@ -46,6 +46,21 @@ describe('createExternals', () => {
     assert.equal(await run({ ...base, preferBuiltins: false }, 'path', ['path']), undefined);
   });
 
+  it('keeps a require() of a node builtin a call that is made when it is reached, not a dependency of the bundle', async () => {
+    const options = { ...base, preferBuiltins: true };
+    const [fn] = createExternals({ ...options, format: 'umd' });
+    const [sys] = createExternals({ ...options, format: 'systemjs' });
+    const [esm] = createExternals({ ...options, format: 'esm' });
+    const data = { request: 'crypto', context: '/p', getResolve: () => () => {} };
+
+    assert.equal(await fn({ ...data, dependencyType: 'commonjs' }), 'node-commonjs crypto');
+    assert.equal(await sys({ ...data, dependencyType: 'commonjs' }), 'node-commonjs crypto');
+    // an esm bundle has no free require, the module resolves to an empty one
+    assert.equal(await esm({ ...data, dependencyType: 'commonjs' }), undefined);
+    // an import is still a dependency of the bundle
+    assert.equal(await sys({ ...data, dependencyType: 'esm' }), 'crypto');
+  });
+
   it('treats an unresolvable package as an external and warns once', async () => {
     const warnings = [];
     const options = { ...base, warn: (m) => warnings.push(m) };
