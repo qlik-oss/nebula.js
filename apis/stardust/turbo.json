@@ -1,0 +1,8 @@
+{
+  "$schema": "https://turborepo.dev/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "build": { "outputs": ["$TURBO_EXTENDS$", "core/esm/**"] },
+    "build:dev": { "outputs": ["$TURBO_EXTENDS$", "core/esm/**"] }
+  }
+}
