@@ -31,14 +31,6 @@
       "dependsOn": ["@nebula.js/locale#build", "@nebula.js/stardust#build", "@nebula.js/test-utils#build"],
       "passThroughEnv": ["JEST_JUNIT_OUTPUT_DIR"],
       "cache": false
-    },
-    "spec": {
-      "dependsOn": ["transit"],
-      "outputs": ["api-spec/spec.json", "api-spec/listbox-spec.json"]
-    },
-    "ts": {
-      "dependsOn": ["spec"],
-      "outputs": ["types/index.d.ts"]
     }
   }
 }
