@@ -1,4 +1,4 @@
-const vars = require('../apis/locale/all');
+const vars = require('../all');
 
 const languages = [
   'en-US',

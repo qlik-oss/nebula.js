@@ -3,6 +3,7 @@
   "extends": ["//"],
   "tasks": {
     "build": { "outputs": ["all.json"] },
-    "build:dev": { "outputs": ["all.json"] }
+    "build:dev": { "outputs": ["all.json"] },
+    "locale:verify": { "dependsOn": ["build"], "cache": false }
   }
 }

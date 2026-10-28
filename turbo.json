@@ -18,10 +18,6 @@
       "cache": false,
       "persistent": true
     },
-    "//#verify-translations": {
-      "dependsOn": ["@nebula.js/locale#build"],
-      "cache": false
-    },
     "//#eslint": {
       "dependsOn": [
         "@nebula.js/locale#build",
