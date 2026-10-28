@@ -34,6 +34,11 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
       filename: '[name].js',
       publicPath: '/',
     },
+    optimization: {
+      // extract third-party license notices to <chunk>.LICENSE.txt as webpack's terser plugin did,
+      // rspack's default minimizer drops them
+      minimizer: [new rspack.SwcJsMinimizerRspackPlugin({ extractComments: true })],
+    },
     resolve: {
       alias: {
         '@nebula.js/stardust': path.resolve(moduleDir, '../../../apis/stardust/src'),

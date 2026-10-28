@@ -182,6 +182,11 @@ const config = ({ format = 'umd', debug = false, file, targetPkg }) => {
       minimize: !debug,
       minimizer: [
         new rspack.SwcJsMinimizerRspackPlugin({
+          // Third-party license notices are required by the dependencies' licenses. Extract them to
+          // <bundle>.LICENSE.txt, as webpack's terser plugin did, rather than keeping them inline:
+          // the minifier drops an inline notice together with the function it is attached to
+          // (@mui/styled-engine's was lost that way), extraction sees the comments first.
+          extractComments: true,
           minimizerOptions: {
             format: {
               comments: false,

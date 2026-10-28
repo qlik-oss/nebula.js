@@ -20,6 +20,7 @@ test/**/__artifacts__/diff
 test/**/__artifacts__/temp
 apis/*/core/**/*.js
 apis/*/core/**/*.js.map
+apis/*/core/**/*.LICENSE.txt
 apis/locale/all.json
 bundle-analysis.html
 
