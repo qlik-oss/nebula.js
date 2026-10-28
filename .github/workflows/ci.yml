@@ -15,17 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: pnpm/setup@a0881977cd8ea73b1ed212236c99ca10dcc80cf4 # v3
+      - uses: ./.github/actions/setup-workspace
         with:
-          cache: true
-      - name: Restore and save turbo cache
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: .turbo/cache
-          key: turbo-${{ runner.os }}-${{ github.sha }}
-          restore-keys: turbo-${{ runner.os }}-
-      - name: Build
-        run: pnpm run build
+          save-cache: true
 
   validate:
     runs-on: ubuntu-latest
@@ -35,17 +27,7 @@ jobs:
       checks: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: pnpm/setup@fa36a5ef7dcdefc3a7cb25655c122e00cf6e636e # v3
-        with:
-          cache: true
-      - name: Restore turbo cache
-        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: .turbo/cache
-          key: turbo-${{ runner.os }}-${{ github.sha }}
-          restore-keys: turbo-${{ runner.os }}-
-      - name: Build
-        run: pnpm run build
+      - uses: ./.github/actions/setup-workspace
       - name: Locale verify
         run: pnpm run locale:verify
       - name: format
@@ -78,17 +60,7 @@ jobs:
       checks: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: pnpm/setup@fa36a5ef7dcdefc3a7cb25655c122e00cf6e636e # v3
-        with:
-          cache: true
-      - name: Restore turbo cache
-        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: .turbo/cache
-          key: turbo-${{ runner.os }}-${{ github.sha }}
-          restore-keys: turbo-${{ runner.os }}-
-      - name: Build
-        run: pnpm run build
+      - uses: ./.github/actions/setup-workspace
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps chromium
       - name: Test component
@@ -204,17 +176,7 @@ jobs:
             typescript: false
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: pnpm/setup@fa36a5ef7dcdefc3a7cb25655c122e00cf6e636e # v3
-        with:
-          cache: true
-      - name: Restore turbo cache
-        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: .turbo/cache
-          key: turbo-${{ runner.os }}-${{ github.sha }}
-          restore-keys: turbo-${{ runner.os }}-
-      - name: Build
-        run: pnpm run build
+      - uses: ./.github/actions/setup-workspace
       - name: Create Nebula ${{ matrix.mashup && 'mashup' || 'visualization' }} project with template (${{ matrix.picasso-template }})
         id: create-project
         env:
@@ -241,17 +203,7 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: pnpm/setup@fa36a5ef7dcdefc3a7cb25655c122e00cf6e636e # v3
-        with:
-          cache: true
-      - name: Restore turbo cache
-        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: .turbo/cache
-          key: turbo-${{ runner.os }}-${{ github.sha }}
-          restore-keys: turbo-${{ runner.os }}-
-      - name: Build
-        run: pnpm run build
+      - uses: ./.github/actions/setup-workspace
       - name: Build and test React based chart
         run: .github/scripts/nebula_react.sh "$(mktemp -d)/react-chart"
 

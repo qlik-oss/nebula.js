@@ -1,0 +1,31 @@
+name: Setup workspace
+description: Set up pnpm, restore the turbo cache and build the workspace. Requires the repository to be checked out.
+
+inputs:
+  save-cache:
+    description: Save the turbo cache after the job. Only one job per workflow should do this.
+    default: 'false'
+
+runs:
+  using: composite
+  steps:
+    - uses: pnpm/setup@fa36a5ef7dcdefc3a7cb25655c122e00cf6e636e # v3
+      with:
+        cache: true
+    - name: Restore turbo cache
+      if: inputs.save-cache != 'true'
+      uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: .turbo/cache
+        key: turbo-${{ runner.os }}-${{ github.sha }}
+        restore-keys: turbo-${{ runner.os }}-
+    - name: Restore and save turbo cache
+      if: inputs.save-cache == 'true'
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: .turbo/cache
+        key: turbo-${{ runner.os }}-${{ github.sha }}
+        restore-keys: turbo-${{ runner.os }}-
+    - name: Build
+      shell: bash
+      run: pnpm run build
