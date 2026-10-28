@@ -47,24 +47,24 @@ const options = {
   },
   preferBuiltins: {
     description:
-      'In Rollup, preferBuiltins is a configuration option that specifies whether to use Node.js built-in modules (such as fs or path) when bundling for Node.js environment.',
+      'Leave Node.js built-in modules (such as fs or path) out of the bundle, as external dependencies, instead of resolving a package of the same name.',
     type: 'boolean',
     default: true,
   },
   browser: {
     description:
-      'In Rollup, the browser option is a configuration option that specifies whether the bundle is intended to run in a browser environment.',
+      "Use the 'browser' field and export condition of the packages in the bundle, so that browser specific files and conditionals in exports are applied.",
     type: 'boolean',
     default: true,
   },
   codeSplit: {
     description:
-      'Sets output.dir instead of output.file for code-splitting builds. Sets inlineDynamicImports for umd builds to avoid throwing errors.',
+      'Write the esm and systemjs builds to a directory with the entry and a chunk for every dynamic import, instead of one file. The umd build is always one file.',
     type: 'boolean',
     default: false,
   },
   inlineDynamic: {
-    description: 'Sets inlineDynamicImports to true for all builds to help with certain dependencies',
+    description: 'Inline dynamic imports into the bundle in all builds, also when codeSplit is set',
     type: 'boolean',
     default: false,
   },

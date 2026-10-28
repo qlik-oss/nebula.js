@@ -1,19 +1,17 @@
 /* eslint-disable import/extensions */
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
-import { visualizer } from 'rollup-plugin-visualizer';
+// eslint-disable-next-line import/no-unresolved -- @rspack/core is resolvable at runtime; the lint resolver doesn't know about it
+import { rspack } from '@rspack/core';
 
-import resolveNative from './resolveNative.js';
+import createExternals from './externals.js';
+import LegalCommentsPlugin from './legal-comments.js';
 
 const require = createRequire(import.meta.url);
-const babel = require('@rollup/plugin-babel');
-const postcss = require('rollup-plugin-postcss');
-const replace = require('@rollup/plugin-replace');
-const json = require('@rollup/plugin-json');
-const { nodeResolve } = require('@rollup/plugin-node-resolve');
-const commonjs = require('@rollup/plugin-commonjs');
-const terser = require('@rollup/plugin-terser');
+const dirname = path.dirname(fileURLToPath(import.meta.url));
+
 const babelPreset = require('@babel/preset-env');
 const browsersList = require('@qlik/browserslist-config');
 const babelPresetReact = require('@babel/preset-react');
@@ -69,6 +67,17 @@ const getOutputFileDefault = ({ pkg }) => pkg.main;
 
 const getOutputNameDefault = ({ pkg }) => pkg.name.split('/').reverse()[0];
 
+// the project's own sass, the way rollup-plugin-postcss picked it up
+const resolveSass = (cwd) => {
+  try {
+    return require(require.resolve('sass', { paths: [cwd] }));
+  } catch (e) {
+    return null;
+  }
+};
+
+const LIBRARY_TYPES = { umd: 'umd', esm: 'module', systemjs: 'system' };
+
 const config = ({
   mode = 'production',
   format = 'umd',
@@ -105,16 +114,9 @@ const config = ({
   }
   const outputFile = getOutputFile({ pkg, config: argv });
 
-  const extensions = ['.mjs', '.js', '.jsx', '.json', '.node'];
-
-  let typescriptPlugin;
+  const extensions = ['.mjs', '.js', '.jsx', '.json'];
   if (typescript) {
     extensions.push('.tsx', '.ts');
-    try {
-      typescriptPlugin = require('@rollup/plugin-typescript'); // eslint-disable-line
-    } catch (e) {
-      throw new Error(`${e}\n '@rollup/plugin-typescript' is required to build using typescript.`);
-    }
   }
 
   const external = core ? getExternalCore({ pkg }) : getExternal({ pkg, config: argv });
@@ -125,28 +127,19 @@ const config = ({
     external.push('@nebula.js/stardust');
   }
 
-  const output = () => {
-    const outputConfig = {
-      banner,
-      format,
-      name: outputName,
-      sourcemap,
-      globals: {
-        '@nebula.js/stardust': 'stardust',
-      },
-    };
-    if (!argv.codeSplit || format === 'umd') {
-      outputConfig.file = path.resolve(dir, outputFile);
-    } else {
-      outputConfig.dir = path.resolve(dir, outputFile.split('/')[0]);
-    }
-    if (format === 'umd' || argv.inlineDynamic) {
-      outputConfig.inlineDynamicImports = true;
-    }
-    return outputConfig;
-  };
+  const isEsm = format === 'esm';
+  const isUmd = format === 'umd';
+  const development = mode === 'development';
+  // umd always ends up in one file, the others do unless code splitting is asked for
+  const singleFile = isUmd || argv.inlineDynamic || !argv.codeSplit;
+  const outputDir = singleFile
+    ? path.dirname(path.resolve(dir, outputFile))
+    : path.resolve(dir, outputFile.split('/')[0]);
+  const entry = path.resolve(CWD, 'src/index');
+  // the umd bundles go through a small commonjs entry that normalises their exports, see umd-entry.cjs
+  const entryFile = isUmd ? path.resolve(dirname, 'umd-entry.cjs') : entry;
 
-  const babelPresets = [
+  const presets = [
     [
       babelPreset,
       {
@@ -157,16 +150,8 @@ const config = ({
       },
     ],
   ];
-
-  const babelOverrides = [
-    {
-      test: /\.[jt]sx$/,
-      presets: [[babelPresetReact, { runtime: 'automatic', development: mode === 'development' }]],
-    },
-  ];
-
   if (typescript) {
-    babelPresets.push([
+    presets.push([
       babelPresetTypescript,
       {
         allowNamespaces: true,
@@ -175,75 +160,135 @@ const config = ({
     ]);
   }
 
-  return {
-    input: {
-      onwarn(warning, warn) {
-        // Supress "use client" warnings coming from MUI bundling
-        if (warning.code === 'MODULE_LEVEL_DIRECTIVE' && warning.message.includes(`"use client"`)) {
-          return;
-        }
-        // https://github.com/d3/d3-interpolate/issues/58
-        if (/Circular dependency.*d3-*/.test(warning.message)) {
-          return;
-        }
-        warn(warning);
-      },
-      input: path.resolve(CWD, 'src/index'),
-      external,
-      plugins: [
-        resolveNative({ reactNative }),
-        replace({
-          'process.env.NODE_ENV': JSON.stringify(mode === 'development' ? 'development' : 'production'),
-          preventAssignment: true,
-          ...resolveReplacementStrings(replacementStrings),
-        }),
-        nodeResolve({
-          extensions,
-          browser,
-          preferBuiltins,
-        }),
-        postcss({
-          exclude: /\.module\.css$/,
-        }),
-        // Handle all CSS with conditional modules processing
-        postcss({
-          include: /\.module\.css$/,
-          modules: true,
-          extract: false,
-        }),
-        commonjs({
-          ignoreTryCatch: false, // Avoids problems with require() inside try catch (https://github.com/rollup/plugins/issues/1004)
-        }),
-        json(),
+  const cssLoaders = (cssOptions = {}) => [
+    require.resolve('./inject-style-loader.cjs'),
+    { loader: require.resolve('css-loader'), options: { importLoaders: 1, ...cssOptions } },
+    require.resolve('postcss-loader'),
+  ];
 
-        babel({
-          babelHelpers: 'bundled',
-          babelrc: false,
-          inputSourceMap: sourcemap,
-          extensions,
-          overrides: babelOverrides,
-          presets: babelPresets,
-        }),
-        [
-          mode === 'production'
-            ? terser({
-                output: {
-                  preamble: banner,
-                },
-              })
-            : false,
-        ],
-        [
-          mode === 'development'
-            ? visualizer({
-                filename: 'bundle-analysis.html',
-              })
-            : false,
-        ],
-      ].filter(Boolean),
+  const sass = resolveSass(CWD);
+
+  const cfg = {
+    name: `${outputName || 'bundle'}-${format}`,
+    mode: development ? 'development' : 'production',
+    context: CWD,
+    target: ['web', 'es2017'],
+    entry: singleFile ? entryFile : { index: entryFile },
+    devtool: sourcemap ? 'source-map' : false,
+    performance: false,
+    stats: 'errors-warnings',
+    output: {
+      path: outputDir,
+      filename: singleFile ? path.basename(outputFile) : '[name].js',
+      chunkFilename: '[name]-[contenthash].js',
+      publicPath: 'auto',
+      // sources are listed relative to the output, as rollup did
+      devtoolModuleFilenameTemplate: (info) => path.relative(outputDir, info.absoluteResourcePath).replace(/\\/g, '/'),
+      globalObject: 'typeof globalThis !== "undefined" ? globalThis : typeof self !== "undefined" ? self : this',
+      clean: false,
+      library: isUmd ? { name: outputName, type: LIBRARY_TYPES[format] } : { type: LIBRARY_TYPES[format] },
+      // without an explicit chunkLoading an esm build has no way to load a split chunk and rspack folds
+      // dynamic imports into the entry instead of splitting them (only matters for --codeSplit)
+      ...(isEsm ? { module: true, chunkFormat: 'module', chunkLoading: 'import' } : {}),
     },
-    output: output(),
+    externals: createExternals({
+      external,
+      format,
+      globals: { '@nebula.js/stardust': 'stardust' },
+      preferBuiltins,
+      // eslint-disable-next-line no-console
+      warn: (message) => console.warn(`  \x1b[33mwarn:\x1b[0m ${message}`),
+    }),
+    externalsType: isEsm ? 'module' : LIBRARY_TYPES[format],
+    resolve: {
+      extensions: reactNative ? extensions.flatMap((e) => [`.native${e}`, e]) : extensions,
+      alias: isUmd ? { __nebula_build_entry__: entry } : {},
+      mainFields: browser ? ['browser', 'module', 'main'] : ['module', 'main'],
+      ...(browser ? {} : { conditionNames: ['module', 'import', 'require', 'default'] }),
+    },
+    module: {
+      rules: [
+        // packages that ship esm without file extensions in their imports
+        { test: /\.m?js$/, resolve: { fullySpecified: false } },
+        {
+          test: /\.(?:[cm]?js|jsx|tsx?)$/,
+          use: {
+            loader: require.resolve('babel-loader'),
+            options: {
+              babelrc: false,
+              configFile: false,
+              cacheDirectory: false,
+              sourceType: 'unambiguous',
+              sourceMaps: !!sourcemap,
+              presets,
+              overrides: [
+                {
+                  test: /\.[jt]sx$/,
+                  presets: [[babelPresetReact, { runtime: 'automatic', development }]],
+                },
+              ],
+            },
+          },
+        },
+        {
+          test: /\.module\.css$/,
+          use: cssLoaders({
+            modules: {
+              namedExport: false,
+              exportLocalsConvention: 'as-is',
+              localIdentName: '[name]_[local]__[hash:base64:5]',
+            },
+          }),
+        },
+        { test: /\.css$/, exclude: /\.module\.css$/, use: cssLoaders() },
+        ...(sass
+          ? [
+              {
+                test: /\.s[ac]ss$/,
+                use: [
+                  ...cssLoaders({ importLoaders: 2 }),
+                  { loader: require.resolve('sass-loader'), options: { implementation: sass } },
+                ],
+              },
+            ]
+          : []),
+      ],
+    },
+    optimization: {
+      // process.env.NODE_ENV is replaced below
+      nodeEnv: false,
+      minimize: !development,
+      minimizer: [
+        new rspack.SwcJsMinimizerRspackPlugin({
+          minimizerOptions: {
+            // the legal comments are put back by LegalCommentsPlugin, not left to the minifier
+            format: { comments: false },
+          },
+        }),
+      ],
+    },
+    plugins: [
+      new rspack.DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify(development ? 'development' : 'production'),
+        ...resolveReplacementStrings(replacementStrings),
+      }),
+      ...(development ? [] : [new LegalCommentsPlugin({ banner })]),
+      new rspack.BannerPlugin({
+        banner,
+        raw: true,
+        entryOnly: true,
+        // after minification so the banner is emitted verbatim
+        stage: rspack.Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE_SIZE + 1,
+      }),
+      ...(singleFile ? [new rspack.optimize.LimitChunkCountPlugin({ maxChunks: 1 })] : []),
+    ],
   };
+
+  if (isEsm) {
+    cfg.experiments = { outputModule: true };
+  }
+
+  return cfg;
 };
 
 export default config;
