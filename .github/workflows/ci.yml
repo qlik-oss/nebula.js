@@ -39,7 +39,7 @@ jobs:
       - name: Run unit tests and publish to codeclimate
         env:
           JEST_JUNIT_OUTPUT_DIR: ./coverage/junit/
-        run: pnpm test:unit --coverage
+        run: pnpm test:coverage
       - name: Store junit results
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
