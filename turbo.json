@@ -32,9 +32,6 @@
       "passThroughEnv": ["JEST_JUNIT_OUTPUT_DIR"],
       "cache": false
     },
-    "locale:generate": {
-      "outputs": ["all.json"]
-    },
     "spec": {
       "dependsOn": ["transit"],
       "outputs": ["api-spec/spec.json", "api-spec/listbox-spec.json"]
