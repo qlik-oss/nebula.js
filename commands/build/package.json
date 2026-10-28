@@ -37,12 +37,14 @@
     "chalk": "6.0.1",
     "css-loader": "7.1.5",
     "extend": "3.0.2",
+    "less-loader": "13.0.0",
     "postcss": "^8.5.31",
     "postcss-loader": "8.2.1",
     "sass-loader": "17.0.1",
     "yargs": "18.2.0"
   },
   "devDependencies": {
+    "less": "4.9.1",
     "sass": "1.106.1",
     "tslib": "*",
     "typescript": "^5.9.3"

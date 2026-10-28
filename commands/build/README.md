@@ -165,7 +165,7 @@ in the document head when the bundle is loaded, nothing is injected when there i
 
 - `import './style.css'` adds the stylesheet. PostCSS is applied, using the `postcss.config.js` of your project if there is one.
 - `import styles from './style.module.css'` is a CSS module, `styles` maps the class names of the file to the generated ones.
-- `import './style.scss'` is compiled when `sass` is installed in your project.
+- `import './style.scss'` is compiled when `sass` is installed in your project, `import './style.less'` when `less` is.
 
 ### Typescript
 
@@ -188,5 +188,6 @@ same way as it did when the bundler was Rollup, with these differences to be awa
 - An import that cannot be resolved is still treated as an external dependency, with a warning.
 - The `bundle-analysis.html` that development builds used to write is no longer created.
 - `@rollup/plugin-typescript` is not needed for `--typescript`, TypeScript is compiled with Babel as before.
-- Build the SystemJS bundle with `--inlineDynamic` if the code has dynamic imports, split chunks of a SystemJS build are loaded with Rspack's chunk loader.
+- Stylus (`.styl`) files are not supported.
+- With `--codeSplit` a SystemJS build is the entry `index.js` and a chunk per dynamic import, as before. The chunks are loaded from the directory that SystemJS loaded the entry from, also when the entry file is renamed.
 - A bundle contains a small module runtime, so the output of a very small visualization is a few kilobytes larger.

@@ -407,6 +407,78 @@ export default function supernova(): { n: number; kind: string } { return { n: o
       assert.equal((await (await import(pathToFileURL(path.join(dir, 'dist/index.js')))).default()).default, 'lazy');
     });
 
+    it('loads the chunks of a code split systemjs bundle from where SystemJS loaded the entry', async () => {
+      createProject({ pkg: { module: undefined } });
+      process.chdir(dir);
+      write('src/lazy.js', 'export default "lazy";\nexport const named = 1;\n');
+      write('src/index.js', `export default () => ({ load: () => import('./lazy.js') });\n`);
+      await run({ codeSplit: true, systemjs: true });
+
+      const chunks = fs.readdirSync(path.join(dir, 'dist')).filter((f) => /^\d+-.*\.js$/.test(f));
+      assert.equal(chunks.length, 1, 'one chunk for the dynamic import');
+
+      const requested = [];
+      let sandbox;
+      const script = () => {
+        const node = { setAttribute: () => {}, getAttribute: () => null };
+        Object.defineProperty(node, 'src', {
+          set: (url) => {
+            requested.push(url);
+            // the chunk arrives as the script tag would have run it
+            setTimeout(() => {
+              vm.runInContext(fs.readFileSync(path.join(dir, 'dist', url.split('/').pop()), 'utf8'), sandbox);
+              node.onload({ type: 'load' });
+            }, 0);
+          },
+        });
+        return node;
+      };
+      let registered;
+      sandbox = {
+        System: { register: (deps, factory) => (registered = factory) },
+        // no current script, as is the case when a System.register module executes
+        document: {
+          currentScript: null,
+          getElementsByTagName: () => [],
+          createElement: script,
+          head: { appendChild: () => {} },
+        },
+        setTimeout,
+        clearTimeout,
+        Promise,
+        console,
+      };
+      vm.createContext(sandbox);
+      vm.runInContext(fs.readFileSync(path.join(dir, 'dist/index.js'), 'utf8'), sandbox);
+
+      const exported = {};
+      const mod = registered((a, b) => (typeof a === 'string' ? (exported[a] = b) : Object.assign(exported, a)), {
+        meta: { url: 'https://cdn.test/assets/v1/viz.systemjs.js' },
+      });
+      mod.execute();
+      const loaded = await exported.default().load();
+
+      assert.deepEqual(plain(requested), [`https://cdn.test/assets/v1/${chunks[0]}`]);
+      assert.equal(loaded.named, 1);
+    });
+
+    it('leaves out the unused modules of side effect free packages in development builds too', async () => {
+      write(
+        'node_modules/lib/package.json',
+        JSON.stringify({ name: 'lib', main: 'index.js', module: 'index.js', sideEffects: false })
+      );
+      write('node_modules/lib/index.js', "export { a } from './a.js';\nexport { b } from './b.js';\n");
+      write('node_modules/lib/a.js', 'export const a = () => "a-marker";\n');
+      write('node_modules/lib/b.js', 'export const b = () => "b-marker";\n');
+      write('src/index.js', `import { a } from 'lib';\nexport default () => a();\n`);
+      await run({ mode: 'development' });
+      const code = fs.readFileSync(path.join(dir, 'dist/viz.js'), 'utf8');
+      assert.match(code, /a-marker/);
+      assert.doesNotMatch(code, /b-marker/);
+      // and no comments that list the path of every module
+      assert.doesNotMatch(code, /\/\*!?\*?\*?\* \.\/src\//);
+    });
+
     it('prefers .native files when building for react native', async () => {
       write(
         'react-native/package.json',
@@ -468,6 +540,19 @@ export default () => styles;
       const { doc, css } = documentStub();
       loadUmd('dist/viz.js', { document: doc });
       assert.match(css().join(' '), /\.a \.b ?\{ ?color: ?green;? ?\}/);
+    });
+
+    it('compiles less with the less of the project', async () => {
+      const lessDir = fs.realpathSync(path.resolve(import.meta.dirname, '../node_modules/less'));
+      fs.mkdirSync(path.join(dir, 'node_modules'), { recursive: true });
+      fs.symlinkSync(lessDir, path.join(dir, 'node_modules/less'), 'dir');
+      write('src/vars.less', '@c: purple;\n');
+      write('src/style.less', "@import './vars.less';\n.a { .b { color: @c; } }\n");
+      write('src/index.js', `import './style.less';\nexport default () => 1;\n`);
+      await run();
+      const { doc, css } = documentStub();
+      loadUmd('dist/viz.js', { document: doc });
+      assert.match(css().join(' '), /\.a \.b ?\{ ?color: ?purple;? ?\}/);
     });
   });
 

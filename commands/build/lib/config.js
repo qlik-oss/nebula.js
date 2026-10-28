@@ -67,10 +67,10 @@ const getOutputFileDefault = ({ pkg }) => pkg.main;
 
 const getOutputNameDefault = ({ pkg }) => pkg.name.split('/').reverse()[0];
 
-// the project's own sass, the way rollup-plugin-postcss picked it up
-const resolveSass = (cwd) => {
+// the project's own sass and less, the way rollup-plugin-postcss picked them up
+const resolveFromProject = (name, cwd) => {
   try {
-    return require(require.resolve('sass', { paths: [cwd] }));
+    return require(require.resolve(name, { paths: [cwd] }));
   } catch (e) {
     return null;
   }
@@ -138,6 +138,8 @@ const config = ({
   const entry = path.resolve(CWD, 'src/index');
   // the umd bundles go through a small commonjs entry that normalises their exports, see umd-entry.cjs
   const entryFile = isUmd ? path.resolve(dirname, 'umd-entry.cjs') : entry;
+  // the chunks of a code split systemjs bundle are loaded relative to the url that SystemJS loaded the entry from
+  const systemChunks = format === 'systemjs' && !singleFile;
 
   const presets = [
     [
@@ -166,25 +168,32 @@ const config = ({
     require.resolve('postcss-loader'),
   ];
 
-  const sass = resolveSass(CWD);
+  const sass = resolveFromProject('sass', CWD);
+  const less = resolveFromProject('less', CWD);
 
   const cfg = {
     name: `${outputName || 'bundle'}-${format}`,
     mode: development ? 'development' : 'production',
     context: CWD,
     target: ['web', 'es2017'],
-    entry: singleFile ? entryFile : { index: entryFile },
+    entry: singleFile
+      ? entryFile
+      : { index: systemChunks ? [path.resolve(dirname, 'system-public-path.js'), entryFile] : entryFile },
     devtool: sourcemap ? 'source-map' : false,
     performance: false,
     stats: 'errors-warnings',
     output: {
       path: outputDir,
+      // no module path comments in development builds, rollup did not write them
+      pathinfo: false,
       filename: singleFile ? path.basename(outputFile) : '[name].js',
       chunkFilename: '[name]-[contenthash].js',
-      publicPath: 'auto',
+      publicPath: systemChunks ? '' : 'auto',
       // sources are listed relative to the output, as rollup did
       devtoolModuleFilenameTemplate: (info) => path.relative(outputDir, info.absoluteResourcePath).replace(/\\/g, '/'),
-      globalObject: 'typeof globalThis !== "undefined" ? globalThis : typeof self !== "undefined" ? self : this',
+      // in parentheses, rspack pastes it into expressions such as `<globalObject>["chunk"] = <globalObject>["chunk"] || []`
+      globalObject: '(typeof globalThis !== "undefined" ? globalThis : typeof self !== "undefined" ? self : this)',
+
       clean: false,
       library: isUmd ? { name: outputName, type: LIBRARY_TYPES[format] } : { type: LIBRARY_TYPES[format] },
       // without an explicit chunkLoading an esm build has no way to load a split chunk and rspack folds
@@ -252,11 +261,28 @@ const config = ({
               },
             ]
           : []),
+        ...(less
+          ? [
+              {
+                test: /\.less$/,
+                use: [
+                  ...cssLoaders({ importLoaders: 2 }),
+                  { loader: require.resolve('less-loader'), options: { implementation: less } },
+                ],
+              },
+            ]
+          : []),
       ],
     },
     optimization: {
       // process.env.NODE_ENV is replaced below
       nodeEnv: false,
+      // rollup tree-shakes in development too, rspack's development mode would not
+      usedExports: true,
+      sideEffects: true,
+      providedExports: true,
+      innerGraph: true,
+      concatenateModules: true,
       minimize: !development,
       minimizer: [
         new rspack.SwcJsMinimizerRspackPlugin({
