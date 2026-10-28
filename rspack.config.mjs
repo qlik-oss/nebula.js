@@ -219,6 +219,17 @@ const config = ({ format = 'umd', debug = false, file, targetPkg }) => {
       // System.register factory but never reaches the runtime. A single chunk removes the
       // question, since nothing is loaded at runtime.
       new rspack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
+      // @qlik/api's public-runtime-modules chunk has one dynamic import() per runtime module
+      // (auth, qix, invoke-fetch) and we only use auth. Rollup drops the unused loaders together with
+      // their import() calls; rspack drops the functions too, but only after it has built the module
+      // graph, so the qix and invoke-fetch chunks (about 600kb with enigma.js and lodash-es) would
+      // still be bundled. Nothing can reach these loaders, so skip the imports. Matches the
+      // content-hashed file names so it survives @qlik/api upgrades; if they are ever renamed the
+      // only effect is a bigger bundle.
+      new rspack.IgnorePlugin({
+        resourceRegExp: /^\.\/(?:qix|invoke-fetch)-[\w-]+\.js$/,
+        contextRegExp: /@qlik[\\/]api[\\/]chunks$/,
+      }),
     ],
   };
 
