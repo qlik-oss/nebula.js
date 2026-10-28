@@ -46,19 +46,25 @@ describe('createExternals', () => {
     assert.equal(await run({ ...base, preferBuiltins: false }, 'path', ['path']), undefined);
   });
 
-  it('keeps a require() of a node builtin a call that is made when it is reached, not a dependency of the bundle', async () => {
-    const options = { ...base, preferBuiltins: true };
-    const [fn] = createExternals({ ...options, format: 'umd' });
-    const [sys] = createExternals({ ...options, format: 'systemjs' });
-    const [esm] = createExternals({ ...options, format: 'esm' });
+  it('never makes a node builtin a dependency of a umd or systemjs bundle, it is read where it is used', async () => {
     const data = { request: 'crypto', context: '/p', getResolve: () => () => {} };
+    const results = await Promise.all(
+      ['umd', 'systemjs'].flatMap((format) => {
+        const [fn] = createExternals({ ...base, format, preferBuiltins: true });
+        return ['commonjs', 'esm'].map((dependencyType) => fn({ ...data, dependencyType }));
+      })
+    );
+    assert.equal(results.length, 4);
+    results.forEach((result) => {
+      assert.equal(result, 'var (typeof require === "function" ? require("crypto") : {})');
+    });
+  });
 
-    assert.equal(await fn({ ...data, dependencyType: 'commonjs' }), 'node-commonjs crypto');
-    assert.equal(await sys({ ...data, dependencyType: 'commonjs' }), 'node-commonjs crypto');
-    // an esm bundle has no free require, the module resolves to an empty one
+  it('keeps imports of a node builtin in an esm bundle for the consumer, and ignores a require of one', async () => {
+    const [esm] = createExternals({ ...base, format: 'esm', preferBuiltins: true });
+    const data = { request: 'crypto', context: '/p', getResolve: () => () => {} };
+    assert.equal(await esm({ ...data, dependencyType: 'esm' }), 'crypto');
     assert.equal(await esm({ ...data, dependencyType: 'commonjs' }), undefined);
-    // an import is still a dependency of the bundle
-    assert.equal(await sys({ ...data, dependencyType: 'esm' }), 'crypto');
   });
 
   it('treats an unresolvable package as an external and warns once', async () => {

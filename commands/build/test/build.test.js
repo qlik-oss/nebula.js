@@ -372,10 +372,10 @@ export default function supernova(): { n: number; kind: string } { return { n: o
       assert.equal(exports(), 'a+b');
     });
 
-    it('does not make a dependency of the bundle of a require of a node builtin in code that is never run', async () => {
-      // random-js, a dependency of real visualizations, is a module that calls require("crypto") in a function that
-      // is only used by an engine nobody asks for. Rollup left the call alone, a dependency on 'crypto' makes a
-      // systemjs or amd host fail to load the bundle.
+    it('does not make a dependency of the bundle of a node builtin that code for node reaches for', async () => {
+      // random-js and @qlik/api, dependencies of real visualizations, have require('crypto') and import('fs') in
+      // code paths for node that nothing here runs. Rollup left them alone, a dependency on 'crypto' or 'fs' makes
+      // a systemjs or amd host fail to load the bundle.
       write(
         'node_modules/rnd/package.json',
         JSON.stringify({ name: 'rnd', module: 'index.js', main: 'index.js', sideEffects: false })
@@ -384,15 +384,71 @@ export default function supernova(): { n: number; kind: string } { return { n: o
         'node_modules/rnd/index.js',
         `export const browser = () => 'browser';
 export const nodeCrypto = () => require('crypto').randomBytes(4);
+export const nodeFs = async () => (await import('fs')).readFileSync;
+import util from 'util';
+export const nodeUtil = () => util.inspect;
 `
       );
       write('src/index.js', `import { browser } from 'rnd';\nexport default () => browser();\n`);
       await run({ esm: true });
 
-      assert.deepEqual(plain(loadUmd('dist/viz.js').required), []);
-      assert.equal(loadUmd('dist/viz.js').exports(), 'browser');
+      // nothing is declared as a dependency, for an amd or a systemjs host
       assert.deepEqual(plain(loadSystem('dist/viz.systemjs.js').deps), []);
-      assert.doesNotMatch(fs.readFileSync(path.join(dir, 'dist/viz.esm.js'), 'utf8'), /from\s*["']crypto["']/);
+      let amd;
+      const define = Object.assign((deps, factory) => (amd = { deps, result: factory() }), { amd: true });
+      vm.runInNewContext(fs.readFileSync(path.join(dir, 'dist/viz.js'), 'utf8'), { define });
+      assert.deepEqual(plain(amd.deps), []);
+      assert.equal(amd.result(), 'browser');
+
+      // with a require (node), only what is imported at the top is read, a call inside a function is not made
+      const umd = loadUmd('dist/viz.js', { requires: { util: { inspect: () => {} } } });
+      assert.deepEqual(plain(umd.required), ['util']);
+      assert.equal(umd.exports(), 'browser');
+
+      // and in a browser, without a require, it loads as well
+      const globalScope = {};
+      globalScope.self = globalScope;
+      vm.runInNewContext(fs.readFileSync(path.join(dir, 'dist/viz.js'), 'utf8'), globalScope);
+      assert.equal(globalScope.viz(), 'browser');
+      // a dynamic import of a builtin stays dynamic in the esm bundle, a require is not there
+      const esm = fs.readFileSync(path.join(dir, 'dist/viz.esm.js'), 'utf8');
+      assert.doesNotMatch(esm, /^import[^;]*["'](crypto|fs)["']/m);
+    });
+
+    it('leaves the runtime modules for node of @qlik/api out of a browser bundle', async () => {
+      const lib = 'node_modules/@qlik/api';
+      write(
+        `${lib}/package.json`,
+        JSON.stringify({ name: '@qlik/api', type: 'module', exports: { './auth': './auth.js' } })
+      );
+      write(
+        `${lib}/auth.js`,
+        `import { t as getAuthRuntimeModule } from './chunks/public-runtime-modules-AAAA.js';
+export default { setDefaultHostConfig: (config) => getAuthRuntimeModule(config) };
+`
+      );
+      write(
+        `${lib}/chunks/public-runtime-modules-AAAA.js`,
+        `const isNode = typeof process !== 'undefined' && !!process.versions && !!process.versions.node;
+async function getAuthRuntimeModule(config) { if (isNode) return import('./auth-BBBB.js'); return config; }
+async function getQixRuntimeModule(config) { if (isNode) return import('./qix-CCCC.js'); return config; }
+async function getInvokeFetchRuntimeModule(config) { if (isNode) return import('./invoke-fetch-DDDD.js'); return config; }
+export { getAuthRuntimeModule as t, getQixRuntimeModule as r, getInvokeFetchRuntimeModule as n };
+`
+      );
+      write(`${lib}/chunks/auth-BBBB.js`, "export const registerAuthModule = () => 'auth-marker';\n");
+      write(`${lib}/chunks/qix-CCCC.js`, "export const big = 'qix-marker';\n");
+      write(`${lib}/chunks/invoke-fetch-DDDD.js`, "export const big = 'invoke-fetch-marker';\n");
+      write('src/index.js', `import auth from '@qlik/api/auth';\nexport default () => auth.setDefaultHostConfig;\n`);
+
+      await run({ browser: true });
+      const code = fs.readFileSync(path.join(dir, 'dist/viz.js'), 'utf8');
+      assert.match(code, /auth-marker/);
+      assert.doesNotMatch(code, /qix-marker|invoke-fetch-marker/);
+
+      // not for a build that is not for a browser
+      await run({ browser: false });
+      assert.match(fs.readFileSync(path.join(dir, 'dist/viz.js'), 'utf8'), /qix-marker/);
     });
 
     it('keeps the peer dependencies external', async () => {

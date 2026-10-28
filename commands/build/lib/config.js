@@ -208,7 +208,8 @@ const config = ({
       // eslint-disable-next-line no-console
       warn: (message) => console.warn(`  \x1b[33mwarn:\x1b[0m ${message}`),
     }),
-    externalsType: isEsm ? 'module' : LIBRARY_TYPES[format],
+    // module-import keeps `import()` of an external a dynamic import
+    externalsType: isEsm ? 'module-import' : LIBRARY_TYPES[format],
     resolve: {
       extensions: reactNative ? extensions.flatMap((e) => [`.native${e}`, e]) : extensions,
       alias: isUmd ? { __nebula_build_entry__: entry } : {},
@@ -300,6 +301,17 @@ const config = ({
         'process.env.NODE_ENV': JSON.stringify(development ? 'development' : 'production'),
         ...resolveReplacementStrings(replacementStrings),
       }),
+      // @qlik/api imports the runtime modules for node (qix, invoke-fetch) behind `if (isNode)`, a browser gets them
+      // from the host. Rollup left those out because it dropped the function that imports them when nothing calls it,
+      // rspack drops the function too but has already bundled what it imports: about 450kb with enigma.js and lodash.
+      ...(browser
+        ? [
+            new rspack.IgnorePlugin({
+              resourceRegExp: /^\.\/(?:qix|invoke-fetch)-[\w-]+\.js$/,
+              contextRegExp: /@qlik[\\/]api[\\/]chunks$/,
+            }),
+          ]
+        : []),
       ...(development ? [] : [new LegalCommentsPlugin({ banner })]),
       new rspack.BannerPlugin({
         banner,

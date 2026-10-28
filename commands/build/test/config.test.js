@@ -53,7 +53,7 @@ describe('build config', () => {
     assert.equal(cfg.output.module, true);
     assert.deepEqual(cfg.output.library, { type: 'module' });
     assert.equal(cfg.experiments.outputModule, true);
-    assert.equal(cfg.externalsType, 'module');
+    assert.equal(cfg.externalsType, 'module-import');
 
     const none = makeProject({ module: undefined });
     assert.equal(config({ format: 'esm', cwd: none, argv: argv(), behaviours }), false);

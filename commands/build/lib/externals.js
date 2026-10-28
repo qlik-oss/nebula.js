@@ -48,15 +48,16 @@ export default function createExternals({ external, format, globals = {}, prefer
       return toExternal(request);
     }
     if (preferBuiltins && BUILTINS.has(request)) {
-      if (dependencyType === 'commonjs') {
-        // A require() call, as opposed to an import. Rollup left those alone, which is what makes a library that
-        // calls require('crypto') in a function nothing uses (random-js does) harmless. Declaring it as a
-        // dependency of the bundle instead makes a systemjs or amd host try to load 'crypto' and fail.
-        // Keep it a call that is only made when the code is reached; an esm bundle cannot have a free require,
-        // for that one the module resolves to an empty one, see the resolve.fallback of the build.
-        return format === 'esm' ? undefined : `node-commonjs ${request}`;
+      if (format === 'esm') {
+        // an esm bundle has no free require, a require() of a builtin resolves to an empty module (see the
+        // resolve.fallback of the build), an import is left to the consumer, a dynamic one stays dynamic
+        return dependencyType === 'commonjs' ? undefined : toExternal(request);
       }
-      return toExternal(request);
+      // A node builtin is never a dependency of a umd or systemjs bundle. A library that reaches for one in a
+      // code path of its own for node (random-js and @qlik/api do, with require('crypto') and import('fs')) is
+      // harmless, rollup dropped or left those alone, but declaring the builtin as a dependency makes an amd or
+      // systemjs host try to load it and fail. Read it where it is used, an empty object when there is no require.
+      return `var (typeof require === "function" ? require(${JSON.stringify(request)}) : {})`;
     }
     if (!isBare(request)) {
       return undefined;
