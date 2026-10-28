@@ -180,6 +180,6 @@ Qlik Sense extensions can define `ext` object for Sense-specific customizations 
 
 ## Debugging
 
-- **Build issues**: Check locale generation ran, verify package.json targets match rollup config expectations
+- **Build issues**: Check locale generation ran, verify package.json targets match the rspack config expectations
 - **Hook errors**: "Invalid stardust hook call" means hooks called outside component function
 - **Visualization not updating**: Check if using `useStaleLayout()` vs `useLayout()` correctly - stale doesn't trigger re-renders
