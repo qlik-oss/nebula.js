@@ -5,6 +5,9 @@ inputs:
   save-cache:
     description: Save the turbo cache after the job. Only one job per workflow should do this.
     default: 'false'
+  build:
+    description: Build the whole workspace. Disable for jobs whose turbo tasks build what they need.
+    default: 'true'
 
 runs:
   using: composite
@@ -27,5 +30,6 @@ runs:
         key: turbo-${{ runner.os }}-${{ github.sha }}
         restore-keys: turbo-${{ runner.os }}-
     - name: Build
+      if: inputs.build == 'true'
       shell: bash
       run: pnpm run build

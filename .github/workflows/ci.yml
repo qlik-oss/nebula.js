@@ -28,6 +28,8 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup-workspace
+        with:
+          build: false
       - name: Locale verify
         run: pnpm run locale:verify
       - name: format

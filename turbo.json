@@ -18,6 +18,24 @@
       "cache": false,
       "persistent": true
     },
+    "//#verify-translations": {
+      "dependsOn": ["@nebula.js/locale#build"],
+      "cache": false
+    },
+    "//#eslint": {
+      "dependsOn": [
+        "@nebula.js/locale#build",
+        "@nebula.js/snapshooter#build",
+        "@nebula.js/stardust#build",
+        "@nebula.js/test-utils#build"
+      ],
+      "cache": false
+    },
+    "//#jest": {
+      "dependsOn": ["@nebula.js/locale#build", "@nebula.js/stardust#build", "@nebula.js/test-utils#build"],
+      "passThroughEnv": ["JEST_JUNIT_OUTPUT_DIR"],
+      "cache": false
+    },
     "locale:generate": {
       "outputs": ["all.json"]
     },
