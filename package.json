@@ -82,7 +82,7 @@
     "glob@npm:^10.0.0": "^13.0.6",
     "glob@npm:^11.0.0": "^13.0.6"
   },
-  "packageManager": "pnpm@11.28.6",
+  "packageManager": "pnpm@12.14.0",
   "devEngines": {
     "runtime": {
       "name": "node",
