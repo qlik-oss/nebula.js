@@ -165,7 +165,7 @@ settings:
 overrides:
   supports-color: 8.1.1
   dts-dom: 3.7.0
-  caniuse-lite: 1.0.30001817
+  caniuse-lite: 1.0.30001818
   react: 19.3.1
   react-dom: 19.3.1
   react-is: 19.3.1
@@ -4360,8 +4360,8 @@ packages:
   caniuse-api@3.0.0:
     resolution: {integrity: sha512-bsTwuIg/BZZK/vreVTYYbSWoe2F+71P7K5QGEX+pT250DZbfU1MQ5prOKpPR+LL6uWKK3KMwMCAS74QB3Um1uw==}
 
-  caniuse-lite@1.0.30001817:
-    resolution: {integrity: sha512-uZ1JG80BwhtMalIAGPxPfmNhHyd/B/nTdr3hITWlRamSyAdUStP1Gop01e7SD5q6J90ixJvWDbvmiFVfDgn4bw==}
+  caniuse-lite@1.0.30001818:
+    resolution: {integrity: sha512-XJbgo4adscw7R4MZU4/qVFkoMyPaNUAWmdNY4o/k9x7fFwmv4frIlndI9lWuaxviW9ObiZel9LuncnQPn6hQ5A==}
 
   catharsis@0.11.0:
     resolution: {integrity: sha512-pONQIjDPWpV1VqlgqzByP0Sf5Lk/nsJEPHVw03BB/ARX/d80ft0jspLU31+Le25ioqwYTq85HcyyMq/AJTGHag==}
@@ -13405,7 +13405,7 @@ snapshots:
   browserslist@4.29.4:
     dependencies:
       baseline-browser-mapping: 2.11.32
-      caniuse-lite: 1.0.30001817
+      caniuse-lite: 1.0.30001818
       electron-to-chromium: 1.5.464
       node-releases: 2.0.60
       update-browserslist-db: 1.3.4(browserslist@4.29.4)
@@ -13481,11 +13481,11 @@ snapshots:
   caniuse-api@3.0.0:
     dependencies:
       browserslist: 4.29.4
-      caniuse-lite: 1.0.30001817
+      caniuse-lite: 1.0.30001818
       lodash.memoize: 4.1.2
       lodash.uniq: 4.5.0
 
-  caniuse-lite@1.0.30001817: {}
+  caniuse-lite@1.0.30001818: {}
 
   catharsis@0.11.0:
     dependencies:
