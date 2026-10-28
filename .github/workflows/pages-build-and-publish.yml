@@ -68,7 +68,7 @@ jobs:
               const targetDir = path.join(outRoot, safeScope, name, pkg.version);
               fs.mkdirSync(targetDir, { recursive: true });
 
-              const packOutput = cp.execSync('npm pack --silent', {
+              const packOutput = cp.execSync('pnpm pack', {
                 cwd: pkgDir,
                 encoding: 'utf8'
               });
