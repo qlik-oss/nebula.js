@@ -2,9 +2,11 @@
 import path from 'path';
 import crypto from 'crypto';
 import { createRequire } from 'module';
+import { fileURLToPath } from 'url';
 import { rspack } from '@rspack/core';
 
 const require = createRequire(import.meta.url);
+const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const localeStringValidator = require('./tools/locale-string-validator.cjs');
 
@@ -120,7 +122,11 @@ const config = ({ format = 'umd', debug = false, file, targetPkg }) => {
   const cfg = {
     mode: 'none',
     target: ['web', 'es2017'],
-    entry: path.resolve(cwd, 'src', 'index'),
+    // The umd bundles go through a commonjs entry that copies the exports into a plain object.
+    // rspack marks an esm entry's exports with __esModule, which rollup's umd output never did, and
+    // that makes `import stardust from '@nebula.js/stardust'` resolve to undefined (the interop looks
+    // for a default export) for every consumer that default-imports the package.
+    entry: format === 'umd' ? path.resolve(dirname, 'rspack.umd-entry.cjs') : path.resolve(cwd, 'src', 'index'),
     devtool: 'source-map',
     output: {
       path: path.dirname(file),
@@ -137,6 +143,7 @@ const config = ({ format = 'umd', debug = false, file, targetPkg }) => {
     },
     externals,
     resolve: {
+      alias: format === 'umd' ? { __nebula_umd_target__: path.resolve(cwd, 'src', 'index') } : {},
       extensions: [debug ? '.dev.js' : false, '.js', '.jsx'].filter(Boolean),
     },
     module: {
