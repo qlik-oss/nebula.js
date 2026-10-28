@@ -8,6 +8,7 @@ on:
 
 env:
   JEST_JUNIT_OUTPUT_DIR: ./coverage/junit/
+  TURBO_TELEMETRY_DISABLED: 1
 
 jobs:
   build:
