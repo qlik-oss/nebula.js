@@ -1,12 +1,15 @@
 /* eslint-disable no-console, import/extensions */
 import path from 'path';
 import readline from 'readline';
+import { EventEmitter } from 'events';
 import { createRequire } from 'module';
 import chalk from 'chalk';
-import * as rollup from 'rollup';
+// eslint-disable-next-line import/no-unresolved -- @rspack/core is resolvable at runtime; the lint resolver doesn't know about it
+import { rspack } from '@rspack/core';
 
 import config from './config.js';
 import systemjsBehaviours from './systemjs.js';
+import { formatWarnings } from './compile.js';
 
 const require = createRequire(import.meta.url);
 
@@ -60,64 +63,78 @@ function clearScreen(msg) {
   }
 }
 
+/**
+ * Watch the sources and rebuild on change.
+ *
+ * Resolves with a watcher after the first successful build. The watcher has the surface the rollup
+ * watcher had, which `nebula serve` depends on: `close()` and `on('event', fn)` with events shaped
+ * `{ code: 'BUNDLE_START' | 'BUNDLE_END' | 'ERROR', ... }`.
+ */
 const watch = async (argv) => {
   if (!validateWatchInput(argv)) {
     return undefined;
   }
   const c = getWatchConfig(argv);
 
-  let hasWarnings = false;
+  const events = new EventEmitter();
+  const compiler = rspack(c);
+  let watching;
 
-  const watcher = rollup.watch({
-    ...c.input,
-    onwarn({ loc, message, code }) {
-      if (!hasWarnings) {
-        clearScreen();
+  const watcher = {
+    on: (name, listener) => {
+      events.on(name, listener);
+      return watcher;
+    },
+    close: () =>
+      new Promise((resolve) => {
+        if (!watching) {
+          compiler.close(resolve);
+          return;
+        }
+        watching.close(() => compiler.close(resolve));
+      }),
+  };
+
+  return new Promise((resolve, reject) => {
+    let settled = false;
+    const settle = (fn, value) => {
+      if (!settled) {
+        settled = true;
+        fn(value);
       }
+    };
 
-      // Supress "use client" warnings coming from MUI bundling
-      if (code === 'MODULE_LEVEL_DIRECTIVE' && message.includes(`"use client"`)) {
+    compiler.hooks.watchRun.tap('nebula build', () => {
+      clearScreen();
+      console.log(`${chalk.black.bgBlue(' INFO  ')}  Compiling...\n`);
+      events.emit('event', { code: 'BUNDLE_START' });
+    });
+
+    watching = compiler.watch({}, (err, stats) => {
+      const failure =
+        err ||
+        (stats.hasErrors() &&
+          new Error(stats.toString({ all: false, errors: true, errorDetails: true, colors: false })));
+      if (failure) {
+        clearScreen();
+        console.log(`${chalk.white.bgRed(' ERROR ')} ${chalk.red('Failed to compile\n\n')}`);
+        console.error(failure.stack);
+        events.emit('event', { code: 'ERROR', error: failure });
+        settle(reject, watcher);
         return;
       }
 
-      console.log(
-        `${chalk.black.bgYellow(' WARN  ')} ${chalk.yellow(
-          loc ? `${loc.file} (${loc.line}:${loc.column}) ${message}` : message
-        )}`
-      );
-      hasWarnings = true;
-    },
-    output: c.output,
-  });
-
-  return new Promise((resolve, reject) => {
-    watcher.on('event', (event) => {
-      switch (event.code) {
-        case 'BUNDLE_START':
-          hasWarnings = false;
-          clearScreen();
-          console.log(`${chalk.black.bgBlue(' INFO  ')}  Compiling...\n`);
-          break;
-        case 'FATAL':
-        case 'ERROR':
-          clearScreen();
-          console.log(`${chalk.white.bgRed(' ERROR ')} ${chalk.red('Failed to compile\n\n')}`);
-          console.error(event.error.stack);
-          reject(watcher);
-          break;
-        case 'BUNDLE_END':
-          if (!hasWarnings) {
-            clearScreen();
-          } else {
-            console.log();
-          }
-          console.log(
-            `${chalk.black.bgGreen(' DONE  ')} ${chalk.green(`Compiled successfully in ${event.duration}ms\n`)}`
-          );
-          resolve(watcher);
-          break;
-        default:
+      const hasWarnings = stats.hasWarnings();
+      if (hasWarnings) {
+        console.log(`${chalk.black.bgYellow(' WARN  ')} ${chalk.yellow(formatWarnings(stats))}`);
+        console.log();
+      } else {
+        clearScreen();
       }
+      const duration = stats.endTime - stats.startTime;
+      console.log(`${chalk.black.bgGreen(' DONE  ')} ${chalk.green(`Compiled successfully in ${duration}ms\n`)}`);
+      events.emit('event', { code: 'BUNDLE_END', duration });
+      settle(resolve, watcher);
     });
   });
 };

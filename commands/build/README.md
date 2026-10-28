@@ -26,12 +26,12 @@ Options:
                                           [string] [choices: "production", "development"]
   --core                    Set a core build target            [string] [default: "core"]
   --typescript              Enable typescript bundling         [boolean] [default: false]
-  --preferBuiltins          Specify whether to use Node.js built-in modules.
+  --preferBuiltins          Leave Node.js built-in modules out of the bundle, as external
+                            dependencies, instead of resolving a package of the same name.
                                                                 [boolean] [default: true]
-  --browser                 Use the browser module resolutions in package.json and adds
-                            'browser' to exportConditions if it is not present so browser
-                            conditionals in exports are applied.
-                                                               [boolean] [default: false]
+  --browser                 Use the 'browser' field and export condition of the packages
+                            in the bundle so browser conditionals in exports are applied.
+                                                                [boolean] [default: true]
 ```
 
 ## Example
@@ -158,6 +158,15 @@ package.json which specifies the output file from the build:
 "systemjs": "dist/hello.systemjs.js"
 ```
 
+### Styles
+
+Stylesheets that the source imports are added to the bundle and injected in a `<style>` element
+in the document head when the bundle is loaded, nothing is injected when there is no `document`.
+
+- `import './style.css'` adds the stylesheet. PostCSS is applied, using the `postcss.config.js` of your project if there is one.
+- `import styles from './style.module.css'` is a CSS module, `styles` maps the class names of the file to the generated ones.
+- `import './style.scss'` is compiled when `sass` is installed in your project, `import './style.less'` when `less` is.
+
 ### Typescript
 
 With this option you can enable typescript bundling of your code. Add a `tsconfig.json`
@@ -166,3 +175,19 @@ file to configure typescript to your own preferences.
 ```sh
 nebula build --typescript
 ```
+
+## Building with rspack
+
+The bundles are built with [Rspack](https://rspack.rs). The output has the same formats and behaves the
+same way as it did when the bundler was Rollup, with these differences to be aware of when you upgrade:
+
+- The generated class names of CSS modules have another hash (`name_class__hash`).
+- `replacementStrings` are applied as definitions, a key has to be an identifier or a member expression
+  such as `__VERSION__` or `process.env.VERSION`, not any piece of text, and the value is the code that replaces it.
+- With `--reactNative`, a `.native` file replaces the file it sits next to when it is imported without a file extension.
+- An import that cannot be resolved is still treated as an external dependency, with a warning.
+- The `bundle-analysis.html` that development builds used to write is no longer created.
+- `@rollup/plugin-typescript` is not needed for `--typescript`, TypeScript is compiled with Babel as before.
+- Stylus (`.styl`) files are not supported.
+- With `--codeSplit` a SystemJS build is the entry `index.js` and a chunk per dynamic import, as before. The chunks are loaded from the directory that SystemJS loaded the entry from, also when the entry file is renamed.
+- A bundle contains a small module runtime, so the output of a very small visualization is a few kilobytes larger.

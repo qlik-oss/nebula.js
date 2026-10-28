@@ -21,6 +21,10 @@
       "cache": false,
       "persistent": true
     },
+    // The cli packages test their bundling by building small projects with their own copy of rspack
+    "test": {
+      "dependsOn": []
+    },
     "//#eslint": {
       "dependsOn": [
         "@nebula.js/locale#build",
