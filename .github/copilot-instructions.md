@@ -106,12 +106,13 @@ nebula sense                    # Build as Qlik Sense extension
 - Supports fixtures for testing without engine connection
 - See [commands/serve/README.md](commands/serve/README.md) for options
 
-### Rollup Build Configuration
+### Rolldown Build Configuration
 
-All packages use shared [rollup.config.js](rollup.config.js):
+The packages in `apis/` are built with Rolldown, through the shared scripts in [tools/build](tools/build) (`node ../../tools/build/cli.mjs`):
 - **UMD format** for browsers (default export via `unpkg`/`jsdelivr`)
 - **ESM format** for bundlers (exposed via `module` field)
 - Creates `.dev.js` variants with source maps in development mode
+- **SystemJS format** for stardust, converted from the ES chunks with Rollup ([esm-to-systemjs.mjs](tools/build/esm-to-systemjs.mjs))
 - Validates `main`, `module`, `unpkg`, `jsdelivr` targets in package.json match naming convention
 
 ### Lerna Versioning
@@ -180,6 +181,6 @@ Qlik Sense extensions can define `ext` object for Sense-specific customizations 
 
 ## Debugging
 
-- **Build issues**: Check locale generation ran, verify package.json targets match rollup config expectations
+- **Build issues**: Check locale generation ran, verify package.json targets match the expectations of the build scripts in tools/build
 - **Hook errors**: "Invalid stardust hook call" means hooks called outside component function
 - **Visualization not updating**: Check if using `useStaleLayout()` vs `useLayout()` correctly - stale doesn't trigger re-renders

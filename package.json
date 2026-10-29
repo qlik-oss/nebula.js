@@ -41,6 +41,8 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "8.0.7",
+    "@babel/helper-plugin-utils": "8.0.1",
     "@commitlint/cli": "21.2.4",
     "@commitlint/config-conventional": "21.2.4",
     "@eslint/eslintrc": "^3.3.7",
@@ -68,6 +70,8 @@
     "lerna": "9.0.7",
     "lint-staged": "^17.6.0",
     "prettier": "3.9.10",
+    "rolldown": "1.2.15",
+    "rollup": "4.64.12",
     "turbo": "2.11.10",
     "whatwg-fetch": "^3.6.20"
   },
