@@ -39,7 +39,7 @@ const files = {
   'src/lib.js': [
     `import { helper } from './helper.js';`,
     `const registry = {};`,
-    `registry.helper = helper;`,
+    `registry.helper = registry.alias = function () { return helper(); };`,
     `export function EnterNodeLike() {}`,
     `EnterNodeLike.prototype = {`,
     `  append(s) { return 'append:' + s; },`,
