@@ -66,7 +66,12 @@ const config = {
     `/node_modules/\\.pnpm/(?![^/]+/node_modules/(${transformAllowlist})/)`,
   ],
   modulePathIgnorePatterns: ['<rootDir>/local-dev/.*/.yalc/', '<rootDir>/.claude/'],
-  testPathIgnorePatterns: ['/node_modules/', '<rootDir>/commands/serve/test/e2e/'],
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '<rootDir>/commands/serve/test/e2e/',
+    // run by node's test runner (`pnpm test` in the package), they build real projects
+    '<rootDir>/commands/build/test/',
+  ],
 };
 
 export default config;
