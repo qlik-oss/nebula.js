@@ -205,6 +205,8 @@ differences you can notice, in the order of how likely they are to matter:
   package and other ways of resolving a Sass import are not read. The options of `rollup-plugin-postcss` (`use`, `extract`,
   `inject` and others) are gone, none of them could be set from the command line or the config file of nebula. Other
   file types than the four above are not understood, as before.
+- **Unknown flags are an error.** `nebula build --foo` prints `Unknown argument: foo` and the help, and exits with 1. It
+  used to be ignored, so a misspelled flag did nothing. `--preferBuiltins` is one of them, see below.
 - **`preferBuiltins` is gone.** A node builtin that has no package of that name is an import of the bundle, as before.
   A package of that name in `node_modules` (`events`, `path`) is bundled, which `preferBuiltins` (on by default) did not
   do.

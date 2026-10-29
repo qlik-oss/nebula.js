@@ -57,6 +57,11 @@ const options = {
     type: 'boolean',
     default: false,
   },
+  // not in the help, they are for the other commands and for nebula.config.js
+  cwd: { type: 'string', hidden: true },
+  reactNative: { type: 'boolean', hidden: true },
+  reactNativePath: { type: 'string', hidden: true },
+  replacementStrings: { hidden: true },
   inlineDynamic: {
     description: 'Puts dynamic imports into the bundle in all builds, to help with certain dependencies',
     type: 'boolean',
