@@ -503,6 +503,9 @@ importers:
       '@qlik/browserslist-config':
         specifier: ^3.1.0
         version: 3.1.0
+      '@rollup/plugin-terser':
+        specifier: 1.0.2
+        version: 1.0.2(rollup@4.64.12)
       browserslist:
         specifier: 4.29.4
         version: 4.29.4
@@ -530,9 +533,6 @@ importers:
       rollup-plugin-visualizer:
         specifier: 7.1.1
         version: 7.1.1(rolldown@1.2.15)(rollup@4.64.12)
-      terser:
-        specifier: 5.51.2
-        version: 5.51.2
       yargs:
         specifier: 18.2.0
         version: 18.2.0

@@ -26,8 +26,6 @@ Options:
                                           [string] [choices: "production", "development"]
   --core                    Set a core build target            [string] [default: "core"]
   --typescript              Enable typescript bundling         [boolean] [default: false]
-  --preferBuiltins          Specify whether to use Node.js built-in modules.
-                                                                [boolean] [default: true]
   --browser                 Use the browser module resolutions in package.json and adds
                             'browser' to exportConditions if it is not present so browser
                             conditionals in exports are applied.
@@ -205,21 +203,20 @@ differences you can notice, in the order of how likely they are to matter:
   and `~package/file` imports in a Sass file work as before. The options of `rollup-plugin-postcss` (`use`, `extract`,
   `inject` and others) are gone, none of them could be set from the command line or the config file of nebula. Other
   file types than the four above are not understood, as before.
-- **Node builtins are not dependencies of UMD and SystemJS bundles.** `require('crypto')` or `import('fs')` in a
-  library, in a code path for node, made `crypto` a dependency of the UMD bundle (`define(['crypto'], ...)`) and of the
-  SystemJS bundle, which an AMD or SystemJS host cannot load. They are now read where they are used, with `require`
-  when there is one, and are an empty object otherwise. In the ES bundle they are still imports that the one that loads
-  the bundle has to handle (a `require('crypto')` is a call of `require` that is kept in the bundle).
-- **A property that is written to something nothing uses is left out**, as Rollup did for the objects and the classes
-  of a prebuilt library, so that only what is imported ends up in the bundle. A write to a property of an imported
-  object that the code does not use anywhere else, e.g. `import patched from 'lib'; patched.flag = true;`, is left out
-  too, which Rollup did not do. Use the import, or `globalThis`, to make it count. Writes to the global object,
-  or to objects that are exported or used, are kept.
-- **The globals of externals in UMD bundles** are `stardust`, `React` and `ReactDOM` for the packages that have them,
-  and for the other externals the last part of the name in camel case (`some-peer` is `somePeer`). Rollup guessed the
-  name from how a package was imported, so `react` was `React` in some bundles and `react` in others.
-- **Legal comments are at the top of the production bundles**, below the banner, once each, instead of where the code
-  they belong to is. In development bundles they stay where they are.
+- **`preferBuiltins` is gone.** A node builtin that has no package of that name is an import of the bundle, as before.
+  A package of that name in `node_modules` (`events`, `path`) is bundled, which `preferBuiltins` (on by default) did not
+  do.
+- **A property that is written to something nothing uses is kept**, e.g. the static members that a prebuilt library
+  puts on a class that the code does not use. Rollup left them out. The production bundles of a visualization are 0.3%
+  to 1% larger for it.
+- **`.native` files** are found by their extension, so `./value` is `value.native.js` when building for react native.
+  An import with the extension (`./value.js`) is not redirected, as it was.
+- **The globals of externals in UMD bundles** are `stardust`, `React` and `ReactDOM` for the packages that have them.
+  Rolldown guesses the name of the others and warns about it (`MISSING_GLOBAL_NAME`). Rollup guessed the name from how a
+  package was imported, so `react` was `React` in some bundles and `react` in others.
+- **Legal comments** stay with the code they belong to, and are removed with it, as Terser always did. Terser, not the
+  minifier of Rolldown, minifies the production bundles, as before: Rolldown writes strings as template literals,
+  which Parcel does not recognise as the guard of `typeof process`.
 - **UMD bundles of big dependencies can be larger**, when a dependency with CommonJS and ES modules that require each
   other is bundled, as Rolldown wraps the module that is required (a lazy initialisation) where Rollup merged it. A
   visualization of `@material-ui/icons` is 10% larger as UMD, the other formats are not.
@@ -234,7 +231,7 @@ differences you can notice, in the order of how likely they are to matter:
   `START` and `END`) and a `close()`. `nebula serve` only needs those. The watcher of Rolldown starts and finishes the
   build of every bundle, and a `result` of the event is closed for you.
 - **Dependencies:** Babel, `rollup-plugin-postcss`, `rollup-plugin-sass` and the Rollup plugins are no longer
-  dependencies of this package, `rolldown`, `rollup` (only for SystemJS), `terser`, `postcss-modules`, `postcss-load-config`
+  dependencies of this package, `rolldown`, `rollup` (only for SystemJS), `@rollup/plugin-terser`, `postcss-modules`, `postcss-load-config`
   and `browserslist` are.
 
 ### Not changed

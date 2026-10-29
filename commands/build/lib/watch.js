@@ -78,11 +78,7 @@ const watch = async (argv) => {
   const watcher = rolldownWatch({
     ...c.input,
     onLog(level, log, handler) {
-      const { loc, message, code } = log;
-      // Supress "use client" warnings coming from MUI bundling
-      if (code === 'MODULE_LEVEL_DIRECTIVE' && message.includes(`"use client"`)) {
-        return;
-      }
+      const { loc, message } = log;
       if (level !== 'warn') {
         handler(level, log);
         return;
