@@ -269,6 +269,9 @@ importers:
       lint-staged:
         specifier: ^17.6.0
         version: 17.6.0
+      magic-string:
+        specifier: 0.30.21
+        version: 0.30.21
       node:
         specifier: runtime:24.22.1
         version: runtime:24.22.1

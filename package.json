@@ -71,6 +71,7 @@
     "jest-location-mock": "^4.0.1",
     "lerna": "9.0.7",
     "lint-staged": "^17.6.0",
+    "magic-string": "0.30.21",
     "prettier": "3.9.10",
     "rolldown": "1.2.15",
     "rollup": "4.64.12",

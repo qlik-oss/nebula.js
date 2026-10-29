@@ -1,6 +1,8 @@
 import { createRequire } from 'node:module';
 import { getVersionHash } from './plan.mjs';
 import esmToSystemJs from './esm-to-systemjs.mjs';
+import plainStrings from './plain-strings.mjs';
+import importExternalRequires from './external-requires.mjs';
 
 const require = createRequire(import.meta.url);
 
@@ -41,6 +43,38 @@ export function localeStringValidator() {
         });
         return null;
       },
+    },
+  };
+}
+
+/**
+ * Makes the requires of external modules in the CommonJS modules of an ES bundle imports, see external-requires.mjs.
+ * @param {string[]} external
+ * @returns {import('rolldown').Plugin}
+ */
+export function externalRequires(external) {
+  return {
+    name: 'external-requires',
+    renderChunk(code) {
+      return importExternalRequires(code, external);
+    },
+  };
+}
+
+/**
+ * Writes the strings of minified code with quotes, which is what other tools expect, see plain-strings.mjs.
+ * @returns {import('rolldown').Plugin}
+ */
+export function quotedStrings() {
+  return {
+    name: 'quoted-strings',
+    generateBundle(outputOptions, bundle) {
+      Object.values(bundle)
+        .filter((file) => file.type === 'chunk')
+        .forEach((chunk) => {
+          // the same length, so the source map of the chunk is not touched
+          Object.assign(chunk, { code: plainStrings(chunk.code) });
+        });
     },
   };
 }
@@ -143,7 +177,11 @@ export function createRolldownOptions(bundle, { pkg, banner, rollup, checkLocale
         postBanner: isSystem ? '' : banner,
         minify,
         ...(inlineDynamicImports ? { codeSplitting: false } : {}),
-        plugins: isSystem ? [systemJs({ banner, rollup })] : [],
+        plugins: [
+          ...(out.format !== 'umd' && external.length ? [externalRequires(external)] : []),
+          ...(minify ? [quotedStrings()] : []),
+          ...(isSystem ? [systemJs({ banner, rollup })] : []),
+        ],
       };
     }),
   };

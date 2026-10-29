@@ -3,14 +3,8 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { rolldown } from 'rolldown';
-import { rollup } from 'rollup';
 import { TraceMap, eachMapping, originalPositionFor } from '@jridgewell/trace-mapping';
-import { getBanner } from '../plan.mjs';
-import { createRolldownOptions } from '../options.mjs';
-
-const pkg = { name: '@nebula.js/stardust', version: '9.9.9', license: 'MIT', main: 'index.js' };
-const banner = getBanner(pkg, 2030);
+import { buildTo, write } from './helpers.mjs';
 
 // String literals that are in the original files, to find in the generated code
 const MARKS = { entry: 'MARK_ENTRY', shared: 'MARK_SHARED', lazy: 'MARK_LAZY', lazyOnly: 'MARK_ONLY_IN_LAZY' };
@@ -41,37 +35,10 @@ const files = {
   ].join('\n'),
 };
 
-const write = (dir, tree) =>
-  Object.entries(tree).forEach(([file, content]) => {
-    fs.mkdirSync(path.dirname(path.join(dir, file)), { recursive: true });
-    fs.writeFileSync(path.join(dir, file), content);
-  });
-
 const walk = (dir) =>
   fs
     .readdirSync(dir, { withFileTypes: true })
     .flatMap((e) => (e.isDirectory() ? walk(path.join(dir, e.name)) : [path.join(dir, e.name)]));
-
-/**
- * Builds with the real options and writes to disk, like the build does.
- * @param {string} dir
- * @param {object} bundle
- */
-const buildTo = async (dir, bundle) => {
-  const { output, ...input } = createRolldownOptions(bundle, {
-    pkg,
-    banner,
-    rollup,
-    checkLocale: false,
-    nodeEnv: 'production',
-  });
-  const b = await rolldown({ ...input, logLevel: 'silent' });
-  try {
-    await Promise.all(output.map((out) => b.write(out)));
-  } finally {
-    await b.close();
-  }
-};
 
 /** Asserts that the map of `file` is a map of its code, and returns what is needed to look at tokens */
 const readMapped = (file) => {

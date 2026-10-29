@@ -30,3 +30,9 @@ final maps point at the original sources.
 - The source maps of the SystemJS output have sources. They were empty before.
 - `test-utils` is down-levelled too, which it was not before. It is 1.3 KB bigger (2.3 KB, from 1.0 KB).
 - All code that is bundled, also from `node_modules`, is down-levelled to the floor of Chrome 62, Safari 11 and iOS 12.2.
+- Rolldown prints strings in minified code as template literals when that is how its minifier writes them. Parcel does not
+  recognise `typeof process == \`object\``as a check for`process`, and fails to bundle stardust. `plain-strings.mjs`
+  writes them with quotes again, with the same length, so the source maps stay valid.
+- A CommonJS module that requires a peer dependency (react-dom requires react) gets a `__require` function in an ES
+  bundle, that throws where there is no global `require`. `external-requires.mjs` makes those requires imports, as Rollup
+  did.
