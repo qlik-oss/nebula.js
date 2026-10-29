@@ -47,7 +47,7 @@
     "yargs": "18.2.0"
   },
   "devDependencies": {
-    "@rollup/plugin-typescript": "12.3.0",
+    "@rollup/plugin-typescript": "12.3.1",
     "tslib": "*",
     "typescript": "^5.9.3"
   }
