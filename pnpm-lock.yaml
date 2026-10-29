@@ -209,6 +209,9 @@ importers:
       '@playwright/test':
         specifier: ^1.64.1
         version: 1.64.1
+      '@rollup/plugin-terser':
+        specifier: 1.0.2
+        version: 1.0.2(rollup@4.64.12)
       '@testing-library/jest-dom':
         specifier: ^7.0.1
         version: 7.0.1(@testing-library/dom@10.4.2)
@@ -3217,6 +3220,15 @@ packages:
 
   '@rollup/plugin-terser@1.0.1':
     resolution: {integrity: sha512-8/UVzuKqkcP1YydBTd8sToJtc5ukOgahl7iIT/xYUPP3hK3dC29BnMfUVQB+wWCl2EpQHVFhkrge6DLN9jjOMg==}
+    engines: {node: '>=20.0.0'}
+    peerDependencies:
+      rollup: ^2.0.0||^3.0.0||^4.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+
+  '@rollup/plugin-terser@1.0.2':
+    resolution: {integrity: sha512-+UihHnuLnQDQ/9wog7ym+7oawCXkjTIo0WwkK7s//0mkktTN0VhYk6fGVxH+NtGzW064w5RCGgreMDxRVhHCzw==}
     engines: {node: '>=20.0.0'}
     peerDependencies:
       rollup: ^2.0.0||^3.0.0||^4.0.0
@@ -11634,6 +11646,14 @@ snapshots:
       rollup: 4.64.12
 
   '@rollup/plugin-terser@1.0.1(rollup@4.64.12)':
+    dependencies:
+      serialize-javascript: 7.1.4
+      smob: 1.6.2
+      terser: 5.51.2
+    optionalDependencies:
+      rollup: 4.64.12
+
+  '@rollup/plugin-terser@1.0.2(rollup@4.64.12)':
     dependencies:
       serialize-javascript: 7.1.4
       smob: 1.6.2

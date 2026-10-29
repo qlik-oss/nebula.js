@@ -1,10 +1,10 @@
 import { createRequire } from 'node:module';
+import terser from '@rollup/plugin-terser';
 // the resolver of ESLint does not read the exports of a package
 // eslint-disable-next-line import/no-unresolved
 import { esmExternalRequirePlugin } from 'rolldown/plugins';
 import { getVersionHash } from './plan.mjs';
 import esmToSystemJs from './esm-to-systemjs.mjs';
-import plainStrings from './plain-strings.mjs';
 
 const require = createRequire(import.meta.url);
 
@@ -45,24 +45,6 @@ export function localeStringValidator() {
         });
         return null;
       },
-    },
-  };
-}
-
-/**
- * Writes the strings of minified code with quotes, which is what other tools expect, see plain-strings.mjs.
- * @returns {import('rolldown').Plugin}
- */
-export function quotedStrings() {
-  return {
-    name: 'quoted-strings',
-    generateBundle(outputOptions, bundle) {
-      Object.values(bundle)
-        .filter((file) => file.type === 'chunk')
-        .forEach((chunk) => {
-          // the same length, so the source map of the chunk is not touched
-          Object.assign(chunk, { code: plainStrings(chunk.code) });
-        });
     },
   };
 }
@@ -165,11 +147,13 @@ export function createRolldownOptions(bundle, { pkg, banner, rollup, checkLocale
         name: out.name,
         globals: out.globals,
         sourcemap,
-        // post, so that minification does not remove it. A SystemJS output gets its banner when it is converted
+        // Terser minifies, see the plugins. It has to be false: when it is left out the output of terser is formatted
+        // again by Rolldown.
+        minify: false,
+        // post, so that terser does not remove it. A SystemJS output gets its banner when it is converted
         postBanner: isSystem ? '' : banner,
-        minify,
         ...(inlineDynamicImports ? { codeSplitting: false } : {}),
-        plugins: [...(minify ? [quotedStrings()] : []), ...(isSystem ? [systemJs({ banner, rollup })] : [])],
+        plugins: [...(minify ? [terser()] : []), ...(isSystem ? [systemJs({ banner, rollup })] : [])],
       };
     }),
   };

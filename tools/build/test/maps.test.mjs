@@ -144,7 +144,7 @@ describe('source maps on disk', () => {
       const file = path.join(dir, `umd-${debug}`, 'stardust.js');
       await buildTo(dir, plan(debug, [{ format: 'umd', file, exports: 'named', name: 'stardust' }], true));
       const mapped = readMapped(file);
-      assert.match(mapped.code, /\}\)\(this,\s*function\s*\([^)]*\)\s*\{\s*["']use strict["']/);
+      assert.match(mapped.code, /\}\)?\(this,\s*function\s*\([^)]*\)\s*\{\s*["']use strict["']/);
       assert.equal(mapped.code.match(/use strict/g).length, 1);
       const entry = originOf(mapped, MARKS.entry);
       assert.equal(entry.file, path.join(dir, 'src', 'index.js'));

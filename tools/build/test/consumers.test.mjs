@@ -7,7 +7,6 @@ import { pathToFileURL } from 'node:url';
 // the resolver of ESLint does not read the exports of a package
 // eslint-disable-next-line import/no-unresolved
 import { parseSync } from 'rolldown/utils';
-import plainStrings from '../plain-strings.mjs';
 import { buildTo, write } from './helpers.mjs';
 
 // What a consumer of the bundles can trip on. Parcel, for one, adds its `process` polyfill, and then fails to resolve
@@ -31,25 +30,11 @@ const templatesWithoutExpressions = (code) => {
   return found;
 };
 
-describe('plainStrings', () => {
-  test('writes template literals without expressions as strings, and does not change the length', () => {
-    const code = 'var a=`x`+`it\'s`+`say "hi"`+`é`;typeof q==`object`&&typeof q.emit<`u`';
-    const out = plainStrings(code);
-    assert.equal(out, 'var a="x"+"it\'s"+\'say "hi"\'+"é";typeof q=="object"&&typeof q.emit<"u"');
-    assert.equal(out.length, code.length);
-  });
-
-  test('leaves what is not a plain string', () => {
-    // eslint-disable-next-line no-template-curly-in-string
-    const code = 'var a=tag`y`+`z${1}`+`a\\nb`+`two\nlines`+`both \' and "`;';
-    assert.equal(plainStrings(code), code);
-  });
-
-  test('does not touch templates in comments and strings', () => {
-    const code = 'var a="`b`";/* `c` */var d=`e`;';
-    assert.equal(plainStrings(code), 'var a="`b`";/* `c` */var d="e";');
-  });
-});
+// `typeof x == "string"`, in the order in which the minifier writes it
+const guard = (expression, type) =>
+  new RegExp(
+    `typeof ${expression.replace('.', '\\.')}(==|===|!=|!==)"${type}"|"${type}"(==|===|!=|!==)typeof ${expression.replace('.', '\\.')}\\b`
+  );
 
 describe('bundles for consumers', () => {
   let dir;
@@ -100,9 +85,9 @@ describe('bundles for consumers', () => {
       const file = output.file ? path.join(dir, output.file) : path.join(dir, output.dir, output.entryFileName);
       const code = fs.readFileSync(file, 'utf8');
       assert.deepEqual(templatesWithoutExpressions(code), []);
-      assert.match(code, /typeof process(<|!==|!=)["']u(ndefined)?["']/);
-      assert.match(code, /typeof process(==|===)"object"/);
-      assert.match(code, /typeof process\.emit(==|===)"function"/);
+      assert.match(code, guard('process', 'undefined'));
+      assert.match(code, guard('process', 'object'));
+      assert.match(code, guard('process.emit', 'function'));
     });
   });
 
