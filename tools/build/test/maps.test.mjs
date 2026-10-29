@@ -139,6 +139,18 @@ describe('source maps on disk', () => {
     assert.equal(originOf(mapped, MARKS.lazyOnly).file, path.join(dir, 'src', 'lazy.js'));
   });
 
+  test('a minified es output maps its code through the compression and Terser', async () => {
+    await buildTo(
+      dir,
+      plan(false, [{ format: 'es', file: path.join(dir, 'es-prod/stardust.esm.js'), exports: 'named' }], true)
+    );
+    const mapped = readMapped(path.join(dir, 'es-prod/stardust.esm.js'));
+    assert.ok(mapped.lines.length < 10, 'minified');
+    assert.equal(originOf(mapped, MARKS.lazyOnly).file, path.join(dir, 'src', 'lazy.js'));
+    assert.match(originOf(mapped, MARKS.shared).text, new RegExp(MARKS.shared));
+    assert.match(originOf(mapped, MARKS.entry).text, new RegExp(`shared\\('${MARKS.entry}'\\)`));
+  });
+
   [false, true].forEach((debug) => {
     test(`${debug ? 'dev' : 'prod'} umd: strict inside the factory, and the map is still a map of the code`, async () => {
       const file = path.join(dir, `umd-${debug}`, 'stardust.js');

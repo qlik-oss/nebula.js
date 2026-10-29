@@ -34,11 +34,28 @@ final maps point at the original sources.
 - The source maps of the SystemJS output have sources. They were empty before.
 - `test-utils` is down-levelled too, which it was not before. It is 1.3 KB bigger (2.3 KB, from 1.0 KB).
 - All code that is bundled, also from `node_modules`, is down-levelled to the floor of Chrome 62, Safari 11 and iOS 12.2.
-- Production bundles are minified with Terser (`@rollup/plugin-terser`, as before), and not with the minifier of
-  Rolldown. That prints strings as template literals when it is as short, e.g. `typeof process<\`u\``. Parcel does not
-recognise `typeof process == \`object\``as a check for`process`, and fails to bundle stardust. Terser writes strings
-  with quotes. The bundles are about 3% bigger when gzipped than with the minifier of Rolldown, and the build takes a
-  second longer.
+- Production bundles are minified in two stages: Rolldown's own minifier compresses (`output.minify` is
+  `{ compress: true, mangle: false, codegen: { removeWhitespace: false } }`), and Terser (`@rollup/plugin-terser`, as
+  before) mangles and prints.
+  - Why compress with Rolldown: its tree shaker keeps a property that is written to a local object
+    (`Ns.x = function () {}`, `helper.fn = fn`) when nothing reads it, and everything that the value refers to. Terser
+    cannot remove it, Rollup did not keep it. Libraries that are written like that were about 22% bigger. The
+    compressor of Rolldown (Oxc) removes the statements.
+  - Why not `treeshake.propertyWriteSideEffects: false`: it drops `X.prototype = { ... }` as well, also when `new X` is
+    kept, and the instances lose their methods (d3 `.enter().append()` breaks).
+  - Why not `output.minify: true`: the printer of Oxc writes strings as template literals when that is as short, e.g.
+    `typeof process<\`u\``, and Parcel does not recognise `typeof process == \`object\``as a check for`process`, so
+    it fails to bundle stardust. Template literals only come with the whitespace removal, so that is off in the first
+    stage. Names are not mangled in it either, as Terser does.
+  - Why Terser is last, and runs in `generateBundle` (`terserLast`): Rolldown minifies after the `renderChunk` hooks of
+    all plugins, so a Terser in `renderChunk` would see the code before the compression, and its output would be
+    printed again by Oxc. In `generateBundle` the chunks are final. Terser prints the strings with quotes, and it gets
+    the source map of the chunk as its input, so the map chains through the compression and Terser. Terser removes the
+    banner and the `sourceMappingURL` comment, so the banner is its `preamble`, and the comment is added again.
+  - The SystemJS conversion runs after Terser, in the same hook, and converts the minified ES code. It chains with the
+    map that Terser returned.
+  - A guard like `typeof process !== 'undefined'` is written `typeof process<"u"` by the compressor. Parcel recognises
+    it, as long as `"u"` is a string.
 - A CommonJS module that requires a peer dependency (react-dom requires react) gets a `__require` function in an ES
   bundle, that throws where there is no global `require`. The `esmExternalRequirePlugin` of Rolldown owns the externals
   of a bundle, and makes those requires imports, as Rollup did. For that it has to be the one that lists them: they are

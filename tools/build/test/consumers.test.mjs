@@ -30,11 +30,13 @@ const templatesWithoutExpressions = (code) => {
   return found;
 };
 
-// `typeof x == "string"`, in the order in which the minifier writes it
-const guard = (expression, type) =>
-  new RegExp(
-    `typeof ${expression.replace('.', '\\.')}(==|===|!=|!==)"${type}"|"${type}"(==|===|!=|!==)typeof ${expression.replace('.', '\\.')}\\b`
-  );
+// `typeof x == "string"`, in the order in which the minifier writes it. The minifier of Rolldown writes
+// `typeof x < "u"` for a check of "undefined", which Parcel recognises as long as "u" is a string and not a template.
+const guard = (expression, type) => {
+  const x = `typeof ${expression.replace('.', '\\.')}`;
+  const short = type === 'undefined' ? `|${x}<"u"|"u">${x}\\b` : '';
+  return new RegExp(`${x}(==|===|!=|!==)"${type}"|"${type}"(==|===|!=|!==)${x}\\b${short}`);
+};
 
 describe('bundles for consumers', () => {
   let dir;
