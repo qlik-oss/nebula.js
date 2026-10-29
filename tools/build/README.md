@@ -1,7 +1,9 @@
 # Build scripts
 
-`cli.mjs` builds the package in the current directory, `node ../../tools/build/cli.mjs [--watch]`. It is what the `build`,
-`build:dev` and `build:watch` scripts of `apis/stardust`, `apis/test-utils` and `apis/snapshooter` run.
+The `rolldown.config.mjs` in the root of the repo configures the build of the package in the current directory, with the CLI
+of Rolldown: `rolldown --config ../../rolldown.config.mjs [--watch]`. It is what the `build`, `build:dev` and
+`build:watch` scripts of `apis/stardust`, `apis/test-utils` and `apis/snapshooter` run. The CLI builds the bundles of a
+package one after the other, and in watch mode it leaves out the UMD outputs, as they are not used in development.
 
 - `plan.mjs` decides which bundles and outputs a package gets, and validates `main`, `module`, `unpkg`, `jsdelivr` and
   that the package has no dependencies other than `@qlik/api`.

@@ -30,9 +30,9 @@
     "types/index.d.ts"
   ],
   "scripts": {
-    "build": "cross-env NODE_ENV=production node ../../tools/build/cli.mjs",
-    "build:dev": "node ../../tools/build/cli.mjs",
-    "build:watch": "node ../../tools/build/cli.mjs --watch",
+    "build": "cross-env NODE_ENV=production rolldown --config ../../rolldown.config.mjs",
+    "build:dev": "rolldown --config ../../rolldown.config.mjs",
+    "build:watch": "rolldown --config ../../rolldown.config.mjs --watch",
     "prepublishOnly": "rm -rf dist && pnpm run build",
     "spec:stardust": "sy from-jsdoc -c ./api-spec/spec.conf.js",
     "spec:listbox": "sy from-jsdoc -c ./api-spec/listbox-spec.conf.js",

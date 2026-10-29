@@ -3,6 +3,7 @@
   "globalDependencies": [
     "babel.config.cjs",
     "pnpm-workspace.yaml",
+    "rolldown.config.mjs",
     "tools/build/*.mjs",
     "tools/locale-string-validator.cjs"
   ],

@@ -108,7 +108,7 @@ nebula sense                    # Build as Qlik Sense extension
 
 ### Rolldown Build Configuration
 
-The packages in `apis/` are built with Rolldown, through the shared scripts in [tools/build](tools/build) (`node ../../tools/build/cli.mjs`):
+The packages in `apis/` are built with Rolldown, through the shared scripts in [tools/build](tools/build) (`rolldown --config ../../rolldown.config.mjs`):
 - **UMD format** for browsers (default export via `unpkg`/`jsdelivr`)
 - **ESM format** for bundlers (exposed via `module` field)
 - Creates `.dev.js` variants with source maps in development mode
