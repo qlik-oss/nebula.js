@@ -34,5 +34,6 @@ final maps point at the original sources.
   recognise `typeof process == \`object\``as a check for`process`, and fails to bundle stardust. `plain-strings.mjs`
   writes them with quotes again, with the same length, so the source maps stay valid.
 - A CommonJS module that requires a peer dependency (react-dom requires react) gets a `__require` function in an ES
-  bundle, that throws where there is no global `require`. `external-requires.mjs` makes those requires imports, as Rollup
-  did.
+  bundle, that throws where there is no global `require`. The `esmExternalRequirePlugin` of Rolldown owns the externals
+  of a bundle, and makes those requires imports, as Rollup did. For that it has to be the one that lists them: they are
+  not given as the `external` option of the bundle.

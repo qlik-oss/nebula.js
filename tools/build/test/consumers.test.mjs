@@ -8,7 +8,6 @@ import { pathToFileURL } from 'node:url';
 // eslint-disable-next-line import/no-unresolved
 import { parseSync } from 'rolldown/utils';
 import plainStrings from '../plain-strings.mjs';
-import importExternalRequires from '../external-requires.mjs';
 import { buildTo, write } from './helpers.mjs';
 
 // What a consumer of the bundles can trip on. Parcel, for one, adds its `process` polyfill, and then fails to resolve
@@ -49,36 +48,6 @@ describe('plainStrings', () => {
   test('does not touch templates in comments and strings', () => {
     const code = 'var a="`b`";/* `c` */var d=`e`;';
     assert.equal(plainStrings(code), 'var a="`b`";/* `c` */var d="e";');
-  });
-});
-
-describe('importExternalRequires', () => {
-  const code = [
-    `var __require = /* @__PURE__ */ ((x) => typeof require !== "undefined" ? require : x)(function(id) { throw Error(id); });`,
-    `var React = __require("react");`,
-    `var Dom = __require("react-dom");`,
-    `var Other = __require("not-external");`,
-    `export { React, Dom, Other };`,
-  ].join('\n');
-
-  test('replaces the requires of externals with imports, and keeps the others', () => {
-    const { code: out } = importExternalRequires(code, ['react', 'react-dom']);
-    assert.match(out, /import \* as __external0 from "react";/);
-    assert.match(out, /import \* as __external1 from "react-dom";/);
-    assert.match(out, /var React = __external0;/);
-    assert.match(out, /var Other = __require\("not-external"\);/);
-    // there is a caller left, so the function stays
-    assert.match(out, /var __require =/);
-  });
-
-  test('removes the function when nothing calls it any more', () => {
-    const { code: out } = importExternalRequires(code.replace(/var Other.*\n/, ''), ['react', 'react-dom']);
-    assert.ok(!out.includes('__require'));
-    assert.ok(!out.includes('typeof require'));
-  });
-
-  test('has nothing to do without a require of an external', () => {
-    assert.equal(importExternalRequires(code, ['other']), null);
   });
 });
 

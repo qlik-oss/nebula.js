@@ -1,8 +1,10 @@
 import { createRequire } from 'node:module';
+// the resolver of ESLint does not read the exports of a package
+// eslint-disable-next-line import/no-unresolved
+import { esmExternalRequirePlugin } from 'rolldown/plugins';
 import { getVersionHash } from './plan.mjs';
 import esmToSystemJs from './esm-to-systemjs.mjs';
 import plainStrings from './plain-strings.mjs';
-import importExternalRequires from './external-requires.mjs';
 
 const require = createRequire(import.meta.url);
 
@@ -43,20 +45,6 @@ export function localeStringValidator() {
         });
         return null;
       },
-    },
-  };
-}
-
-/**
- * Makes the requires of external modules in the CommonJS modules of an ES bundle imports, see external-requires.mjs.
- * @param {string[]} external
- * @returns {import('rolldown').Plugin}
- */
-export function externalRequires(external) {
-  return {
-    name: 'external-requires',
-    renderChunk(code) {
-      return importExternalRequires(code, external);
     },
   };
 }
@@ -147,14 +135,18 @@ export function createRolldownOptions(bundle, { pkg, banner, rollup, checkLocale
 
   return {
     input,
-    external,
     platform: 'browser',
     resolve: {
       // in a dev build '.dev.js' is tried first, so that './foo' finds './foo.dev.js' over './foo.js'
       extensions: [debug ? '.dev.js' : false, '.js', '.jsx'].filter(Boolean),
     },
     transform: { target: TARGETS, define: defines },
-    plugins: checkLocale ? [localeStringValidator()] : [],
+    plugins: [
+      ...(checkLocale ? [localeStringValidator()] : []),
+      // Owns the externals: they are what a bundle leaves out, and the plugin turns the `require` of them in CommonJS
+      // modules (react-dom requires react) into imports in an ES output, where there is no global `require`.
+      ...(external.length ? [esmExternalRequirePlugin({ external })] : []),
+    ],
     onLog(level, log, handler) {
       if (!isIgnoredLog(log)) {
         handler(level, log);
@@ -177,11 +169,7 @@ export function createRolldownOptions(bundle, { pkg, banner, rollup, checkLocale
         postBanner: isSystem ? '' : banner,
         minify,
         ...(inlineDynamicImports ? { codeSplitting: false } : {}),
-        plugins: [
-          ...(out.format !== 'umd' && external.length ? [externalRequires(external)] : []),
-          ...(minify ? [quotedStrings()] : []),
-          ...(isSystem ? [systemJs({ banner, rollup })] : []),
-        ],
+        plugins: [...(minify ? [quotedStrings()] : []), ...(isSystem ? [systemJs({ banner, rollup })] : [])],
       };
     }),
   };

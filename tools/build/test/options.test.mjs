@@ -219,7 +219,8 @@ describe('createRolldownOptions', () => {
       const options = createRolldownOptions(bundle, { pkg, banner, rollup, checkLocale: true, nodeEnv: 'production' });
       assert.equal(options.output.length, bundle.outputs.length);
       assert.equal(options.platform, 'browser');
-      assert.equal(options.plugins.length, 1);
+      assert.equal(options.plugins[0].name, 'locale-string-validator');
+      assert.equal(options.plugins.length, bundle.external.length ? 2 : 1, 'the externals have a plugin of their own');
     });
   });
 });
