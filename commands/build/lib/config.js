@@ -5,19 +5,14 @@ import { createRequire } from 'module';
 import { visualizer } from 'rollup-plugin-visualizer';
 
 import resolveNative from './resolveNative.js';
+import cssPlugin from './css.js';
+import builtins, { isExternal } from './externals.js';
+import getTargets from './targets.js';
+import { systemJs } from './esm-to-systemjs.js';
+import minify from './minify.js';
 
 const require = createRequire(import.meta.url);
-const babel = require('@rollup/plugin-babel');
-const postcss = require('rollup-plugin-postcss');
-const replace = require('@rollup/plugin-replace');
-const json = require('@rollup/plugin-json');
-const { nodeResolve } = require('@rollup/plugin-node-resolve');
-const commonjs = require('@rollup/plugin-commonjs');
-const terser = require('@rollup/plugin-terser');
-const babelPreset = require('@babel/preset-env');
 const browsersList = require('@qlik/browserslist-config');
-const babelPresetReact = require('@babel/preset-react');
-const babelPresetTypescript = require('@babel/preset-typescript');
 
 const resolveReplacementStrings = (replacementStrings) => {
   if (typeof replacementStrings !== 'object') {
@@ -69,6 +64,22 @@ const getOutputFileDefault = ({ pkg }) => pkg.main;
 
 const getOutputNameDefault = ({ pkg }) => pkg.name.split('/').reverse()[0];
 
+// the oldest version of every browser of the browserslist, the code is transformed to what they support
+const TARGETS = getTargets(browsersList);
+
+// the globals of the externals in a UMD bundle
+const KNOWN_GLOBALS = { '@nebula.js/stardust': 'stardust', react: 'React', 'react-dom': 'ReactDOM' };
+
+// the name Rollup guessed for an external that has no global: the last part of its path in camel case, 'some-peer' becomes 'somePeer'
+const guessGlobalName = (id) =>
+  id
+    .split('/')
+    .pop()
+    .replace(/\.[cm]?js$/, '')
+    .replace(/[^a-zA-Z0-9_$]+(.)?/g, (m, c) => (c ? c.toUpperCase() : ''));
+
+const getGlobal = (id) => KNOWN_GLOBALS[id] || guessGlobalName(id);
+
 const config = ({
   mode = 'production',
   format = 'umd',
@@ -105,16 +116,9 @@ const config = ({
   }
   const outputFile = getOutputFile({ pkg, config: argv });
 
-  const extensions = ['.mjs', '.js', '.jsx', '.json', '.node'];
-
-  let typescriptPlugin;
+  const extensions = ['.mjs', '.js', '.jsx', '.json'];
   if (typescript) {
     extensions.push('.tsx', '.ts');
-    try {
-      typescriptPlugin = require('@rollup/plugin-typescript'); // eslint-disable-line
-    } catch (e) {
-      throw new Error(`${e}\n '@rollup/plugin-typescript' is required to build using typescript.`);
-    }
   }
 
   const external = core ? getExternalCore({ pkg }) : getExternal({ pkg, config: argv });
@@ -125,122 +129,73 @@ const config = ({
     external.push('@nebula.js/stardust');
   }
 
+  const development = mode === 'development';
+  const isSystemJs = format === 'systemjs';
+
   const output = () => {
     const outputConfig = {
-      banner,
-      format,
+      // a production bundle gets its banner when it is minified, a SystemJS bundle when it is converted
+      postBanner: isSystemJs || !development ? '' : banner,
+      // SystemJS is not a format of Rolldown, the ES bundle is converted to it when it has been generated
+      format: { umd: 'umd', esm: 'es', systemjs: 'es' }[format],
       name: outputName,
       sourcemap,
-      globals: {
-        '@nebula.js/stardust': 'stardust',
-      },
+      globals: getGlobal,
+      plugins: [
+        // the ES chunks are minified before they are converted to SystemJS, which is why the conversion adds the banner
+        development ? false : minify({ banner: isSystemJs ? undefined : banner }),
+        isSystemJs ? systemJs({ banner }) : false,
+      ].filter(Boolean),
     };
+    if (format === 'umd') {
+      // our sources are ES modules, which are strict. Rollup put the directive inside the wrapper of the bundle.
+      outputConfig.intro = '"use strict";';
+    }
     if (!argv.codeSplit || format === 'umd') {
       outputConfig.file = path.resolve(dir, outputFile);
     } else {
       outputConfig.dir = path.resolve(dir, outputFile.split('/')[0]);
     }
     if (format === 'umd' || argv.inlineDynamic) {
-      outputConfig.inlineDynamicImports = true;
+      outputConfig.codeSplitting = false;
     }
     return outputConfig;
   };
 
-  const babelPresets = [
-    [
-      babelPreset,
-      {
-        modules: false,
-        targets: {
-          browsers: browsersList,
-        },
-      },
-    ],
-  ];
-
-  const babelOverrides = [
-    {
-      test: /\.[jt]sx$/,
-      presets: [[babelPresetReact, { runtime: 'automatic', development: mode === 'development' }]],
-    },
-  ];
-
-  if (typescript) {
-    babelPresets.push([
-      babelPresetTypescript,
-      {
-        allowNamespaces: true,
-        onlyRemoveTypeImports: true,
-      },
-    ]);
-  }
-
   return {
     input: {
-      onwarn(warning, warn) {
-        // Supress "use client" warnings coming from MUI bundling
-        if (warning.code === 'MODULE_LEVEL_DIRECTIVE' && warning.message.includes(`"use client"`)) {
-          return;
-        }
-        // https://github.com/d3/d3-interpolate/issues/58
-        if (/Circular dependency.*d3-*/.test(warning.message)) {
-          return;
-        }
-        warn(warning);
-      },
       input: path.resolve(CWD, 'src/index'),
-      external,
+      external: (id) => isExternal(external, id),
+      platform: browser ? 'browser' : 'neutral',
+      resolve: {
+        extensions,
+        mainFields: browser ? ['browser', 'module', 'main'] : ['module', 'main'],
+        conditionNames: browser ? ['module', 'import', 'browser', 'default'] : ['module', 'import', 'default'],
+      },
+      transform: {
+        target: TARGETS,
+        define: {
+          'process.env.NODE_ENV': JSON.stringify(development ? 'development' : 'production'),
+          ...Object.fromEntries(
+            Object.entries(resolveReplacementStrings(replacementStrings)).map(([key, value]) => [key, String(value)])
+          ),
+        },
+        jsx: { runtime: 'automatic', development },
+        typescript: { onlyRemoveTypeImports: true },
+      },
       plugins: [
         resolveNative({ reactNative }),
-        replace({
-          'process.env.NODE_ENV': JSON.stringify(mode === 'development' ? 'development' : 'production'),
-          preventAssignment: true,
-          ...resolveReplacementStrings(replacementStrings),
-        }),
-        nodeResolve({
-          extensions,
-          browser,
-          preferBuiltins,
-        }),
-        postcss({
-          exclude: /\.module\.css$/,
-        }),
-        // Handle all CSS with conditional modules processing
-        postcss({
-          include: /\.module\.css$/,
-          modules: true,
-          extract: false,
-        }),
-        commonjs({
-          ignoreTryCatch: false, // Avoids problems with require() inside try catch (https://github.com/rollup/plugins/issues/1004)
-        }),
-        json(),
-
-        babel({
-          babelHelpers: 'bundled',
-          babelrc: false,
-          inputSourceMap: sourcemap,
-          extensions,
-          overrides: babelOverrides,
-          presets: babelPresets,
-        }),
-        [
-          mode === 'production'
-            ? terser({
-                output: {
-                  preamble: banner,
-                },
-              })
-            : false,
-        ],
-        [
-          mode === 'development'
-            ? visualizer({
-                filename: 'bundle-analysis.html',
-              })
-            : false,
-        ],
+        builtins({ format, preferBuiltins }),
+        cssPlugin({ cwd: CWD }),
+        development ? visualizer({ filename: 'bundle-analysis.html' }) : false,
       ].filter(Boolean),
+      onLog(level, log, handler) {
+        // Supress "use client" warnings coming from MUI bundling
+        if (log.code === 'MODULE_LEVEL_DIRECTIVE' && log.message.includes(`"use client"`)) {
+          return;
+        }
+        handler(level, log);
+      },
     },
     output: output(),
   };

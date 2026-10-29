@@ -2,12 +2,21 @@
 import path from 'path';
 import extend from 'extend';
 import yargs from 'yargs';
-import * as rollup from 'rollup';
+import { rolldown } from 'rolldown';
 
 import initConfig from './init-config.js';
 import config from './config.js';
 import watch from './watch.js';
 import systemjsBehaviours from './systemjs.js';
+
+const write = async ({ input, output }) => {
+  const bundle = await rolldown(input);
+  try {
+    return await bundle.write(output);
+  } finally {
+    await bundle.close();
+  }
+};
 
 const umd = async (argv) => {
   const c = config({
@@ -15,8 +24,7 @@ const umd = async (argv) => {
     format: 'umd',
     argv,
   });
-  const bundle = await rollup.rollup(c.input);
-  await bundle.write(c.output);
+  await write(c);
 };
 
 const esm = async (argv, core) => {
@@ -33,8 +41,7 @@ const esm = async (argv, core) => {
   if (!c) {
     return undefined;
   }
-  const bundle = await rollup.rollup(c.input);
-  return bundle.write(c.output);
+  return write(c);
 };
 
 const systemjs = async (argv) => {
@@ -47,8 +54,7 @@ const systemjs = async (argv) => {
   if (!c) {
     return undefined;
   }
-  const bundle = await rollup.rollup(c.input);
-  return bundle.write(c.output);
+  return write(c);
 };
 
 async function build(argv = {}) {

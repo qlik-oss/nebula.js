@@ -3,7 +3,7 @@ import path from 'path';
 import readline from 'readline';
 import { createRequire } from 'module';
 import chalk from 'chalk';
-import * as rollup from 'rollup';
+import { watch as rolldownWatch } from 'rolldown';
 
 import config from './config.js';
 import systemjsBehaviours from './systemjs.js';
@@ -60,6 +60,13 @@ function clearScreen(msg) {
   }
 }
 
+// the build of an event is kept open until it is closed, which is of no use to us
+const closeResult = (event) => {
+  if (event.result) {
+    event.result.close();
+  }
+};
+
 const watch = async (argv) => {
   if (!validateWatchInput(argv)) {
     return undefined;
@@ -68,16 +75,21 @@ const watch = async (argv) => {
 
   let hasWarnings = false;
 
-  const watcher = rollup.watch({
+  const watcher = rolldownWatch({
     ...c.input,
-    onwarn({ loc, message, code }) {
-      if (!hasWarnings) {
-        clearScreen();
-      }
-
+    onLog(level, log, handler) {
+      const { loc, message, code } = log;
       // Supress "use client" warnings coming from MUI bundling
       if (code === 'MODULE_LEVEL_DIRECTIVE' && message.includes(`"use client"`)) {
         return;
+      }
+      if (level !== 'warn') {
+        handler(level, log);
+        return;
+      }
+
+      if (!hasWarnings) {
+        clearScreen();
       }
 
       console.log(
@@ -103,6 +115,7 @@ const watch = async (argv) => {
           clearScreen();
           console.log(`${chalk.white.bgRed(' ERROR ')} ${chalk.red('Failed to compile\n\n')}`);
           console.error(event.error.stack);
+          closeResult(event);
           reject(watcher);
           break;
         case 'BUNDLE_END':
@@ -114,6 +127,7 @@ const watch = async (argv) => {
           console.log(
             `${chalk.black.bgGreen(' DONE  ')} ${chalk.green(`Compiled successfully in ${event.duration}ms\n`)}`
           );
+          closeResult(event);
           resolve(watcher);
           break;
         default:
