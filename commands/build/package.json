@@ -36,7 +36,7 @@
     "@rollup/plugin-json": "6.1.0",
     "@rollup/plugin-node-resolve": "16.0.3",
     "@rollup/plugin-replace": "6.0.3",
-    "@rollup/plugin-terser": "1.0.1",
+    "@rollup/plugin-terser": "1.0.2",
     "chalk": "6.0.1",
     "extend": "3.0.2",
     "postcss": "^8.5.31",

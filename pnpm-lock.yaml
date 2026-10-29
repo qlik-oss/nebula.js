@@ -366,8 +366,8 @@ importers:
         specifier: 7.1.0
         version: 7.1.0(@babel/core@7.29.7(supports-color@11.0.0))(@types/babel__core@7.20.5)(rollup@4.64.12)(supports-color@11.0.0)
       '@rollup/plugin-terser':
-        specifier: 1.0.1
-        version: 1.0.1(rollup@4.64.12)
+        specifier: 1.0.2
+        version: 1.0.2(rollup@4.64.12)
       cross-env:
         specifier: 10.1.0
         version: 10.1.0
@@ -432,8 +432,8 @@ importers:
         specifier: 6.0.3
         version: 6.0.3(rollup@4.64.12)
       '@rollup/plugin-terser':
-        specifier: 1.0.1
-        version: 1.0.1(rollup@4.64.12)
+        specifier: 1.0.2
+        version: 1.0.2(rollup@4.64.12)
       '@scriptappy/cli':
         specifier: 0.10.6
         version: 0.10.6
@@ -517,8 +517,8 @@ importers:
         specifier: 6.0.3
         version: 6.0.3(rollup@4.64.12)
       '@rollup/plugin-terser':
-        specifier: 1.0.1
-        version: 1.0.1(rollup@4.64.12)
+        specifier: 1.0.2
+        version: 1.0.2(rollup@4.64.12)
       cross-env:
         specifier: 10.1.0
         version: 10.1.0
@@ -583,8 +583,8 @@ importers:
         specifier: 6.0.3
         version: 6.0.3(rollup@4.64.12)
       '@rollup/plugin-terser':
-        specifier: 1.0.1
-        version: 1.0.1(rollup@4.64.12)
+        specifier: 1.0.2
+        version: 1.0.2(rollup@4.64.12)
       chalk:
         specifier: 6.0.1
         version: 6.0.1
@@ -695,8 +695,8 @@ importers:
         specifier: 6.0.3
         version: 6.0.3(rollup@4.64.12)
       '@rollup/plugin-terser':
-        specifier: 1.0.1
-        version: 1.0.1(rollup@4.64.12)
+        specifier: 1.0.2
+        version: 1.0.2(rollup@4.64.12)
       extend:
         specifier: 3.0.2
         version: 3.0.2
@@ -3194,8 +3194,8 @@ packages:
       rollup:
         optional: true
 
-  '@rollup/plugin-terser@1.0.1':
-    resolution: {integrity: sha512-8/UVzuKqkcP1YydBTd8sToJtc5ukOgahl7iIT/xYUPP3hK3dC29BnMfUVQB+wWCl2EpQHVFhkrge6DLN9jjOMg==}
+  '@rollup/plugin-terser@1.0.2':
+    resolution: {integrity: sha512-+UihHnuLnQDQ/9wog7ym+7oawCXkjTIo0WwkK7s//0mkktTN0VhYk6fGVxH+NtGzW064w5RCGgreMDxRVhHCzw==}
     engines: {node: '>=20.0.0'}
     peerDependencies:
       rollup: ^2.0.0||^3.0.0||^4.0.0
@@ -12341,7 +12341,7 @@ snapshots:
     optionalDependencies:
       rollup: 4.64.5
 
-  '@rollup/plugin-terser@1.0.1(rollup@4.64.12)':
+  '@rollup/plugin-terser@1.0.2(rollup@4.64.12)':
     dependencies:
       serialize-javascript: 7.1.4
       smob: 1.6.2
