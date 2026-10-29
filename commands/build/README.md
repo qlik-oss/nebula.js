@@ -200,7 +200,9 @@ differences you can notice, in the order of how likely they are to matter:
   Class fields and TypeScript constructs that only Babel supports are compiled the way Oxc does it.
 - **TypeScript is stripped, not checked.** It was by Babel before as well, but `tsconfig.json` is read by neither.
 - **Stylus is no longer supported** (`.styl` files), and `node-sass` is not used: Sass needs Dart Sass 1.45 or later,
-  and `~package/file` imports in a Sass file work as before. The options of `rollup-plugin-postcss` (`use`, `extract`,
+  and `~package` and `~package/file` imports in a Sass file are looked up in the `node_modules` directories above the file
+  (`~package` is the stylesheet that the `sass`, `style` or `main` field of its package.json names). The `exports` of a
+  package and other ways of resolving a Sass import are not read. The options of `rollup-plugin-postcss` (`use`, `extract`,
   `inject` and others) are gone, none of them could be set from the command line or the config file of nebula. Other
   file types than the four above are not understood, as before.
 - **`preferBuiltins` is gone.** A node builtin that has no package of that name is an import of the bundle, as before.
@@ -210,13 +212,27 @@ differences you can notice, in the order of how likely they are to matter:
   puts on a class that the code does not use. Rollup left them out. The production bundles of a visualization are 0.3%
   to 1% larger for it.
 - **`.native` files** are found by their extension, so `./value` is `value.native.js` when building for react native.
-  An import with the extension (`./value.js`) is not redirected, as it was.
-- **The globals of externals in UMD bundles** are `stardust`, `React` and `ReactDOM` for the packages that have them.
-  Rolldown guesses the name of the others and warns about it (`MISSING_GLOBAL_NAME`). Rollup guessed the name from how a
-  package was imported, so `react` was `React` in some bundles and `react` in others.
-- **Legal comments** stay with the code they belong to, and are removed with it, as Terser always did. Terser, not the
-  minifier of Rolldown, minifies the production bundles, as before: Rolldown writes strings as template literals,
-  which Parcel does not recognise as the guard of `typeof process`.
+  Rollup also redirected an import with the extension (`./value.js`) to `value.native.js`. Rolldown does not, and that is
+  a change of behaviour that is not restored.
+- **`replacementStrings` are Rolldown's `define`**, and not a textual replacement as the replace plugin of Rollup made.
+  A key has to be an identifier or a member expression (`process.env.NAME`): a key such as `@@VERSION@@` fails the build
+  with `INVALID_DEFINE_CONFIG`, and the text inside a string literal is not replaced.
+- **A `require()` of a node builtin** in a CommonJS module that is bundled stays a `require` in UMD and SystemJS
+  bundles, and is not declared as a dependency. In an ES bundle it goes through the `__require` function of Rolldown,
+  which throws where there is no global `require`.
+- **The mode** is `production` (minified) only when it is `production`. Any other mode, as with Rollup, is not minified
+  and has `NODE_ENV` set to `production` unless it is `development`.
+- **The wrapper of a SystemJS bundle is not minified**: the chunks are minified as ES modules, and Rollup then wraps
+  them in `System.register`.
+- **The modules that Rolldown makes up** for the `require` of an external (`builtin:esm-external-require-react`) are
+  listed in the `sources` of the source maps, marked in `ignoreList` so that the developer tools hide them.
+- **The globals of externals in UMD bundles** are `stardust`, `React` and `ReactDOM` for the packages that have them,
+  and for the others the name Rollup guessed: the last part of the path, without extension, in camel case (`picasso.js`
+  is `picasso`, `lodash-es` is `lodashEs`).
+- **Legal comments** (`@license`, `@preserve`, `/*!`) stay with the code they belong to, and are removed with it, which
+  Terser did as well. More of them can be in a bundle than before, as the `@license` comments of React and scheduler are
+  kept now. Terser, not the minifier of Rolldown, minifies the production bundles, as before: Rolldown writes strings as
+  template literals, which Parcel does not recognise as the guard of `typeof process`.
 - **UMD bundles of big dependencies can be larger**, when a dependency with CommonJS and ES modules that require each
   other is bundled, as Rolldown wraps the module that is required (a lazy initialisation) where Rollup merged it. A
   visualization of `@material-ui/icons` is 10% larger as UMD, the other formats are not.
