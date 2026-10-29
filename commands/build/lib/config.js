@@ -166,11 +166,15 @@ const config = ({
     input: {
       input: path.resolve(CWD, 'src/index'),
       external: (id) => isExternal(external, id),
+      // Rollup left out a write to a property of an object that nothing uses, as the prototypes of the classes of a library
+      // that the visualization imports one function of. Without this the whole of the prebuilt library is bundled.
+      treeshake: { propertyWriteSideEffects: false },
       platform: browser ? 'browser' : 'neutral',
       resolve: {
         extensions,
         mainFields: browser ? ['browser', 'module', 'main'] : ['module', 'main'],
-        conditionNames: browser ? ['module', 'import', 'browser', 'default'] : ['module', 'import', 'default'],
+        // `import` or `require` is added by Rolldown, depending on how the module is imported
+        conditionNames: browser ? ['module', 'browser'] : ['module'],
       },
       transform: {
         target: TARGETS,
