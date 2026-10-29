@@ -561,16 +561,6 @@ export { getAuthRuntimeModule as t, getQixRuntimeModule as r, getInvokeFetchRunt
       // and no comments that list the path of every module
       assert.doesNotMatch(code, /\/\*!?\*?\*?\* \.\/src\//);
     });
-
-    it('builds into the react native directory with its package.json', async () => {
-      write(
-        'react-native/package.json',
-        JSON.stringify({ name: '@acme/viz-rn', main: 'dist/rn.js', peerDependencies: { '@nebula.js/stardust': '*' } })
-      );
-      write('src/index.js', `export default () => 'native';\n`);
-      await run({ systemjs: false, reactNative: true, reactNativePath: './react-native' });
-      assert.equal(loadUmd('react-native/dist/rn.js').exports(), 'native');
-    });
   });
 
   describe('css', () => {

@@ -48,7 +48,6 @@ describe('nebula build flags', () => {
       ['--code-split'],
       ['--inlineDynamic'],
       ['--cwd', '.'],
-      ['--reactNative', '--reactNativePath', './react-native'],
     ];
     await Promise.all(
       valid.map(async (flags) => {
@@ -72,8 +71,13 @@ describe('nebula build flags', () => {
     assert.match(failure, /Unknown argument: sourcemaps/);
   });
 
-  it('fails on the preferBuiltins flag, which is gone', async () => {
-    const { failure } = await parse(['build', '--preferBuiltins']);
-    assert.match(failure, /Unknown argument: preferBuiltins/);
+  it('fails on the flags that are gone', async () => {
+    const gone = ['preferBuiltins', 'reactNative', 'reactNativePath'];
+    await Promise.all(
+      gone.map(async (flag) => {
+        const { failure } = await parse(['build', `--${flag}`]);
+        assert.match(failure, new RegExp(`Unknown argument: ${flag}`));
+      })
+    );
   });
 });

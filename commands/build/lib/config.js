@@ -1,5 +1,4 @@
 /* eslint-disable import/extensions */
-import fs from 'fs';
 import path from 'path';
 import { createRequire } from 'module';
 import terser from '@rollup/plugin-terser';
@@ -20,22 +19,6 @@ const resolveReplacementStrings = (replacementStrings) => {
     throw new Error('replacementStrings should be an object with key value pairs of strings!');
   }
   return replacementStrings;
-};
-
-const setupReactNative = (argv) => {
-  const { reactNative } = argv;
-  let reactNativePath;
-  if (reactNative) {
-    reactNativePath = argv.reactNativePath || './react-native';
-    if (!fs.existsSync(`${reactNativePath}/package.json`)) {
-      // eslint-disable-next-line no-console
-      console.warn(
-        `WARNING: No ${reactNativePath}/package.json was found.  If you really intended to build a react-native version of this package, please provide one.\nOther wise, to suppress this warning, omit the --reactNative flag.`
-      );
-      return false;
-    }
-  }
-  return { reactNative, reactNativePath };
 };
 
 const getBanner = ({ pkg }) => {
@@ -96,18 +79,14 @@ const config = ({
   } = {},
 } = {}) => {
   const CWD = argv.cwd || cwd;
-  const { reactNative, reactNativePath } = setupReactNative(argv);
   let dir = CWD;
   let pkg = require(path.resolve(CWD, 'package.json'));
   const corePkg = core ? require(path.resolve(core, 'package.json')) : null;
-  pkg = reactNative ? require(path.resolve(reactNativePath, 'package.json')) : pkg;
   const { sourcemap, replacementStrings = {}, typescript, browser } = argv;
   const banner = getBanner({ pkg });
   const outputName = getOutputName({ pkg, config: argv });
 
-  if (reactNative) {
-    dir = `${dir}/${reactNativePath}`;
-  } else if (corePkg) {
+  if (corePkg) {
     pkg = corePkg;
     dir = core;
   }

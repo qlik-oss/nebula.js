@@ -186,24 +186,6 @@ describe('build config', () => {
     assert.deepEqual(resolved(false).resolve.mainFields, ['module', 'main']);
   });
 
-  it('builds from the package.json in the react native directory', () => {
-    const cwd = makeProject();
-    fs.mkdirSync(path.join(cwd, 'react-native'));
-    fs.writeFileSync(
-      path.join(cwd, 'react-native', 'package.json'),
-      JSON.stringify({ name: '@acme/viz-rn', main: 'dist/rn.js', peerDependencies: { '@nebula.js/stardust': '*' } })
-    );
-    const original = process.cwd();
-    process.chdir(cwd);
-    let cfg;
-    try {
-      cfg = config({ format: 'umd', cwd, argv: argv({ reactNative: true, reactNativePath: './react-native' }) });
-    } finally {
-      process.chdir(original);
-    }
-    assert.equal(cfg.output.file, path.join(cwd, 'react-native/dist/rn.js'));
-  });
-
   it('builds a single file unless code splitting is asked for', () => {
     const cwd = makeProject();
     const esm = (extra) => config({ format: 'esm', cwd, argv: argv(extra), behaviours: esmBehaviours }).output;
