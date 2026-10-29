@@ -22,15 +22,11 @@
     "client.js"
   ],
   "scripts": {
-    "build": "cross-env NODE_ENV=production rollup --bundleConfigAsCjs --config ./rollup.config.js",
-    "build:dev": "rollup --bundleConfigAsCjs --config ./rollup.config.js",
+    "build": "cross-env NODE_ENV=production rolldown --config ../../rolldown.config.mjs",
+    "build:dev": "rolldown --config ../../rolldown.config.mjs",
     "prepublishOnly": "rm -rf dist && pnpm run build"
   },
   "devDependencies": {
-    "@babel/preset-env": "8.0.7",
-    "@rollup/plugin-babel": "7.1.0",
-    "@rollup/plugin-terser": "1.0.1",
-    "cross-env": "10.1.0",
-    "rollup": "4.64.12"
+    "cross-env": "10.1.0"
   }
 }

@@ -1,6 +1,12 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
-  "globalDependencies": ["babel.config.cjs", "rollup.config.js", "pnpm-workspace.yaml"],
+  "globalDependencies": [
+    "babel.config.cjs",
+    "pnpm-workspace.yaml",
+    "rolldown.config.mjs",
+    "tools/build/*.mjs",
+    "tools/locale-string-validator.cjs"
+  ],
   "tasks": {
     // No package defines a transit script. The task only links packages through ^transit, so a change in any
     // transitive dependency invalidates the cache of its dependents, even where an intermediate package has no
@@ -35,6 +41,11 @@
     "//#jest": {
       "dependsOn": ["@nebula.js/locale#build", "@nebula.js/stardust#build", "@nebula.js/test-utils#build"],
       "passThroughEnv": ["JEST_JUNIT_OUTPUT_DIR"],
+      "cache": false
+    },
+    // Tests of the build scripts, with the Node test runner. The locale registry they check strings against is generated.
+    "//#test:tools": {
+      "dependsOn": ["@nebula.js/locale#build"],
       "cache": false
     },
     "//#jest:coverage": {
