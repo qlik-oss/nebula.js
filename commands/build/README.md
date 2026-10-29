@@ -211,9 +211,7 @@ differences you can notice, in the order of how likely they are to matter:
 - **A property that is written to something nothing uses is kept**, e.g. the static members that a prebuilt library
   puts on a class that the code does not use. Rollup left them out. The production bundles of a visualization are 0.3%
   to 1% larger for it.
-- **`.native` files** are found by their extension, so `./value` is `value.native.js` when building for react native.
-  Rollup also redirected an import with the extension (`./value.js`) to `value.native.js`. Rolldown does not, and that is
-  a change of behaviour that is not restored.
+- **`.native` file resolution is dropped**: building for react native no longer prefers `value.native.js` to `value.js`.
 - **`replacementStrings` are Rolldown's `define`**, and not a textual replacement as the replace plugin of Rollup made.
   A key has to be an identifier or a member expression (`process.env.NAME`): a key such as `@@VERSION@@` fails the build
   with `INVALID_DEFINE_CONFIG`, and the text inside a string literal is not replaced.

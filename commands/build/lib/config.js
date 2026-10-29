@@ -121,10 +121,6 @@ const config = ({
   if (typescript) {
     extensions.push('.tsx', '.ts');
   }
-  // a .native file is preferred to the file of the same name when building for react native
-  if (reactNative) {
-    extensions.unshift(...extensions.map((ext) => `.native${ext}`));
-  }
 
   const external = core ? getExternalCore({ pkg }) : getExternal({ pkg, config: argv });
   // stardust should always be external

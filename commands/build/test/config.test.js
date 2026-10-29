@@ -186,7 +186,7 @@ describe('build config', () => {
     assert.deepEqual(resolved(false).resolve.mainFields, ['module', 'main']);
   });
 
-  it('prefers .native files for react native builds', () => {
+  it('builds from the package.json in the react native directory', () => {
     const cwd = makeProject();
     fs.mkdirSync(path.join(cwd, 'react-native'));
     fs.writeFileSync(
@@ -196,21 +196,11 @@ describe('build config', () => {
     const original = process.cwd();
     process.chdir(cwd);
     let cfg;
-    let typed;
     try {
       cfg = config({ format: 'umd', cwd, argv: argv({ reactNative: true, reactNativePath: './react-native' }) });
-      typed = config({
-        format: 'umd',
-        cwd,
-        argv: argv({ reactNative: true, reactNativePath: './react-native', typescript: true }),
-      });
     } finally {
       process.chdir(original);
     }
-    assert.equal(cfg.input.resolve.extensions[0], '.native.mjs');
-    assert.deepEqual(cfg.input.resolve.extensions.slice(-4), ['.mjs', '.js', '.jsx', '.json']);
-    assert.ok(typed.input.resolve.extensions.includes('.native.ts'));
-    assert.ok(typed.input.resolve.extensions.includes('.native.tsx'));
     assert.equal(cfg.output.file, path.join(cwd, 'react-native/dist/rn.js'));
   });
 

@@ -562,14 +562,12 @@ export { getAuthRuntimeModule as t, getQixRuntimeModule as r, getInvokeFetchRunt
       assert.doesNotMatch(code, /\/\*!?\*?\*?\* \.\/src\//);
     });
 
-    it('prefers .native files when building for react native', async () => {
+    it('builds into the react native directory with its package.json', async () => {
       write(
         'react-native/package.json',
         JSON.stringify({ name: '@acme/viz-rn', main: 'dist/rn.js', peerDependencies: { '@nebula.js/stardust': '*' } })
       );
-      write('src/value.js', 'export default "web";\n');
-      write('src/value.native.js', 'export default "native";\n');
-      write('src/index.js', `import value from './value';\nexport default () => value;\n`);
+      write('src/index.js', `export default () => 'native';\n`);
       await run({ systemjs: false, reactNative: true, reactNativePath: './react-native' });
       assert.equal(loadUmd('react-native/dist/rn.js').exports(), 'native');
     });
