@@ -453,6 +453,24 @@ export { getAuthRuntimeModule as t, getQixRuntimeModule as r, getInvokeFetchRunt
       assert.ok(loadUmd('dist/viz.js', { requires: { lib: { big: 'external' } } }).required.includes('lib'));
     });
 
+    it('marks the modules that Rolldown makes up for the requires of externals as ignored in the source maps', async () => {
+      createProject({ pkg: { peerDependencies: { '@nebula.js/stardust': '*', lib: '*' } } });
+      process.chdir(dir);
+      write('node_modules/lib/package.json', JSON.stringify({ name: 'lib', main: 'index.js' }));
+      write('node_modules/lib/index.js', 'module.exports = { big: true };\n');
+      write('node_modules/cjs/package.json', JSON.stringify({ name: 'cjs', main: 'index.js' }));
+      write('node_modules/cjs/index.js', "module.exports = require('lib');\n");
+      write('src/index.js', `import cjs from 'cjs';\nexport default () => cjs.big;\n`);
+      await run();
+      ['dist/viz.js', 'dist/viz.systemjs.js'].forEach((file) => {
+        const map = JSON.parse(fs.readFileSync(path.join(dir, `${file}.map`), 'utf8'));
+        const ignored = (map.ignoreList || map.x_google_ignoreList).map((i) => map.sources[i]);
+        const made = map.sources.filter((source) => source.includes('builtin:'));
+        assert.ok(file.includes('systemjs') || made.length > 0, 'the module is in the map of the umd bundle');
+        made.forEach((source) => assert.ok(ignored.includes(source), `${source} is ignored in ${file}`));
+      });
+    });
+
     it('splits a dynamic import into its own chunk only with codeSplit, and inlines it with inlineDynamic', async () => {
       write('src/lazy.js', 'export default "lazy";\n');
       write('src/index.js', `export default () => import('./lazy.js');\n`);
@@ -616,6 +634,20 @@ export default () => styles;
       const { doc, css } = documentStub();
       loadUmd('dist/viz.js', { document: doc });
       assert.match(css().join(' '), /\.a \.b ?\{ ?color: ?green;? ?\}/);
+    });
+
+    it('imports a package with ~ through the stylesheet that its package.json names', async () => {
+      const sassDir = fs.realpathSync(path.resolve(import.meta.dirname, '../node_modules/sass'));
+      fs.mkdirSync(path.join(dir, 'node_modules'), { recursive: true });
+      fs.symlinkSync(sassDir, path.join(dir, 'node_modules/sass'), 'dir');
+      write('node_modules/theme/package.json', JSON.stringify({ name: 'theme', main: 'dist/theme.scss' }));
+      write('node_modules/theme/dist/theme.scss', '$c: teal;\n');
+      write('src/style.scss', "@import '~theme';\n.a { color: $c; }\n");
+      write('src/index.js', `import './style.scss';\nexport default () => 1;\n`);
+      await run();
+      const { doc, css } = documentStub();
+      loadUmd('dist/viz.js', { document: doc });
+      assert.match(css().join(' '), /\.a ?\{ ?color: ?teal;? ?\}/);
     });
 
     it('compiles less with the less of the project', async () => {

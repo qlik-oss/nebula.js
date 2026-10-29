@@ -196,13 +196,21 @@ describe('build config', () => {
     const original = process.cwd();
     process.chdir(cwd);
     let cfg;
+    let typed;
     try {
       cfg = config({ format: 'umd', cwd, argv: argv({ reactNative: true, reactNativePath: './react-native' }) });
+      typed = config({
+        format: 'umd',
+        cwd,
+        argv: argv({ reactNative: true, reactNativePath: './react-native', typescript: true }),
+      });
     } finally {
       process.chdir(original);
     }
     assert.equal(cfg.input.resolve.extensions[0], '.native.mjs');
     assert.deepEqual(cfg.input.resolve.extensions.slice(-4), ['.mjs', '.js', '.jsx', '.json']);
+    assert.ok(typed.input.resolve.extensions.includes('.native.ts'));
+    assert.ok(typed.input.resolve.extensions.includes('.native.tsx'));
     assert.equal(cfg.output.file, path.join(cwd, 'react-native/dist/rn.js'));
   });
 
@@ -227,16 +235,25 @@ describe('build config', () => {
     assert.equal(esm({ inlineDynamic: true }).codeSplitting, false);
   });
 
-  it('names the globals of the externals that have one in umd bundles', () => {
+  it('names the globals of externals in umd bundles, and guesses the ones that have none as Rollup did', () => {
     const { output } = config({ format: 'umd', cwd: makeProject(), argv: argv() });
-    assert.deepEqual(output.globals, { '@nebula.js/stardust': 'stardust', react: 'React' });
-    const more = config({
-      format: 'umd',
-      cwd: makeProject(),
-      argv: argv(),
-      behaviours: { getExternal: () => ['react-dom', 'some-peer', '@nebula.js/stardust'] },
-    });
-    assert.deepEqual(more.output.globals, { 'react-dom': 'ReactDOM', '@nebula.js/stardust': 'stardust' });
+    assert.equal(output.globals('@nebula.js/stardust'), 'stardust');
+    assert.equal(output.globals('react'), 'React');
+    assert.equal(output.globals('react-dom'), 'ReactDOM');
+    assert.equal(output.globals('picasso.js'), 'picasso');
+    assert.equal(output.globals('lodash-es'), 'lodashEs');
+    assert.equal(output.globals('some-peer'), 'somePeer');
+    assert.equal(output.globals('@scope/other-lib'), 'otherLib');
+    assert.equal(output.globals('lib/sub-path.js'), 'subPath');
+  });
+
+  it('minifies in the production mode only', () => {
+    const cwd = makeProject();
+    assert.deepEqual(pluginNames(config({ format: 'umd', cwd, argv: argv(), mode: 'staging' })), []);
+    assert.equal(
+      config({ format: 'umd', cwd, argv: argv(), mode: 'staging' }).input.transform.define['process.env.NODE_ENV'],
+      '"production"'
+    );
   });
 
   it('always keeps stardust and the peer dependencies external, matching strings exactly and expressions by test', () => {

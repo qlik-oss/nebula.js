@@ -78,6 +78,8 @@ export default async function esmToSystemJs({
           format: 'system',
           banner,
           sourcemap: sourcemap && Boolean(map),
+          // what Rollup ignores by default, and the modules that Rolldown makes up
+          sourcemapIgnoreList: (source) => /node_modules|builtin:/.test(source),
         });
         const [chunk] = output;
         return { fileName, code: chunk.code, map: chunk.map ? JSON.parse(JSON.stringify(chunk.map)) : null };

@@ -68,8 +68,18 @@ const getOutputNameDefault = ({ pkg }) => pkg.name.split('/').reverse()[0];
 // the oldest version of every browser of the browserslist, the code is transformed to what they support
 const TARGETS = getTargets(browsersList);
 
-// the globals of the externals in a UMD bundle, Rolldown guesses and warns about the others
 const KNOWN_GLOBALS = { '@nebula.js/stardust': 'stardust', react: 'React', 'react-dom': 'ReactDOM' };
+
+// the name Rollup guessed for an external that has no global: the last part of its path without the extension, in camel
+// case ('picasso.js' is picasso, 'lodash-es' is lodashEs)
+const guessGlobalName = (id) =>
+  id
+    .split('/')
+    .pop()
+    .replace(/\.[cm]?js$/, '')
+    .replace(/[^a-zA-Z0-9_$]+(.)?/g, (m, c) => (c ? c.toUpperCase() : ''));
+
+const getGlobal = (id) => KNOWN_GLOBALS[id] || guessGlobalName(id);
 
 const config = ({
   mode = 'production',
@@ -107,13 +117,13 @@ const config = ({
   }
   const outputFile = getOutputFile({ pkg, config: argv });
 
-  // a .native file is preferred to the file of the same name when building for react native
   const extensions = ['.mjs', '.js', '.jsx', '.json'];
-  if (reactNative) {
-    extensions.unshift(...extensions.map((ext) => `.native${ext}`));
-  }
   if (typescript) {
     extensions.push('.tsx', '.ts');
+  }
+  // a .native file is preferred to the file of the same name when building for react native
+  if (reactNative) {
+    extensions.unshift(...extensions.map((ext) => `.native${ext}`));
   }
 
   const external = core ? getExternalCore({ pkg }) : getExternal({ pkg, config: argv });
@@ -125,6 +135,7 @@ const config = ({
   }
 
   const development = mode === 'development';
+  const production = mode === 'production';
   const isSystemJs = format === 'systemjs';
 
   const output = () => {
@@ -135,10 +146,12 @@ const config = ({
       format: { umd: 'umd', esm: 'es', systemjs: 'es' }[format],
       name: outputName,
       sourcemap,
-      globals: Object.fromEntries(external.filter((id) => KNOWN_GLOBALS[id]).map((id) => [id, KNOWN_GLOBALS[id]])),
+      globals: getGlobal,
+      // the modules that Rolldown makes up, e.g. the ones that turn a require of an external into an import
+      sourcemapIgnoreList: (source) => source.includes('builtin:'),
       // terser is the minifier, Rolldown would print its output again, and write strings as template literals
       minify: false,
-      plugins: [development ? false : terser(), isSystemJs ? systemJs({ banner }) : false].filter(Boolean),
+      plugins: [production ? terser() : false, isSystemJs ? systemJs({ banner }) : false].filter(Boolean),
     };
     if (format === 'umd') {
       // our sources are ES modules, which are strict. Rollup put the directive inside the wrapper of the bundle.

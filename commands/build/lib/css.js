@@ -37,6 +37,17 @@ const loadFromProject = (name, cwd) => {
   }
 };
 
+// the stylesheet a package names in its package.json, as `~package` imports it
+const packageStylesheet = (packageDir) => {
+  try {
+    const pkg = JSON.parse(fs.readFileSync(path.join(packageDir, 'package.json'), 'utf8'));
+    const entry = [pkg.sass, pkg.style, pkg.main].find((field) => typeof field === 'string' && STYLE_FILE.test(field));
+    return entry ? path.join(packageDir, entry) : null;
+  } catch (e) {
+    return null;
+  }
+};
+
 const sassImporter = (file) => ({
   // `~package/file`, a path in node_modules, the way webpack's sass-loader reads it
   findFileUrl(url) {
@@ -47,6 +58,10 @@ const sassImporter = (file) => ({
     let dir = path.dirname(file);
     for (;;) {
       const candidate = path.join(dir, 'node_modules', spec);
+      const stylesheet = /^(@[^/]+\/)?[^/]+$/.test(spec) ? packageStylesheet(candidate) : null;
+      if (stylesheet) {
+        return pathToFileURL(stylesheet);
+      }
       const { dir: parent, base } = path.parse(candidate);
       const found = ['', '.scss', '.sass', '.css'].some(
         (ext) => fs.existsSync(`${candidate}${ext}`) || fs.existsSync(path.join(parent, `_${base}${ext}`))
