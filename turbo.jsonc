@@ -42,6 +42,11 @@
       "passThroughEnv": ["JEST_JUNIT_OUTPUT_DIR"],
       "cache": false
     },
+    // Tests of the build scripts, with the Node test runner. The locale registry they check strings against is generated.
+    "//#test:tools": {
+      "dependsOn": ["@nebula.js/locale#build"],
+      "cache": false
+    },
     "//#jest:coverage": {
       "dependsOn": ["@nebula.js/locale#build", "@nebula.js/stardust#build", "@nebula.js/test-utils#build"],
       "passThroughEnv": ["JEST_JUNIT_OUTPUT_DIR"],
