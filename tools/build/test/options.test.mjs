@@ -7,7 +7,7 @@ import vm from 'node:vm';
 import { rolldown } from 'rolldown';
 import { rollup } from 'rollup';
 import { createPlan, getBanner } from '../plan.mjs';
-import { createRolldownOptions, isIgnoredLog, localeStringValidator } from '../options.mjs';
+import { createRolldownOptions, localeStringValidator } from '../options.mjs';
 
 const pkg = {
   name: '@nebula.js/stardust',
@@ -225,26 +225,47 @@ describe('createRolldownOptions', () => {
   });
 });
 
-describe('isIgnoredLog', () => {
-  test('ignores the "use client" directives of MUI', () => {
-    assert.ok(
-      isIgnoredLog({
-        code: 'MODULE_LEVEL_DIRECTIVE',
-        message:
-          'The semantics of the module level directive "use client" in "node_modules/@mui/material/x.js" are ignored.',
-      })
-    );
+describe('logs', () => {
+  let dir;
+
+  before(() => {
+    dir = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'logs-test-')));
+    write(dir, {
+      'src/index.js': `import './client.js';\nexport const a = eval('1');\n`,
+      // like the modules of MUI
+      'src/client.js': `'use client';\nexport const b = 2;\n`,
+    });
   });
 
-  test('keeps the others', () => {
-    assert.ok(!isIgnoredLog({ code: 'MODULE_LEVEL_DIRECTIVE', message: 'the directive "use strict"' }));
-    assert.ok(!isIgnoredLog({ code: 'CIRCULAR_DEPENDENCY', message: 'src/a.js -> src/b.js' }));
-    assert.ok(!isIgnoredLog({ code: 'UNRESOLVED_IMPORT', message: 'nope' }));
-    assert.ok(!isIgnoredLog({ message: 'no code' }));
+  after(() => fs.rmSync(dir, { recursive: true, force: true }));
+
+  test('the "use client" directives of MUI are not logged, the other problems are', async () => {
+    const { output, ...input } = createRolldownOptions(
+      {
+        label: 'test',
+        debug: true,
+        minify: false,
+        sourcemap: false,
+        define: false,
+        input: path.join(dir, 'src', 'index'),
+        external: [],
+        inlineDynamicImports: true,
+        outputs: [{ format: 'es', file: path.join(dir, 'out.js'), exports: 'named' }],
+      },
+      { pkg, banner, checkLocale: false, nodeEnv: 'production' }
+    );
+    const codes = [];
+    const b = await rolldown({ ...input, onLog: (level, log) => codes.push(log.code) });
+    try {
+      await b.generate(output[0]);
+    } finally {
+      await b.close();
+    }
+    assert.ok(codes.includes('EVAL'), `logs: ${codes}`);
+    assert.ok(!codes.includes('MODULE_LEVEL_DIRECTIVE'), `logs: ${codes}`);
   });
 });
 
-/* eslint-disable no-console */
 describe('localeStringValidator', () => {
   const run = (code) => {
     const warnings = [];

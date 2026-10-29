@@ -25,7 +25,9 @@ final maps point at the original sources.
 - The code is down-levelled for Chrome 62, Safari 11 and iOS 12.2 (the same targets as before) by Rolldown, and that
   now includes the code in `node_modules`. Before, only our own packages were transformed with Babel. The production
   bundles are a few percent larger because of it, and they parse as ES2017 in all outputs.
-- Babel is only used to check the locale strings (`tools/locale-string-validator.cjs`, which warns, as it did before).
+- Babel is used to convert the chunks of the SystemJS output, and to check the locale strings (`tools/locale-string-validator.cjs`,
+  which warns, as it did before) of the files that ask a translator for a string.
+- The "use client" directives of MUI are not logged: the `moduleLevelDirective` check of Rolldown is off.
 - The SystemJS output has the entry module in `stardust.systemjs[.dev].js`, and not in a chunk that it imports. The
   chunks in `dist/chunks` are the dynamic imports of `@qlik/api` and the code they share.
 - `import('fs')` in `@qlik/api` is an empty module in a browser. It is an empty chunk in the SystemJS output.

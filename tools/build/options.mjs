@@ -84,15 +84,6 @@ export function systemJs({ banner, rollup }) {
 }
 
 /**
- * Logs we leave out, as there is nothing for us to do about them: MUI starts its modules with "use client".
- * The INVALID_ANNOTATION and CIRCULAR_DEPENDENCY warnings of Rollup, that we used to filter for MUI, semver and
- * @qlik/api, are not logged by Rolldown.
- * @param {{ code?: string, message?: string }} log
- */
-export const isIgnoredLog = ({ code, message = '' }) =>
-  code === 'MODULE_LEVEL_DIRECTIVE' && message.includes('"use client"');
-
-/**
  * Rolldown options for a bundle in the plan.
  * @param {import('./plan.mjs').BundlePlan} bundle
  * @param {object} context
@@ -123,17 +114,14 @@ export function createRolldownOptions(bundle, { pkg, banner, rollup, checkLocale
       extensions: [debug ? '.dev.js' : false, '.js', '.jsx'].filter(Boolean),
     },
     transform: { target: TARGETS, define: defines },
+    // MUI starts its modules with "use client", there is nothing for us to do about it
+    checks: { moduleLevelDirective: false },
     plugins: [
       ...(checkLocale ? [localeStringValidator()] : []),
       // Owns the externals: they are what a bundle leaves out, and the plugin turns the `require` of them in CommonJS
       // modules (react-dom requires react) into imports in an ES output, where there is no global `require`.
       ...(external.length ? [esmExternalRequirePlugin({ external })] : []),
     ],
-    onLog(level, log, handler) {
-      if (!isIgnoredLog(log)) {
-        handler(level, log);
-      }
-    },
     output: outputs.map((out) => {
       const isSystem = out.format === 'system';
       return {
