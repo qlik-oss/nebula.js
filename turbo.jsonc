@@ -38,6 +38,10 @@
     },
     // Don't pass arguments through turbo to these (`turbo run //#jest -- --foo`). Turbo adds them to the hash of every
     // task in the run, so the builds below would miss the cache. Run `pnpm jest <args>` for ad-hoc runs instead.
+    // The cli packages test their bundling by building small projects, with the Node test runner
+    "test": {
+      "dependsOn": []
+    },
     "//#jest": {
       "dependsOn": ["@nebula.js/locale#build", "@nebula.js/stardust#build", "@nebula.js/test-utils#build"],
       "passThroughEnv": ["JEST_JUNIT_OUTPUT_DIR"],

@@ -45,26 +45,23 @@ const options = {
     type: 'boolean',
     default: false,
   },
-  preferBuiltins: {
-    description:
-      'In Rollup, preferBuiltins is a configuration option that specifies whether to use Node.js built-in modules (such as fs or path) when bundling for Node.js environment.',
-    type: 'boolean',
-    default: true,
-  },
   browser: {
     description:
-      'In Rollup, the browser option is a configuration option that specifies whether the bundle is intended to run in a browser environment.',
+      'Whether the bundle is intended to run in a browser: use the browser fields of package.json and the browser condition of exports.',
     type: 'boolean',
     default: true,
   },
   codeSplit: {
     description:
-      'Sets output.dir instead of output.file for code-splitting builds. Sets inlineDynamicImports for umd builds to avoid throwing errors.',
+      'Sets output.dir instead of output.file for code-splitting builds. Puts dynamic imports into the bundle in umd builds, which cannot be split.',
     type: 'boolean',
     default: false,
   },
+  // not in the help, they are for the other commands and for nebula.config.js
+  cwd: { type: 'string', hidden: true },
+  replacementStrings: { hidden: true },
   inlineDynamic: {
-    description: 'Sets inlineDynamicImports to true for all builds to help with certain dependencies',
+    description: 'Puts dynamic imports into the bundle in all builds, to help with certain dependencies',
     type: 'boolean',
     default: false,
   },

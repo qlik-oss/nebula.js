@@ -6,7 +6,8 @@ export default {
   command: 'build',
   desc: 'Build visualization',
   builder(yargs) {
-    init(yargs).argv;
+    // only this command refuses what it does not know of, a flag that is misspelled would otherwise do nothing
+    init(yargs).strictOptions().argv;
   },
   handler(argv) {
     build(argv);

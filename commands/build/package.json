@@ -19,36 +19,27 @@
     "command.js"
   ],
   "scripts": {
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "test": "node --test"
   },
   "dependencies": {
-    "@babel/cli": "8.0.6",
-    "@babel/core": "8.0.7",
-    "@babel/helper-plugin-utils": "8.0.1",
-    "@babel/plugin-proposal-object-rest-spread": "7.20.7",
-    "@babel/plugin-transform-react-jsx": "8.0.1",
-    "@babel/preset-env": "8.0.7",
-    "@babel/preset-react": "8.0.1",
-    "@babel/preset-typescript": "8.0.7",
     "@qlik/browserslist-config": "^3.1.0",
-    "@rollup/plugin-babel": "7.1.0",
-    "@rollup/plugin-commonjs": "29.0.3",
-    "@rollup/plugin-json": "6.1.0",
-    "@rollup/plugin-node-resolve": "16.0.3",
-    "@rollup/plugin-replace": "6.0.3",
-    "@rollup/plugin-terser": "1.0.1",
+    "@rollup/plugin-terser": "1.0.2",
+    "browserslist": "4.29.4",
     "chalk": "6.0.1",
     "extend": "3.0.2",
     "postcss": "^8.5.31",
+    "postcss-load-config": "3.1.4",
+    "postcss-modules": "4.3.1",
+    "rolldown": "1.2.15",
     "rollup": "4.64.12",
-    "rollup-plugin-postcss": "4.0.2",
-    "rollup-plugin-sass": "1.15.3",
     "rollup-plugin-visualizer": "7.1.1",
     "yargs": "18.2.0"
   },
   "devDependencies": {
-    "@rollup/plugin-typescript": "12.3.0",
-    "tslib": "*",
-    "typescript": "^5.9.3"
+    "@jridgewell/trace-mapping": "0.3.31",
+    "acorn": "8.19.0",
+    "less": "4.9.1",
+    "sass": "1.106.1"
   }
 }
