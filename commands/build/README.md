@@ -201,7 +201,7 @@ differences you can notice, in the order of how likely they are to matter:
 - **TypeScript is stripped, not checked.** It was by Babel before as well, but `tsconfig.json` is read by neither.
 - **Stylus is no longer supported** (`.styl` files), and `node-sass` is not used: Sass needs Dart Sass 1.45 or later,
   and `~package` and `~package/file` imports in a Sass file are looked up in the `node_modules` directories above the file
-  (`~package` is the stylesheet that the `sass`, `style` or `main` field of its package.json names). The `exports` of a
+  (`~package` is the stylesheet that the `sass`, `style` or `main` field of its package.json names, when that ends in `.css`, `.scss`, `.sass` or `.less`). The `exports` of a
   package and other ways of resolving a Sass import are not read. The options of `rollup-plugin-postcss` (`use`, `extract`,
   `inject` and others) are gone, none of them could be set from the command line or the config file of nebula. Other
   file types than the four above are not understood, as before.
@@ -225,13 +225,18 @@ differences you can notice, in the order of how likely they are to matter:
 - **The wrapper of a SystemJS bundle is not minified**: the chunks are minified as ES modules, and Rollup then wraps
   them in `System.register`.
 - **The modules that Rolldown makes up** for the `require` of an external (`builtin:esm-external-require-react`) are
-  listed in the `sources` of the source maps, marked in `ignoreList` so that the developer tools hide them.
-- **The globals of externals in UMD bundles** are `stardust`, `React` and `ReactDOM` for the packages that have them,
-  and for the others the name Rollup guessed: the last part of the path, without extension, in camel case (`picasso.js`
-  is `picasso`, `lodash-es` is `lodashEs`).
+  listed in the `sources` of the source maps, marked in `ignoreList` so that the developer tools hide them, as the sources in `node_modules` are.
+- **The globals of externals in UMD bundles** are `stardust`, `React` and `ReactDOM` for the packages that have them.
+  The name of the others is made from the last part of the path, without `.js`, `.mjs` or `.cjs`, in camel case
+  (`picasso.js` is `picasso`, `lodash-es` is `lodashEs`). Rollup named a global after the binding of a default or
+  namespace import, and made a legal name of the whole path (`picasso_js`) for an import of names only. The name here is
+  the same in the common cases and friendlier in others, but it is not the same in all: `3d-lib` is `3dLib` (Rollup
+  `_3dLib`), and two externals with the same last part (`a/utils` and `b/utils`) get the same name, which Rollup would
+  tell apart.
 - **Legal comments** (`@license`, `@preserve`, `/*!`) stay with the code they belong to, and are removed with it, which
-  Terser did as well. More of them can be in a bundle than before, as the `@license` comments of React and scheduler are
-  kept now. Terser, not the minifier of Rolldown, minifies the production bundles, as before: Rolldown writes strings as
+  Terser did as well. In development bundles the `@license` comments of React and scheduler are there. In a production
+  bundle Terser keeps the ones of code that is still in the bundle: a visualization of `react-dom` has two of them.
+  Terser, not the minifier of Rolldown, minifies the production bundles, as before: Rolldown writes strings as
   template literals, which Parcel does not recognise as the guard of `typeof process`.
 - **UMD bundles of big dependencies can be larger**, when a dependency with CommonJS and ES modules that require each
   other is bundled, as Rolldown wraps the module that is required (a lazy initialisation) where Rollup merged it. A

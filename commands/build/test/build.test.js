@@ -467,6 +467,9 @@ export { getAuthRuntimeModule as t, getQixRuntimeModule as r, getInvokeFetchRunt
         const ignored = (map.ignoreList || map.x_google_ignoreList).map((i) => map.sources[i]);
         const made = map.sources.filter((source) => source.includes('builtin:'));
         assert.ok(file.includes('systemjs') || made.length > 0, 'the module is in the map of the umd bundle');
+        const dependencies = map.sources.filter((source) => source.includes('node_modules'));
+        assert.ok(dependencies.length > 0);
+        dependencies.forEach((source) => assert.ok(ignored.includes(source), `${source} is ignored in ${file}`));
         made.forEach((source) => assert.ok(ignored.includes(source), `${source} is ignored in ${file}`));
       });
     });

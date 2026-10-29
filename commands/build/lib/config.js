@@ -10,7 +10,7 @@ import { visualizer } from 'rollup-plugin-visualizer';
 
 import cssPlugin from './css.js';
 import getTargets from './targets.js';
-import { systemJs } from './esm-to-systemjs.js';
+import { systemJs, ignoreInSourceMaps } from './esm-to-systemjs.js';
 
 const require = createRequire(import.meta.url);
 const browsersList = require('@qlik/browserslist-config');
@@ -147,8 +147,7 @@ const config = ({
       name: outputName,
       sourcemap,
       globals: getGlobal,
-      // the modules that Rolldown makes up, e.g. the ones that turn a require of an external into an import
-      sourcemapIgnoreList: (source) => source.includes('builtin:'),
+      sourcemapIgnoreList: ignoreInSourceMaps,
       // terser is the minifier, Rolldown would print its output again, and write strings as template literals
       minify: false,
       plugins: [production ? terser() : false, isSystemJs ? systemJs({ banner }) : false].filter(Boolean),

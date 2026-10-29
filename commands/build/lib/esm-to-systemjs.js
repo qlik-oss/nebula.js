@@ -15,6 +15,13 @@ import { rollup } from 'rollup';
  * @property {object | null} map Source map that chains through the map of the input chunk.
  */
 
+/**
+ * The sources that developer tools hide: dependencies, which is what both bundlers ignore by default, and the modules
+ * that Rolldown makes up.
+ * @param {string} source
+ */
+export const ignoreInSourceMaps = (source) => /node_modules|builtin:/.test(source);
+
 // This is a copy of tools/build/esm-to-systemjs.mjs of the nebula.js repository, which is not a part of any package.
 // Keep them in line.
 
@@ -78,8 +85,7 @@ export default async function esmToSystemJs({
           format: 'system',
           banner,
           sourcemap: sourcemap && Boolean(map),
-          // what Rollup ignores by default, and the modules that Rolldown makes up
-          sourcemapIgnoreList: (source) => /node_modules|builtin:/.test(source),
+          sourcemapIgnoreList: ignoreInSourceMaps,
         });
         const [chunk] = output;
         return { fileName, code: chunk.code, map: chunk.map ? JSON.parse(JSON.stringify(chunk.map)) : null };
