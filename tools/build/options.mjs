@@ -60,12 +60,20 @@ export function systemJs({ banner, rollup }) {
       const converted = await esmToSystemJs({
         rollup,
         banner,
+        // surfaced like the warnings of Rolldown
+        onwarn: (warning) => this.warn(warning.message),
         outDir: outputOptions.dir,
         sourcemap: Boolean(outputOptions.sourcemap),
         chunks: chunks.map(({ fileName, code, map }) => ({ fileName, code, map })),
       });
       converted.forEach(({ fileName, code, map }) => {
-        Object.assign(bundle[fileName], { code, map });
+        const chunk = bundle[fileName];
+        Object.assign(chunk, { code, map });
+        // The source map is written from an asset of its own, which is not made from `chunk.map` again
+        const asset = chunk.sourcemapFileName && bundle[chunk.sourcemapFileName];
+        if (map && asset) {
+          asset.source = JSON.stringify(map);
+        }
       });
     },
   };
@@ -125,6 +133,9 @@ export function createRolldownOptions(bundle, { pkg, banner, rollup, checkLocale
         ...(out.file ? { file: out.file } : { dir: out.dir, entryFileNames: out.entryFileName }),
         ...(isSystem ? { chunkFileNames: 'chunks/[name]-[hash].js' } : {}),
         exports: out.exports,
+        // like Rollup did, an UMD bundle is strict inside its factory: our sources are ES modules. The `strict` option
+        // of Rolldown puts the directive before the wrapper.
+        ...(out.format === 'umd' ? { intro: '"use strict";' } : {}),
         name: out.name,
         globals: out.globals,
         sourcemap,

@@ -37,10 +37,28 @@ async function main() {
   const bundles = plan.map((bundle) => ({ label: bundle.label, options: createRolldownOptions(bundle, context) }));
 
   if (isWatch) {
-    const watcher = watch(bundles.map(({ options }) => options));
+    const withLog = ({ label, options }) => ({
+      ...options,
+      output: options.output.map((out) => ({
+        ...out,
+        plugins: [
+          ...(out.plugins || []),
+          {
+            name: 'log-written',
+            writeBundle(outputOptions, bundle) {
+              const chunks = Object.values(bundle).filter((file) => file.type === 'chunk');
+              const entries = chunks.filter((chunk) => chunk.isEntry).map((chunk) => chunk.fileName);
+              const rest = chunks.length - entries.length;
+              console.log(`[${label}] wrote ${entries.join(', ')}${rest ? ` and ${rest} more chunks` : ''}`);
+            },
+          },
+        ],
+      })),
+    });
+    const watcher = watch(bundles.map(withLog));
     watcher.on('event', (event) => {
       if (event.code === 'BUNDLE_END') {
-        console.log(`built ${path.relative(cwd, event.output[0] || cwd)} in ${event.duration}ms`);
+        console.log(`built in ${event.duration}ms`);
         event.result.close();
       } else if (event.code === 'ERROR') {
         console.error(event.error);

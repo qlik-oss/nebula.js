@@ -28,14 +28,24 @@ import path from 'node:path';
  * @param {string} options.outDir The directory the chunks are written to, the `fileName`s are relative to it.
  * @param {EsmChunk[]} options.chunks
  * @param {string} [options.banner] Added at the top of every converted chunk.
+ * @param {(warning: { message: string }) => void} [options.onwarn] Gets the warnings of Rollup, which are logged by default.
  * @param {boolean} [options.sourcemap=true] Produce a source map per chunk, chained with the input map. A chunk that has
  *   no map in the input gets none: a map of the conversion alone would point at the ES code, which is not written.
  * @returns {Promise<SystemChunk[]>} In the same order as `chunks`.
  */
-export default async function esmToSystemJs({ rollup, outDir, chunks, banner = '', sourcemap = true }) {
+export default async function esmToSystemJs({
+  rollup,
+  outDir,
+  chunks,
+  banner = '',
+  sourcemap = true,
+  // eslint-disable-next-line no-console
+  onwarn = (warning) => console.warn(warning.message),
+}) {
   const root = path.resolve(outDir);
 
-  return Promise.all(
+  // Every conversion is let to finish, and to close its build, before a failure is thrown
+  const results = await Promise.allSettled(
     chunks.map(async ({ fileName, code, map }) => {
       const entry = path.join(root, fileName);
 
@@ -43,7 +53,7 @@ export default async function esmToSystemJs({ rollup, outDir, chunks, banner = '
         input: entry,
         // the code is already bundled, there is nothing left to tree shake
         treeshake: false,
-        onwarn: () => {},
+        onwarn,
         plugins: [
           {
             name: 'esm-to-systemjs',
@@ -74,4 +84,10 @@ export default async function esmToSystemJs({ rollup, outDir, chunks, banner = '
       }
     })
   );
+
+  const failed = results.find((result) => result.status === 'rejected');
+  if (failed) {
+    throw failed.reason;
+  }
+  return results.map((result) => result.value);
 }

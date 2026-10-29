@@ -239,4 +239,65 @@ describe('esm-to-systemjs', () => {
     const exports = await load(out, 'entry.js', { react: { default: { name: 'R' } } });
     assert.equal(exports.entryValue, 2);
   });
+
+  describe('imports', () => {
+    const chunks = [
+      {
+        fileName: 'entry.js',
+        code: `import react from 'react';\nimport { a } from './chunks/a.js';\nexport default [react, a];\n`,
+      },
+      {
+        fileName: 'chunks/a.js',
+        code: [
+          `import react from 'react';`,
+          `import { b } from './b.js';`,
+          `import { c } from './sub/c.js';`,
+          `import { up } from '../up.js';`,
+          `export const a = [react, b, c, up];`,
+          ``,
+        ].join('\n'),
+      },
+      { fileName: 'chunks/b.js', code: `export const b = 'b';\n` },
+      { fileName: 'chunks/sub/c.js', code: `export const c = 'c';\n` },
+      { fileName: 'up.js', code: `export const up = 'up';\n` },
+    ];
+
+    const depsOf = (out, fileName) =>
+      JSON.parse(
+        bySource(out, fileName)
+          .code.match(/System\.register\((\[[^\]]*\])/)[1]
+          .replace(/'/g, '"')
+      );
+
+    test('peer, sibling, nested and parent imports stay dependencies as they are written', async () => {
+      const out = await esmToSystemJs({ rollup, outDir: path.join(dir, 'dist'), chunks });
+      assert.deepEqual(depsOf(out, 'entry.js'), ['react', './chunks/a.js']);
+      assert.deepEqual(depsOf(out, 'chunks/a.js'), ['react', './b.js', './sub/c.js', '../up.js']);
+      assert.deepEqual(depsOf(out, 'chunks/b.js'), []);
+    });
+
+    test('the other chunks are not bundled into a chunk', async () => {
+      const out = await esmToSystemJs({ rollup, outDir: path.join(dir, 'dist'), chunks });
+      assert.ok(!bySource(out, 'chunks/a.js').code.includes("'c'"));
+      assert.ok(!bySource(out, 'entry.js').code.includes("'b'"));
+    });
+  });
+
+  test('reports the warnings of Rollup', async () => {
+    const warnings = [];
+    const chunks = [{ fileName: 'w.js', code: `export const t = this;\n` }];
+    await esmToSystemJs({ rollup, outDir: path.join(dir, 'dist'), chunks, onwarn: (w) => warnings.push(w.code) });
+    assert.deepEqual(warnings, ['THIS_IS_UNDEFINED']);
+  });
+
+  test('fails when a chunk cannot be converted', async () => {
+    const chunks = [
+      { fileName: 'ok.js', code: `export const ok = 1;\n` },
+      { fileName: 'broken.js', code: `export const = ;\n` },
+    ];
+    await assert.rejects(
+      esmToSystemJs({ rollup, outDir: path.join(dir, 'dist'), chunks }),
+      /Unexpected token|Expected/
+    );
+  });
 });

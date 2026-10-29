@@ -28,3 +28,5 @@ final maps point at the original sources.
   chunks in `dist/chunks` are the dynamic imports of `@qlik/api` and the code they share.
 - `import('fs')` in `@qlik/api` is an empty module in a browser. It is an empty chunk in the SystemJS output.
 - The source maps of the SystemJS output have sources. They were empty before.
+- `test-utils` is down-levelled too, which it was not before. It is 1.3 KB bigger (2.3 KB, from 1.0 KB).
+- All code that is bundled, also from `node_modules`, is down-levelled to the floor of Chrome 62, Safari 11 and iOS 12.2.
