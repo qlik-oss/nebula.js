@@ -36,6 +36,6 @@
     "@rollup/plugin-replace": "6.0.3",
     "@rollup/plugin-terser": "1.0.2",
     "cross-env": "10.1.0",
-    "rollup": "4.64.12"
+    "rollup": "4.65.0"
   }
 }
