@@ -1,6 +1,9 @@
 import path from 'path';
 import { rollup } from 'rollup';
 
+// eslint-disable-next-line import/extensions
+import { setChunk } from './minify.js';
+
 /**
  * @typedef {object} EsmChunk
  * @property {string} fileName Path of the chunk relative to the output directory, e.g. `chunks/index-abc.js`.
@@ -122,15 +125,8 @@ export function systemJs({ banner = '' } = {}) {
         sourcemap: Boolean(outputOptions.sourcemap),
         chunks: chunks.map(({ fileName, code, map }) => ({ fileName, code, map })),
       });
-      converted.forEach(({ fileName, code, map }) => {
-        const chunk = bundle[fileName];
-        Object.assign(chunk, { code, map });
-        // The source map is written from an asset of its own, which is not made from `chunk.map` again
-        const asset = chunk.sourcemapFileName && bundle[chunk.sourcemapFileName];
-        if (map && asset) {
-          asset.source = JSON.stringify(map);
-        }
-      });
+      // The source map is written from an asset of its own, which is not made from `chunk.map` again
+      converted.forEach(({ fileName, code, map }) => setChunk(bundle, bundle[fileName], { code, map }));
     },
   };
 }

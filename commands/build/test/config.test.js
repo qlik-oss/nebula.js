@@ -104,7 +104,7 @@ describe('build config', () => {
     assert.equal(isExternal(cfg, 'some-lib'), false);
   });
 
-  it('puts a banner from package.json after the minifier, and leaves it to the conversion in a systemjs bundle', () => {
+  it('puts a banner from package.json in the output, and leaves it to Terser and the conversion in a minified bundle', () => {
     const cwd = makeProject();
     const banner =
       /^\/\*\n\* @acme\/viz v1\.0\.0\n\* Copyright \(c\) \d{4} Acme <a@acme\.test>\n\* Released under the MIT license\.\n\*\/\n$/;
@@ -117,12 +117,13 @@ describe('build config', () => {
     assert.deepEqual(pluginNames(development), []);
 
     const production = config({ format: 'umd', cwd, argv: argv() });
-    assert.match(production.output.postBanner, banner);
-    assert.deepEqual(pluginNames(production), ['terser']);
+    // Terser is given it as its preamble, as it would remove it from the output
+    assert.equal(production.output.postBanner, '');
+    assert.deepEqual(pluginNames(production), ['terser-last']);
 
     const systemjs = config({ format: 'systemjs', cwd, argv: argv(), behaviours: systemjsBehaviours });
     assert.equal(systemjs.output.postBanner, '');
-    assert.deepEqual(pluginNames(systemjs), ['terser', 'esm-to-systemjs']);
+    assert.deepEqual(pluginNames(systemjs), ['terser-last', 'esm-to-systemjs']);
   });
 
   it('minifies in production only, and sets the matching NODE_ENV', () => {
@@ -132,7 +133,11 @@ describe('build config', () => {
     assert.equal(production.input.transform.define['process.env.NODE_ENV'], '"production"');
     assert.equal(development.input.transform.define['process.env.NODE_ENV'], '"development"');
     assert.deepEqual(pluginNames(development), []);
-    assert.equal(production.output.minify, false, 'terser minifies, not Rolldown');
+    assert.deepEqual(production.output.minify, {
+      compress: true,
+      mangle: false,
+      codegen: { removeWhitespace: false },
+    });
     assert.equal(development.output.minify, false);
     assert.deepEqual(production.input.transform.jsx, { runtime: 'automatic', development: false });
     assert.deepEqual(development.input.transform.jsx, { runtime: 'automatic', development: true });

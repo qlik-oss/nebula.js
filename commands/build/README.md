@@ -181,7 +181,7 @@ uses and which is not published. Keep them in line.
 
 The code is transformed by Oxc, for the oldest version of each of the browsers of `@qlik/browserslist-config`, and JSX
 with the automatic runtime (and development mode in development builds) for `.jsx` and `.tsx`. The production bundles
-are minified with Terser.
+are minified in two stages, first compressed by Rolldown and then printed by Terser, see the differences below.
 
 Stylesheets are bundles too: `.css`, `.scss`, `.sass` and `.less` files are put into a `<style>` element in the head of
 the document when the bundle is loaded, if there is a document. The default export of a stylesheet is its text and of a
@@ -221,6 +221,25 @@ differences you can notice, in the order of how likely they are to matter:
   which throws where there is no global `require`.
 - **The mode** is `production` (minified) only when it is `production`. Any other mode, as with Rollup, is not minified
   and has `NODE_ENV` set to `production` unless it is `development`.
+- **The production bundles are minified in two stages.** Rolldown compresses (`output.minify` is
+  `{ compress: true, mangle: false, codegen: { removeWhitespace: false } }`), and Terser (`@rollup/plugin-terser`, as
+  before) mangles and prints, in `lib/minify.js`.
+  - Why Rolldown compresses: its tree shaker keeps a property that is written to a local object when nothing reads it,
+    and everything that the value refers to. Terser cannot always remove that, Rollup did not keep it, and libraries that
+    are written like that were about 20% bigger without the compression. The compressor of Rolldown (Oxc) removes it.
+  - Why not `output.minify: true`: the printer of Oxc writes strings as template literals when that is as short
+    (`typeof process<\`u\``), which Parcel does not recognise as the guard of `process`. Template literals only come
+    with the whitespace removal, which is off in the first stage, and so is the mangling. Strings are plain strings in the
+    bundles, as before.
+  - Why not `treeshake.propertyWriteSideEffects: false`: it drops `X.prototype = { ... }` as well, also when `new X` is
+    kept, and the instances lose their methods.
+  - Terser runs in `generateBundle`, as the last plugin but the SystemJS conversion: Rolldown minifies after the
+    `renderChunk` hooks, and a Terser there would see the code before the compression. It is given the source map of the
+    chunk, so that the map goes through both the compression and Terser, and the `file` and the `ignoreList` of the map
+    are put back. The banner is its preamble, and the comment with the `sourceMappingURL` is added again after it.
+    Development builds are not minified, nor compressed.
+  - `lib/minify.js` is a copy of the same plugin of `tools/build/options.mjs` of the nebula.js repository. Keep them in
+    line.
 - **The wrapper of a SystemJS bundle is not minified**: the chunks are minified as ES modules, and Rollup then wraps
   them in `System.register`.
 - **The modules that Rolldown makes up** for the `require` of an external (`builtin:esm-external-require-react`) are
@@ -235,8 +254,7 @@ differences you can notice, in the order of how likely they are to matter:
 - **Legal comments** (`@license`, `@preserve`, `/*!`) stay with the code they belong to, and are removed with it, which
   Terser did as well. In development bundles the `@license` comments of React and scheduler are there. In a production
   bundle Terser keeps the ones of code that is still in the bundle: a visualization of `react-dom` has two of them.
-  Terser, not the minifier of Rolldown, minifies the production bundles, as before: Rolldown writes strings as
-  template literals, which Parcel does not recognise as the guard of `typeof process`.
+  The banner is the first thing in the file.
 - **UMD bundles of big dependencies can be larger**, when a dependency with CommonJS and ES modules that require each
   other is bundled, as Rolldown wraps the module that is required (a lazy initialisation) where Rollup merged it. A
   visualization of `@material-ui/icons` is 10% larger as UMD, the other formats are not.

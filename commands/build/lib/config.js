@@ -1,7 +1,6 @@
 /* eslint-disable import/extensions */
 import path from 'path';
 import { createRequire } from 'module';
-import terser from '@rollup/plugin-terser';
 // the resolver of ESLint does not read the exports of a package
 // eslint-disable-next-line import/no-unresolved
 import { esmExternalRequirePlugin } from 'rolldown/plugins';
@@ -10,6 +9,7 @@ import { visualizer } from 'rollup-plugin-visualizer';
 import cssPlugin from './css.js';
 import getTargets from './targets.js';
 import { systemJs, ignoreInSourceMaps } from './esm-to-systemjs.js';
+import { MINIFY, terserLast } from './minify.js';
 
 const require = createRequire(import.meta.url);
 const browsersList = require('@qlik/browserslist-config');
@@ -115,17 +115,20 @@ const config = ({
 
   const output = () => {
     const outputConfig = {
-      // after the minifier, which would remove it. A SystemJS bundle gets its banner when it is converted.
-      postBanner: isSystemJs ? '' : banner,
+      // A SystemJS bundle gets its banner when it is converted, and a minified one from Terser, which would remove it here.
+      postBanner: isSystemJs || production ? '' : banner,
       // SystemJS is not a format of Rolldown, the ES bundle is converted to it when it has been generated
       format: { umd: 'umd', esm: 'es', systemjs: 'es' }[format],
       name: outputName,
       sourcemap,
       globals: getGlobal,
       sourcemapIgnoreList: ignoreInSourceMaps,
-      // terser is the minifier, Rolldown would print its output again, and write strings as template literals
-      minify: false,
-      plugins: [production ? terser() : false, isSystemJs ? systemJs({ banner }) : false].filter(Boolean),
+      // Rolldown compresses and Terser prints, see lib/minify.js. Not `true`: that writes template literals.
+      minify: production ? MINIFY : false,
+      plugins: [
+        production ? terserLast({ banner: isSystemJs ? '' : banner }) : false,
+        isSystemJs ? systemJs({ banner }) : false,
+      ].filter(Boolean),
     };
     if (format === 'umd') {
       // our sources are ES modules, which are strict. Rollup put the directive inside the wrapper of the bundle.

@@ -104,7 +104,8 @@ export default function supernova(): unknown {
 
     it(`${file} writes the strings that guard code as strings, so that bundlers recognise typeof process`, () => {
       const code = fs.readFileSync(path.join(dir, 'dist', file), 'utf8');
-      assert.match(code, /["']undefined["']\s*!?==?\s*typeof process|typeof process\s*!?==?\s*["']undefined["']/);
+      // the compression writes the guard as `typeof process<"u"`, and Parcel recognises it as long as "u" is a string
+      assert.match(code, /typeof process\s*(<\s*["']u["']|!?==?\s*["']undefined["'])/);
       const ast = parseBundle(path.join(dir, 'dist', file), sourceType);
       const quasis = [];
       walk(ast, (node) => {
