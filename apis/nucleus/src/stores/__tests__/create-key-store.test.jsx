@@ -84,4 +84,39 @@ describe('', () => {
     await act(async () => ref.current.store.dispatch(true));
     expect(ref.current.count).toBe(2);
   });
+
+  test('should run the middleware cleanup and null the value on remove', () => {
+    const unsubscribe = jest.fn();
+    const [, store] = createKeyStore({}, () => unsubscribe);
+    store.set('foo', {});
+    store.remove('foo');
+    expect(unsubscribe).toHaveBeenCalledTimes(1);
+    expect(store.get('foo')).toBe(null);
+    store.destroy();
+    expect(unsubscribe).toHaveBeenCalledTimes(1);
+  });
+
+  test('should throw when removing with invalid key', () => {
+    const [, store] = createKeyStore();
+    expect(() => store.remove({})).toThrow();
+    expect(() => store.remove(undefined)).toThrow();
+  });
+
+  test('should not run the middleware cleanup twice when removing the same key twice', () => {
+    const unsubscribe = jest.fn();
+    const [, store] = createKeyStore({}, () => unsubscribe);
+    store.set('foo', {});
+    store.remove('foo');
+    store.remove('foo');
+    expect(unsubscribe).toHaveBeenCalledTimes(1);
+    expect(store.get('foo')).toBe(null);
+  });
+
+  test('should not throw when removing a key that was never set', () => {
+    const unsubscribe = jest.fn();
+    const [, store] = createKeyStore({}, () => unsubscribe);
+    expect(() => store.remove('missing')).not.toThrow();
+    expect(unsubscribe).not.toHaveBeenCalled();
+    expect(store.get('missing')).toBe(null);
+  });
 });
