@@ -138,6 +138,57 @@ describe('<ListBoxRowColumn />', () => {
       expect(getRowsKeyboardNavigation).toHaveBeenCalled();
     });
 
+    test('defaults selectionMode to "add" when not provided on data', async () => {
+      const index = 0;
+      const style = {};
+      const data = {
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
+        keyboard,
+        pages: defaultPages,
+        actions,
+        dataOffset: 0,
+        sizes: { itemPadding: 2 },
+        styles,
+        focusListItems: () => ({ first: false, last: false }),
+      };
+      const testRenderer = await render(
+        <ThemeProvider theme={theme}>
+          <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
+        </ThemeProvider>
+      );
+      expect(getRowsKeyboardNavigation).toHaveBeenCalledWith(expect.objectContaining({ selectionMode: 'add' }));
+      await testRenderer.unmount();
+    });
+
+    test('propagates selectionMode "replace" from data to getRowsKeyboardNavigation', async () => {
+      const index = 0;
+      const style = {};
+      const data = {
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
+        keyboard,
+        pages: defaultPages,
+        actions,
+        dataOffset: 0,
+        sizes: { itemPadding: 2 },
+        styles,
+        selectionMode: 'replace',
+        focusListItems: () => ({ first: false, last: false }),
+      };
+      const testRenderer = await render(
+        <ThemeProvider theme={theme}>
+          <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
+        </ThemeProvider>
+      );
+      expect(getRowsKeyboardNavigation).toHaveBeenCalledWith(expect.objectContaining({ selectionMode: 'replace' }));
+      await testRenderer.unmount();
+    });
+
     test('should have css class `value`', async () => {
       const index = 0;
       const style = {};
@@ -1158,13 +1209,15 @@ describe('<ListBoxRowColumn />', () => {
     const renderImageCell = async ({
       representation,
       qText = 'field-value',
+      qState = 'A',
       exprValues = [],
       listExprIndex = {},
       imageStyles,
+      selectionStyles = styles.selections,
     }) => {
-      const row = [{ qState: 'A', qText, qElemNumber: 0 }, ...exprValues.map((qv) => ({ qText: qv }))];
+      const row = [{ qState, qText, qElemNumber: 0 }, ...exprValues.map((qv) => ({ qText: qv }))];
       const data = {
-        styles: imageStyles ? { ...styles, image: imageStyles } : styles,
+        styles: { ...styles, ...(imageStyles ? { image: imageStyles } : {}), selections: selectionStyles },
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
@@ -1325,6 +1378,104 @@ describe('<ListBoxRowColumn />', () => {
       await testRenderer.unmount();
     });
 
+    test.each([
+      ['S', 'selected', '#009845'],
+      ['L', 'selected', '#009845'],
+      ['XS', 'selectedExcluded', '#ff6b6b'],
+      ['XL', 'selectedExcluded', '#ff6b6b'],
+      ['A', 'alternative', '#e0e0e0'],
+      ['X', 'excluded', '#cccccc'],
+      ['O', 'possible', '#f0f0f0'],
+    ])('selection-state background mode maps qState %s to %s color', async (qState, _colorKey, expectedColor) => {
+      const selectionStyles = {
+        selected: '#009845',
+        selectedExcluded: '#ff6b6b',
+        alternative: '#e0e0e0',
+        excluded: '#cccccc',
+        possible: '#f0f0f0',
+      };
+      const testRenderer = await renderImageCell({
+        representation: {
+          type: 'image',
+          imageSetting: 'url',
+          imageSize: 'alwaysFill',
+          cellBgColorMode: 'selectionState',
+        },
+        qState,
+        qText: 'Amadeus',
+        listExprIndex: { imageUrl: 1 },
+        exprValues: ['http://foo/poster.png'],
+        selectionStyles,
+      });
+      const image = testRenderer.root.findByType(Image);
+      expect(image.props.cellBgColor).toBe(expectedColor);
+      await testRenderer.unmount();
+    });
+
+    test('selection-state background with expression border uses the matching colors for both', async () => {
+      const testRenderer = await renderImageCell({
+        representation: {
+          type: 'image',
+          imageSetting: 'url',
+          imageSize: 'alwaysFill',
+          borderWidth: 3,
+          cellBgColorMode: 'selectionState',
+          borderColorMode: 'expression',
+        },
+        qState: 'S',
+        qText: 'Amadeus',
+        listExprIndex: { imageUrl: 1, borderColor: 2 },
+        exprValues: ['http://foo/poster.png', '#ff0000'],
+        selectionStyles: { selected: '#009845' },
+      });
+      const image = testRenderer.root.findByType(Image);
+      expect(image.props.cellBgColor).toBe('#009845');
+      expect(image.props.border).toBe('3px solid #ff0000');
+      await testRenderer.unmount();
+    });
+
+    test('single border mode passes the resolved style color to Image', async () => {
+      const testRenderer = await renderImageCell({
+        representation: { type: 'image', borderWidth: 3, borderColorMode: 'single' },
+        imageStyles: { borderColor: '#123456' },
+      });
+      expect(testRenderer.root.findByType(Image).props.border).toBe('3px solid #123456');
+      await testRenderer.unmount();
+    });
+
+    test('expression border mode passes the per-value expression color to Image', async () => {
+      const testRenderer = await renderImageCell({
+        representation: { type: 'image', borderWidth: 3, borderColorMode: 'expression' },
+        listExprIndex: { borderColor: 1 },
+        exprValues: ['#cbe989'],
+        imageStyles: { borderColor: '#123456' },
+      });
+      expect(testRenderer.root.findByType(Image).props.border).toBe('3px solid #cbe989');
+      await testRenderer.unmount();
+    });
+
+    test('empty expression border does not fall back to the single-mode color', async () => {
+      const testRenderer = await renderImageCell({
+        representation: { type: 'image', borderWidth: 3, borderColorMode: 'expression' },
+        listExprIndex: { borderColor: 1 },
+        exprValues: [''],
+        imageStyles: { borderColor: '#123456' },
+      });
+      expect(testRenderer.root.findByType(Image).props.border).toBe('3px solid transparent');
+      await testRenderer.unmount();
+    });
+
+    test('selection-state border mode passes the matching selection color to Image', async () => {
+      const testRenderer = await renderImageCell({
+        representation: { type: 'image', borderWidth: 3, borderColorMode: 'selectionState' },
+        qState: 'S',
+        selectionStyles: { selected: '#009845' },
+        imageStyles: { borderColor: '#123456' },
+      });
+      expect(testRenderer.root.findByType(Image).props.border).toBe('3px solid #009845');
+      await testRenderer.unmount();
+    });
+
     test('uses the tooltip expression column as the cell title, falling back to the dimension value', async () => {
       const withTooltip = await renderImageCell({
         representation: { type: 'image', imageSetting: 'url', imageSize: 'alwaysFill' },
@@ -1417,41 +1568,9 @@ describe('<ListBoxRowColumn />', () => {
       ['A', false, 0.4, '#e0e0e0'],
       ['X', false, 0.3, '#f0f0f0'],
       ['O', false, 1, '#f0f0f0'],
-    ])(
-      'qState %s → selected=%s, opacity=%s, placeholder=%s on the Image',
-      async (qState, selected, opacity, placeholderBackground) => {
-        const row = [{ qState, qText: 'Amadeus', qElemNumber: 0 }];
-        const data = {
-          styles,
-          onMouseDown: jest.fn(),
-          onMouseUp: jest.fn(),
-          onMouseEnter: jest.fn(),
-          onClick: jest.fn(),
-          keyboard,
-          actions,
-          dataOffset: 0,
-          sizes: { itemPadding: 2 },
-          representation: { type: 'image', imageSetting: 'label', imageSize: 'alwaysFill' },
-          listExprIndex: {},
-          pages: [{ qArea: { qTop: 0, qHeight: 1 }, qMatrix: [row] }],
-          focusListItems: () => ({ first: false, last: false }),
-        };
-        const testRenderer = await render(
-          <ThemeProvider theme={theme}>
-            <ListBoxRowColumn index={0} style={{}} data={data} />
-          </ThemeProvider>
-        );
-        const image = testRenderer.root.findByType(Image);
-        expect(image.props.selected).toBe(selected);
-        expect(image.props.opacity).toBe(opacity);
-        expect(image.props.placeholderBackground).toBe(placeholderBackground);
-        await testRenderer.unmount();
-      }
-    );
-
-    test('caches the url expression so an excluded value keeps its image after selection', async () => {
-      const exprCache = {};
-      const dataFor = (urlValue) => ({
+    ])('qState %s sets opacity=%s on the Image', async (qState, _selectionState, opacity) => {
+      const row = [{ qState, qText: 'Amadeus', qElemNumber: 0 }];
+      const data = {
         styles,
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
@@ -1461,88 +1580,19 @@ describe('<ListBoxRowColumn />', () => {
         actions,
         dataOffset: 0,
         sizes: { itemPadding: 2 },
-        representation: { type: 'image', imageSetting: 'url', imageSize: 'alwaysFill' },
-        listExprIndex: { imageUrl: 1 },
-        exprCache,
-        pages: [
-          {
-            qArea: { qTop: 0, qHeight: 1 },
-            qMatrix: [[{ qState: 'O', qText: 'Amadeus', qElemNumber: 0 }, { qText: urlValue }]],
-          },
-        ],
+        representation: { type: 'image', imageSetting: 'label', imageSize: 'alwaysFill' },
+        listExprIndex: {},
+        pages: [{ qArea: { qTop: 0, qHeight: 1 }, qMatrix: [row] }],
         focusListItems: () => ({ first: false, last: false }),
-      });
-
-      // First render: value is possible, the url resolves and is cached.
-      const first = await render(
+      };
+      const testRenderer = await render(
         <ThemeProvider theme={theme}>
-          <ListBoxRowColumn index={0} style={{}} data={dataFor('http://foo/poster.png')} />
+          <ListBoxRowColumn index={0} style={{}} data={data} />
         </ThemeProvider>
       );
-      expect(first.root.findByType(Image).props.src).toBe('http://foo/poster.png');
-      await first.unmount();
-
-      // After selection the value is excluded and the engine returns an empty url; the cache fills in.
-      const second = await render(
-        <ThemeProvider theme={theme}>
-          <ListBoxRowColumn index={0} style={{}} data={dataFor('')} />
-        </ThemeProvider>
-      );
-      expect(second.root.findByType(Image).props.src).toBe('http://foo/poster.png');
-      await second.unmount();
-    });
-
-    test('per-value cache is keyed by qElemNumber so values with duplicate labels do not collide', async () => {
-      const exprCache = {};
-      const dataFor = (qElemNumber, urlValue) => ({
-        styles,
-        onMouseDown: jest.fn(),
-        onMouseUp: jest.fn(),
-        onMouseEnter: jest.fn(),
-        onClick: jest.fn(),
-        keyboard,
-        actions,
-        dataOffset: 0,
-        sizes: { itemPadding: 2 },
-        representation: { type: 'image', imageSetting: 'url', imageSize: 'alwaysFill' },
-        listExprIndex: { imageUrl: 1 },
-        exprCache,
-        pages: [
-          {
-            qArea: { qTop: 0, qHeight: 1 },
-            // Two distinct values share the same display text ('Amadeus').
-            qMatrix: [[{ qState: 'O', qText: 'Amadeus', qElemNumber }, { qText: urlValue }]],
-          },
-        ],
-        focusListItems: () => ({ first: false, last: false }),
-      });
-
-      // Value #0 resolves and caches its own url.
-      const a = await render(
-        <ThemeProvider theme={theme}>
-          <ListBoxRowColumn index={0} style={{}} data={dataFor(0, 'http://foo/a.png')} />
-        </ThemeProvider>
-      );
-      expect(a.root.findByType(Image).props.src).toBe('http://foo/a.png');
-      await a.unmount();
-
-      // A different value with the SAME label caches its own (different) url.
-      const b = await render(
-        <ThemeProvider theme={theme}>
-          <ListBoxRowColumn index={0} style={{}} data={dataFor(1, 'http://foo/b.png')} />
-        </ThemeProvider>
-      );
-      expect(b.root.findByType(Image).props.src).toBe('http://foo/b.png');
-      await b.unmount();
-
-      // Value #0 is now excluded (empty url) — it must recover ITS OWN cached url, not value #1's.
-      const aExcluded = await render(
-        <ThemeProvider theme={theme}>
-          <ListBoxRowColumn index={0} style={{}} data={dataFor(0, '')} />
-        </ThemeProvider>
-      );
-      expect(aExcluded.root.findByType(Image).props.src).toBe('http://foo/a.png');
-      await aExcluded.unmount();
+      const image = testRenderer.root.findByType(Image);
+      expect(image.props.opacity).toBe(opacity);
+      await testRenderer.unmount();
     });
 
     test('non-image representation does not render an Image', async () => {

@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust:listbox",
     "description": "nebula listbox properties definition",
-    "version": "7.7.0",
+    "version": "7.8.0",
     "license": "MIT",
     "stability": "stable",
     "x-qlik-visibility": "public"
@@ -139,6 +139,22 @@
           "defaultValue": true,
           "type": "boolean"
         },
+        "selectionMode": {
+          "description": "Controls what a click does to the current selection. 'add' (default) adds/toggles the clicked\nvalue while keeping other selections (holding ctrl/cmd replaces the selection with just that\nvalue). 'replace' inverts this: a plain click replaces the selection with just the clicked\nvalue, while holding ctrl/cmd adds/toggles it into the current selection.",
+          "optional": true,
+          "defaultValue": "add",
+          "kind": "union",
+          "items": [
+            {
+              "kind": "literal",
+              "value": "'add'"
+            },
+            {
+              "kind": "literal",
+              "value": "'replace'"
+            }
+          ]
+        },
         "showTitle": {
           "description": "Show title.",
           "optional": true,
@@ -187,6 +203,26 @@
           "defaultValue": "'#d9d9d9'",
           "type": "string"
         },
+        "borderColorMode": {
+          "description": "Cell border color mode. Only used when `type` is 'image' and `borderWidth` > 0.",
+          "optional": true,
+          "defaultValue": "'single'",
+          "kind": "union",
+          "items": [
+            {
+              "kind": "literal",
+              "value": "'single'"
+            },
+            {
+              "kind": "literal",
+              "value": "'expression'"
+            },
+            {
+              "kind": "literal",
+              "value": "'selectionState'"
+            }
+          ]
+        },
         "borderWidth": {
           "description": "Cell border width in px. Only used when `type` is 'image'.",
           "optional": true,
@@ -222,6 +258,10 @@
             {
               "kind": "literal",
               "value": "'expression'"
+            },
+            {
+              "kind": "literal",
+              "value": "'selectionState'"
             }
           ]
         },

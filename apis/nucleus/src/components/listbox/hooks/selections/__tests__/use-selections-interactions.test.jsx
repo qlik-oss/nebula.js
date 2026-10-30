@@ -215,6 +215,152 @@ describe('use-listbox-interactions', () => {
     });
   });
 
+  describe('selectionMode', () => {
+    test('default ("add") mode: plain click toggles/adds, ctrl/cmd click replaces', async () => {
+      updateSelectionState({
+        pages: createPageWithSingle(23, 'O'),
+      });
+      await render();
+      const arg0 = ref.current.result;
+
+      await act(() => {
+        arg0.interactionEvents.onMouseDown({
+          button: 0,
+          currentTarget: { getAttribute: jest.fn().mockReturnValue(23) },
+        });
+      });
+      const [, docMouseUpListener] = global.document.addEventListener.mock.lastCall;
+      await act(() => {
+        docMouseUpListener({ button: 0 });
+      });
+      expect(listboxSelections.selectValues).toHaveBeenLastCalledWith({
+        selections,
+        elemNumbers: [23],
+        isSingleSelect: false,
+        toggle: true,
+      });
+
+      await act(() => {
+        arg0.interactionEvents.onMouseDown({
+          button: 0,
+          currentTarget: { getAttribute: jest.fn().mockReturnValue(23), focus: jest.fn() },
+          ctrlKey: true,
+          preventDefault: jest.fn(),
+        });
+      });
+      await act(() => {
+        docMouseUpListener({ button: 0 });
+      });
+      expect(listboxSelections.selectValues).toHaveBeenLastCalledWith({
+        selections,
+        elemNumbers: [23],
+        isSingleSelect: false,
+        toggle: false,
+      });
+    });
+
+    test('"replace" mode: plain click replaces, ctrl/cmd click toggles/adds', async () => {
+      updateSelectionState({
+        pages: createPageWithSingle(23, 'O'),
+      });
+      await render({ selectionMode: 'replace' });
+      const arg0 = ref.current.result;
+
+      await act(() => {
+        arg0.interactionEvents.onMouseDown({
+          button: 0,
+          currentTarget: { getAttribute: jest.fn().mockReturnValue(23) },
+        });
+      });
+      const [, docMouseUpListener] = global.document.addEventListener.mock.lastCall;
+      await act(() => {
+        docMouseUpListener({ button: 0 });
+      });
+      expect(listboxSelections.selectValues).toHaveBeenLastCalledWith({
+        selections,
+        elemNumbers: [23],
+        isSingleSelect: false,
+        toggle: false,
+      });
+
+      await act(() => {
+        arg0.interactionEvents.onMouseDown({
+          button: 0,
+          currentTarget: { getAttribute: jest.fn().mockReturnValue(23), focus: jest.fn() },
+          metaKey: true,
+          preventDefault: jest.fn(),
+        });
+      });
+      await act(() => {
+        docMouseUpListener({ button: 0 });
+      });
+      expect(listboxSelections.selectValues).toHaveBeenLastCalledWith({
+        selections,
+        elemNumbers: [23],
+        isSingleSelect: false,
+        toggle: true,
+      });
+    });
+
+    test('"replace" mode applies to checkbox-mode clicks too', async () => {
+      updateSelectionState({
+        pages: createPageWithSingle(24, 'O'),
+      });
+      await render({ checkboxes: true, selectionMode: 'replace' });
+
+      await act(() => {
+        ref.current.result.interactionEvents.onChange({
+          nativeEvent: {},
+          target: { getAttribute: jest.fn().mockReturnValue(24) },
+        });
+      });
+      expect(listboxSelections.selectValues).toHaveBeenLastCalledWith({
+        selections,
+        elemNumbers: [24],
+        isSingleSelect: false,
+        toggle: false,
+      });
+
+      await act(() => {
+        ref.current.result.interactionEvents.onChange({
+          nativeEvent: { ctrlKey: true },
+          target: { getAttribute: jest.fn().mockReturnValue(24) },
+        });
+      });
+      expect(listboxSelections.selectValues).toHaveBeenLastCalledWith({
+        selections,
+        elemNumbers: [24],
+        isSingleSelect: false,
+        toggle: true,
+      });
+    });
+
+    test('"replace" mode applies to manual/keyboard select', async () => {
+      await render({ selectionMode: 'replace' });
+      const args = ref.current.result;
+
+      await act(() => {
+        args.select([1]);
+      });
+      expect(listboxSelections.selectValues).toHaveBeenLastCalledWith({
+        selections,
+        elemNumbers: [1],
+        isSingleSelect: false,
+        toggle: false,
+      });
+
+      await act(() => {
+        args.select([2], false, { nativeEvent: { ctrlKey: true } });
+      });
+      expect(listboxSelections.selectValues).toHaveBeenLastCalledWith({
+        selections,
+        elemNumbers: [2],
+        isSingleSelect: false,
+        toggle: true,
+      });
+    });
+  });
+
   describe('it should behave with range select', () => {
     test('should return expected stuff', async () => {
       await render();

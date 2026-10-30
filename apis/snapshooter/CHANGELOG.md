@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.8.0](https://github.com/qlik-oss/nebula.js/compare/v7.7.0...v7.8.0) (2026-10-19)
+
+### Bug Fixes
+
+- **deps:** update babel monorepo ([#2288](https://github.com/qlik-oss/nebula.js/issues/2288)) ([bfb50db](https://github.com/qlik-oss/nebula.js/commit/bfb50dbf71fd09593d37509561d9458fa3ce502a))
+- **deps:** update dependency rollup to v4.64.5 ([#2309](https://github.com/qlik-oss/nebula.js/issues/2309)) ([564242f](https://github.com/qlik-oss/nebula.js/commit/564242f16314cb906f3bee2280860be98e16b4cf))
+
 # [7.7.0](https://github.com/qlik-oss/nebula.js/compare/v7.6.0...v7.7.0) (2026-10-08)
 
 **Note:** Version bump only for package @nebula.js/snapshooter

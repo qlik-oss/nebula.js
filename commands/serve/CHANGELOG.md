@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.8.0](https://github.com/qlik-oss/nebula.js/compare/v7.7.0...v7.8.0) (2026-10-19)
+
+### Bug Fixes
+
+- add hostconfig in serve ([#2256](https://github.com/qlik-oss/nebula.js/issues/2256)) ([7b64e53](https://github.com/qlik-oss/nebula.js/commit/7b64e534447dc099183a3e5efd5649def663548c))
+- **deps:** update babel monorepo ([#2288](https://github.com/qlik-oss/nebula.js/issues/2288)) ([bfb50db](https://github.com/qlik-oss/nebula.js/commit/bfb50dbf71fd09593d37509561d9458fa3ce502a))
+- **deps:** update dependency @qlik/api to v2.19.0 ([#2265](https://github.com/qlik-oss/nebula.js/issues/2265)) ([cc3182f](https://github.com/qlik-oss/nebula.js/commit/cc3182f983756cfc5bd8fb68f80e119078ec0f7d))
+- **deps:** update dependency chalk to v6.0.1 ([#2289](https://github.com/qlik-oss/nebula.js/issues/2289)) ([9cfd13c](https://github.com/qlik-oss/nebula.js/commit/9cfd13c8c827afe69782226873d593da324720ef))
+- **deps:** update dependency express to v5.3.0 ([#2307](https://github.com/qlik-oss/nebula.js/issues/2307)) ([5451b47](https://github.com/qlik-oss/nebula.js/commit/5451b47b3c2f35a6fa1b3173a95748b69f06ae59))
+- **deps:** update dependency puppeteer to v25.13.0 ([#2308](https://github.com/qlik-oss/nebula.js/issues/2308)) ([9b04506](https://github.com/qlik-oss/nebula.js/commit/9b04506b5bbb34e673b9f1e5c3eb4503a6b99014))
+- **deps:** update dependency webpack to v5.111.1 ([#2311](https://github.com/qlik-oss/nebula.js/issues/2311)) ([0b1ec89](https://github.com/qlik-oss/nebula.js/commit/0b1ec89c787df9776bc925024c3cdb19d0e4a4b8))
+- **deps:** update dependency webpack-cli to v7.2.3 ([#2293](https://github.com/qlik-oss/nebula.js/issues/2293)) ([4947a0c](https://github.com/qlik-oss/nebula.js/commit/4947a0c76d8ce0cd30834e30380ffde39e643f7a))
+- **deps:** update dependency ws to v8.22.0 ([#2312](https://github.com/qlik-oss/nebula.js/issues/2312)) ([88cad0f](https://github.com/qlik-oss/nebula.js/commit/88cad0fc01950a6c7273076f92921714be494a37))
+- **deps:** update dependency yargs to v18.2.0 ([#2313](https://github.com/qlik-oss/nebula.js/issues/2313)) ([9314569](https://github.com/qlik-oss/nebula.js/commit/9314569cb556129ae23a8a24d5c37edf6c499c07))
+
 # [7.7.0](https://github.com/qlik-oss/nebula.js/compare/v7.6.0...v7.7.0) (2026-10-08)
 
 **Note:** Version bump only for package @nebula.js/cli-serve

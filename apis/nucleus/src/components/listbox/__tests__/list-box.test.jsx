@@ -313,68 +313,6 @@ describe('<Listbox />', () => {
       expect(disclaimers).toHaveLength(0);
     });
 
-    describe('exprCache', () => {
-      const context = {
-        modelStore: initializeStores('app'),
-        selectionStore: initializeSelectionStores('app'),
-        translator: { get: (s) => s, language: () => 'sv' },
-      };
-
-      const element = (layoutToUse) => (
-        <InstanceContext.Provider value={context}>
-          <ListBox
-            model={args.model}
-            layout={layoutToUse}
-            selections={args.selections}
-            selectionState={args.selectionState}
-            direction={args.direction}
-            height={args.height}
-            width={args.width}
-            update={args.update}
-            fetchStart={args.fetchStart}
-            keyScroll={args.keyScroll}
-            currentScrollIndex={args.currentScrollIndex}
-            isModal={isModal}
-            theme={theme}
-          />
-        </InstanceContext.Provider>
-      );
-
-      const lastExprCache = () => getListBoxComponents.default.mock.calls.at(-1)[0].exprCache;
-
-      test('survives an in-place re-render of the same field, but is cleared when the field changes', async () => {
-        layout.qListObject.qDimensionInfo.qGroupFieldDefs = ['Country'];
-        await act(async () => {
-          renderer = create(element(layout));
-        });
-        const initialCache = lastExprCache();
-        initialCache.subtitle = { 7: 'cached-for-Country' };
-
-        // Same field, e.g. a selection changed elsewhere - the cache must survive.
-        const sameFieldLayout = { ...layout, qSelectionInfo: { qInSelections: true } };
-        await act(async () => {
-          renderer.update(element(sameFieldLayout));
-        });
-        expect(lastExprCache()).toBe(initialCache);
-        expect(lastExprCache().subtitle).toEqual({ 7: 'cached-for-Country' });
-
-        // The dimension's field changed - a qElemNumber cached under the old field means nothing
-        // under the new one, so the cache must be cleared rather than carried over.
-        const newFieldLayout = {
-          ...layout,
-          qListObject: {
-            ...layout.qListObject,
-            qDimensionInfo: { ...layout.qListObject.qDimensionInfo, qGroupFieldDefs: ['City'] },
-          },
-        };
-        await act(async () => {
-          renderer.update(element(newFieldLayout));
-        });
-        expect(lastExprCache()).not.toBe(initialCache);
-        expect(lastExprCache()).toEqual({});
-      });
-    });
-
     describe('image "show only selected values"', () => {
       // Two overlapping windows (a stale pre-selection page + the re-fetched top window after the
       // state re-sort) that both hold the same selected values — the case that used to render
@@ -481,53 +419,6 @@ describe('<Listbox />', () => {
         await render();
         // With showSelected: false, the full (uncompacted) pages pass through unchanged.
         expect(lastGridProps().pages).toBe(overlappingPages);
-      });
-    });
-
-    describe('exprCache warm-up (whole-field fetch, independent of virtualization)', () => {
-      const lastExprCache = () => getListBoxComponents.default.mock.calls.at(-1)[0].exprCache;
-
-      const setUpWarmup = ({ cardinal = 2 } = {}) => {
-        layout.representation = { type: 'image' };
-        layout.qListObject.qExpressions = [{ qLabel: 'imageUrl' }];
-        layout.qListObject.qDimensionInfo.qCardinal = cardinal;
-        args.model.getListObjectData = jest.fn().mockResolvedValue([
-          {
-            qMatrix: [
-              [{ qText: 'a', qElemNumber: 1 }, { qText: 'url-a' }],
-              [{ qText: 'b', qElemNumber: 2 }, { qText: 'url-b' }],
-            ],
-          },
-        ]);
-      };
-
-      test('fetches the whole field once (qTop 0, qHeight = cardinal) and merges values by qElemNumber', async () => {
-        setUpWarmup();
-        await render();
-        expect(args.model.getListObjectData).toHaveBeenCalledWith('/qListObjectDef', [
-          { qTop: 0, qLeft: 0, qWidth: 2, qHeight: 2 },
-        ]);
-        expect(lastExprCache().imageUrl).toEqual({ 1: 'url-a', 2: 'url-b' });
-      });
-
-      test('does not run for a non-image representation', async () => {
-        setUpWarmup();
-        layout.representation = { type: 'text' };
-        await render();
-        expect(args.model.getListObjectData).not.toHaveBeenCalled();
-      });
-
-      test('does not run for a field with no per-value expressions', async () => {
-        setUpWarmup();
-        layout.qListObject.qExpressions = [];
-        await render();
-        expect(args.model.getListObjectData).not.toHaveBeenCalled();
-      });
-
-      test('does not run when the cardinality exceeds the warm-up cap', async () => {
-        setUpWarmup({ cardinal: 100000 });
-        await render();
-        expect(args.model.getListObjectData).not.toHaveBeenCalled();
       });
     });
   });

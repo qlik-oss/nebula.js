@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.8.0](https://github.com/qlik-oss/nebula.js/compare/v7.7.0...v7.8.0) (2026-10-19)
+
+### Bug Fixes
+
+- add hostconfig in serve ([#2256](https://github.com/qlik-oss/nebula.js/issues/2256)) ([7b64e53](https://github.com/qlik-oss/nebula.js/commit/7b64e534447dc099183a3e5efd5649def663548c))
+- **deps:** update babel monorepo ([#2288](https://github.com/qlik-oss/nebula.js/issues/2288)) ([bfb50db](https://github.com/qlik-oss/nebula.js/commit/bfb50dbf71fd09593d37509561d9458fa3ce502a))
+- **deps:** update dependency @inquirer/prompts to v8.7.3 ([#2306](https://github.com/qlik-oss/nebula.js/issues/2306)) ([79c3b1a](https://github.com/qlik-oss/nebula.js/commit/79c3b1a2ff1e1ef1b5cfce2e75eef35bf020868f))
+- **deps:** update dependency @qlik/api to v2.19.0 ([#2265](https://github.com/qlik-oss/nebula.js/issues/2265)) ([cc3182f](https://github.com/qlik-oss/nebula.js/commit/cc3182f983756cfc5bd8fb68f80e119078ec0f7d))
+- **deps:** update dependency @qlik/browserslist-config to ^3.1.0 ([#2266](https://github.com/qlik-oss/nebula.js/issues/2266)) ([5fa0f31](https://github.com/qlik-oss/nebula.js/commit/5fa0f31099eee9cd0bd964b84763db29e667f85d))
+- **deps:** update dependency chalk to v6.0.1 ([#2289](https://github.com/qlik-oss/nebula.js/issues/2289)) ([9cfd13c](https://github.com/qlik-oss/nebula.js/commit/9cfd13c8c827afe69782226873d593da324720ef))
+- **deps:** update dependency express to v5.3.0 ([#2307](https://github.com/qlik-oss/nebula.js/issues/2307)) ([5451b47](https://github.com/qlik-oss/nebula.js/commit/5451b47b3c2f35a6fa1b3173a95748b69f06ae59))
+- **deps:** update dependency fs-extra to v11.4.1 ([#2290](https://github.com/qlik-oss/nebula.js/issues/2290)) ([20b2ef3](https://github.com/qlik-oss/nebula.js/commit/20b2ef3af2f76f525321e144b718b943acb8c4fc))
+- **deps:** update dependency postcss to ^8.5.29 ([#2292](https://github.com/qlik-oss/nebula.js/issues/2292)) ([6c97635](https://github.com/qlik-oss/nebula.js/commit/6c976350dd7dcd5e06854e12bc6055972f0b4b49))
+- **deps:** update dependency puppeteer to v25.13.0 ([#2308](https://github.com/qlik-oss/nebula.js/issues/2308)) ([9b04506](https://github.com/qlik-oss/nebula.js/commit/9b04506b5bbb34e673b9f1e5c3eb4503a6b99014))
+- **deps:** update dependency rollup to v4.64.5 ([#2309](https://github.com/qlik-oss/nebula.js/issues/2309)) ([564242f](https://github.com/qlik-oss/nebula.js/commit/564242f16314cb906f3bee2280860be98e16b4cf))
+- **deps:** update dependency rollup-plugin-visualizer to v7.1.1 ([#2310](https://github.com/qlik-oss/nebula.js/issues/2310)) ([0c3445e](https://github.com/qlik-oss/nebula.js/commit/0c3445ecc00fdfe7ec64e5c6bf59b6c8d8231520))
+- **deps:** update dependency webpack to v5.111.1 ([#2311](https://github.com/qlik-oss/nebula.js/issues/2311)) ([0b1ec89](https://github.com/qlik-oss/nebula.js/commit/0b1ec89c787df9776bc925024c3cdb19d0e4a4b8))
+- **deps:** update dependency webpack-cli to v7.2.3 ([#2293](https://github.com/qlik-oss/nebula.js/issues/2293)) ([4947a0c](https://github.com/qlik-oss/nebula.js/commit/4947a0c76d8ce0cd30834e30380ffde39e643f7a))
+- **deps:** update dependency ws to v8.22.0 ([#2312](https://github.com/qlik-oss/nebula.js/issues/2312)) ([88cad0f](https://github.com/qlik-oss/nebula.js/commit/88cad0fc01950a6c7273076f92921714be494a37))
+- **deps:** update dependency yargs to v18.2.0 ([#2313](https://github.com/qlik-oss/nebula.js/issues/2313)) ([9314569](https://github.com/qlik-oss/nebula.js/commit/9314569cb556129ae23a8a24d5c37edf6c499c07))
+- **deps:** update picasso.js packages to v2.11.7 ([#2262](https://github.com/qlik-oss/nebula.js/issues/2262)) ([e6681c3](https://github.com/qlik-oss/nebula.js/commit/e6681c3b52975580ea02cfd464ac73c21568c541))
+- maintain image outline & corner radius on selection ([#2257](https://github.com/qlik-oss/nebula.js/issues/2257)) ([a053aa8](https://github.com/qlik-oss/nebula.js/commit/a053aa8e3795bef7ec0007689548a792f9dc25bd))
+- remove expr cache images in filterpane ([#2276](https://github.com/qlik-oss/nebula.js/issues/2276)) ([90936dc](https://github.com/qlik-oss/nebula.js/commit/90936dcebb84559a42bf366619cea37a738ad0c2))
+
+### Features
+
+- add selection state & expression to background & border color ([#2273](https://github.com/qlik-oss/nebula.js/issues/2273)) ([cdce20a](https://github.com/qlik-oss/nebula.js/commit/cdce20a38844e95c41406eab61065c41bcbf4cf6))
+- add versioned property tests skill ([#2260](https://github.com/qlik-oss/nebula.js/issues/2260)) ([ca22167](https://github.com/qlik-oss/nebula.js/commit/ca2216740bf9b9b9be54d3320105ec4400e7c54e))
+- image label expression to be set as image overlay text title ([#2259](https://github.com/qlik-oss/nebula.js/issues/2259)) ([345e8b5](https://github.com/qlik-oss/nebula.js/commit/345e8b57116711a344018f94d12fd9cf0c15f034))
+
 # [7.7.0](https://github.com/qlik-oss/nebula.js/compare/v7.6.0...v7.7.0) (2026-10-08)
 
 ### Bug Fixes

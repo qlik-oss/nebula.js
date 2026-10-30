@@ -5,7 +5,7 @@ import deriveRenderOptions from './derive-render-options';
 import getStyledComponents, { classes } from './styled-components';
 import handleSetOverflowDisclaimer from './set-overflow-disclaimer';
 import { REMOVE_TICK_LIMIT } from '../../constants';
-import { getListExprIndex } from '../../helpers/expr-cache';
+import getListExprIndex from '../../helpers/list-expr-index';
 
 const { StyledFixedSizeList, StyledFixedSizeGrid } = getStyledComponents();
 
@@ -43,8 +43,8 @@ export default function getListBoxComponents({
   translator,
   showSearch,
   isModal,
+  selectionMode = 'add',
   styles,
-  exprCache,
 }) {
   const { layoutOptions = {} } = layout || {};
   const { columnWidth, listHeight, itemHeight, rowCount, columnCount } = sizes || {};
@@ -83,7 +83,6 @@ export default function getListBoxComponents({
     sizes,
     representation,
     listExprIndex,
-    exprCache,
     actions: {
       select,
       confirm: () => selections?.confirm.call(selections),
@@ -106,6 +105,7 @@ export default function getListBoxComponents({
     isModal,
     styles,
     fillHeight,
+    selectionMode,
   };
 
   const List = ({ onItemsRendered, ref }) => {

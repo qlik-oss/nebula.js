@@ -8,7 +8,7 @@ import Tick from '@nebula.js/ui/icons/tick';
 import getSegmentsFromRanges from '../listbox-highlight';
 import classes from './helpers/classes';
 import { getValueStateClasses } from './helpers/cell-states';
-import { joinClassNames } from './helpers/operations';
+import { joinClassNames, getSelectionState } from './helpers/operations';
 import RowColRoot from './components/ListBoxRoot';
 import FieldWithRanges from './components/FieldWithRanges';
 import Field from './components/Field';
@@ -20,7 +20,6 @@ import getRowFromPages from './helpers/get-row-from-pages';
 import getRowsKeyboardNavigation from '../../interactions/keyboard-navigation/keyboard-nav-rows';
 import getValueTextAlign from './helpers/get-value-text-align';
 import getValueLabel from '../screen-reader/value-label';
-import { cacheExprValue } from '../../helpers/expr-cache';
 
 function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const {
@@ -61,8 +60,8 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     fillHeight,
     representation,
     listExprIndex = {},
-    exprCache = {},
     hideLastRowDivider = false,
+    selectionMode = 'add',
   } = data;
 
   const { dense = false, dataLayout = 'singleColumn', layoutOrder } = layoutOptions;
@@ -133,8 +132,20 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
       rowIndex,
       columnIndex,
       layoutOrder: effectiveLayoutOrder,
+      selectionMode,
+      isSingleSelect,
     }),
-    [actions, keyboard?.innerTabStops, rowCount, columnCount, rowIndex, columnIndex, effectiveLayoutOrder]
+    [
+      actions,
+      keyboard?.innerTabStops,
+      rowCount,
+      columnCount,
+      rowIndex,
+      columnIndex,
+      effectiveLayoutOrder,
+      selectionMode,
+      isSingleSelect,
+    ]
   );
 
   const row = useMemo(() => getRowFromPages({ pages, cellIndex }), [pages, cellIndex]);
@@ -178,30 +189,28 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   let imageAlt;
   let imageSubtitle;
   let imageCellBgColor;
+  let imgCellBorderColor;
+  let imageBorder;
   let imageTooltip;
   let imageSelectionColor;
   let imageOpacity = 1;
-  let imagePlaceholderBg;
   if (isImage) {
-    imageSelectionColor = styles?.selections?.selected || '#009845';
+    const selectionStyles = styles.selections;
+    imageSelectionColor =
+      getSelectionState(cell?.qState) && selectionStyles
+        ? selectionStyles[getSelectionState(cell?.qState)]
+        : 'undefined';
     if (cell.qState === 'X' || cell.qState === 'XS' || cell.qState === 'XL') {
       imageOpacity = 0.3;
     } else if (cell.qState === 'A') {
       imageOpacity = 0.4;
     }
-    // Neutral backdrop shown while the image loads and behind any letterboxing (a touch darker for
-    // alternatives); the cell background color expression, when set, takes precedence over this.
-    imagePlaceholderBg = cell.qState === 'A' ? '#e0e0e0' : '#f0f0f0';
 
-    // Resolve a per-value expression column, caching the last non-empty value per dimension value so
-    // it survives once the value becomes excluded (the engine returns null for excluded values).
-    // Key by the stable element number rather than the display text (qText/label), which is not
-    // guaranteed unique — duplicate labels would otherwise overwrite each other's cached values.
-    const valueKey = cell?.qElemNumber ?? label;
+    // Resolve a per-value expression column (imageUrl/subtitle/etc.); listExprIndex maps the
+    // expression's qLabel to its column index in the row.
     const resolveExpr = (key) => {
       const col = listExprIndex[key];
-      if (col == null) return undefined;
-      return cacheExprValue(exprCache, key, valueKey, row?.[col]?.qText);
+      return col == null ? undefined : row?.[col]?.qText;
     };
 
     const imageSetting = representation?.imageSetting ?? 'label';
@@ -211,9 +220,20 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     const cellBgColorMode = representation?.cellBgColorMode ?? 'single';
     if (cellBgColorMode === 'expression') {
       imageCellBgColor = resolveExpr('cellBgColor');
+    } else if (cellBgColorMode === 'selectionState') {
+      imageCellBgColor = imageSelectionColor;
     } else {
       imageCellBgColor = styles?.image?.cellBgColor;
     }
+    const cellBorderColorMode = representation?.borderColorMode ?? 'single';
+    if (cellBorderColorMode === 'expression') {
+      imgCellBorderColor = resolveExpr('borderColor') || 'transparent';
+    } else if (cellBorderColorMode === 'selectionState') {
+      imgCellBorderColor = imageSelectionColor;
+    } else {
+      imgCellBorderColor = styles?.image?.borderColor || '#d9d9d9';
+    }
+    imageBorder = `${representation?.borderWidth}px solid ${imgCellBorderColor}`;
     imageTooltip = resolveExpr('tooltip') || label;
 
     if (imageSetting === 'url') {
@@ -340,14 +360,11 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
               representation={representation}
               src={imageSrc}
               label={imageAlt}
-              title={label}
+              title={imageAlt}
               subtitle={imageSubtitle}
               cellBgColor={imageCellBgColor}
-              borderColor={styles?.image?.borderColor}
+              border={imageBorder}
               textStyles={styles?.image?.text}
-              placeholderBackground={imagePlaceholderBg}
-              selected={isSelected}
-              selectionColor={imageSelectionColor}
               opacity={imageOpacity}
             />
           ) : labels ? (

@@ -35,8 +35,9 @@
  * @property {number} [gridGap=1] Spacing between image grid cells, as a percentage of the column width. Only used when `type` is 'image'.
  * @property {number} [cornerRadius=4] Corner radius of the image cell in pixels. Only used when `type` is 'image'.
  * @property {number} [borderWidth=0] Cell border width in px. Only used when `type` is 'image'.
+ * @property {('single'|'expression'|'selectionState')} [borderColorMode='single'] Cell border color mode. Only used when `type` is 'image' and `borderWidth` > 0.
  * @property {string} [borderColor='#d9d9d9'] Cell border color. Only used when `type` is 'image' and `borderWidth` > 0.
- * @property {('single'|'expression')} [cellBgColorMode='single'] Cell background color mode. Only used when `type` is 'image'.
+ * @property {('single'|'expression'|'selectionState')} [cellBgColorMode='single'] Cell background color mode. Only used when `type` is 'image'.
  * @property {(string|object|ValueExpression)} [cellBgColor] Cell background color (hex string or color object when cellBgColorMode='single') or expression (when cellBgColorMode='expression'). Only used when `type` is 'image'.
  * @property {ValueExpression} [subtitle] Per-value subtitle expression. Only used when `type` is 'image' and `textOverlay` is not false.
  * @property {ValueExpression} [tooltip] Per-value tooltip expression. Only used when `type` is 'image'.
@@ -128,6 +129,15 @@ const listdef = {
    */
   autoConfirm: false,
   /**
+   * Controls what a click does to the current selection. 'add' (default) adds/toggles the clicked
+   * value while keeping other selections (holding ctrl/cmd replaces the selection with just that
+   * value). 'replace' inverts this: a plain click replaces the selection with just the clicked
+   * value, while holding ctrl/cmd adds/toggles it into the current selection.
+   * @type {('add' | 'replace')=}
+   * @default
+   */
+  selectionMode: 'add',
+  /**
    * Layout settings.
    * @type {object=}
    */
@@ -218,6 +228,7 @@ const listdef = {
     gridGap: 1,
     cornerRadius: 4,
     borderWidth: 0,
+    borderColorMode: 'single',
     borderColor: '#d9d9d9',
     cellBgColorMode: 'single',
     cellBgColor: '#ffffff',
