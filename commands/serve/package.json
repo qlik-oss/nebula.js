@@ -56,7 +56,7 @@
     "yargs": "18.2.0"
   },
   "devDependencies": {
-    "@babel/core": "8.0.7",
+    "@babel/core": "8.0.9",
     "@babel/preset-env": "8.0.7",
     "@babel/preset-react": "8.0.1",
     "@mui/material": "^7.3.11",
