@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.9.0](https://github.com/qlik-oss/nebula.js/compare/v7.8.0...v7.9.0) (2026-10-30)
+
+### Bug Fixes
+
+- **deps:** update dependency @rollup/plugin-terser to v1.0.1 ([#2362](https://github.com/qlik-oss/nebula.js/issues/2362)) ([3dc1839](https://github.com/qlik-oss/nebula.js/commit/3dc1839874fa83df3a3d9abf0b22212f97d718a8))
+- **deps:** update dependency @rollup/plugin-terser to v1.0.2 ([#2364](https://github.com/qlik-oss/nebula.js/issues/2364)) ([18b6b7c](https://github.com/qlik-oss/nebula.js/commit/18b6b7cc82f2bf4512c3c7f9e241c1f0044e9275))
+- **deps:** update dependency rollup to v4.64.10 ([#2344](https://github.com/qlik-oss/nebula.js/issues/2344)) ([a164796](https://github.com/qlik-oss/nebula.js/commit/a164796de267ea446256f1552a6efdae8b434cfa))
+- **deps:** update dependency rollup to v4.64.12 ([#2352](https://github.com/qlik-oss/nebula.js/issues/2352)) ([fb90b82](https://github.com/qlik-oss/nebula.js/commit/fb90b828c6de697af7ba1e56f04305f57972dc70))
+- **deps:** update dependency rollup to v4.64.6 ([#2325](https://github.com/qlik-oss/nebula.js/issues/2325)) ([2763e78](https://github.com/qlik-oss/nebula.js/commit/2763e781348e2040cbf82a75516c9cb05e5128ed))
+- **deps:** update dependency rollup to v4.64.7 ([#2336](https://github.com/qlik-oss/nebula.js/issues/2336)) ([7bf1f2a](https://github.com/qlik-oss/nebula.js/commit/7bf1f2add54ce968c23a7789c5ca2d8b5daf77b2))
+- **deps:** update dependency rollup to v4.64.8 ([#2340](https://github.com/qlik-oss/nebula.js/issues/2340)) ([9faf74c](https://github.com/qlik-oss/nebula.js/commit/9faf74c9ac7bcca333694d907ebd3c008403189d))
+- **deps:** update dependency rollup to v4.64.9 ([#2341](https://github.com/qlik-oss/nebula.js/issues/2341)) ([c6bcd8f](https://github.com/qlik-oss/nebula.js/commit/c6bcd8fa8e537ee4bba2b272bffc0b8b11c8b68f))
+- **deps:** update dependency rollup to v4.65.0 ([#2367](https://github.com/qlik-oss/nebula.js/issues/2367)) ([e9ead5d](https://github.com/qlik-oss/nebula.js/commit/e9ead5d8c2fb482e9b21390abd27ec9e95a71d2a))
+
 # [7.8.0](https://github.com/qlik-oss/nebula.js/compare/v7.7.0...v7.8.0) (2026-10-19)
 
 ### Bug Fixes
