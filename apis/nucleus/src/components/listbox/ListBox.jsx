@@ -7,6 +7,7 @@ import getListBoxComponents from './components/grid-list-components/grid-list-co
 import useListSizes from './assets/list-sizes';
 import getHorizontalMinBatchSize from './assets/horizontal-minimum-batch-size';
 import useItemsLoader from './hooks/useItemsLoader';
+import useImageRenderTracker from './hooks/useImageRenderTracker';
 import useStaleLayout from './hooks/useStaleLayout';
 import getListCount from './components/list-count';
 import useDataStore from './hooks/useDataStore';
@@ -104,6 +105,7 @@ export default function ListBox({
   const isImageMode = representation?.type === 'image';
   const showSelected = representation?.showSelected ?? false;
   const staleLayout = useStaleLayout(layout);
+  const { hasPendingImages, registerImageLoading, resolveImageLoading } = useImageRenderTracker();
 
   const [pages, setPages] = useState([]);
   const [selectedValuesPage, setSelectedValuesPage] = useState(null);
@@ -126,8 +128,8 @@ export default function ListBox({
 
   const cardinal = layout?.qListObject.qDimensionInfo.qCardinal;
 
-  if ((itemsLoader?.pages.length && !awaitingFrequencyMax) || cardinal === 0) {
-    // All necessary data fetching done - signal rendering done!
+  if (((itemsLoader?.pages.length && !awaitingFrequencyMax) || cardinal === 0) && (!isImageMode || !hasPendingImages)) {
+    // All necessary data fetching done (and, in image mode, visible images have loaded) - signal rendering done!
     renderedCallback?.();
   }
   useEffect(() => {
@@ -375,6 +377,8 @@ export default function ListBox({
     isModal,
     selectionMode: resolvedSelectionMode,
     styles,
+    registerImageLoading,
+    resolveImageLoading,
   });
 
   const { columnWidth, listHeight, itemHeight } = sizes || {};
