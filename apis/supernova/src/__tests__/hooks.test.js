@@ -38,6 +38,7 @@ import {
   useEmbed,
   useInteractionState,
   useRef,
+  useRenderState,
 } from '../hooks';
 
 describe('hooks', () => {
@@ -496,6 +497,59 @@ describe('hooks', () => {
       resolve('res');
       await p;
       expect([v1, v2]).toEqual(['res', 'rej']);
+    });
+  });
+
+  describe('useRenderState', () => {
+    beforeEach(() => {
+      c = {};
+      initiate(c);
+    });
+    afterEach(() => {
+      teardown(c);
+    });
+
+    test('pending should resolve run-phase with false', async () => {
+      c.fn = () => {
+        useRenderState().pending();
+      };
+
+      await expect(run(c)).resolves.toBe(false);
+    });
+
+    test('restore should schedule a new run when no render is in progress', async () => {
+      let renderState;
+      c.fn = jest.fn(() => {
+        renderState = useRenderState();
+      });
+
+      await expect(run(c)).resolves.toBe(true);
+      expect(c.fn).toHaveBeenCalledTimes(1);
+
+      renderState.restore();
+      await frame();
+      expect(c.fn).toHaveBeenCalledTimes(2);
+    });
+
+    test('restore should not schedule a new run while a render is in progress', async () => {
+      let resolve;
+      const prom = new Promise((r) => {
+        resolve = r;
+      });
+      let renderState;
+      c.fn = jest.fn(() => {
+        renderState = useRenderState();
+        usePromise(() => prom, ['']);
+      });
+
+      const p = run(c);
+      renderState.pending();
+      renderState.restore();
+      await frame();
+      expect(c.fn).toHaveBeenCalledTimes(1);
+
+      resolve('res');
+      await expect(p).resolves.toBe(true);
     });
   });
 

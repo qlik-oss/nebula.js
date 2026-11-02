@@ -1169,14 +1169,24 @@ export function onContextMenu(cb) {
  * }, [...]);
  */
 export function useRenderState() {
-  getHook(++currentIndex);
+  const h = getHook(++currentIndex);
   const hooks = currentComponent.__hooks;
+
+  if (!h.component) {
+    h.component = currentComponent;
+  }
+
   return {
     pending: () => {
       hooks.waitForData = true;
     },
     restore: () => {
       hooks.waitForData = false;
+      // an active render chain will pick up waitForData=false when it ends,
+      // so only kick off a new run when no chain is in flight
+      if (!hooks.chain.promise) {
+        scheduleMicro(h.component);
+      }
     },
   };
 }
