@@ -1144,8 +1144,8 @@ export function onContextMenu(cb) {
 
 /**
  * @interface RenderState
- * @property {any} pending
- * @property {any} restore
+ * @property {function(): void} pending
+ * @property {function(): void} restore
  */
 
 /**
@@ -1170,25 +1170,26 @@ export function onContextMenu(cb) {
  */
 export function useRenderState() {
   const h = getHook(++currentIndex);
-  const hooks = currentComponent.__hooks;
 
-  if (!h.component) {
+  if (!h.value) {
     h.component = currentComponent;
+    const hooks = currentComponent.__hooks;
+    h.value = {
+      pending: () => {
+        hooks.waitForData = true;
+      },
+      restore: () => {
+        hooks.waitForData = false;
+        // an active render chain will pick up waitForData=false when it ends,
+        // so only kick off a new run when no chain is in flight
+        if (!hooks.chain.promise) {
+          scheduleMicro(h.component);
+        }
+      },
+    };
   }
 
-  return {
-    pending: () => {
-      hooks.waitForData = true;
-    },
-    restore: () => {
-      hooks.waitForData = false;
-      // an active render chain will pick up waitForData=false when it ends,
-      // so only kick off a new run when no chain is in flight
-      if (!hooks.chain.promise) {
-        scheduleMicro(h.component);
-      }
-    },
-  };
+  return h.value;
 }
 
 /**

@@ -517,6 +517,18 @@ describe('hooks', () => {
       await expect(run(c)).resolves.toBe(false);
     });
 
+    test('should return a stable reference between runs', async () => {
+      const values = [];
+      c.fn = () => {
+        values.push(useRenderState());
+      };
+
+      await run(c);
+      await run(c);
+      expect(values).toHaveLength(2);
+      expect(values[0]).toBe(values[1]);
+    });
+
     test('restore should schedule a new run when no render is in progress', async () => {
       let renderState;
       c.fn = jest.fn(() => {
