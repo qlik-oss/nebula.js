@@ -21,5 +21,8 @@ export default function useImageRenderTracker() {
     }
   }, []);
 
-  return { hasPendingImages, registerImageLoading, resolveImageLoading };
+  // Live count, read synchronously after cells commit (hasPendingImages only re-renders on 0<->1 transitions).
+  const getPendingImageCount = useCallback(() => pendingCountRef.current, []);
+
+  return { hasPendingImages, registerImageLoading, resolveImageLoading, getPendingImageCount };
 }

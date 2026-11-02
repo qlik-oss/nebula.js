@@ -105,7 +105,7 @@ export default function ListBox({
   const isImageMode = representation?.type === 'image';
   const showSelected = representation?.showSelected ?? false;
   const staleLayout = useStaleLayout(layout);
-  const { hasPendingImages, registerImageLoading, resolveImageLoading } = useImageRenderTracker();
+  const { hasPendingImages, registerImageLoading, resolveImageLoading, getPendingImageCount } = useImageRenderTracker();
 
   const [pages, setPages] = useState([]);
   const [selectedValuesPage, setSelectedValuesPage] = useState(null);
@@ -128,10 +128,18 @@ export default function ListBox({
 
   const cardinal = layout?.qListObject.qDimensionInfo.qCardinal;
 
-  if (((itemsLoader?.pages.length && !awaitingFrequencyMax) || cardinal === 0) && (!isImageMode || !hasPendingImages)) {
-    // All necessary data fetching done (and, in image mode, visible images have loaded) - signal rendering done!
+  const isDataReady = Boolean((itemsLoader?.pages.length && !awaitingFrequencyMax) || cardinal === 0);
+
+  // Signal rendering done from an effect, not during render: in image mode the cells register their
+  // pending loads in their own effects (which run before this one), so the live pending count read
+  // here reflects them. hasPendingImages is a dependency only to re-run this once loads settle.
+  useEffect(() => {
+    if (!isDataReady || (isImageMode && getPendingImageCount() > 0)) {
+      return;
+    }
     renderedCallback?.();
-  }
+  }, [isDataReady, isImageMode, hasPendingImages, getPendingImageCount, renderedCallback]);
+
   useEffect(() => {
     if (!hideActive) {
       setSelectedValuesPage(null);
