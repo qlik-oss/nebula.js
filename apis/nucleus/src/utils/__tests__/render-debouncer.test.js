@@ -74,4 +74,41 @@ describe('RenderDebouncer', () => {
     expect(fn1).toHaveBeenCalled();
     expect(fn2).toHaveBeenCalled();
   });
+
+  test('should call next scheduled function even if the first never resolves', async () => {
+    const fn1 = jest.fn().mockImplementationOnce(() => new Promise(() => {}));
+    const fn2 = jest.fn().mockResolvedValue();
+    const debouncer = new RenderDebouncer();
+    debouncer.schedule(fn1);
+    await tick(50);
+    debouncer.schedule(fn2);
+    await tick(50);
+    expect(fn1).toHaveBeenCalled();
+    expect(fn2).toHaveBeenCalled();
+  });
+
+  test('should only report the latest started function as current', async () => {
+    const fn1 = jest.fn().mockResolvedValue();
+    const fn2 = jest.fn().mockResolvedValue();
+    const debouncer = new RenderDebouncer();
+    debouncer.schedule(fn1);
+    await tick(50);
+    const isCurrent1 = fn1.mock.calls[0][0];
+    expect(isCurrent1()).toBe(true);
+    debouncer.schedule(fn2);
+    await tick(50);
+    const isCurrent2 = fn2.mock.calls[0][0];
+    expect(isCurrent1()).toBe(false);
+    expect(isCurrent2()).toBe(true);
+  });
+
+  test('should invalidate in-flight function on stop', async () => {
+    const fn = jest.fn().mockResolvedValue();
+    const debouncer = new RenderDebouncer();
+    debouncer.schedule(fn);
+    await tick(50);
+    const isCurrent = fn.mock.calls[0][0];
+    debouncer.stop();
+    expect(isCurrent()).toBe(false);
+  });
 });
