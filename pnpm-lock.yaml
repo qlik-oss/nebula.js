@@ -927,8 +927,8 @@ importers:
         specifier: ^1.64.1
         version: 1.64.1
       body-parser:
-        specifier: 2.3.0
-        version: 2.3.0(supports-color@11.0.0)
+        specifier: 2.4.0
+        version: 2.4.0(supports-color@11.0.0)
       express:
         specifier: 5.2.1
         version: 5.2.1(supports-color@11.0.0)
@@ -4230,10 +4230,6 @@ packages:
 
   bmp-ts@1.0.9:
     resolution: {integrity: sha512-cTEHk2jLrPyi+12M3dhpEbnnPOsaZuq7C45ylbbQIiWgDFZq4UVYPEY5mlqjvsj/6gJv9qX5sa+ebDzLXT28Vw==}
-
-  body-parser@2.3.0:
-    resolution: {integrity: sha512-2cGmJupaNgg+QUwVLAucDuWuoMZ6EX9iHDRswZ5lsNYEmwPaRknMPCLZz07yTzVq/83p4o/wzbDZbBrTvGGTIw==}
-    engines: {node: '>=18'}
 
   body-parser@2.4.0:
     resolution: {integrity: sha512-Ifk1KcLrxaGt1occQagQNFNNOqRt1LFuehEnHHzB8Z6cRgIxRU1TBaiIsUiCdA+gy5PL7Y1IX31DNKkRmxtXjQ==}
@@ -13829,20 +13825,6 @@ snapshots:
 
   bmp-ts@1.0.9: {}
 
-  body-parser@2.3.0(supports-color@11.0.0):
-    dependencies:
-      bytes: 3.1.2
-      content-type: 2.1.0
-      debug: 4.4.3(supports-color@11.0.0)
-      http-errors: 2.0.1
-      iconv-lite: 0.7.3
-      on-finished: 2.4.2
-      qs: 6.17.1
-      raw-body: 3.0.2
-      type-is: 2.1.0
-    transitivePeerDependencies:
-      - supports-color
-
   body-parser@2.4.0(supports-color@11.0.0):
     dependencies:
       bytes: 3.1.2
@@ -15027,7 +15009,7 @@ snapshots:
   express@5.2.1(supports-color@11.0.0):
     dependencies:
       accepts: 2.0.0
-      body-parser: 2.3.0(supports-color@11.0.0)
+      body-parser: 2.4.0(supports-color@11.0.0)
       content-disposition: 1.1.0
       content-type: 1.0.5
       cookie: 0.7.2
