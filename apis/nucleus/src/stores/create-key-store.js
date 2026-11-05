@@ -19,12 +19,6 @@ export default (initialState = {}, applyMiddleware = () => {}) => {
       if (typeof key === 'undefined' || typeof key === 'object') {
         throw new Error(`Invalid key: ${JSON.stringify(key)}`);
       }
-      sharedState[key] = null;
-    },
-    remove: (key) => {
-      if (typeof key === 'undefined' || typeof key === 'object') {
-        throw new Error(`Invalid key: ${JSON.stringify(key)}`);
-      }
       const unsubscribe = subscribedListeners[key];
       delete subscribedListeners[key];
       // oxlint-disable-next-line no-unused-expressions

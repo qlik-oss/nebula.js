@@ -48,7 +48,7 @@ export default function useExistingModel({ app, qId, options = {} }) {
         const onClosed = () => {
           if (modelStore.get(m.id) === m) {
             storeConsumers.delete(m);
-            modelStore.remove(m.id);
+            modelStore.clear(m.id);
           }
         };
         m.once('closed', onClosed);
@@ -64,7 +64,7 @@ export default function useExistingModel({ app, qId, options = {} }) {
           // Only the last consumer of a model may do so, others still rely on its listeners.
           if (remaining === 0 && modelStore.get(m.id) === m) {
             storeConsumers.delete(m);
-            modelStore.remove(m.id);
+            modelStore.clear(m.id);
           }
         };
       }

@@ -9,7 +9,7 @@ describe('useExistingModel', () => {
   let useModelStoreMock;
   let app;
   let setMock;
-  let removeMock;
+  let clearMock;
   let getMock;
   let renderer;
   let doRender;
@@ -23,7 +23,7 @@ describe('useExistingModel', () => {
     setMock = jest.fn((id, m) => {
       cached = m;
     });
-    removeMock = jest.fn();
+    clearMock = jest.fn();
     getMock = jest.fn(() => cached);
     once = jest.fn();
     app = {
@@ -33,7 +33,7 @@ describe('useExistingModel', () => {
       {
         set: setMock,
         get: getMock,
-        remove: removeMock,
+        clear: clearMock,
       },
     ]);
 
@@ -77,10 +77,10 @@ describe('useExistingModel', () => {
     // the first two lookups (fetch, then 'is it cached') miss, the one on unmount finds our model
     getMock.mockReturnValueOnce(undefined).mockReturnValueOnce(undefined).mockReturnValue(model);
     await doRender(useExistingModel, { app, qId: 'generic-id' });
-    expect(removeMock).not.toHaveBeenCalled();
+    expect(clearMock).not.toHaveBeenCalled();
     await act(async () => renderer.unmount());
     expect(model.removeListener).toHaveBeenCalledWith('closed', expect.any(Function));
-    expect(removeMock).toHaveBeenCalledWith('generic-id');
+    expect(clearMock).toHaveBeenCalledWith('generic-id');
   });
 
   test('should not remove a cache entry that holds another model on unmount', async () => {
@@ -89,7 +89,7 @@ describe('useExistingModel', () => {
     getMock.mockReturnValueOnce(undefined).mockReturnValueOnce(undefined).mockReturnValue({ id: 'generic-id' });
     await doRender(useExistingModel, { app, qId: 'generic-id' });
     await act(async () => renderer.unmount());
-    expect(removeMock).not.toHaveBeenCalled();
+    expect(clearMock).not.toHaveBeenCalled();
   });
 
   describe('with the real model stores', () => {
