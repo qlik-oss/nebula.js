@@ -10,6 +10,7 @@ import chokidar from 'chokidar';
 import build from '@nebula.js/cli-build';
 
 import initConfig from './init-config.js';
+import provided from './provided-modules.js';
 import rsbuildServe from './rsbuild.serve.js';
 
 const require = createRequire(import.meta.url);
@@ -84,6 +85,8 @@ const initiateWatch = async ({ snPath, snName, host }) => {
         if (fs.existsSync(file)) {
           const f = fs.readFileSync(file);
           res.set(options.headers);
+          // a module script is only run when the type of it is javascript
+          res.type(/\.map$/.test(file) ? 'application/json' : 'text/javascript');
           res.send(f);
         } else {
           res.sendStatus('404');
@@ -138,14 +141,15 @@ export default async (argv, { pages } = {}) => {
   if (runFromDirectory) {
     if (serveConfig.build !== false) {
       watcher = await build({
-        watch: serveConfig.mfe ? 'systemjs' : 'umd',
+        watch: serveConfig.mfe ? 'systemjs' : 'esm',
+        external: provided,
         config: serveConfig.config,
         cwd: context,
       });
     }
     try {
       const externalPkg = require(path.resolve(context, 'package.json'));
-      const externalEntry = serveConfig.mfe ? externalPkg.systemjs : externalPkg.main;
+      const externalEntry = serveConfig.mfe ? externalPkg.systemjs : externalPkg.module;
       snName = externalPkg.name;
       snPath = path.resolve(context, externalEntry);
     } catch (e) {
