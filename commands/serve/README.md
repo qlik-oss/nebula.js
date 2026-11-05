@@ -72,8 +72,8 @@ module.exports = {
 
 Serve properties:
 
-- types: Additional types to load into the serve instance. Useful in conjunction with useEmbed.
-  - `ex: types: [{ name: 'barchart', url: "https://unpkg.com/@nebula.js/sn-bar-chart"}],`
+- types: Additional types to load into the serve instance. Useful in conjunction with useEmbed. The `url` is an es module.
+  - `ex: types: [{ name: 'barchart', url: "https://example.com/sn-bar-chart.esm.js"}],`
 - themes: Theme files to load
   - `ex: themes: [{ id: 'sense', theme: { /* valid sense json theme */ } }],`
 - renderConfigs: configuration for the test renderer
@@ -99,10 +99,19 @@ serve({
 });
 ```
 
+### The visualization
+
+`nebula serve` builds the visualization as an es module, with `nebula build --watch`, and loads it into the page. The
+file is the `module` field of `package.json`, which has to be set.
+
+The page has `@nebula.js/stardust`, `react`, `react-dom`, `react-dom/client` and `react/jsx-runtime`, and the
+visualization imports those by their names, so that the page and the visualization share one of each. Any other module
+is bundled into the visualization, also the ones that are `peerDependencies` of it.
+
 ### Micro Frontend (MFE) Mode
 
-The MFE mode activated with the `--mfe` option, builds a visualisation which is
-used in a micro frontend environment. The visualisation is served at:
+The MFE mode activated with the `--mfe` option, builds a visualisation as a SystemJS module (the `systemjs` field of
+`package.json`) which is used in a micro frontend environment. The visualisation is served at:
 
 ```
 https://<host>:<port>/pkg/<module name>
