@@ -62,6 +62,8 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     listExprIndex = {},
     hideLastRowDivider = false,
     selectionMode = 'add',
+    registerImageLoading,
+    resolveImageLoading,
   } = data;
 
   const { dense = false, dataLayout = 'singleColumn', layoutOrder } = layoutOptions;
@@ -366,6 +368,8 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
               border={imageBorder}
               textStyles={styles?.image?.text}
               opacity={imageOpacity}
+              onImageLoadStart={registerImageLoading}
+              onImageLoadEnd={resolveImageLoading}
             />
           ) : labels ? (
             <FieldWithRanges

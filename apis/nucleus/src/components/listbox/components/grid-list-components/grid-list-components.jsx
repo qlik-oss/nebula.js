@@ -45,6 +45,8 @@ export default function getListBoxComponents({
   isModal,
   selectionMode = 'add',
   styles,
+  registerImageLoading,
+  resolveImageLoading,
 }) {
   const { layoutOptions = {} } = layout || {};
   const { columnWidth, listHeight, itemHeight, rowCount, columnCount } = sizes || {};
@@ -106,6 +108,8 @@ export default function getListBoxComponents({
     styles,
     fillHeight,
     selectionMode,
+    registerImageLoading,
+    resolveImageLoading,
   };
 
   const List = ({ onItemsRendered, ref }) => {

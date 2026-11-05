@@ -143,6 +143,7 @@ describe('<Listbox />', () => {
   afterEach(() => {
     jest.useRealTimers();
     jest.resetAllMocks();
+    jest.spyOn(React, 'useRef').mockRestore();
   });
 
   afterAll(() => {
@@ -175,9 +176,13 @@ describe('<Listbox />', () => {
                 height={mergedArgs.height}
                 width={mergedArgs.width}
                 update={mergedArgs.update}
+                renderedCallback={mergedArgs.renderedCallback}
                 fetchStart={mergedArgs.fetchStart}
                 keyScroll={mergedArgs.keyScroll}
                 currentScrollIndex={mergedArgs.currentScrollIndex}
+                selectionMode={mergedArgs.selectionMode}
+                registerImageLoading={mergedArgs.registerImageLoading}
+                resolveImageLoading={mergedArgs.resolveImageLoading}
                 isModal={isModal}
                 theme={theme}
               />
@@ -311,6 +316,87 @@ describe('<Listbox />', () => {
       await render();
       const disclaimers = renderer.root.findAllByType(ListBoxDisclaimer);
       expect(disclaimers).toHaveLength(0);
+    });
+
+    test('waits for all image loads before calling renderedCallback', async () => {
+      layout.qListObject.qDimensionInfo.qCardinal = 0;
+      layout.representation = { type: 'image' };
+      const renderedCallback = jest.fn();
+      useCallbackMock.mockImplementation((callback) => callback);
+      await render({ renderedCallback });
+      expect(renderedCallback).toHaveBeenCalledTimes(1);
+      renderedCallback.mockClear();
+
+      const { registerImageLoading, resolveImageLoading } = getListBoxComponents.default.mock.lastCall[0];
+      await act(async () => {
+        registerImageLoading();
+        registerImageLoading();
+      });
+      expect(renderedCallback).not.toHaveBeenCalled();
+
+      await act(async () => {
+        resolveImageLoading();
+      });
+      expect(renderedCallback).not.toHaveBeenCalled();
+
+      await act(async () => {
+        resolveImageLoading();
+      });
+      expect(renderedCallback).toHaveBeenCalledTimes(1);
+    });
+
+    test('does not call renderedCallback until a delayed image load from a committed cell resolves', async () => {
+      layout.qListObject.qDimensionInfo.qCardinal = 0;
+      layout.representation = { type: 'image' };
+      const renderedCallback = jest.fn();
+      useCallbackMock.mockImplementation((callback) => callback);
+
+      // Emulate a cell that registers its pending image load in a mount effect (so registration
+      // happens during commit, before the listbox's own completion effect runs) and resolves it
+      // later, like a real <img> onLoad/onError.
+      let resolveDelayedLoad;
+      let latestRegister;
+      let latestResolve;
+      function ImageCell() {
+        React.useEffect(() => {
+          latestRegister();
+          resolveDelayedLoad = latestResolve;
+        }, []);
+        return <div className="a-value-row" />;
+      }
+      reactWindowInfiniteLoaderModule.default.mockImplementation((props) => {
+        const Children = props.children;
+        return <Children onItemsRendered={() => {}} />;
+      });
+      getListBoxComponents.default.mockImplementation(({ registerImageLoading, resolveImageLoading }) => {
+        latestRegister = registerImageLoading;
+        latestResolve = resolveImageLoading;
+        return { List: ImageCell, Grid: ImageCell };
+      });
+
+      await render({ renderedCallback });
+      // The cell registered a pending load during commit, so completion must be deferred.
+      expect(renderedCallback).not.toHaveBeenCalled();
+
+      await act(async () => {
+        resolveDelayedLoad();
+      });
+      expect(renderedCallback).toHaveBeenCalledTimes(1);
+    });
+
+    test('does not delay renderedCallback for non-image listboxes', async () => {
+      layout.qListObject.qDimensionInfo.qCardinal = 0;
+      const renderedCallback = jest.fn();
+      useCallbackMock.mockImplementation((callback) => callback);
+      await render({ renderedCallback });
+      renderedCallback.mockClear();
+
+      const { registerImageLoading } = getListBoxComponents.default.mock.lastCall[0];
+      await act(async () => {
+        registerImageLoading();
+      });
+
+      expect(renderedCallback).toHaveBeenCalledTimes(1);
     });
 
     describe('image "show only selected values"', () => {
