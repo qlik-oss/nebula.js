@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.9.0](https://github.com/qlik-oss/nebula.js/compare/v7.8.0...v7.9.0) (2026-10-30)
+
+### Bug Fixes
+
+- **deps:** update dependency @qlik/api to v2.20.0 ([#2321](https://github.com/qlik-oss/nebula.js/issues/2321)) ([3a0ebae](https://github.com/qlik-oss/nebula.js/commit/3a0ebaee19a910599a9ab6ad6decffda7e22477a))
+
+### Features
+
+- keyboard nav listbox also support selection mode ([#2348](https://github.com/qlik-oss/nebula.js/issues/2348)) ([0b5cca8](https://github.com/qlik-oss/nebula.js/commit/0b5cca8faa3b601bf458c38dfe721f693c5d2874))
+- **VIZ-410:** selection behavior for listboxes ([#2327](https://github.com/qlik-oss/nebula.js/issues/2327)) ([da9d086](https://github.com/qlik-oss/nebula.js/commit/da9d08621b3dfc77d37eeecef8b6106358f369ab))
+
 # [7.8.0](https://github.com/qlik-oss/nebula.js/compare/v7.7.0...v7.8.0) (2026-10-19)
 
 ### Bug Fixes
