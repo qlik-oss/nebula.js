@@ -176,7 +176,7 @@ overrides:
   minimatch@npm:^10.0.0: ^10.2.6
   tar@npm:^7.0.0: ^7.5.22
   glob@npm:^10.0.0: ^13.0.6
-  glob@npm:^11.0.0: ^13.0.6
+  glob@npm:^11.0.0: ^14.0.3
 
 importers:
 
