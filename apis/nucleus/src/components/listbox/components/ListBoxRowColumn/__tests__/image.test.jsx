@@ -139,6 +139,54 @@ describe('<Image />', () => {
       });
       expect(onImageLoadEnd).toHaveBeenCalledTimes(2);
     });
+
+    test('stays balanced when a slow src is swapped mid-load and a load event arrives afterwards', async () => {
+      const onImageLoadStart = jest.fn();
+      const onImageLoadEnd = jest.fn();
+      const representation = { imageSize: 'fitHeight', imagePosition: 'top-left' };
+      const testRenderer = await render(
+        <Image
+          representation={representation}
+          src="http://foo/slow-first.png"
+          onImageLoadStart={onImageLoadStart}
+          onImageLoadEnd={onImageLoadEnd}
+        />
+      );
+      // first.png is still loading - no onLoad/onError has fired yet.
+      expect(onImageLoadStart).toHaveBeenCalledTimes(1);
+      expect(onImageLoadEnd).toHaveBeenCalledTimes(0);
+
+      // src changes before first.png finished loading: the first pending is settled by the effect
+      // cleanup and a fresh pending opens for second.png.
+      await renderer.act(async () => {
+        testRenderer.update(
+          <Image
+            representation={representation}
+            src="http://foo/second.png"
+            onImageLoadStart={onImageLoadStart}
+            onImageLoadEnd={onImageLoadEnd}
+          />
+        );
+      });
+      expect(onImageLoadStart).toHaveBeenCalledTimes(2);
+      expect(onImageLoadEnd).toHaveBeenCalledTimes(1);
+
+      // A load event now fires on the reused <img>, followed by a duplicate/stale one. Only the
+      // first settles; the idempotency guard ignores the second, so counts stay balanced.
+      const image = testRenderer.root.findByType('img');
+      await renderer.act(async () => {
+        image.props.onLoad();
+        image.props.onLoad();
+      });
+      expect(onImageLoadEnd).toHaveBeenCalledTimes(2);
+
+      // Nothing left pending, so unmount adds no further settle: start and end are balanced.
+      await renderer.act(async () => {
+        testRenderer.unmount();
+      });
+      expect(onImageLoadStart).toHaveBeenCalledTimes(2);
+      expect(onImageLoadEnd).toHaveBeenCalledTimes(2);
+    });
   });
 
   test('retries a new src on the same cell instance even if the previous src had errored', async () => {
