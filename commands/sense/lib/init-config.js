@@ -27,6 +27,11 @@ const options = {
     default: false,
     desc: 'Generate sourcemaps',
   },
+  // not in the help: it is refused with a message of its own
+  legacy: {
+    type: 'boolean',
+    hidden: true,
+  },
 };
 
 export default (yargs) => yargs.options(options);

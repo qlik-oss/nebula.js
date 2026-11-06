@@ -637,39 +637,18 @@ importers:
 
   commands/sense:
     dependencies:
-      '@babel/cli':
-        specifier: 8.0.6
-        version: 8.0.6(@babel/core@8.0.9)
-      '@babel/core':
-        specifier: 8.0.9
-        version: 8.0.9
-      '@babel/helper-plugin-utils':
-        specifier: 8.0.1
-        version: 8.0.1(@babel/core@8.0.9)
-      '@babel/plugin-proposal-object-rest-spread':
-        specifier: 7.20.7
-        version: 7.20.7(@babel/core@8.0.9)
-      '@babel/preset-env':
-        specifier: 8.0.7
-        version: 8.0.7(@babel/core@8.0.9)
+      '@nebula.js/cli-build':
+        specifier: workspace:*
+        version: link:../build
       '@nebula.js/stardust':
         specifier: workspace:*
         version: link:../../apis/stardust
-      '@rollup/plugin-babel':
-        specifier: 7.1.0
-        version: 7.1.0(@babel/core@8.0.9)(@types/babel__core@7.20.5)(rollup@4.65.0)(supports-color@11.0.0)
-      '@rollup/plugin-commonjs':
-        specifier: 29.0.3
-        version: 29.0.3(rollup@4.65.0)
-      '@rollup/plugin-node-resolve':
-        specifier: 16.0.3
-        version: 16.0.3(rollup@4.65.0)
-      '@rollup/plugin-replace':
-        specifier: 6.0.3
-        version: 6.0.3(rollup@4.65.0)
-      '@rollup/plugin-terser':
-        specifier: 1.0.2
-        version: 1.0.2(rollup@4.65.0)
+      '@qlik/browserslist-config':
+        specifier: ^3.1.0
+        version: 3.1.0
+      '@rslib/core':
+        specifier: 1.0.5
+        version: 1.0.5(typescript@5.9.3)
       extend:
         specifier: 3.0.2
         version: 3.0.2
@@ -679,9 +658,6 @@ importers:
       node-event-emitter:
         specifier: 0.0.1
         version: 0.0.1
-      rollup:
-        specifier: 4.65.0
-        version: 4.65.0
       yargs:
         specifier: 18.2.0
         version: 18.2.0
