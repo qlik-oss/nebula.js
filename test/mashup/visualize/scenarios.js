@@ -1,3 +1,5 @@
+import { useElement, useLayout, embed, EnigmaMocker } from '@nebula.js/stardust';
+
 const scenarios = {};
 
 scenarios['invalid-type'] = {
@@ -532,8 +534,6 @@ scenarios.destroy = {
   },
 };
 
-const { useElement, useLayout, embed, EnigmaMocker } = window.stardust;
-
 const chart = {
   qae: {
     data: {
@@ -615,5 +615,6 @@ function addButtons() {
   });
 }
 
-window.addEventListener('load', render);
-window.addEventListener('load', addButtons);
+// the page runs this script when the document is parsed, after the load event can have fired
+render();
+addButtons();

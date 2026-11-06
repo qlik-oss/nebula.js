@@ -1,0 +1,12 @@
+{
+  "$schema": "https://turborepo.dev/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "build": {
+      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/scripts/rslib.mjs", "$TURBO_ROOT$/tools/locale-string-validator.cjs"]
+    },
+    "build:dev": {
+      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/scripts/rslib.mjs", "$TURBO_ROOT$/tools/locale-string-validator.cjs"]
+    }
+  }
+}

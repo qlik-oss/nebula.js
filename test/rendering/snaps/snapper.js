@@ -1,4 +1,5 @@
-/* global configured */
+import { configured } from './configured.js';
+
 /* eslint no-underscore-dangle: 0 */
 (() => {
   document.querySelectorAll('.object').forEach((element) => {

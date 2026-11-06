@@ -14,14 +14,14 @@
     "url": "https://github.com/qlik-oss/nebula.js.git",
     "directory": "apis/test-utils"
   },
-  "main": "index.js",
+  "main": "dist/test-utils.esm.js",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "cross-env NODE_ENV=production rollup --bundleConfigAsCjs --config ../../rollup.config.js",
-    "build:dev": "rollup --bundleConfigAsCjs --config ../../rollup.config.js",
-    "build:watch": "rollup --bundleConfigAsCjs --config ../../rollup.config.js -w",
+    "build": "cross-env NODE_ENV=production rslib build",
+    "build:dev": "rslib build",
+    "build:watch": "rslib build --watch",
     "prepublishOnly": "rm -rf dist && pnpm run build"
   },
   "peerDependencies": {
@@ -30,13 +30,14 @@
   "devDependencies": {
     "@babel/preset-env": "8.0.7",
     "@nebula.js/stardust": "workspace:*",
-    "@rollup/plugin-babel": "7.1.0",
-    "@rollup/plugin-commonjs": "29.0.3",
-    "@rollup/plugin-json": "6.1.0",
-    "@rollup/plugin-node-resolve": "16.0.3",
-    "@rollup/plugin-replace": "6.0.3",
-    "@rollup/plugin-terser": "1.0.2",
-    "cross-env": "10.1.0",
-    "rollup": "4.65.0"
+    "@rslib/core": "1.0.5",
+    "cross-env": "10.1.0"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "development": "./dist/test-utils.esm.dev.js",
+      "default": "./dist/test-utils.esm.js"
+    }
   }
 }

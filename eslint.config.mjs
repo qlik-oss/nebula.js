@@ -8,10 +8,9 @@ import { fileURLToPath } from 'node:url';
 import js from '@eslint/js';
 import { FlatCompat } from '@eslint/eslintrc';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const rootDir = path.dirname(fileURLToPath(import.meta.url));
 const compat = new FlatCompat({
-  baseDirectory: __dirname,
+  baseDirectory: rootDir,
   recommendedConfig: js.configs.recommended,
   allConfig: js.configs.all,
 });
@@ -24,6 +23,15 @@ export default defineConfig([
     plugins: {
       prettier,
       jest,
+    },
+
+    settings: {
+      // typescript follows the exports of a package, the node resolver does not (rspack, chalk and react-router
+      // are published with exports only)
+      'import/resolver': {
+        typescript: true,
+        node: { extensions: ['.js', '.jsx', '.mjs', '.cjs'] },
+      },
     },
 
     languageOptions: {
@@ -91,14 +99,6 @@ export default defineConfig([
     },
   },
   {
-    // the scripts talk to the terminal
-    files: ['**/apis/*/scripts/**/*'],
-
-    rules: {
-      'no-console': 0,
-    },
-  },
-  {
     files: ['apis/*/index.js'],
 
     rules: {
@@ -120,12 +120,29 @@ export default defineConfig([
     },
   },
   {
-    // Commands lib files use chalk which has ESM-only exports (no main field)
-    files: ['commands/build/lib/**/*.js', 'commands/create/lib/**/*.js', 'commands/serve/lib/**/*.js'],
+    // the packages of the commands are native esm, a relative import needs its file extension
+    files: [
+      'commands/build/**/*.{js,cjs}',
+      'commands/create/lib/**/*.js',
+      'commands/sense/lib/**/*.{js,cjs}',
+      'commands/sense/test/**/*.js',
+      'commands/serve/lib/**/*.js',
+      '*.mjs',
+      'apis/*/rslib.config.mjs',
+    ],
 
     rules: {
-      // chalk v6+ is ESM-only with exports field; resolver has trouble finding it
-      'import/no-unresolved': ['error', { ignore: ['chalk'] }],
+      'import/extensions': ['error', 'ignorePackages'],
+    },
+  },
+  {
+    // the scripts of the test pages are es modules in the browser, they import the libraries from the test server
+    files: ['test/mashup/*/!(*.spec).js', 'test/rendering/*/!(*.spec).js'],
+
+    rules: {
+      'import/no-unresolved': 0,
+      'import/no-absolute-path': 0,
+      'import/extensions': 0,
     },
   },
   {
@@ -137,8 +154,6 @@ export default defineConfig([
       'react/function-component-definition': 0,
       'import/prefer-default-export': 1,
       'import/no-cycle': 1,
-      // react-router v8 is ESM-only (exports field, no main); resolver can't find it
-      'import/no-unresolved': ['error', { ignore: ['react-router'] }],
     },
   },
   {

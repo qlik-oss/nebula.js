@@ -2,9 +2,16 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <script src="/apis/stardust/dist/stardust.dev.js"></script>
-    <script src="./listbox-data.js"></script>
-    <script defer src="./listbox.js"></script>
+    <!-- which build of the library the page runs, the scripts import it as a package -->
+    <script type="importmap">
+      {
+        "imports": {
+          "@nebula.js/stardust": "/apis/stardust/dist/stardust.esm.js"
+        }
+      }
+    </script>
+    <script type="module" src="./listbox-data.js"></script>
+    <script type="module" src="./listbox.js"></script>
 
     <style>
       html,

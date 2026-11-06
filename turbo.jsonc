@@ -1,6 +1,6 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
-  "globalDependencies": ["babel.config.cjs", "rollup.config.js", "pnpm-workspace.yaml"],
+  "globalDependencies": ["babel.config.cjs", "pnpm-workspace.yaml"],
   "tasks": {
     // No package defines a transit script. The task only links packages through ^transit, so a change in any
     // transitive dependency invalidates the cache of its dependents, even where an intermediate package has no

@@ -2,7 +2,13 @@
   "$schema": "https://turborepo.dev/schema.json",
   "extends": ["//"],
   "tasks": {
-    "build": { "outputs": ["client.js"] },
-    "build:dev": { "outputs": ["client.js"] }
+    "build": {
+      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/scripts/rslib.mjs"],
+      "outputs": ["client.js"]
+    },
+    "build:dev": {
+      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/scripts/rslib.mjs"],
+      "outputs": ["client.js"]
+    }
   }
 }
