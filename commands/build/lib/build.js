@@ -1,13 +1,12 @@
-/* eslint-disable no-console, import/extensions */
 import path from 'path';
 import { createRequire } from 'module';
 import extend from 'extend';
 import yargs from 'yargs';
-import * as rollup from 'rollup';
 
 import initConfig from './init-config.js';
 import config from './config.js';
 import watch from './watch.js';
+import { run } from './compile.js';
 import systemjsBehaviours from './systemjs.js';
 
 const require = createRequire(import.meta.url);
@@ -26,8 +25,7 @@ const esm = async (argv, core) => {
   if (!c) {
     return undefined;
   }
-  const bundle = await rollup.rollup(c.input);
-  return bundle.write(c.output);
+  return run(c);
 };
 
 const systemjs = async (argv) => {
@@ -40,8 +38,7 @@ const systemjs = async (argv) => {
   if (!c) {
     return undefined;
   }
-  const bundle = await rollup.rollup(c.input);
-  return bundle.write(c.output);
+  return run(c);
 };
 
 async function build(argv = {}) {
