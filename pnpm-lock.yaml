@@ -182,7 +182,19 @@ importers:
 
   .:
     devDependencies:
+      '@babel/core':
+        specifier: 8.0.9
+        version: 8.0.9
       '@babel/helper-plugin-utils':
+        specifier: 8.0.1
+        version: 8.0.1(@babel/core@8.0.9)
+      '@babel/plugin-transform-react-jsx':
+        specifier: 8.0.1
+        version: 8.0.1(@babel/core@8.0.9)
+      '@babel/preset-env':
+        specifier: 8.0.7
+        version: 8.0.7(@babel/core@8.0.9)
+      '@babel/preset-react':
         specifier: 8.0.1
         version: 8.0.1(@babel/core@8.0.9)
       '@changesets/changelog-github':
@@ -512,60 +524,33 @@ importers:
 
   commands/build:
     dependencies:
-      '@babel/cli':
-        specifier: 8.0.6
-        version: 8.0.6(@babel/core@8.0.9)
-      '@babel/core':
-        specifier: 8.0.9
-        version: 8.0.9
-      '@babel/helper-plugin-utils':
-        specifier: 8.0.1
-        version: 8.0.1(@babel/core@8.0.9)
-      '@babel/plugin-proposal-object-rest-spread':
-        specifier: 7.20.7
-        version: 7.20.7(@babel/core@8.0.9)
-      '@babel/plugin-transform-react-jsx':
-        specifier: 8.0.1
-        version: 8.0.1(@babel/core@8.0.9)
-      '@babel/preset-env':
-        specifier: 8.0.7
-        version: 8.0.7(@babel/core@8.0.9)
-      '@babel/preset-react':
-        specifier: 8.0.1
-        version: 8.0.1(@babel/core@8.0.9)
-      '@babel/preset-typescript':
-        specifier: 8.0.7
-        version: 8.0.7(@babel/core@8.0.9)
       '@qlik/browserslist-config':
         specifier: ^3.1.0
         version: 3.1.0
-      '@rspack/core':
-        specifier: 2.3.0
-        version: 2.3.0(@swc/helpers@0.5.24)
-      babel-loader:
-        specifier: 10.1.1
-        version: 10.1.1(@babel/core@8.0.9)(@rspack/core@2.3.0(@swc/helpers@0.5.24))(webpack@5.112.2)
+      '@rslib/core':
+        specifier: 1.0.5
+        version: 1.0.5(typescript@5.9.3)
       chalk:
         specifier: 6.0.1
         version: 6.0.1
       css-loader:
         specifier: 7.1.5
-        version: 7.1.5(@rspack/core@2.3.0(@swc/helpers@0.5.24))(webpack@5.112.2)
+        version: 7.1.5(@rspack/core@2.3.1(@swc/helpers@0.5.24))(webpack@5.112.2)
       extend:
         specifier: 3.0.2
         version: 3.0.2
       less-loader:
         specifier: 13.0.0
-        version: 13.0.0(@rspack/core@2.3.0(@swc/helpers@0.5.24))(less@4.9.1(supports-color@11.0.0))(webpack@5.112.2)
+        version: 13.0.0(@rspack/core@2.3.1(@swc/helpers@0.5.24))(less@4.9.1(supports-color@11.0.0))(webpack@5.112.2)
       postcss:
         specifier: ^8.5.31
         version: 8.5.32
       postcss-loader:
         specifier: 8.2.1
-        version: 8.2.1(@rspack/core@2.3.0(@swc/helpers@0.5.24))(postcss@8.5.32)(typescript@5.9.3)(webpack@5.112.2)
+        version: 8.2.1(@rspack/core@2.3.1(@swc/helpers@0.5.24))(postcss@8.5.32)(typescript@5.9.3)(webpack@5.112.2)
       sass-loader:
         specifier: 17.0.1
-        version: 17.0.1(@rspack/core@2.3.0(@swc/helpers@0.5.24))(sass@1.106.1)(webpack@5.112.2)
+        version: 17.0.1(@rspack/core@2.3.1(@swc/helpers@0.5.24))(sass@1.106.1)(webpack@5.112.2)
       yargs:
         specifier: 18.2.0
         version: 18.2.0
@@ -940,13 +925,6 @@ packages:
     resolution: {integrity: sha512-thHIZoygVkwW/6yBFBgqPtmKpAnEfwsJyIFliKo6hxkXlYLLfvwReDH2le/5zk358ir/97IJdTB7xv309LYbSQ==}
     engines: {node: '>= 10'}
 
-  '@babel/cli@8.0.6':
-    resolution: {integrity: sha512-um8l/siZ6XioGNxbmEry1Z3u77Ye6bkDkg6lXewtZDacGNC+MLh85CWcnMV/A12i4eh77HkhkSKVlZtk4JsucA==}
-    engines: {node: ^22.18.0 || >=24.11.0}
-    hasBin: true
-    peerDependencies:
-      '@babel/core': ^8.0.0
-
   '@babel/code-frame@7.29.7':
     resolution: {integrity: sha512-Aup7aUOfpbAUg2ROOJN6Iw5f9DMBlzu0mIkm/malLQFN/YQgO48wCj0Kxa3sEHJvPVFg7siR+qRInwXd2qhQKw==}
     engines: {node: '>=6.9.0'}
@@ -1153,13 +1131,6 @@ packages:
     peerDependencies:
       '@babel/core': ^8.0.0
 
-  '@babel/plugin-proposal-object-rest-spread@7.20.7':
-    resolution: {integrity: sha512-d2S98yCiLxDVmBmE8UjGcfPvNEUbA1U5q5WxaWFUGRzJSVAZqm5W6MbPct0jxnegUZ0niLeNX+IOzEs7wYg9Dg==}
-    engines: {node: '>=6.9.0'}
-    deprecated: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-object-rest-spread instead.
-    peerDependencies:
-      '@babel/core': ^7.0.0-0
-
   '@babel/plugin-syntax-async-generators@7.8.4':
     resolution: {integrity: sha512-tycmZxkGfZaxhMRbXlPXuVFpdWlXpir2W4AMhSJgRKzk/eDlIXOhb2LHWoLpDF7TEHylV5zNhykX6KAgHJmTNw==}
     peerDependencies:
@@ -1256,12 +1227,6 @@ packages:
     engines: {node: '>=6.9.0'}
     peerDependencies:
       '@babel/core': ^7.0.0-0
-
-  '@babel/plugin-syntax-typescript@8.0.3':
-    resolution: {integrity: sha512-jmTPwps7oSQSZaV1SxkQ3C12UWyufGysGc5OzDpZzvPAIX4mO7dJT3hoqkWVrSImvkcMiknir1iLN1SNV/CZzg==}
-    engines: {node: ^22.18.0 || >=24.11.0}
-    peerDependencies:
-      '@babel/core': ^8.0.0
 
   '@babel/plugin-transform-arrow-functions@8.0.1':
     resolution: {integrity: sha512-o/gr7kRlq3PKLLuYth4udOsrC7geBerti+QtwPeyxMOsEQO1d8kDHqk9r2PtMx2y9i8FG7tzyTerfv1yMLSMsQ==}
@@ -1473,12 +1438,6 @@ packages:
     peerDependencies:
       '@babel/core': ^8.0.0
 
-  '@babel/plugin-transform-parameters@7.29.7':
-    resolution: {integrity: sha512-ZDOBqV/qLYJI0YElr8DcENEyARsFQeESqWXH6gZlghYXuPPjvweuDhP4VyEi4BlUBlLRFZVjxoZDMjxhLW766g==}
-    engines: {node: '>=6.9.0'}
-    peerDependencies:
-      '@babel/core': ^7.0.0-0
-
   '@babel/plugin-transform-parameters@8.0.5':
     resolution: {integrity: sha512-oXsstDkzuE+gOqBz2+e1VFqDew0KlGgd9GT4MGptmcIq3uDbxcowHRSaqMCvp3nbiZws4wTm8Phuk9ZJO3NtTg==}
     engines: {node: ^22.18.0 || >=24.11.0}
@@ -1575,12 +1534,6 @@ packages:
     peerDependencies:
       '@babel/core': ^8.0.0
 
-  '@babel/plugin-transform-typescript@8.0.6':
-    resolution: {integrity: sha512-WF3yRlQtClzScvQbWct00ix63+w3DPiyU0WmCBU4YqK539n3VvJFElElpevoD8wfu6953CbiNoUZBi2B7/5jXw==}
-    engines: {node: ^22.18.0 || >=24.11.0}
-    peerDependencies:
-      '@babel/core': ^8.0.0
-
   '@babel/plugin-transform-unicode-escapes@8.0.1':
     resolution: {integrity: sha512-TAXJepIJ6vZphytTwcf+LuXi2M2ZWI43VCqNw+1ZZLPP/38Z1A8j4Mahvg8kqDgMOSM/cakk+hedTJCiw3jQuQ==}
     engines: {node: ^22.18.0 || >=24.11.0}
@@ -1618,12 +1571,6 @@ packages:
 
   '@babel/preset-react@8.0.1':
     resolution: {integrity: sha512-jrFuPp/pTddFZbtmWhdLNAYc6UMcpboeUPnw0BBrm4nOmcAko/1TRcFi1PzWCeOFRU+VaSiKmat87W1HvR7mIg==}
-    engines: {node: ^22.18.0 || >=24.11.0}
-    peerDependencies:
-      '@babel/core': ^8.0.0
-
-  '@babel/preset-typescript@8.0.7':
-    resolution: {integrity: sha512-sUFLFphAG6YNjCnJpSKpyoNxkfyeM2KNuUjJJN0R6dZusMcK2V3Fg11MVHPFvb37AZeDNocc+xM748vdh9z82Q==}
     engines: {node: ^22.18.0 || >=24.11.0}
     peerDependencies:
       '@babel/core': ^8.0.0
@@ -4188,10 +4135,6 @@ packages:
 
   es-module-lexer@2.3.2:
     resolution: {integrity: sha512-poHGpORABojJJucnV9KbOavETW8lBVnphkW77ER5/BQ5Fz7oXSoCNek7IH3vR5nRjdsEz926ibFYX8KtLQmdyw==}
-
-  es-object-atoms@1.1.1:
-    resolution: {integrity: sha512-FGgH2h8zKNim9ljj7dankFPcICIK9Cp5bm+c2gQSYePhpaG5+esrLODihIorn+Pe6FGJzWhXQotPv73jTaldXA==}
-    engines: {node: '>= 0.4'}
 
   es-object-atoms@1.1.2:
     resolution: {integrity: sha512-HWcBoN6NileqtSydK2FqHbS/LoDd2pqrnQHLyJzBj4kOp/ky2MWMN694xOfkK8/SnUsW2DH7EfyVlydKCsm1Zw==}
@@ -7339,16 +7282,6 @@ snapshots:
       '@ast-grep/napi-win32-ia32-msvc': 0.51.0
       '@ast-grep/napi-win32-x64-msvc': 0.51.0
 
-  '@babel/cli@8.0.6(@babel/core@8.0.9)':
-    dependencies:
-      '@babel/core': 8.0.9
-      '@jridgewell/trace-mapping': 0.3.31
-      chokidar: 5.0.0
-      commander: 14.0.3
-      convert-source-map: 2.0.0
-      glob: 13.0.6
-      slash: 5.1.0
-
   '@babel/code-frame@7.29.7':
     dependencies:
       '@babel/helper-validator-identifier': 7.29.7
@@ -7600,15 +7533,6 @@ snapshots:
       '@babel/core': 8.0.9
       '@babel/helper-plugin-utils': 8.0.1(@babel/core@8.0.9)
 
-  '@babel/plugin-proposal-object-rest-spread@7.20.7(@babel/core@8.0.9)':
-    dependencies:
-      '@babel/compat-data': 7.29.7
-      '@babel/core': 8.0.9
-      '@babel/helper-compilation-targets': 7.29.7
-      '@babel/helper-plugin-utils': 7.29.7
-      '@babel/plugin-syntax-object-rest-spread': 7.8.3(@babel/core@8.0.9)
-      '@babel/plugin-transform-parameters': 7.29.7(@babel/core@8.0.9)
-
   '@babel/plugin-syntax-async-generators@7.8.4(@babel/core@7.29.7(supports-color@11.0.0))':
     dependencies:
       '@babel/core': 7.29.7(supports-color@11.0.0)
@@ -7674,11 +7598,6 @@ snapshots:
       '@babel/core': 7.29.7(supports-color@11.0.0)
       '@babel/helper-plugin-utils': 7.29.7
 
-  '@babel/plugin-syntax-object-rest-spread@7.8.3(@babel/core@8.0.9)':
-    dependencies:
-      '@babel/core': 8.0.9
-      '@babel/helper-plugin-utils': 7.29.7
-
   '@babel/plugin-syntax-optional-catch-binding@7.8.3(@babel/core@7.29.7(supports-color@11.0.0))':
     dependencies:
       '@babel/core': 7.29.7(supports-color@11.0.0)
@@ -7703,11 +7622,6 @@ snapshots:
     dependencies:
       '@babel/core': 7.29.7(supports-color@11.0.0)
       '@babel/helper-plugin-utils': 7.29.7
-
-  '@babel/plugin-syntax-typescript@8.0.3(@babel/core@8.0.9)':
-    dependencies:
-      '@babel/core': 8.0.9
-      '@babel/helper-plugin-utils': 8.0.1(@babel/core@8.0.9)
 
   '@babel/plugin-transform-arrow-functions@8.0.1(@babel/core@8.0.9)':
     dependencies:
@@ -7911,11 +7825,6 @@ snapshots:
       '@babel/helper-plugin-utils': 8.0.1(@babel/core@8.0.9)
       '@babel/helper-skip-transparent-expression-wrappers': 8.0.0
 
-  '@babel/plugin-transform-parameters@7.29.7(@babel/core@8.0.9)':
-    dependencies:
-      '@babel/core': 8.0.9
-      '@babel/helper-plugin-utils': 7.29.7
-
   '@babel/plugin-transform-parameters@8.0.5(@babel/core@8.0.9)':
     dependencies:
       '@babel/core': 8.0.9
@@ -8005,15 +7914,6 @@ snapshots:
     dependencies:
       '@babel/core': 8.0.9
       '@babel/helper-plugin-utils': 8.0.1(@babel/core@8.0.9)
-
-  '@babel/plugin-transform-typescript@8.0.6(@babel/core@8.0.9)':
-    dependencies:
-      '@babel/core': 8.0.9
-      '@babel/helper-annotate-as-pure': 8.0.0
-      '@babel/helper-create-class-features-plugin': 8.0.10(@babel/core@8.0.9)
-      '@babel/helper-plugin-utils': 8.0.1(@babel/core@8.0.9)
-      '@babel/helper-skip-transparent-expression-wrappers': 8.0.0
-      '@babel/plugin-syntax-typescript': 8.0.3(@babel/core@8.0.9)
 
   '@babel/plugin-transform-unicode-escapes@8.0.1(@babel/core@8.0.9)':
     dependencies:
@@ -8125,14 +8025,6 @@ snapshots:
       '@babel/plugin-transform-react-jsx': 8.0.1(@babel/core@8.0.9)
       '@babel/plugin-transform-react-jsx-development': 8.0.1(@babel/core@8.0.9)
       '@babel/plugin-transform-react-pure-annotations': 8.0.1(@babel/core@8.0.9)
-
-  '@babel/preset-typescript@8.0.7(@babel/core@8.0.9)':
-    dependencies:
-      '@babel/core': 8.0.9
-      '@babel/helper-plugin-utils': 8.0.1(@babel/core@8.0.9)
-      '@babel/helper-validator-option': 8.0.0
-      '@babel/plugin-transform-modules-commonjs': 8.0.1(@babel/core@8.0.9)
-      '@babel/plugin-transform-typescript': 8.0.6(@babel/core@8.0.9)
 
   '@babel/runtime@7.29.10': {}
 
@@ -10717,7 +10609,8 @@ snapshots:
   colord@2.10.0:
     optional: true
 
-  commander@14.0.3: {}
+  commander@14.0.3:
+    optional: true
 
   commander@2.20.3:
     optional: true
@@ -10826,7 +10719,7 @@ snapshots:
       postcss: 8.5.32
     optional: true
 
-  css-loader@7.1.5(@rspack/core@2.3.0(@swc/helpers@0.5.24))(webpack@5.112.2):
+  css-loader@7.1.5(@rspack/core@2.3.1(@swc/helpers@0.5.24))(webpack@5.112.2):
     dependencies:
       icss-utils: 5.1.0(postcss@8.5.32)
       postcss: 8.5.32
@@ -10837,7 +10730,7 @@ snapshots:
       postcss-value-parser: 4.2.0
       semver: 7.8.5
     optionalDependencies:
-      '@rspack/core': 2.3.0(@swc/helpers@0.5.24)
+      '@rspack/core': 2.3.1(@swc/helpers@0.5.24)
       webpack: 5.112.2(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.32))(csso@4.2.0)(html-minifier-terser@6.1.0)(postcss@8.5.32)(svgo@2.8.4)(uglify-js@3.19.3)(webpack-cli@7.2.3)
 
   css-select@4.3.0:
@@ -11223,10 +11116,6 @@ snapshots:
       math-intrinsics: 1.1.0
 
   es-module-lexer@2.3.2: {}
-
-  es-object-atoms@1.1.1:
-    dependencies:
-      es-errors: 1.3.0
 
   es-object-atoms@1.1.2:
     dependencies:
@@ -11777,7 +11666,7 @@ snapshots:
   get-proto@1.0.1:
     dependencies:
       dunder-proto: 1.0.1
-      es-object-atoms: 1.1.1
+      es-object-atoms: 1.1.2
 
   get-stream@6.0.1: {}
 
@@ -12735,12 +12624,12 @@ snapshots:
       picocolors: 1.1.1
       shell-quote: 1.12.0
 
-  less-loader@13.0.0(@rspack/core@2.3.0(@swc/helpers@0.5.24))(less@4.9.1(supports-color@11.0.0))(webpack@5.112.2):
+  less-loader@13.0.0(@rspack/core@2.3.1(@swc/helpers@0.5.24))(less@4.9.1(supports-color@11.0.0))(webpack@5.112.2):
     dependencies:
       '@types/less': 3.0.8
       less: 4.9.1(supports-color@11.0.0)
     optionalDependencies:
-      '@rspack/core': 2.3.0(@swc/helpers@0.5.24)
+      '@rspack/core': 2.3.1(@swc/helpers@0.5.24)
       webpack: 5.112.2(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.32))(csso@4.2.0)(html-minifier-terser@6.1.0)(postcss@8.5.32)(svgo@2.8.4)(uglify-js@3.19.3)(webpack-cli@7.2.3)
 
   less@4.9.1(supports-color@11.0.0):
@@ -13314,14 +13203,14 @@ snapshots:
       postcss: 8.5.32
     optional: true
 
-  postcss-loader@8.2.1(@rspack/core@2.3.0(@swc/helpers@0.5.24))(postcss@8.5.32)(typescript@5.9.3)(webpack@5.112.2):
+  postcss-loader@8.2.1(@rspack/core@2.3.1(@swc/helpers@0.5.24))(postcss@8.5.32)(typescript@5.9.3)(webpack@5.112.2):
     dependencies:
       cosmiconfig: 9.0.2(typescript@5.9.3)
       jiti: 2.7.0
       postcss: 8.5.32
       semver: 7.8.5
     optionalDependencies:
-      '@rspack/core': 2.3.0(@swc/helpers@0.5.24)
+      '@rspack/core': 2.3.1(@swc/helpers@0.5.24)
       webpack: 5.112.2(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.32))(csso@4.2.0)(html-minifier-terser@6.1.0)(postcss@8.5.32)(svgo@2.8.4)(uglify-js@3.19.3)(webpack-cli@7.2.3)
     transitivePeerDependencies:
       - typescript
@@ -13815,9 +13704,9 @@ snapshots:
 
   safer-buffer@2.1.2: {}
 
-  sass-loader@17.0.1(@rspack/core@2.3.0(@swc/helpers@0.5.24))(sass@1.106.1)(webpack@5.112.2):
+  sass-loader@17.0.1(@rspack/core@2.3.1(@swc/helpers@0.5.24))(sass@1.106.1)(webpack@5.112.2):
     optionalDependencies:
-      '@rspack/core': 2.3.0(@swc/helpers@0.5.24)
+      '@rspack/core': 2.3.1(@swc/helpers@0.5.24)
       sass: 1.106.1
       webpack: 5.112.2(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.32))(csso@4.2.0)(html-minifier-terser@6.1.0)(postcss@8.5.32)(svgo@2.8.4)(uglify-js@3.19.3)(webpack-cli@7.2.3)
 
