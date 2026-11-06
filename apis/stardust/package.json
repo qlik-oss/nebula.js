@@ -19,9 +19,7 @@
     "url": "https://github.com/qlik-oss/nebula.js.git",
     "directory": "apis/stardust"
   },
-  "main": "index.js",
-  "jsdelivr": "dist/stardust.js",
-  "unpkg": "dist/stardust.js",
+  "main": "dist/stardust.esm.js",
   "types": "types/index.d.ts",
   "files": [
     "LICENSE",
@@ -30,14 +28,14 @@
     "types/index.d.ts"
   ],
   "scripts": {
-    "build": "cross-env NODE_ENV=production rollup --bundleConfigAsCjs --config ../../rollup.config.js",
-    "build:dev": "rollup --bundleConfigAsCjs --config ../../rollup.config.js",
-    "build:watch": "rollup --bundleConfigAsCjs --config ../../rollup.config.js -w",
+    "build": "cross-env NODE_ENV=production rslib build",
+    "build:dev": "rslib build",
+    "build:watch": "rslib build --watch",
     "prepublishOnly": "rm -rf dist && pnpm run build",
-    "spec:stardust": "sy from-jsdoc -c ./api-spec/spec.conf.js",
-    "spec:listbox": "sy from-jsdoc -c ./api-spec/listbox-spec.conf.js",
+    "spec:stardust": "sy from-jsdoc -c ./api-spec/spec.conf.cjs",
+    "spec:listbox": "sy from-jsdoc -c ./api-spec/listbox-spec.conf.cjs",
     "spec": "pnpm run spec:stardust && pnpm run spec:listbox",
-    "ts": "sy to-dts -c ./api-spec/spec.conf.js",
+    "ts": "sy to-dts -c ./api-spec/spec.conf.cjs",
     "version": "pnpm run spec && pnpm run ts && git add ./api-spec/spec.json ./api-spec/listbox-spec.json ./types/index.d.ts"
   },
   "devDependencies": {
@@ -54,12 +52,7 @@
     "@nebula.js/theme": "workspace:*",
     "@nebula.js/ui": "workspace:*",
     "@qlik/api": "2.20.0",
-    "@rollup/plugin-babel": "7.1.0",
-    "@rollup/plugin-commonjs": "29.0.3",
-    "@rollup/plugin-json": "6.1.0",
-    "@rollup/plugin-node-resolve": "16.0.3",
-    "@rollup/plugin-replace": "6.0.3",
-    "@rollup/plugin-terser": "1.0.2",
+    "@rslib/core": "1.0.5",
     "@scriptappy/cli": "0.10.6",
     "@scriptappy/from-jsdoc": "0.19.6",
     "@scriptappy/to-dts": "1.0.4",
@@ -73,7 +66,20 @@
     "react-window": "1.8.11",
     "react-window-infinite-loader": "1.0.10",
     "regenerator-runtime": "0.14.1",
-    "rollup": "4.65.0",
     "semver": "7.8.5"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "development": "./dist/stardust.esm.dev.js",
+      "default": "./dist/stardust.esm.js"
+    },
+    "./core": {
+      "development": "./core/esm/dev.js",
+      "default": "./core/esm/index.js"
+    },
+    "./dist/*": "./dist/*",
+    "./package.json": "./package.json"
   }
 }

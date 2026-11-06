@@ -3,8 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <title>Mashup</title>
-    <script src="/apis/stardust/dist/stardust.js"></script>
-    <script src="configured.js"></script>
+    <!-- which build of the library the page runs, the scripts import it as a package -->
+    <script type="importmap">
+      {
+        "imports": {
+          "@nebula.js/stardust": "/apis/stardust/dist/stardust.esm.js"
+        }
+      }
+    </script>
+    <script type="module" src="snapper.js"></script>
 
     <style>
       body {
@@ -24,6 +31,5 @@
   <body>
     <div class="object" data-type="pie"></div>
     <div class="object" data-type="bar"></div>
-    <script src="snapper.js"></script>
   </body>
 </html>

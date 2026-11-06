@@ -70,7 +70,7 @@ Nucleus (React-based) orchestrates visualization rendering:
 ```bash
 pnpm install                    # Install all dependencies
 pnpm run locale:generate        # Generate translation files (also runs as part of build)
-pnpm run build                  # Build all packages (production UMD + ESM)
+pnpm run build                  # Build all packages (production ESM + SystemJS)
 pnpm run build:dev              # Build with source maps for development
 pnpm run build:watch            # Watch mode for active development
 ```
@@ -106,13 +106,13 @@ nebula sense                    # Build as Qlik Sense extension
 - Supports fixtures for testing without engine connection
 - See [commands/serve/README.md](commands/serve/README.md) for options
 
-### Rollup Build Configuration
+### Rslib Build Configuration
 
-All packages use shared [rollup.config.js](rollup.config.js):
-- **UMD format** for browsers (default export via `unpkg`/`jsdelivr`)
-- **ESM format** for bundlers (exposed via `module` field)
-- Creates `.dev.js` variants with source maps in development mode
-- Validates `main`, `module`, `unpkg`, `jsdelivr` targets in package.json match naming convention
+`@nebula.js/stardust`, `@nebula.js/test-utils` and `@nebula.js/snapshooter` each have an `rslib.config.mjs`, which defines its bundles with the shared [scripts/rslib.mjs](scripts/rslib.mjs):
+- **ESM format** (`dist/<name>.esm.js`, exposed through `exports` and `main`)
+- **SystemJS format** for stardust (`dist/stardust.systemjs.js`), which the import map of the micro frontend host loads
+- Creates `.dev.js` variants, which are not minified and picked by the `development` condition
+- The notices of the licenses of the bundled code are written to `<bundle>.LICENSE.txt`
 
 ### Changesets Versioning
 
@@ -180,6 +180,6 @@ Qlik Sense extensions can define `ext` object for Sense-specific customizations 
 
 ## Debugging
 
-- **Build issues**: Check locale generation ran, verify package.json targets match rollup config expectations
+- **Build issues**: Check locale generation ran, verify the package.json entries match the outputs of the rslib config
 - **Hook errors**: "Invalid stardust hook call" means hooks called outside component function
 - **Visualization not updating**: Check if using `useStaleLayout()` vs `useLayout()` correctly - stale doesn't trigger re-renders

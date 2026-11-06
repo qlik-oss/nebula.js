@@ -2,9 +2,16 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <script src="/apis/stardust/dist/stardust.js"></script>
-    <script src="/apis/snapshooter/client.js"></script>
-    <script src="configured.js"></script>
+
+    <!-- which build of the library the page runs, the scripts import it as a package -->
+    <script type="importmap">
+      {
+        "imports": {
+          "@nebula.js/stardust": "/apis/stardust/dist/stardust.esm.js",
+          "@nebula.js/snapshooter": "/apis/snapshooter/client.js"
+        }
+      }
+    </script>
 
     <style>
       html,
@@ -24,7 +31,10 @@
   </head>
   <body>
     <div id="object"></div>
-    <script>
+    <script type="module">
+      import snapshooter from '@nebula.js/snapshooter';
+      import { configured } from './configured.js';
+
       const params = (() => {
         const opts = {};
         window.location.search

@@ -1,3 +1,5 @@
+import { embed, EnigmaMocker } from '@nebula.js/stardust';
+
 const scenarios = {};
 
 function trackFlow(flowName) {
@@ -308,8 +310,6 @@ scenarios.scenario1 = {
   },
 };
 
-const { embed, EnigmaMocker } = window.stardust;
-
 function getScenario() {
   const queryParams = new URLSearchParams(window.location.search);
   const id = queryParams.get('scenario');
@@ -332,4 +332,5 @@ async function render() {
   trackFlow('mount promise resolved');
 }
 
-window.addEventListener('load', render);
+// the page runs this script when the document is parsed, after the load event can have fired
+render();

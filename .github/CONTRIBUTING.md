@@ -65,7 +65,7 @@ Add a file name such as `--graph=graph.html` to write it to a file.
 ### Development workflow
 
 - `pnpm` install all dependencies
-- `pnpm run build` generate UMD bundles for all packages and an ESM bundle for stardust. Tasks are orchestrated by [Turborepo](https://turborepo.dev) in dependency order, and outputs are cached in `.turbo/cache`, so unchanged packages are restored instead of rebuilt
+- `pnpm run build` generate the ESM bundles of the packages and the SystemJS bundle of stardust. Tasks are orchestrated by [Turborepo](https://turborepo.dev) in dependency order, and outputs are cached in `.turbo/cache`, so unchanged packages are restored instead of rebuilt
 - `pnpm run lint` check code style
 - `pnpm run format` format code style
 - `pnpm run test` run all tests

@@ -3,6 +3,7 @@
   "private": true,
   "devDependencies": {
     "@nebula.js/cli-serve": "workspace:*",
+    "@nebula.js/stardust": "workspace:*",
     "@playwright/test": "1.62.1",
     "body-parser": "2.3.0",
     "express": "5.2.1",

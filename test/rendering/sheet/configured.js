@@ -1,3 +1,5 @@
+import { embed } from '@nebula.js/stardust';
+
 const pie = {
   component: {
     mounted(el) {
@@ -27,7 +29,7 @@ const bar = function (env) {
 };
 
 // eslint-disable-next-line
-const configured = stardust.embed.createConfiguration({
+export const configured = embed.createConfiguration({
   context: {
     language: 'sv-SE',
     theme: 'bla',

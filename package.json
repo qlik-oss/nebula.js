@@ -44,6 +44,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/helper-plugin-utils": "8.0.1",
     "@changesets/changelog-github": "^1.0.1",
     "@changesets/cli": "^3.0.3",
     "@commitlint/cli": "21.2.4",
@@ -52,12 +53,15 @@
     "@eslint/js": "^10.0.1",
     "@jest/globals": "^30.5.2",
     "@playwright/test": "^1.64.1",
+    "@qlik/browserslist-config": "3.1.0",
+    "@rslib/core": "1.0.5",
     "@testing-library/jest-dom": "^7.0.1",
     "babel-plugin-istanbul": "8.0.0",
     "cross-env": "10.1.0",
     "eslint": "9.39.5",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-prettier": "10.1.8",
+    "eslint-import-resolver-typescript": "4.4.5",
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-jest": "^29.17.0",
     "eslint-plugin-jsx-a11y": "6.10.2",

@@ -1,3 +1,5 @@
+import { embed } from '@nebula.js/stardust';
+
 (async () => {
   function getMocks(options) {
     const { getMockData, getListboxLayout } = window.getFuncs();
@@ -34,7 +36,7 @@
     }
     const { app } = getMocks(options);
     const { keyboardNavigation } = options;
-    const nebbie = window.stardust.embed(app, {
+    const nebbie = embed(app, {
       context: {
         theme,
         ...(keyboardNavigation && { keyboardNavigation }),

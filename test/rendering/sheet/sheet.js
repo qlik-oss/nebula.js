@@ -1,7 +1,9 @@
-/* global configured */
+import { EnigmaMocker } from '@nebula.js/stardust';
+import { configured } from './configured.js';
+
 /* eslint no-underscore-dangle: 0 */
 (() => {
-  async function getMocks(EnigmaMocker) {
+  async function getMocks(mocker) {
     const { getSheetLayout, getSheetLayout2, getBarLayout, getPieLayout } = window.getFuncs();
 
     const obj = [
@@ -27,7 +29,7 @@
       },
     ];
 
-    const app = await EnigmaMocker.fromGenericObjects(obj);
+    const app = await mocker.fromGenericObjects(obj);
 
     return {
       obj,
@@ -39,7 +41,7 @@
     const urlParams = new URLSearchParams(window.location.search);
     const target = urlParams.get('target');
     const element = document.querySelector('#object');
-    const { app } = await getMocks(window.stardust.EnigmaMocker);
+    const { app } = await getMocks(EnigmaMocker);
 
     const nebbie = configured(app);
 
