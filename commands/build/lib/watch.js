@@ -49,10 +49,8 @@ const getWatchConfig = (argv) => {
         },
       };
       break;
-    case 'umd':
     default:
-      opts = { ...base, format: 'umd' };
-      break;
+      throw new Error(`Cannot watch '${argv.watch}', it is esm or systemjs`);
   }
   return config(opts);
 };

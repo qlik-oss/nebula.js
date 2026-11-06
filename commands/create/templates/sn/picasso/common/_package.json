@@ -12,7 +12,6 @@
   "engines": {
     "node": ">=24.0.0"
   },
-  "main": "dist/<%= name %>.js",
   "module": "dist/<%= name %>.esm.js",
   "scripts": {
     "build": "nebula build<% if (typescript) { %> --typescript<% } %>",

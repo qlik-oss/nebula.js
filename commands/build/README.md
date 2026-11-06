@@ -20,7 +20,7 @@ Options:
   --config, -c              Path to a JavaScript config file
                                                    [string] [default: "nebula.config.js"]
   --watch, -w               Watch source files
-                                            [choices: "umd", "systemjs"] [default: "umd"]
+                                            [choices: "esm", "systemjs"] [default: "esm"]
   --sourcemap, -m           Generate source map                 [boolean] [default: true]
   --mode                    Explicitly set mode
                                           [string] [choices: "production", "development"]
@@ -145,9 +145,9 @@ nebula build --core minimal/target
 The code is exported into `/minimal/target` directory
 
 Tips:
-In the package.json file, the main field makes sure that Node users using require
-can be served the umd version. The module field is a common convention to designate
-how to import an esm version of your code.
+`nebula build` writes the es module that the `module` field of package.json names, and the SystemJS
+module of the `systemjs` field. There is no UMD bundle: a `main` field is not used by `nebula build`, and
+`nebula build` fails when package.json has neither `module` nor `systemjs`.
 
 ### SystemJS build
 

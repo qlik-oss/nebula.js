@@ -19,7 +19,8 @@
     "command.js"
   ],
   "scripts": {
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "test": "node --test"
   },
   "dependencies": {
     "@babel/cli": "8.0.6",
