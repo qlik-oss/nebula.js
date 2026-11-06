@@ -69,7 +69,7 @@ const config = {
     '/node_modules/',
     '<rootDir>/commands/serve/test/e2e/',
     // run by node's test runner (`pnpm test` in the package), they build real projects
-    '<rootDir>/commands/sense/test/',
+    '<rootDir>/commands/(build|sense)/test/',
   ],
 };
 
