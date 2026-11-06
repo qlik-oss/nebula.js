@@ -8,11 +8,6 @@
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:light" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:semibold" rel="stylesheet" />
-    <% for (var stylesheet in htmlWebpackPlugin.options.stylesheets) { %>
-    <script type="text/javascript" src="<%= htmlWebpackPlugin.options.stylesheets[stylesheet] %>"></script>
-    <% } %> <% for (var script in htmlWebpackPlugin.options.scripts) { %>
-    <script type="text/javascript" src="<%= htmlWebpackPlugin.options.scripts[script] %>"></script>
-    <% } %>
     <style>
       html,
       body {

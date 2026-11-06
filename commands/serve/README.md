@@ -145,6 +145,16 @@ $ mkcert -key-file ~/.certs/key.pem -cert-file ~/.certs/cert.pem localhost 127.0
 
 Verify that two new files have appeared in the certs/ - folder
 
+### Developing nebula serve
+
+The pages of `nebula serve` (the hub and the page that renders a visualization) are built with the package, into `dist`, by the `rsbuild.config.mjs` of the package. To work on them and on the packages they use from source, with hot reload, run this in `commands/serve` of this repository:
+
+```sh
+pnpm start --entry ../../test/fixtures/viz/listbox
+```
+
+It takes the arguments of `nebula serve`. It is not part of the published package, which serves the built pages. The `MONO` environment variable that used to turn this on is gone.
+
 ### More info
 
-webpack and webpack-dev-server are used behind the web development server for nebula.js visualizations. You can find more info from [webpack configuration](https://webpack.js.org/configuration/) and [webpack-dev-server configuration](https://webpack.js.org/configuration/dev-server/#devserverport).
+[Rsbuild](https://rsbuild.rs) builds the pages of the web development server for nebula.js visualizations and serves them. You can find more info from the [Rsbuild configuration](https://rsbuild.rs/config/) and the [dev server](https://rsbuild.rs/config/server/).
