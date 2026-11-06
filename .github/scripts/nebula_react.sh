@@ -19,7 +19,7 @@ pnpm add ./nebula.js-stardust-*.tgz ./nebula.js-cli-[0-9]*.tgz ./nebula.js-cli-s
 pnpm add buffer@6.0.3
 
 PARCEL_AUTOINSTALL=false pnpm run build
-test -s dist/react-chart.js
+test -s dist/react-chart.esm.js
 
 if [ "${CI:-false}" = "true" ]; then
   pnpm exec playwright install chromium --with-deps
