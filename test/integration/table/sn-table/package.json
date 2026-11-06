@@ -1,6 +1,5 @@
 {
   "name": "hi",
-  "main": "dist/ello.js",
   "module": "dist/ello.esm.js",
   "peerDependencies": {
     "@nebula.js/stardust": "*"

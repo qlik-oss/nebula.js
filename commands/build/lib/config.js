@@ -65,13 +65,13 @@ const getExternalCore = ({ pkg }) => {
   return [...defaultExternal, ...peers];
 };
 
-const getOutputFileDefault = ({ pkg }) => pkg.main;
+const getOutputFileDefault = ({ pkg }) => pkg.module;
 
 const getOutputNameDefault = ({ pkg }) => pkg.name.split('/').reverse()[0];
 
 const config = ({
   mode = 'production',
-  format = 'umd',
+  format = 'esm',
   cwd = process.cwd(),
   argv = { sourcemap: true, codeSplit: false, inlineDynamic: false },
   core,
@@ -135,12 +135,12 @@ const config = ({
         '@nebula.js/stardust': 'stardust',
       },
     };
-    if (!argv.codeSplit || format === 'umd') {
+    if (!argv.codeSplit) {
       outputConfig.file = path.resolve(dir, outputFile);
     } else {
       outputConfig.dir = path.resolve(dir, outputFile.split('/')[0]);
     }
-    if (format === 'umd' || argv.inlineDynamic) {
+    if (argv.inlineDynamic) {
       outputConfig.inlineDynamicImports = true;
     }
     return outputConfig;
