@@ -12,10 +12,7 @@ cp -R "$NEBULA_ROOT/test/ci/react-chart/." "$PROJECT_FOLDER"
 cd "$PROJECT_FOLDER"
 pnpm config set --location project ignore-scripts true
 
-pnpm --dir "$NEBULA_ROOT/apis/stardust" pack --pack-destination "$PWD"
-pnpm --dir "$NEBULA_ROOT/commands/cli" pack --pack-destination "$PWD"
-pnpm --dir "$NEBULA_ROOT/commands/serve" pack --pack-destination "$PWD"
-pnpm --dir "$NEBULA_ROOT/commands/build" pack --pack-destination "$PWD"
+source "$NEBULA_ROOT/.github/scripts/pack_nebula.sh"
 
 pnpm install
 pnpm add ./nebula.js-stardust-*.tgz ./nebula.js-cli-[0-9]*.tgz ./nebula.js-cli-serve-*.tgz ./nebula.js-cli-build-*.tgz
