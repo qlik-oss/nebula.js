@@ -26,20 +26,16 @@ fi
 cd "$PROJECT_NAME"
 pnpm config set --location project ignore-scripts true
 
+# Use the packages of this branch the way real users would (no workspace symlinks, tests the 'files' field,
+# prevents monorepo transitive issues like Babel 8 from stardust).
+source "$NEBULA_ROOT/.github/scripts/pack_nebula.sh"
+
 if [ "$INSTALL" = "true" ]; then
   echo "Install generated project dependencies"
   pnpm install
 fi
 
 echo "Installing packages from tarballs (simulates npm install)"
-# Pack this branch's packages as tarballs so the generated project uses them
-# the way real users would (no workspace symlinks, tests the 'files' field,
-# prevents monorepo transitive issues like Babel 8 from stardust).
-pnpm --dir "$NEBULA_ROOT/apis/stardust" pack --pack-destination "$PWD"
-pnpm --dir "$NEBULA_ROOT/commands/cli" pack --pack-destination "$PWD"
-pnpm --dir "$NEBULA_ROOT/commands/serve" pack --pack-destination "$PWD"
-pnpm --dir "$NEBULA_ROOT/commands/build" pack --pack-destination "$PWD"
-
 pnpm add ./nebula.js-stardust-*.tgz ./nebula.js-cli-[0-9]*.tgz ./nebula.js-cli-serve-*.tgz ./nebula.js-cli-build-*.tgz
 pnpm add buffer@6.0.3
 
