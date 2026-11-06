@@ -10,7 +10,7 @@ import chokidar from 'chokidar';
 import build from '@nebula.js/cli-build';
 
 import initConfig from './init-config.js';
-import webpackServe from './webpack.serve.js';
+import rsbuildServe from './rsbuild.serve.js';
 
 const require = createRequire(import.meta.url);
 
@@ -98,7 +98,8 @@ const initiateWatch = async ({ snPath, snName, host }) => {
   };
 };
 
-export default async (argv) => {
+// `pages` is for developing nebula serve itself, see dev.js: it serves the pages from their source
+export default async (argv, { pages } = {}) => {
   let context = process.cwd();
   let defaultServeConfig = {};
   let runFromDirectory = false;
@@ -154,7 +155,7 @@ export default async (argv) => {
 
   const ww = snUrl ? null : await initiateWatch({ snPath, snName: serveConfig.type || snName, host });
 
-  const server = await webpackServe({
+  const server = await rsbuildServe({
     host,
     port,
     disableHostCheck: serveConfig.disableHostCheck,
@@ -163,10 +164,9 @@ export default async (argv) => {
     webIntegrationId: serveConfig.webIntegrationId,
     snName: serveConfig.type || snName,
     snUrl,
-    dev: process.env.MONO === 'true',
+    pages,
     open: serveConfig.open !== false && !serveConfig.mfe,
     entryWatcher: ww,
-    watcher,
     serveConfig,
   });
 

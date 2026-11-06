@@ -1,13 +1,10 @@
 import path from 'path';
-import crypto from 'crypto';
-import { createRequire } from 'module';
 import { parseArgs } from 'util';
 import { rspack } from '@rslib/core';
 
-const require = createRequire(import.meta.url);
+import { browserList, readPackage, versionDefines } from './build-shared.mjs';
 
-// the browsers that Qlik supports, as the other packages of Qlik do
-const browserList = require('@qlik/browserslist-config');
+export { readPackage };
 
 // rslib has its own arguments, only the watch is of interest
 const { values } = parseArgs({
@@ -19,8 +16,6 @@ const { values } = parseArgs({
 
 // a watch has no use for the production bundles
 export const watch = Boolean(values.watch);
-
-export const readPackage = (dir) => require(path.join(dir, 'package.json'));
 
 const createBanner = ({ name, version, license }) => `/*
 * ${name} v${version}
@@ -63,8 +58,6 @@ export const bundle = ({
   }
   // the banner and the version are the ones of the package that is built, also for its sub package
   const pkg = readPackage(cwd);
-  const { version } = pkg;
-  const versionHash = crypto.createHash('md5').update(version).digest('hex').slice(0, 4);
   // all peers are externals, they are never bundled
   const peers = Object.keys(targetPkg.peerDependencies || {});
 
@@ -79,8 +72,7 @@ export const bundle = ({
       define: {
         __NEBULA_DEV__: JSON.stringify(dev),
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV === 'development' ? 'development' : 'production'),
-        'process.env.NEBULA_VERSION': JSON.stringify(version),
-        'process.env.NEBULA_VERSION_HASH': JSON.stringify(versionHash),
+        ...versionDefines(pkg),
       },
     },
     output: {
