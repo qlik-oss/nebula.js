@@ -2,6 +2,7 @@
   "name": "listbox",
   "private": true,
   "main": "dist/listbox.js",
+  "module": "dist/listbox.esm.js",
   "peerDependencies": {
     "@nebula.js/stardust": "workspace:*"
   }
