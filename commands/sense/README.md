@@ -123,7 +123,7 @@ example:
 }
 ```
 
-## Building with rspack
+## Building with Rslib
 
 The extension is built with [Rslib](https://rslib.rs) from the es module that `nebula build` writes (the `module` field of `package.json`), so run `nebula build` first.
 
