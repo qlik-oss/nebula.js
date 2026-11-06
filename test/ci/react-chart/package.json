@@ -7,6 +7,7 @@
     "dist"
   ],
   "main": "dist/react-chart.js",
+  "module": "dist/react-chart.esm.js",
   "scripts": {
     "build": "nebula build",
     "start": "nebula serve",
