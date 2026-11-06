@@ -1,5 +1,15 @@
 # Change Log
 
+## 8.0.0-alpha.0
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @nebula.js/cli-build@8.0.0-alpha.0
+  - @nebula.js/cli-sense@8.0.0-alpha.0
+  - @nebula.js/cli-serve@8.0.0-alpha.0
+  - @nebula.js/cli-create@8.0.0-alpha.0
+
 ## Releases before 8.0.0
 
 All notable changes to this project will be documented in this file.
