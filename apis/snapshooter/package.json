@@ -23,6 +23,7 @@
   ],
   "scripts": {
     "build": "cross-env NODE_ENV=production rollup --bundleConfigAsCjs --config ./rollup.config.js",
+    "build:dev": "rollup --bundleConfigAsCjs --config ./rollup.config.js",
     "prepublishOnly": "rm -rf dist && pnpm run build"
   },
   "devDependencies": {

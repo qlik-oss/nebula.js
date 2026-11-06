@@ -8,28 +8,16 @@ on:
 
 env:
   JEST_JUNIT_OUTPUT_DIR: ./coverage/junit/
+  TURBO_TELEMETRY_DISABLED: 1
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: pnpm/setup@fa36a5ef7dcdefc3a7cb25655c122e00cf6e636e # v3
+      - uses: ./.github/actions/setup-workspace
         with:
-          cache: true
-      - name: Build
-        run: pnpm run build
-      - name: Remove node_modules
-        run: find . -name node_modules -type d -prune -exec rm -rf {} +
-      - name: Upload workspace
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
-        with:
-          name: workspace
-          path: |
-            **/dist/**
-            apis/locale/all.json
-            apis/snapshooter/client.js
-          retention-days: 1
+          save-cache: true
 
   validate:
     runs-on: ubuntu-latest
@@ -39,14 +27,9 @@ jobs:
       checks: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: pnpm/setup@fa36a5ef7dcdefc3a7cb25655c122e00cf6e636e # v3
+      - uses: ./.github/actions/setup-workspace
         with:
-          cache: true
-      - name: Download workspace
-        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
-        with:
-          name: workspace
-          path: .
+          build: false
       - name: Locale verify
         run: pnpm run locale:verify
       - name: format
@@ -56,7 +39,7 @@ jobs:
       - name: Run unit tests and publish to codeclimate
         env:
           JEST_JUNIT_OUTPUT_DIR: ./coverage/junit/
-        run: pnpm test:unit --coverage
+        run: pnpm test:coverage
       - name: Store junit results
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
@@ -79,14 +62,7 @@ jobs:
       checks: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: pnpm/setup@fa36a5ef7dcdefc3a7cb25655c122e00cf6e636e # v3
-        with:
-          cache: true
-      - name: Download workspace
-        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
-        with:
-          name: workspace
-          path: .
+      - uses: ./.github/actions/setup-workspace
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps chromium
       - name: Test component
@@ -202,14 +178,7 @@ jobs:
             typescript: false
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: pnpm/setup@fa36a5ef7dcdefc3a7cb25655c122e00cf6e636e # v3
-        with:
-          cache: true
-      - name: Download workspace
-        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
-        with:
-          name: workspace
-          path: .
+      - uses: ./.github/actions/setup-workspace
       - name: Create Nebula ${{ matrix.mashup && 'mashup' || 'visualization' }} project with template (${{ matrix.picasso-template }})
         id: create-project
         env:
@@ -236,14 +205,7 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: pnpm/setup@fa36a5ef7dcdefc3a7cb25655c122e00cf6e636e # v3
-        with:
-          cache: true
-      - name: Download workspace
-        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
-        with:
-          name: workspace
-          path: .
+      - uses: ./.github/actions/setup-workspace
       - name: Build and test React based chart
         run: .github/scripts/nebula_react.sh "$(mktemp -d)/react-chart"
 
@@ -260,6 +222,7 @@ jobs:
       - uses: pnpm/setup@fa36a5ef7dcdefc3a7cb25655c122e00cf6e636e # v3
         with:
           cache: true
+          save-cache: false
 
       - name: Create version.txt
         id: version

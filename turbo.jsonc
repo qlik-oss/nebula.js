@@ -1,0 +1,46 @@
+{
+  "$schema": "https://turborepo.dev/schema.json",
+  "globalDependencies": ["babel.config.cjs", "rollup.config.js", "pnpm-workspace.yaml"],
+  "tasks": {
+    // No package defines a transit script. The task only links packages through ^transit, so a change in any
+    // transitive dependency invalidates the cache of its dependents, even where an intermediate package has no
+    // script for the task. Tasks that read dependency sources but don't need their build output depend on this.
+    "transit": {
+      "dependsOn": ["^transit"]
+    },
+    "build": {
+      "dependsOn": ["^build", "transit"],
+      "outputs": ["dist/**"]
+    },
+    "build:dev": {
+      "dependsOn": ["^build:dev", "transit"],
+      "outputs": ["dist/**"]
+    },
+    "build:watch": {
+      "dependsOn": ["^build:dev"],
+      "cache": false,
+      "persistent": true
+    },
+    "//#eslint": {
+      "dependsOn": [
+        "@nebula.js/locale#build",
+        "@nebula.js/snapshooter#build",
+        "@nebula.js/stardust#build",
+        "@nebula.js/test-utils#build"
+      ],
+      "cache": false
+    },
+    // Don't pass arguments through turbo to these (`turbo run //#jest -- --foo`). Turbo adds them to the hash of every
+    // task in the run, so the builds below would miss the cache. Run `pnpm jest <args>` for ad-hoc runs instead.
+    "//#jest": {
+      "dependsOn": ["@nebula.js/locale#build", "@nebula.js/stardust#build", "@nebula.js/test-utils#build"],
+      "passThroughEnv": ["JEST_JUNIT_OUTPUT_DIR"],
+      "cache": false
+    },
+    "//#jest:coverage": {
+      "dependsOn": ["@nebula.js/locale#build", "@nebula.js/stardust#build", "@nebula.js/test-utils#build"],
+      "passThroughEnv": ["JEST_JUNIT_OUTPUT_DIR"],
+      "cache": false
+    }
+  }
+}
