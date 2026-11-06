@@ -3,11 +3,10 @@ import readline from 'readline';
 import { EventEmitter } from 'events';
 import { createRequire } from 'module';
 import chalk from 'chalk';
-import { rspack } from '@rspack/core';
 
 import config from './config.js';
 import systemjsBehaviours from './systemjs.js';
-import { formatWarnings } from './compile.js';
+import { create, formatErrors, formatWarnings } from './compile.js';
 
 const require = createRequire(import.meta.url);
 
@@ -83,22 +82,18 @@ const watch = async (argv) => {
   const c = getWatchConfig(argv);
 
   const events = new EventEmitter();
-  const compiler = rspack(c);
-  let watching;
+  let closeWatch;
 
   const watcher = {
     on: (name, listener) => {
       events.on(name, listener);
       return watcher;
     },
-    close: () =>
-      new Promise((resolve) => {
-        if (!watching) {
-          compiler.close(resolve);
-          return;
-        }
-        watching.close(() => compiler.close(resolve));
-      }),
+    close: async () => {
+      if (closeWatch) {
+        await closeWatch();
+      }
+    },
   };
 
   return new Promise((resolve, reject) => {
@@ -110,38 +105,48 @@ const watch = async (argv) => {
       }
     };
 
-    compiler.hooks.watchRun.tap('nebula build', () => {
-      clearScreen();
-      console.log(`${chalk.black.bgBlue(' INFO  ')}  Compiling...\n`);
-      events.emit('event', { code: 'BUNDLE_START' });
+    const rslibPromise = create(c, (api) => {
+      api.onBeforeBuild(() => {
+        clearScreen();
+        console.log(`${chalk.black.bgBlue(' INFO  ')}  Compiling...\n`);
+        events.emit('event', { code: 'BUNDLE_START' });
+      });
+
+      api.onAfterBuild(({ stats }) => {
+        if (stats.hasErrors()) {
+          const failure = new Error(formatErrors(stats));
+          clearScreen();
+          console.log(`${chalk.white.bgRed(' ERROR ')} ${chalk.red('Failed to compile\n\n')}`);
+          console.error(failure.stack);
+          events.emit('event', { code: 'ERROR', error: failure });
+          settle(reject, watcher);
+          return;
+        }
+
+        if (stats.hasWarnings()) {
+          console.log(`${chalk.black.bgYellow(' WARN  ')} ${chalk.yellow(formatWarnings(stats))}`);
+          console.log();
+        } else {
+          clearScreen();
+        }
+        const duration = stats.endTime - stats.startTime;
+        console.log(`${chalk.black.bgGreen(' DONE  ')} ${chalk.green(`Compiled successfully in ${duration}ms\n`)}`);
+        events.emit('event', { code: 'BUNDLE_END', duration });
+        settle(resolve, watcher);
+      });
     });
 
-    watching = compiler.watch({}, (err, stats) => {
-      const failure =
-        err ||
-        (stats.hasErrors() &&
-          new Error(stats.toString({ all: false, errors: true, errorDetails: true, colors: false })));
-      if (failure) {
-        clearScreen();
-        console.log(`${chalk.white.bgRed(' ERROR ')} ${chalk.red('Failed to compile\n\n')}`);
-        console.error(failure.stack);
-        events.emit('event', { code: 'ERROR', error: failure });
-        settle(reject, watcher);
-        return;
-      }
-
-      const hasWarnings = stats.hasWarnings();
-      if (hasWarnings) {
-        console.log(`${chalk.black.bgYellow(' WARN  ')} ${chalk.yellow(formatWarnings(stats))}`);
-        console.log();
-      } else {
-        clearScreen();
-      }
-      const duration = stats.endTime - stats.startTime;
-      console.log(`${chalk.black.bgGreen(' DONE  ')} ${chalk.green(`Compiled successfully in ${duration}ms\n`)}`);
-      events.emit('event', { code: 'BUNDLE_END', duration });
-      settle(resolve, watcher);
-    });
+    rslibPromise
+      .then((rslib) => rslib.build({ watch: true }))
+      .then((result) => {
+        closeWatch = result && result.close;
+      })
+      .catch((e) => {
+        // a failed compile is reported by the hook above
+        if (!settled) {
+          settle(reject, e);
+        }
+      });
   });
 };
 

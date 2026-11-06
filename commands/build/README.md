@@ -173,9 +173,9 @@ file to configure typescript to your own preferences.
 nebula build --typescript
 ```
 
-## Building with rspack
+## Building with Rslib
 
-The bundles are built with [Rspack](https://rspack.rs). The output has the same formats and behaves the
+The bundles are built with [Rslib](https://rslib.rs), on [Rspack](https://rspack.rs). The output has the same formats and behaves the
 same way as it did when the bundler was Rollup, with these differences to be aware of when you upgrade:
 
 - The generated class names of CSS modules have another hash (`name_class__hash`).
@@ -185,12 +185,10 @@ same way as it did when the bundler was Rollup, with these differences to be awa
 - An import that cannot be resolved is an error, it used to be left as an external dependency with a warning. Add the package to the dependencies, or to the peer dependencies when the host provides it.
 - Node.js built-in modules are not bundled and not dependencies, importing one gives an empty module unless a package of that name is installed. `--preferBuiltins` is removed.
 - The `bundle-analysis.html` that development builds used to write is no longer created.
-- `@rollup/plugin-typescript` is not needed for `--typescript`, TypeScript is compiled with Babel as before.
+- `@rollup/plugin-typescript` is not needed for `--typescript`, TypeScript is compiled with SWC. The code, and the packages in `node_modules`, are compiled for the browsers of `@qlik/browserslist-config`.
 - Stylus (`.styl`) files are not supported.
 - With `--codeSplit` a SystemJS build is the entry `index.js` and a chunk per dynamic import. The chunks are loaded from the directory that SystemJS loaded the entry from, also when the entry file is renamed.
-- **The UMD bundle is gone.** `nebula build` writes the es module (`module`) and the SystemJS module (`systemjs`), and `--watch` watches `esm` or `systemjs`. An entry that is a CommonJS module (`module.exports = …`) has its properties as named exports, with no default export.
-- The named exports of the es module are the values at the end of the module, they are not live bindings.
-- The sources in a source map are named `webpack://<package name>/./src/index.js`, they were relative paths such as `../src/index.js`.
+- **The UMD bundle is gone.** `nebula build` writes the es module (`module`) and the SystemJS module (`systemjs`), and `--watch` watches `esm` or `systemjs`. The entry of a bundle is an es module: an entry that is a CommonJS module (`module.exports = …`) has no exports in the es module, its properties are the named exports of the SystemJS module.
 - A bundle contains a small module runtime, so the output of a very small visualization is a few kilobytes larger.
 - A flag or a key in the `build` section of the config file that `nebula build` does not know of is an error (`Unknown argument: foo`), and no longer ignored. A misspelled option used to do nothing.
 - The notices of the licenses (`/*!`, `@license`, `@preserve`) of the code in a production bundle are written to `<bundle>.LICENSE.txt` next to it, and no longer kept in the bundle. Publish that file with the bundle.
