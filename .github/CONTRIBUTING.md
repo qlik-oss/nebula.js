@@ -75,7 +75,7 @@ Add a file name such as `--graph=graph.html` to write it to a file.
 Releases are versioned and published by [Changesets](https://github.com/changesets/changesets) from the `release` workflow:
 
 1. A pull request that changes a published package adds a changeset with `pnpm changeset` (`pnpm changeset add --empty` when it changes none). CI fails without one, except for Renovate and the release pull request, and comments how to add it.
-2. Merged changesets collect in a "version packages" pull request, which bumps the version of all packages (they share one), updates the changelogs and the API specification. Dependency updates of runtime dependencies since the last release are added to it as one changeset by `pnpm version-packages`. A push with the token of the workflow does not start CI, so the repository secret `CHANGESETS_TOKEN` (a personal access token or a GitHub App token that can write contents and pull requests) is used by the release workflow when it is set, for CI to run on that pull request.
+2. Merged changesets collect in a "version packages" pull request, which bumps the version of all packages (they share one), updates the changelogs and the API specification. Dependency updates of runtime dependencies since the last release are added to it as one changeset by `pnpm version-packages`. CI does not start on that pull request, as it is pushed with the token of the workflow. Approve the run of the workflows on the `changeset-release` branch in the Actions tab.
 3. Merging that pull request publishes the public packages to npm with provenance (trusted publishing, no token), tags `v<version>` and creates the GitHub release.
 
 **Pre-release**

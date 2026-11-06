@@ -38,9 +38,7 @@ jobs:
           title: 'chore(release): version packages'
           createGithubReleases: false
         env:
-          # a push with the workflow token does not start the workflows, so CHANGESETS_TOKEN (a personal
-          # access token or a GitHub App token) is what makes CI run on the version packages pull request
-          GITHUB_TOKEN: ${{ secrets.CHANGESETS_TOKEN || secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Read the released version
         id: version
         if: steps.changesets.outputs.published == 'true'
