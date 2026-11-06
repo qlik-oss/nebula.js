@@ -1,5 +1,13 @@
 # Change Log
 
+## 8.0.0-alpha.0
+
+### Patch Changes
+
+- Update dependencies
+
+  - `@babel/core` from `8.0.7` to `8.0.9`
+
 ## Releases before 8.0.0
 
 All notable changes to this project will be documented in this file.

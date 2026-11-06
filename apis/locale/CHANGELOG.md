@@ -1,5 +1,9 @@
 # Change Log
 
+## 8.0.0-alpha.0
+
+No changes in this release.
+
 ## Releases before 8.0.0
 
 All notable changes to this project will be documented in this file.
