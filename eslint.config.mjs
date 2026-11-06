@@ -91,6 +91,14 @@ export default defineConfig([
     },
   },
   {
+    // the scripts talk to the terminal
+    files: ['**/apis/*/scripts/**/*'],
+
+    rules: {
+      'no-console': 0,
+    },
+  },
+  {
     files: ['apis/*/index.js'],
 
     rules: {

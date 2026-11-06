@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@babel/preset-env": "8.0.7",
+    "@nebula.js/stardust": "workspace:*",
     "@rollup/plugin-babel": "7.1.0",
     "@rollup/plugin-commonjs": "29.0.3",
     "@rollup/plugin-json": "6.1.0",

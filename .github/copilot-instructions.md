@@ -69,13 +69,13 @@ Nucleus (React-based) orchestrates visualization rendering:
 
 ```bash
 pnpm install                    # Install all dependencies
-pnpm run locale:generate        # Generate translation files (required before build)
+pnpm run locale:generate        # Generate translation files (also runs as part of build)
 pnpm run build                  # Build all packages (production UMD + ESM)
 pnpm run build:dev              # Build with source maps for development
 pnpm run build:watch            # Watch mode for active development
 ```
 
-**Critical**: Always run `locale:generate` before building if locale files changed.
+Tasks are orchestrated by Turborepo (`turbo.jsonc`) and outputs are cached in `.turbo/cache`. `locale` is a build dependency of `stardust`, so it is regenerated automatically. Use `pnpm exec turbo run build --force` to bypass the cache.
 
 ### Testing
 
