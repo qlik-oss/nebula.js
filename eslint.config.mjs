@@ -122,6 +122,7 @@ export default defineConfig([
   {
     // the packages of the commands are native esm, a relative import needs its file extension
     files: [
+      'commands/*/command.js',
       'commands/build/**/*.{js,cjs}',
       'commands/create/lib/**/*.js',
       'commands/sense/lib/**/*.{js,cjs}',
