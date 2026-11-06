@@ -1,7 +1,7 @@
 /**
  * @jest-environment node
  */
-const { diffDependencies, collectChanges, renderChangeset } = require('../renovate-changeset.cjs');
+const { diffDependencies, collectChanges, renderChangeset, changesetFile } = require('../renovate-changeset.cjs');
 
 describe('renovate-changeset', () => {
   describe('diffDependencies', () => {
@@ -58,10 +58,15 @@ describe('renovate-changeset', () => {
   });
 
   describe('renderChangeset', () => {
-    test('writes a patch for every package and lists its updates', () => {
-      const content = renderChangeset([
-        { name: '@nebula.js/a', updates: [{ field: 'dependencies', name: 'x', from: '^1.0.0', to: '^1.1.0' }] },
-      ]);
+    test('writes a patch for the package and lists its updates, a line for each dependency', () => {
+      const content = renderChangeset({
+        name: '@nebula.js/a',
+        updates: [
+          { field: 'dependencies', name: 'x', from: '^1.0.0', to: '^1.1.0' },
+          { field: 'peerDependencies', name: 'x', from: '^1.0.0', to: '^1.1.0' },
+          { field: 'dependencies', name: 'y', from: '2.0.0', to: '2.0.1' },
+        ],
+      });
       expect(content).toBe(
         [
           '---',
@@ -70,11 +75,17 @@ describe('renovate-changeset', () => {
           '',
           'Update dependencies',
           '',
-          '- `@nebula.js/a`',
-          '  - `x` from `^1.0.0` to `^1.1.0`',
+          '- `x` from `^1.0.0` to `^1.1.0`',
+          '- `y` from `2.0.0` to `2.0.1`',
           '',
         ].join('\n')
       );
+    });
+  });
+
+  describe('changesetFile', () => {
+    test('is a file for each package', () => {
+      expect(changesetFile({ name: '@nebula.js/cli-build' })).toBe('dependency-updates-nebula.js-cli-build.md');
     });
   });
 });

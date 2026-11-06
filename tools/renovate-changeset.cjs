@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 /**
- * Writes one changeset for the dependency updates that landed since the last release.
+ * Writes a changeset for each package with dependency updates that landed since the last release.
  *
  * Renovate runs as a hosted app, so it cannot add a changeset to each of its pull requests. The
  * release workflow runs this before `changeset version` instead: it compares the dependencies of
  * the published packages at the last `v*` tag with the ones on the current branch and describes
- * the difference in `.changeset/dependency-updates.md`, so the Version Packages pull request
- * carries the update to the changelog and the version.
+ * the difference in `.changeset/dependency-updates-<package>.md`, one file for each package so
+ * that the changelog of a package lists its own updates only, a line for each dependency from the
+ * range of the last release to the current one. The Version Packages pull request carries them to
+ * the changelogs and the version.
  *
  * Only `dependencies`, `peerDependencies` and `optionalDependencies` are compared, since those
  * are what the consumers of a package install. `devDependencies` are not part of a release.
@@ -18,7 +20,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const FIELDS = ['dependencies', 'peerDependencies', 'optionalDependencies'];
-const CHANGESET_FILE = 'dependency-updates.md';
+const CHANGESET_PREFIX = 'dependency-updates-';
 
 const isRegistryRange = (range) => typeof range === 'string' && !/^(workspace|file|link|portal):/.test(range);
 
@@ -45,16 +47,12 @@ const collectChanges = (manifests) =>
     .filter(({ updates }) => updates.length > 0)
     .sort((a, b) => a.name.localeCompare(b.name));
 
-const renderChangeset = (changes) => {
-  const frontmatter = changes.map(({ name }) => `'${name}': patch`).join('\n');
-  const body = changes
-    .map(({ name, updates }) => {
-      const lines = updates.map(({ name: dep, from, to }) => `  - \`${dep}\` from \`${from}\` to \`${to}\``);
-      return `- \`${name}\`\n${lines.join('\n')}`;
-    })
-    .join('\n');
-  return `---\n${frontmatter}\n---\n\nUpdate dependencies\n\n${body}\n`;
+const renderChangeset = ({ name, updates }) => {
+  const lines = [...new Set(updates.map(({ name: dep, from, to }) => `- \`${dep}\` from \`${from}\` to \`${to}\``))];
+  return `---\n'${name}': patch\n---\n\nUpdate dependencies\n\n${lines.join('\n')}\n`;
 };
+
+const changesetFile = ({ name }) => `${CHANGESET_PREFIX}${name.replace(/^@/, '').replace(/[^a-z0-9.]+/gi, '-')}.md`;
 
 const git = (cwd, args) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
 
@@ -85,17 +83,18 @@ const run = ({ cwd = process.cwd(), since, dryRun = false } = {}) => {
       after: manifest,
     }))
   );
-  if (changes.length === 0) {
-    return { ref, changes, written: false };
-  }
-  const content = renderChangeset(changes);
+  const files = changes.map((change) => ({ file: changesetFile(change), content: renderChangeset(change) }));
   if (!dryRun) {
-    fs.writeFileSync(path.join(cwd, '.changeset', CHANGESET_FILE), content);
+    const dir = path.join(cwd, '.changeset');
+    fs.readdirSync(dir)
+      .filter((file) => file.startsWith(CHANGESET_PREFIX))
+      .forEach((file) => fs.rmSync(path.join(dir, file)));
+    files.forEach(({ file, content }) => fs.writeFileSync(path.join(dir, file), content));
   }
-  return { ref, changes, content, written: !dryRun };
+  return { ref, changes, files, written: !dryRun && files.length > 0 };
 };
 
-module.exports = { diffDependencies, collectChanges, renderChangeset, run };
+module.exports = { diffDependencies, collectChanges, renderChangeset, changesetFile, run };
 
 if (require.main === module) {
   const args = process.argv.slice(2);
@@ -107,7 +106,7 @@ if (require.main === module) {
   if (result.changes.length === 0) {
     process.stdout.write(`No dependency updates since ${result.ref}\n`);
   } else {
-    process.stdout.write(`${result.content}\n`);
-    process.stdout.write(result.written ? `Wrote .changeset/${CHANGESET_FILE}\n` : 'Dry run, nothing written\n');
+    result.files.forEach(({ file, content }) => process.stdout.write(`# .changeset/${file}\n${content}\n`));
+    process.stdout.write(result.written ? `Wrote ${result.files.length} changesets\n` : 'Dry run, nothing written\n');
   }
 }
