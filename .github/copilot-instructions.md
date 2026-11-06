@@ -114,12 +114,12 @@ All packages use shared [rollup.config.js](rollup.config.js):
 - Creates `.dev.js` variants with source maps in development mode
 - Validates `main`, `module`, `unpkg`, `jsdelivr` targets in package.json match naming convention
 
-### Lerna Versioning
+### Changesets Versioning
 
-This project uses Lerna for version management with **conventional commits**:
-- Use commit types: `feat:`, `fix:`, `chore:`, `docs:`, etc.
-- `lerna version` reads commits to determine semver bump
-- All packages are versioned together (see [lerna.json](lerna.json))
+This project uses [Changesets](https://github.com/changesets/changesets) for version management:
+- A pull request that changes a published package adds a changeset (`pnpm changeset`, or `pnpm changeset add --empty` when it changes none)
+- All packages are versioned together (`fixed` in [.changeset/config.json](.changeset/config.json))
+- The `release` workflow opens a "version packages" pull request and publishes when it is merged
 
 ## Code Conventions
 

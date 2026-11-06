@@ -1,0 +1,64 @@
+name: Release
+
+on:
+  push:
+    branches: [main, 'alpha/**']
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+permissions: {}
+
+jobs:
+  release:
+    name: Version and publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      # npm trusted publishing and provenance
+      id-token: write
+    outputs:
+      published: ${{ steps.changesets.outputs.published }}
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          # the tags of the releases are needed to describe the dependency updates since the last one
+          fetch-depth: 0
+      - uses: ./.github/actions/setup-workspace
+        with:
+          build: false
+      - name: Version packages or publish
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          version: pnpm version-packages
+          publish: pnpm release
+          commit: 'chore(release): version packages'
+          title: 'chore(release): version packages'
+          createGithubReleases: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Read the released version
+        id: version
+        if: steps.changesets.outputs.published == 'true'
+        run: echo "version=$(node -p "require('./apis/stardust/package.json').version")" >> "$GITHUB_OUTPUT"
+      - name: Tag and create the GitHub release
+        if: steps.changesets.outputs.published == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          case "$VERSION" in *-*) prerelease=--prerelease ;; *) prerelease= ;; esac
+          gh release create "v$VERSION" --target "$GITHUB_SHA" --title "v$VERSION" --generate-notes $prerelease
+
+  # a tag pushed with the workflow token does not start the workflows of the tag
+  api-governance:
+    needs: release
+    if: needs.release.outputs.published == 'true'
+    permissions:
+      contents: read
+    uses: ./.github/workflows/api-governance.yml
+    with:
+      version: ${{ needs.release.outputs.version }}
+    secrets: inherit

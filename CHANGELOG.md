@@ -1,5 +1,7 @@
 # Change Log
 
+> This file is not updated any more. From 8.0.0 on, each package has its own `CHANGELOG.md`, written by [Changesets](https://github.com/changesets/changesets), and each release has notes on [GitHub](https://github.com/qlik-oss/nebula.js/releases).
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
