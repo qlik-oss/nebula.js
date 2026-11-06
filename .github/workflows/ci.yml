@@ -212,6 +212,9 @@ jobs:
   changeset:
     if: github.event_name == 'pull_request' && !startsWith(github.head_ref, 'changeset-release/') && github.actor != 'renovate[bot]'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -221,7 +224,20 @@ jobs:
           cache: true
           save-cache: false
       - name: Require a changeset
+        id: status
+        continue-on-error: true
         run: pnpm exec changeset status --since=origin/${{ github.base_ref }}
+      # the token of a pull request from a fork cannot write, the job fails below all the same
+      - name: Explain how to add the changeset
+        if: steps.status.outcome == 'failure' && github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          gh pr comment "$PR" --edit-last --create-if-none --body "This pull request has no changeset. Run \`pnpm changeset\` and commit the file it adds to \`.changeset/\`, or \`pnpm changeset add --empty\` when no published package changes. See [CONTRIBUTING](https://github.com/${{ github.repository }}/blob/${{ github.base_ref }}/.github/CONTRIBUTING.md#cutting-a-release)."
+      - name: Fail without a changeset
+        if: steps.status.outcome == 'failure'
+        run: exit 1
 
   api-governance:
     uses: ./.github/workflows/api-governance.yml
