@@ -3,7 +3,7 @@ import os from 'os';
 import { createRequire } from 'module';
 import fs from 'fs-extra';
 
-import { rspack } from '@rspack/core';
+import { createRslib, rspack } from '@rslib/core';
 
 import builtins from '@nebula.js/cli-build/lib/builtins.js';
 import matchPeers from '@nebula.js/cli-build/lib/peers.js';
@@ -59,21 +59,34 @@ export default function supernovaExtension(env) {
 export default supernova;
 `;
 
-const run = (configuration) =>
-  new Promise((resolve, reject) => {
-    const compiler = rspack(configuration);
-    compiler.run((err, stats) => {
-      compiler.close(() => {
-        if (err) {
-          reject(err);
-        } else if (stats.hasErrors()) {
-          reject(new Error(stats.toString({ all: false, errors: true, errorDetails: true, colors: false })));
-        } else {
-          resolve(stats);
-        }
-      });
-    });
+// runs a build of rslib once, and rejects with the compilation errors when it fails
+const run = async (config) => {
+  let stats;
+  const rslib = await createRslib({
+    cwd: process.cwd(),
+    config: {
+      ...config,
+      logLevel: 'silent',
+      plugins: [
+        {
+          name: 'nebula-sense',
+          setup(api) {
+            api.onAfterBuild((result) => {
+              stats = result.stats;
+            });
+          },
+        },
+      ],
+    },
   });
+  try {
+    await rslib.build();
+  } catch (e) {
+    throw stats && stats.hasErrors()
+      ? new Error(stats.toString({ all: false, errors: true, errorDetails: true, colors: false }))
+      : e;
+  }
+};
 
 async function build(argv) {
   const cwd = process.cwd();
@@ -146,63 +159,59 @@ async function build(argv) {
 
   try {
     await run({
-      name: 'sense-ext',
       mode: 'production',
-      context: cwd,
-      target: ['web', `browserslist:${BROWSERS.join(', ')}`],
-      entry,
-      devtool: sourcemap ? 'source-map' : false,
-      performance: false,
-      stats: 'errors-warnings',
-      output: {
-        path: qextLegacyTargetDir,
-        filename: `${extName}.js`,
-        clean: false,
-        // what Qlik Sense calls is the default export of the wrapper
-        library: { type: 'amd', export: 'default' },
-      },
-      externals: [
-        ...matchPeers(peers),
-        ...externalsFor((message) => console.warn(`  \x1b[33mwarn:\x1b[0m ${message}`)),
-      ],
-      externalsType: 'amd',
-      resolve: {
-        extensions: ['.js', '.jsx', '.json'],
-        fallback: builtins.fallback,
-        alias: builtins.alias,
-        mainFields: ['module', 'main'],
-      },
-      module: {
-        rules: [
-          { test: /\.m?js$/, resolve: { fullySpecified: false } },
-          {
-            test: /\.m?jsx?$/,
+      lib: [
+        {
+          // rslib has no amd format, the iife of it is the amd module of rspack below
+          format: 'iife',
+          bundle: true,
+          syntax: BROWSERS,
+          source: {
+            entry: { [extName]: entry },
+            define: { 'process.env.NODE_ENV': JSON.stringify('production') },
             // the es module of nebula build is built for the browsers already
-            exclude: [/node_modules/, bundle],
-            use: {
-              loader: require.resolve('babel-loader'),
-              options: {
-                babelrc: false,
-                configFile: false,
-                sourceType: 'unambiguous',
-                sourceMaps: !!sourcemap,
-                presets: [[require.resolve('@babel/preset-env'), { modules: false, targets: { browsers: BROWSERS } }]],
-              },
-            },
+            exclude: [bundle],
           },
-        ],
-      },
-      optimization: {
-        minimize: !!argv.minify,
-        minimizer: [
-          new rspack.SwcJsMinimizerRspackPlugin({
-            // the notices of the licenses go to <bundle>.LICENSE.txt, as webpack always did
-            extractComments: true,
-            minimizerOptions: { format: { comments: false } },
-          }),
-        ],
-      },
-      plugins: [new rspack.optimize.LimitChunkCountPlugin({ maxChunks: 1 })],
+          output: {
+            target: 'web',
+            distPath: { root: qextLegacyTargetDir },
+            filename: { js: `${extName}.js` },
+            minify: !!argv.minify,
+            sourceMap: sourcemap ? { js: 'source-map' } : false,
+            externals: [
+              ...matchPeers(peers),
+              ...externalsFor((message) => console.warn(`  \x1b[33mwarn:\x1b[0m ${message}`)),
+            ],
+            // the notices of the licenses go to <bundle>.LICENSE.txt
+            legalComments: 'linked',
+            cleanDistPath: false,
+          },
+          tools: {
+            rspack: (base) => ({
+              ...base,
+              context: cwd,
+              output: {
+                ...base.output,
+                // what Qlik Sense calls is the default export of the wrapper
+                library: { type: 'amd', export: 'default' },
+              },
+              externalsType: 'amd',
+              resolve: {
+                ...base.resolve,
+                extensions: ['.js', '.jsx', '.json'],
+                fallback: builtins.fallback,
+                alias: { ...base.resolve?.alias, ...builtins.alias },
+                mainFields: ['module', 'main'],
+              },
+              module: {
+                ...base.module,
+                rules: [...(base.module?.rules || []), { test: /\.m?js$/, resolve: { fullySpecified: false } }],
+              },
+              plugins: [...(base.plugins || []), new rspack.optimize.LimitChunkCountPlugin({ maxChunks: 1 })],
+            }),
+          },
+        },
+      ],
     });
   } finally {
     fs.rmSync(entryDir, { recursive: true, force: true });

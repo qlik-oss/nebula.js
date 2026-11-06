@@ -125,7 +125,7 @@ example:
 
 ## Building with rspack
 
-The extension is built with [Rspack](https://rspack.rs) from the es module that `nebula build` writes (the `module` field of `package.json`), so run `nebula build` first.
+The extension is built with [Rslib](https://rslib.rs) from the es module that `nebula build` writes (the `module` field of `package.json`), so run `nebula build` first.
 
 - The extension is one AMD module, `<name>.js`, next to the `.qext` file: the supernova, with the extension definition (`--ext`, a module with a default export) added to it. The `dist` folder, `ext.js` and the generated loader of earlier versions are gone, and the UMD bundle that they loaded is gone as well.
 - `@nebula.js/stardust` and the `peerDependencies` of the package are AMD dependencies of the extension, and so is any other import that cannot be resolved (with a warning), as Qlik Sense provides modules such as `qlik` and `jquery`.
