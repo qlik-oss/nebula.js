@@ -209,57 +209,20 @@ jobs:
       - name: Build and test React based chart
         run: .github/scripts/nebula_react.sh "$(mktemp -d)/react-chart"
 
-  api-governance:
+  changeset:
+    if: github.event_name == 'pull_request' && !startsWith(github.head_ref, 'changeset-release/') && github.actor != 'renovate[bot]'
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: .
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
       - uses: pnpm/setup@fa36a5ef7dcdefc3a7cb25655c122e00cf6e636e # v3
         with:
           cache: true
           save-cache: false
+      - name: Require a changeset
+        run: pnpm exec changeset status --since=origin/${{ github.base_ref }}
 
-      - name: Create version.txt
-        id: version
-        run: |
-          set -x
-          if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
-            version=${GITHUB_REF_NAME#v}
-          else
-            pnpm --filter "@nebula.js/stardust" version preminor
-            pnpm spec
-            version=$(node -p "require('./apis/stardust/api-spec/spec.json').info.version")
-          fi
-          echo "$version" > ./version.txt
-          echo "version=$version" >> $GITHUB_OUTPUT
-          echo "Building $version"
-
-      - name: Prepare API Compliance
-        run: |
-          docker pull ghcr.io/qlik-download/api-compliance
-          docker create -v /specs --name specs alpine:3.4 /bin/true
-          docker cp ./apis/stardust/api-spec/spec.json specs:/specs
-          docker cp ./apis/stardust/api-spec/listbox-spec.json specs:/specs
-
-      - name: Run API Compliance
-        env:
-          CREDENTIALS_S3_SECRETKEY: ${{ secrets.APICULTURIST_S3 }}
-          CREDENTIALS_GITHUB: ${{ secrets.APICULTURIST_GITHUB }}
-          CREDENTIALS_COLONY: ${{ secrets.APICULTURIST_TOKEN }}
-          COMMIT_SHA: ${{ github.sha }}
-          VER: v${{ steps.version.outputs.version }}
-        run: |
-          docker run --volumes-from specs \
-            -e SPEC_PATHS="abdc47c2-921a-45d3-ba5c-80d448574c5b@/specs/spec.json,ba0bcf91-d7a6-4048-a36a-ad9a2dc8c03e@/specs/listbox-spec.json" \
-            -e COMMIT_SHA="$COMMIT_SHA" \
-            -e RELEASE_TAG="$VER" \
-            -e PRE_RELEASE="true" \
-            -e CREDENTIALS_S3_SECRETKEY="$CREDENTIALS_S3_SECRETKEY" \
-            -e CREDENTIALS_GITHUB="$CREDENTIALS_GITHUB" \
-            -e CREDENTIALS_COLONY="$CREDENTIALS_COLONY" \
-            ghcr.io/qlik-download/api-compliance
+  api-governance:
+    uses: ./.github/workflows/api-governance.yml
+    secrets: inherit

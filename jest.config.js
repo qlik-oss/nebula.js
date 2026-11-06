@@ -15,6 +15,7 @@ const config = {
     'apis/test-utils/.+\\.(test|spec)\\.jsx?$',
     'apis/theme/.+\\.(test|spec)\\.jsx?$',
     'packages/ui/.+\\.(test|spec)\\.jsx?$',
+    'tools/.+\\.(test|spec)\\.jsx?$',
   ],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   collectCoverageFrom: [

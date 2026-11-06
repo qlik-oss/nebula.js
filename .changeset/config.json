@@ -1,0 +1,28 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@3.1.1/schema.json",
+  "changelog": ["@changesets/changelog-github", { "repo": "qlik-oss/nebula.js" }],
+  "commit": false,
+  "fixed": [
+    [
+      "@nebula.js/cli",
+      "@nebula.js/cli-build",
+      "@nebula.js/cli-create",
+      "@nebula.js/cli-sense",
+      "@nebula.js/cli-serve",
+      "@nebula.js/conversion",
+      "@nebula.js/enigma-mocker",
+      "@nebula.js/locale",
+      "@nebula.js/nucleus",
+      "@nebula.js/snapshooter",
+      "@nebula.js/stardust",
+      "@nebula.js/supernova",
+      "@nebula.js/test-utils",
+      "@nebula.js/theme",
+      "@nebula.js/ui"
+    ]
+  ],
+  "access": "public",
+  "baseBranch": "main",
+  "updateInternalDependencies": "patch",
+  "privatePackages": { "version": true, "tag": false }
+}

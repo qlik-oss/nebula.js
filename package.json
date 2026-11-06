@@ -28,7 +28,10 @@
     "test:visual": "playwright test --config=./commands/serve/test/playwright.config.js",
     "test:visual:update": "playwright test --config=./commands/serve/test/playwright.config.js --update-snapshots",
     "test:visual:update-missing": "playwright test --config=./commands/serve/test/playwright.config.js --update-snapshots=missing",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "changeset": "changeset",
+    "version-packages": "node tools/renovate-changeset.cjs && changeset version && pnpm install --lockfile-only && pnpm spec",
+    "release": "pnpm build && changeset pack --out-dir .changeset-packs && changeset publish --from-pack-dir .changeset-packs --no-git-tag"
   },
   "repository": {
     "type": "git",
@@ -41,6 +44,8 @@
     ]
   },
   "devDependencies": {
+    "@changesets/changelog-github": "^1.0.1",
+    "@changesets/cli": "^3.0.3",
     "@commitlint/cli": "21.2.4",
     "@commitlint/config-conventional": "21.2.4",
     "@eslint/eslintrc": "^3.3.7",
@@ -65,7 +70,6 @@
     "jest-environment-jsdom": "^30.5.2",
     "jest-junit": "^17.0.0",
     "jest-location-mock": "^4.0.1",
-    "lerna": "9.0.7",
     "lint-staged": "^17.6.0",
     "prettier": "3.9.10",
     "turbo": "2.11.10",

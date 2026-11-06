@@ -31,7 +31,7 @@ If the proposal includes new designs or bigger changes, please be prepared to di
 
 ### Project structure
 
-This is a multi-package repository which uses [lerna](https://github.com/lerna/lerna) for package task management and publishing.
+This is a multi-package repository which uses [pnpm workspaces](https://pnpm.io/workspaces), [Turborepo](https://turborepo.dev) for tasks and [Changesets](https://github.com/changesets/changesets) for versions and publishing.
 
 - `apis` - JavaScript APIs
   - `nucleus`: JavaScript library for mashups
@@ -72,11 +72,27 @@ Add a file name such as `--graph=graph.html` to write it to a file.
 
 ### Cutting a release
 
+Releases are versioned and published by [Changesets](https://github.com/changesets/changesets) from the `release` workflow:
+
+1. A pull request that changes a published package adds a changeset with `pnpm changeset` (`pnpm changeset add --empty` when it changes none). CI fails without one, except for Renovate and the release pull request.
+2. Merged changesets collect in a "version packages" pull request, which bumps the version of all packages (they share one), updates the changelogs and the API specification. Dependency updates of runtime dependencies since the last release are added to it as one changeset by `pnpm version-packages`.
+3. Merging that pull request publishes the public packages to npm with provenance (trusted publishing, no token), tags `v<version>` and creates the GitHub release.
+
 **Pre-release**
 
-```sh
-npx lerna version --no-git-tag-version --no-push --no-conventional-commits --preid alpha --exact
-```
+The alpha branch is in the pre mode of Changesets (`.changeset/pre.json`), so the release workflow publishes its versions as `<version>-alpha.<n>` with the `alpha` npm tag, and the GitHub release is a prerelease. The base version (x.y.z) is set once by the highest bump of the changesets in the cycle, a `major` changeset gives 8.0.0, and the following releases only raise the `alpha.<n>` part.
+
+**From the alpha branch to `main`**
+
+Pre mode has to be left before the branch reaches `main`, and a push to the alpha branch needs a pull request, so the exit is done on a temporary release branch that is the head of the pull request to `main`:
+
+1. Branch `release/<version>` off the alpha branch and run `pnpm changeset pre exit`. Commit the change of `.changeset/pre.json`.
+2. Open a pull request from `release/<version>` to `main`. It holds the whole history of the alpha branch plus the exit. Resolve any conflict with the versions and changelogs of `main` in favour of the new major version, keeping the older entries.
+3. Merge it without squashing, so the changesets keep their history. The alpha branch stays in pre mode and is unchanged.
+4. The release workflow on `main` opens the "version packages" pull request. It computes the stable version from the changesets of the whole cycle (8.0.0), and merging it publishes the packages with the `latest` tag.
+5. Delete the `release/<version>` branch.
+
+Do not merge the alpha branch or a branch still in pre mode to `main`, since `main` would then release alphas.
 
 ## <a name="git"></a> Git Guidelines
 
