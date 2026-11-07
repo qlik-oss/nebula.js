@@ -761,8 +761,8 @@ importers:
         specifier: 6.1.0
         version: 6.1.0(supports-color@11.0.0)(webpack-cli@7.3.1)(webpack@5.112.2)
       ws:
-        specifier: 8.22.0
-        version: 8.22.0
+        specifier: 8.22.1
+        version: 8.22.1
       yargs:
         specifier: 18.2.0
         version: 18.2.0
@@ -8931,6 +8931,18 @@ packages:
       utf-8-validate:
         optional: true
 
+  ws@8.22.1:
+    resolution: {integrity: sha512-oyL6OPYme/CmiFvNuGzeoxCJ4nOrZE2O1FwM9MWM1AsGri6nLXB2pg+lNA8aLeXMSav0J6eIVS1j6vUPzUtK9g==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+
   wsl-utils@1.0.1:
     resolution: {integrity: sha512-c16PKLIRxBYpR3jSWsdS7SFp0COm5SOQdiFjY818dYFHJbMGuLBszpF07LBWmOS1uzrHa9VGdynsEgoeKy0oOQ==}
     engines: {node: '>=20'}
@@ -12714,7 +12726,7 @@ snapshots:
       enigma.js: 2.15.0
       extend: 3.0.2
       lodash-es: 4.18.1
-      ws: 8.22.0
+      ws: 8.22.1
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -12724,7 +12736,7 @@ snapshots:
       enigma.js: 2.15.0
       extend: 3.0.2
       lodash-es: 4.18.1
-      ws: 8.22.0
+      ws: 8.22.1
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -16378,7 +16390,7 @@ snapshots:
       whatwg-encoding: 3.1.1
       whatwg-mimetype: 4.0.0
       whatwg-url: 14.2.0
-      ws: 8.22.0
+      ws: 8.22.1
       xml-name-validator: 5.0.0
     transitivePeerDependencies:
       - bufferutil
@@ -17837,7 +17849,7 @@ snapshots:
       devtools-protocol: 0.0.1704951
       typed-query-selector: 2.12.3
       webdriver-bidi-protocol: 1.0.1
-      ws: 8.22.0
+      ws: 8.22.1
     transitivePeerDependencies:
       - bufferutil
       - proxy-agent
@@ -19067,7 +19079,7 @@ snapshots:
       schema-utils: 4.8.2(webpack@5.112.1)
     optionalDependencies:
       webpack: 5.112.1(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.32))(csso@4.2.0)(html-minifier-terser@6.1.0)(postcss@8.5.32)(svgo@2.8.4)(uglify-js@3.19.3)(webpack-cli@7.2.3)
-      ws: 8.22.0
+      ws: 8.22.1
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -19080,7 +19092,7 @@ snapshots:
       schema-utils: 4.8.2(webpack@5.112.2)
     optionalDependencies:
       webpack: 5.112.2(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.32))(csso@4.2.0)(html-minifier-terser@6.1.0)(postcss@8.5.32)(svgo@2.8.4)(uglify-js@3.19.3)(webpack-cli@7.3.1)
-      ws: 8.22.0
+      ws: 8.22.1
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -19110,7 +19122,7 @@ snapshots:
       serve-index: 1.9.2(supports-color@11.0.0)
       tinyglobby: 0.2.17
       webpack-dev-middleware: 8.6.0(webpack@5.112.1)
-      ws: 8.22.0
+      ws: 8.22.1
     optionalDependencies:
       webpack: 5.112.1(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.32))(csso@4.2.0)(html-minifier-terser@6.1.0)(postcss@8.5.32)(svgo@2.8.4)(uglify-js@3.19.3)(webpack-cli@7.2.3)
       webpack-cli: 7.2.3(js-yaml@4.3.2)(json5@2.2.3)(webpack-dev-server@6.1.0)(webpack@5.112.1)
@@ -19144,7 +19156,7 @@ snapshots:
       serve-index: 1.9.2(supports-color@11.0.0)
       tinyglobby: 0.2.17
       webpack-dev-middleware: 8.6.0(webpack@5.112.2)
-      ws: 8.22.0
+      ws: 8.22.1
     optionalDependencies:
       webpack: 5.112.2(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.32))(csso@4.2.0)(html-minifier-terser@6.1.0)(postcss@8.5.32)(svgo@2.8.4)(uglify-js@3.19.3)(webpack-cli@7.3.1)
       webpack-cli: 7.3.1(js-yaml@4.3.2)(json5@2.2.3)(webpack-dev-server@6.1.0)(webpack@5.112.2)
@@ -19354,6 +19366,8 @@ snapshots:
       signal-exit: 4.1.0
 
   ws@8.22.0: {}
+
+  ws@8.22.1: {}
 
   wsl-utils@1.0.1:
     dependencies:
