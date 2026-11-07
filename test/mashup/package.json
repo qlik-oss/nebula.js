@@ -4,7 +4,7 @@
   "devDependencies": {
     "@nebula.js/cli-serve": "workspace:*",
     "@playwright/test": "1.62.1",
-    "body-parser": "2.3.0",
+    "body-parser": "2.4.0",
     "express": "5.2.1",
     "yargs": "18.1.0"
   }
