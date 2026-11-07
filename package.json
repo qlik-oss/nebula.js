@@ -62,7 +62,7 @@
     "jest-environment-jsdom": "^30.5.2",
     "jest-junit": "^17.0.0",
     "jest-location-mock": "^4.0.1",
-    "lerna": "9.0.7",
+    "lerna": "10.1.1",
     "lint-staged": "^17.6.0",
     "prettier": "3.9.10",
     "whatwg-fetch": "^3.6.20"
