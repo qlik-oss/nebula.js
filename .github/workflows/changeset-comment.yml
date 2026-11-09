@@ -1,0 +1,43 @@
+name: Changeset comment
+
+# Runs with pull_request_target so the token can comment on pull requests from forks.
+# It never checks out or runs code from the pull request, it only reads the list of changed files.
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+permissions: {}
+
+jobs:
+  comment:
+    if: ${{ !startsWith(github.head_ref, 'changeset-release/') && github.actor != 'renovate[bot]' }}
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PR: ${{ github.event.pull_request.number }}
+      REPO: ${{ github.repository }}
+      MARKER: '<!-- changeset-comment -->'
+    steps:
+      - name: Comment when the changeset is missing
+        run: |
+          has_changeset=$(gh api "repos/$REPO/pulls/$PR/files" --paginate --jq '.[] | select(.status != "removed") | .filename' \
+            | grep -E '^\.changeset/[^/]+\.md$' | grep -vc '^\.changeset/README\.md$' || true)
+
+          comment_id=$(gh api "repos/$REPO/issues/$PR/comments" --paginate \
+            --jq ".[] | select(.body | contains(\"$MARKER\")) | .id" | head -n 1)
+
+          if [ "$has_changeset" -gt 0 ]; then
+            [ -n "$comment_id" ] && gh api -X DELETE "repos/$REPO/issues/comments/$comment_id"
+            exit 0
+          fi
+
+          body="$MARKER
+          This pull request has no changeset. If it changes a published package, add one with \`pnpm changeset\`, or \`pnpm changeset add --empty\` when it changes none. See [Cutting a release](https://github.com/$REPO/blob/main/.github/CONTRIBUTING.md#cutting-a-release)."
+
+          if [ -n "$comment_id" ]; then
+            gh api -X PATCH "repos/$REPO/issues/comments/$comment_id" -f body="$body"
+          else
+            gh api "repos/$REPO/issues/$PR/comments" -f body="$body"
+          fi
