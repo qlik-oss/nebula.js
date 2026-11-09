@@ -1,13 +1,5 @@
 # Change Log
 
-## 8.0.0-alpha.0
-
-### Patch Changes
-
-- Update dependencies
-
-  - `@inquirer/prompts` from `8.7.4` to `8.7.5`
-
 ## Releases before 8.0.0
 
 All notable changes to this project will be documented in this file.

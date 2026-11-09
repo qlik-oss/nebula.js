@@ -1,25 +1,5 @@
 # Change Log
 
-## 8.0.0-alpha.0
-
-### Major Changes
-
-- [#2406](https://github.com/qlik-oss/nebula.js/pull/2406) [`a9f4453`](https://github.com/qlik-oss/nebula.js/commit/a9f44536ecc0cc20127b9e73ebf6c55611a5e08d) Thanks [@enell](https://github.com/enell)! - `nebula serve` builds the visualization as an es module (the `module` field of `package.json`) and loads it into the page, in place of a UMD bundle. The page has `@nebula.js/stardust`, `react` and `react-dom`, and a visualization imports those by their names. Other modules are bundled into it. The `url` of a type in the serve config is an es module. `--mfe` is unchanged.
-
-### Minor Changes
-
-- [#2405](https://github.com/qlik-oss/nebula.js/pull/2405) [`bd34f01`](https://github.com/qlik-oss/nebula.js/commit/bd34f01a4afafc1cd0a62267005017e8982415f0) Thanks [@enell](https://github.com/enell)! - Build the pages of `nebula serve` and serve them with Rsbuild, in place of `@rspack/dev-server` and `html-webpack-plugin`. The `stylesheets` of the serve config are added to the page as style sheets (they were added as scripts), and the page of a `nebula build` error is no longer shown in the browser, the error is logged in the terminal.
-
-### Patch Changes
-
-- Update dependencies
-
-  - `@qlik/api` from `2.20.0` to `2.21.0`
-  - `ws` from `8.22.0` to `8.22.1`
-
-- Updated dependencies [[`87824f9`](https://github.com/qlik-oss/nebula.js/commit/87824f95113c35cfd879760d93ab5e050ebe1093), [`3fd3a2e`](https://github.com/qlik-oss/nebula.js/commit/3fd3a2e97c36c5c21eecfa094d3f3ab1c79dc4af)]:
-  - @nebula.js/cli-build@8.0.0-alpha.0
-
 ## Releases before 8.0.0
 
 All notable changes to this project will be documented in this file.
