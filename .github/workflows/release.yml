@@ -30,27 +30,16 @@ jobs:
           build: false
       - name: Version packages or publish
         id: changesets
-        uses: changesets/action@v1
+        uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
         with:
-          version: pnpm version-packages
-          publish: pnpm release
-          commit: 'chore(release): version packages'
-          title: 'chore(release): version packages'
-          createGithubReleases: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          version-script: pnpm version-packages
+          publish-script: pnpm release
+          commit-message: 'chore(release): version packages'
+          pr-title: 'chore(release): version packages'
       - name: Read the released version
         id: version
         if: steps.changesets.outputs.published == 'true'
         run: echo "version=$(node -p "require('./apis/stardust/package.json').version")" >> "$GITHUB_OUTPUT"
-      - name: Tag and create the GitHub release
-        if: steps.changesets.outputs.published == 'true'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VERSION: ${{ steps.version.outputs.version }}
-        run: |
-          case "$VERSION" in *-*) prerelease=--prerelease ;; *) prerelease= ;; esac
-          gh release create "v$VERSION" --target "$GITHUB_SHA" --title "v$VERSION" --generate-notes $prerelease
 
   # a tag pushed with the workflow token does not start the workflows of the tag
   api-governance:
