@@ -84,4 +84,33 @@ describe('', () => {
     await act(async () => ref.current.store.dispatch(true));
     expect(ref.current.count).toBe(2);
   });
+
+  test('should run the middleware cleanup and null the value on clear', () => {
+    const unsubscribe = jest.fn();
+    const [, store] = createKeyStore({}, () => unsubscribe);
+    store.set('foo', {});
+    store.clear('foo');
+    expect(unsubscribe).toHaveBeenCalledTimes(1);
+    expect(store.get('foo')).toBe(null);
+    store.destroy();
+    expect(unsubscribe).toHaveBeenCalledTimes(1);
+  });
+
+  test('should not run the middleware cleanup twice when clearing the same key twice', () => {
+    const unsubscribe = jest.fn();
+    const [, store] = createKeyStore({}, () => unsubscribe);
+    store.set('foo', {});
+    store.clear('foo');
+    store.clear('foo');
+    expect(unsubscribe).toHaveBeenCalledTimes(1);
+    expect(store.get('foo')).toBe(null);
+  });
+
+  test('should not throw when clearing a key that was never set', () => {
+    const unsubscribe = jest.fn();
+    const [, store] = createKeyStore({}, () => unsubscribe);
+    expect(() => store.clear('missing')).not.toThrow();
+    expect(unsubscribe).not.toHaveBeenCalled();
+    expect(store.get('missing')).toBe(null);
+  });
 });

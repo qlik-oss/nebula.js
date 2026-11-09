@@ -51,7 +51,7 @@
     "@nebula.js/supernova": "workspace:*",
     "@nebula.js/theme": "workspace:*",
     "@nebula.js/ui": "workspace:*",
-    "@qlik/api": "2.20.0",
+    "@qlik/api": "2.21.0",
     "@rslib/core": "1.0.5",
     "@scriptappy/cli": "0.10.6",
     "@scriptappy/from-jsdoc": "0.19.6",
