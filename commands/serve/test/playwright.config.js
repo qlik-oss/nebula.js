@@ -28,7 +28,7 @@ export default defineConfig({
 
   // Start the serve dev server before running tests.
   // In production mode it serves the pre-built dist/ bundle immediately —
-  // no webpack compilation, so startup is fast.
+  // no compilation, so startup is fast.
   webServer: {
     command: `node server.js`,
     url: `http://localhost:${PORT}`,
