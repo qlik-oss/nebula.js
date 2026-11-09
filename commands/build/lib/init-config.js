@@ -45,25 +45,25 @@ const options = {
     type: 'boolean',
     default: false,
   },
-  preferBuiltins: {
-    description:
-      'In Rollup, preferBuiltins is a configuration option that specifies whether to use Node.js built-in modules (such as fs or path) when bundling for Node.js environment.',
-    type: 'boolean',
-    default: true,
-  },
   browser: {
     description:
-      'In Rollup, the browser option is a configuration option that specifies whether the bundle is intended to run in a browser environment.',
+      "Use the 'browser' field and export condition of the packages in the bundle, so that browser specific files and conditionals in exports are applied.",
     type: 'boolean',
     default: true,
   },
   codeSplit: {
-    description: 'Sets output.dir instead of output.file for code-splitting builds.',
+    description:
+      'Write the esm and systemjs builds to a directory with the entry and a chunk for every dynamic import, instead of one file.',
     type: 'boolean',
     default: false,
   },
+  // not in the help, they are for the other commands, for nebula.config.js and for react native builds
+  cwd: { type: 'string', hidden: true },
+  replacementStrings: { hidden: true },
+  reactNative: { type: 'boolean', hidden: true },
+  reactNativePath: { type: 'string', hidden: true },
   inlineDynamic: {
-    description: 'Sets inlineDynamicImports to true for all builds to help with certain dependencies',
+    description: 'Inline dynamic imports into the bundle in all builds, also when codeSplit is set',
     type: 'boolean',
     default: false,
   },

@@ -149,6 +149,18 @@ export default defineConfig([
     },
   },
   {
+    // injected into the bundle of a code split systemjs build, where rspack and SystemJS provide these
+    files: ['commands/build/lib/system-public-path.js'],
+
+    languageOptions: {
+      globals: { __webpack_public_path__: 'writable', __system_context__: 'readonly' },
+    },
+
+    rules: {
+      camelcase: ['error', { allow: ['__webpack_public_path__', '__system_context__'] }],
+    },
+  },
+  {
     files: ['commands/serve/web/**/*.{js,jsx}'],
 
     rules: {

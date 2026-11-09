@@ -13,7 +13,6 @@ const systemjsBehaviours = {
     return Array.isArray(external) ? external : defaultExternal;
   },
   getOutputFile: ({ pkg }) => pkg.systemjs,
-  getOutputName: () => undefined,
   enabled: ({ pkg }) => !!pkg.systemjs,
 };
 
