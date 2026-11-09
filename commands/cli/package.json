@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/cli",
-  "version": "7.9.0",
+  "version": "8.0.0-alpha.0",
   "description": "",
   "type": "module",
   "license": "MIT",
@@ -26,9 +26,9 @@
     "lint": "eslint src"
   },
   "peerDependencies": {
-    "@nebula.js/cli-build": "5.0.0 - 7",
-    "@nebula.js/cli-sense": "5.0.0 - 7",
-    "@nebula.js/cli-serve": "5.0.0 - 7"
+    "@nebula.js/cli-build": "8.0.0-alpha.0",
+    "@nebula.js/cli-sense": "8.0.0-alpha.0",
+    "@nebula.js/cli-serve": "8.0.0-alpha.0"
   },
   "dependencies": {
     "@nebula.js/cli-create": "workspace:*",
