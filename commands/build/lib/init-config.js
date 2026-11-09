@@ -17,7 +17,7 @@ const options = {
   watch: {
     description: 'Rebuild the bundle when its source files change on disk',
     alias: 'w',
-    choices: ['umd', 'systemjs', true],
+    choices: ['esm', 'systemjs', true],
   },
   sourcemap: {
     description: 'Generate source maps',
@@ -58,8 +58,7 @@ const options = {
     default: true,
   },
   codeSplit: {
-    description:
-      'Sets output.dir instead of output.file for code-splitting builds. Sets inlineDynamicImports for umd builds to avoid throwing errors.',
+    description: 'Sets output.dir instead of output.file for code-splitting builds.',
     type: 'boolean',
     default: false,
   },
@@ -70,15 +69,15 @@ const options = {
   },
 };
 
-// nebula build --watch                - watch umd bundle
-// nebula build --watch umd            - watch umd bundle
+// nebula build --watch                - watch esm bundle
+// nebula build --watch esm            - watch esm bundle
 // nebula build --watch systemjs       - watch systemjs bundle
 // nebula build                        - watch disabled
 const watchMiddleware = (argv) => {
   let value = false;
 
   if (argv.watch === true) {
-    value = 'umd';
+    value = 'esm';
   } else if (typeof argv.watch === 'string') {
     value = argv.watch;
   }
