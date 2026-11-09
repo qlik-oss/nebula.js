@@ -1,19 +1,5 @@
 # Change Log
 
-## 8.0.0-alpha.0
-
-### Major Changes
-
-- [#2410](https://github.com/qlik-oss/nebula.js/pull/2410) [`87824f9`](https://github.com/qlik-oss/nebula.js/commit/87824f95113c35cfd879760d93ab5e050ebe1093) Thanks [@enell](https://github.com/enell)! - `nebula build` writes the es module (`module` in `package.json`) and the SystemJS module (`systemjs`), the UMD bundle (`main`) is no longer built. `--watch` watches `esm` or `systemjs`, `--watch` alone watches `esm`, and a package.json with neither `module` nor `systemjs` is an error. The `main` field is removed from the templates of `nebula create`.
-
-- [#2361](https://github.com/qlik-oss/nebula.js/pull/2361) [`3fd3a2e`](https://github.com/qlik-oss/nebula.js/commit/3fd3a2e97c36c5c21eecfa094d3f3ab1c79dc4af) Thanks [@enell](https://github.com/enell)! - Build with Rslib (Rspack) in `nebula build`, in place of rollup. The output is the same files, the es module (`module`) and the SystemJS module (`systemjs`), and unresolved imports are an error. TypeScript and JSX are compiled with SWC instead of Babel, `--preferBuiltins` is gone, and an unknown flag or key of the config file is an error. See the README of `@nebula.js/cli-build` for the differences.
-
-### Patch Changes
-
-- Update dependencies
-
-  - `postcss` from `^8.5.31` to `^8.5.32`
-
 ## Releases before 8.0.0
 
 All notable changes to this project will be documented in this file.

@@ -1,17 +1,5 @@
 # Change Log
 
-## 8.0.0-alpha.0
-
-### Major Changes
-
-- [#2409](https://github.com/qlik-oss/nebula.js/pull/2409) [`23c872a`](https://github.com/qlik-oss/nebula.js/commit/23c872a01ebc2e962ecc2b3354c4e07fdfcef2b3) Thanks [@enell](https://github.com/enell)! - `nebula sense` builds one AMD module from the es module (`module` in `package.json`) that `nebula build` writes, in place of copying the UMD bundle (`main`) next to a wrapper. The module is bundled with Rslib and is `<name>.js` in the output directory, with the `.qext` file. Run `nebula build` first. Unresolved imports of the extension are left to Qlik Sense as AMD dependencies, with a warning. See the README of `@nebula.js/cli-sense`.
-
-### Patch Changes
-
-- Updated dependencies [[`87824f9`](https://github.com/qlik-oss/nebula.js/commit/87824f95113c35cfd879760d93ab5e050ebe1093), [`50b0712`](https://github.com/qlik-oss/nebula.js/commit/50b071288c6a5635d1a5cda3079c3adffe4ecea1), [`3fd3a2e`](https://github.com/qlik-oss/nebula.js/commit/3fd3a2e97c36c5c21eecfa094d3f3ab1c79dc4af)]:
-  - @nebula.js/cli-build@8.0.0-alpha.0
-  - @nebula.js/stardust@8.0.0-alpha.0
-
 ## Releases before 8.0.0
 
 All notable changes to this project will be documented in this file.
