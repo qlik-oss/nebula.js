@@ -22,8 +22,8 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@babel/cli": "8.0.6",
-    "@babel/core": "8.0.10",
+    "@babel/cli": "8.1.0",
+    "@babel/core": "8.1.0",
     "@babel/helper-plugin-utils": "8.0.1",
     "@babel/plugin-proposal-object-rest-spread": "7.20.7",
     "@babel/plugin-transform-react-jsx": "8.0.1",
