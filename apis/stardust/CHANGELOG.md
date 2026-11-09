@@ -1,5 +1,11 @@
 # Change Log
 
+## 8.0.0-alpha.0
+
+### Major Changes
+
+- [#2227](https://github.com/qlik-oss/nebula.js/pull/2227) [`50b0712`](https://github.com/qlik-oss/nebula.js/commit/50b071288c6a5635d1a5cda3079c3adffe4ecea1) Thanks [@enell](https://github.com/enell)! - Build the library, test-utils and snapshooter with Rslib instead of rollup. `@nebula.js/stardust` is an ES module only: `exports` has the ESM bundle (and a `development` build), the UMD bundle and its `main`, `unpkg` and `jsdelivr` entries are gone, and `dist/stardust.systemjs.js` is unchanged. The browser targets are those of `@qlik/browserslist-config`.
+
 ## Releases before 8.0.0
 
 All notable changes to this project will be documented in this file.
