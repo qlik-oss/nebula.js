@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 // Position is stored as `{vertical}-{horizontal}` by the position-grid component (e.g. 'top-center',
 // 'center-center', 'bottom-right'); older objects used camelCase ('topCenter'). Accept both and map
@@ -76,7 +76,49 @@ const isSafeImageSrc = (src) => {
   }
 };
 
-function Image({ representation, src, label, title, subtitle, cellBgColor, border, textStyles, opacity = 1 }) {
+// Reports a pending/settled image load to the listbox's render tracker (via onImageLoadStart/
+// onImageLoadEnd) so snapshot/export tooling doesn't capture the sheet before visible images have
+// actually loaded. Settles on load, error, src change or unmount - whichever comes first.
+const useImageLoadGate = (src, onImageLoadStart, onImageLoadEnd) => {
+  const imgRef = useRef(null);
+  const isPendingRef = useRef(false);
+
+  const settle = useCallback(() => {
+    if (isPendingRef.current) {
+      isPendingRef.current = false;
+      onImageLoadEnd?.();
+    }
+  }, [onImageLoadEnd]);
+
+  useEffect(() => {
+    if (!src) {
+      return undefined;
+    }
+    isPendingRef.current = true;
+    onImageLoadStart?.();
+    // If the image is already cached by the browser, no load/error event will fire for it.
+    if (imgRef.current?.complete) {
+      settle();
+    }
+    return settle;
+  }, [src, onImageLoadStart, settle]);
+
+  return { imgRef, settle };
+};
+
+function Image({
+  representation,
+  src,
+  label,
+  title,
+  subtitle,
+  cellBgColor,
+  border,
+  textStyles,
+  opacity = 1,
+  onImageLoadStart,
+  onImageLoadEnd,
+}) {
   const {
     imageSize = 'alwaysFit',
     imagePosition,
@@ -95,16 +137,22 @@ function Image({ representation, src, label, title, subtitle, cellBgColor, borde
   const [erroredSrc, setErroredSrc] = useState(null);
   const hasLoadError = safeSrc !== null && safeSrc === erroredSrc;
   const resolvedCornerRadius = `${cornerRadius}px`;
+  const { imgRef, settle } = useImageLoadGate(hasLoadError ? null : safeSrc, onImageLoadStart, onImageLoadEnd);
 
   const imgNode =
     safeSrc && !hasLoadError ? (
       <img
+        ref={imgRef}
         src={safeSrc}
         alt={label}
         draggable={false}
+        onLoad={settle}
         // A 404 or otherwise broken URL should degrade to the same placeholder shown for a missing
         // src, rather than the browser's native broken-image icon.
-        onError={() => setErroredSrc(safeSrc)}
+        onError={() => {
+          setErroredSrc(safeSrc);
+          settle();
+        }}
         style={{
           width: isFitHeight ? 'auto' : '100%',
           height: isFitWidth ? 'auto' : '100%',

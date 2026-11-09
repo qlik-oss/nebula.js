@@ -44,6 +44,151 @@ describe('<Image />', () => {
     await testRenderer.unmount();
   });
 
+  describe('image load callbacks', () => {
+    test('reports an image as settled only once after load', async () => {
+      const onImageLoadStart = jest.fn();
+      const onImageLoadEnd = jest.fn();
+      const testRenderer = await render(
+        <Image
+          representation={{ imageSize: 'fitHeight', imagePosition: 'top-left' }}
+          src="http://foo/bar.png"
+          onImageLoadStart={onImageLoadStart}
+          onImageLoadEnd={onImageLoadEnd}
+        />
+      );
+
+      expect(onImageLoadStart).toHaveBeenCalledTimes(1);
+      const image = testRenderer.root.findByType('img');
+      await renderer.act(async () => {
+        image.props.onLoad();
+        image.props.onLoad();
+      });
+      expect(onImageLoadEnd).toHaveBeenCalledTimes(1);
+
+      await renderer.act(async () => {
+        testRenderer.unmount();
+      });
+      expect(onImageLoadEnd).toHaveBeenCalledTimes(1);
+    });
+
+    test('settles on error and retries a changed src', async () => {
+      const onImageLoadStart = jest.fn();
+      const onImageLoadEnd = jest.fn();
+      const representation = { imageSize: 'fitHeight', imagePosition: 'top-left' };
+      const testRenderer = await render(
+        <Image
+          representation={representation}
+          src="http://foo/broken.png"
+          onImageLoadStart={onImageLoadStart}
+          onImageLoadEnd={onImageLoadEnd}
+        />
+      );
+
+      await renderer.act(async () => {
+        testRenderer.root.findByType('img').props.onError();
+      });
+      expect(onImageLoadStart).toHaveBeenCalledTimes(1);
+      expect(onImageLoadEnd).toHaveBeenCalledTimes(1);
+
+      await renderer.act(async () => {
+        testRenderer.update(
+          <Image
+            representation={representation}
+            src="http://foo/retry.png"
+            onImageLoadStart={onImageLoadStart}
+            onImageLoadEnd={onImageLoadEnd}
+          />
+        );
+      });
+      expect(onImageLoadStart).toHaveBeenCalledTimes(2);
+
+      await renderer.act(async () => {
+        testRenderer.unmount();
+      });
+      expect(onImageLoadEnd).toHaveBeenCalledTimes(2);
+    });
+
+    test('settles the previous src when the src changes while loading', async () => {
+      const onImageLoadStart = jest.fn();
+      const onImageLoadEnd = jest.fn();
+      const representation = { imageSize: 'fitHeight', imagePosition: 'top-left' };
+      const testRenderer = await render(
+        <Image
+          representation={representation}
+          src="http://foo/first.png"
+          onImageLoadStart={onImageLoadStart}
+          onImageLoadEnd={onImageLoadEnd}
+        />
+      );
+
+      await renderer.act(async () => {
+        testRenderer.update(
+          <Image
+            representation={representation}
+            src="http://foo/second.png"
+            onImageLoadStart={onImageLoadStart}
+            onImageLoadEnd={onImageLoadEnd}
+          />
+        );
+      });
+      expect(onImageLoadStart).toHaveBeenCalledTimes(2);
+      expect(onImageLoadEnd).toHaveBeenCalledTimes(1);
+
+      await renderer.act(async () => {
+        testRenderer.unmount();
+      });
+      expect(onImageLoadEnd).toHaveBeenCalledTimes(2);
+    });
+
+    test('stays balanced when a slow src is swapped mid-load and a load event arrives afterwards', async () => {
+      const onImageLoadStart = jest.fn();
+      const onImageLoadEnd = jest.fn();
+      const representation = { imageSize: 'fitHeight', imagePosition: 'top-left' };
+      const testRenderer = await render(
+        <Image
+          representation={representation}
+          src="http://foo/slow-first.png"
+          onImageLoadStart={onImageLoadStart}
+          onImageLoadEnd={onImageLoadEnd}
+        />
+      );
+      // first.png is still loading - no onLoad/onError has fired yet.
+      expect(onImageLoadStart).toHaveBeenCalledTimes(1);
+      expect(onImageLoadEnd).toHaveBeenCalledTimes(0);
+
+      // src changes before first.png finished loading: the first pending is settled by the effect
+      // cleanup and a fresh pending opens for second.png.
+      await renderer.act(async () => {
+        testRenderer.update(
+          <Image
+            representation={representation}
+            src="http://foo/second.png"
+            onImageLoadStart={onImageLoadStart}
+            onImageLoadEnd={onImageLoadEnd}
+          />
+        );
+      });
+      expect(onImageLoadStart).toHaveBeenCalledTimes(2);
+      expect(onImageLoadEnd).toHaveBeenCalledTimes(1);
+
+      // A load event now fires on the reused <img>, followed by a duplicate/stale one. Only the
+      // first settles; the idempotency guard ignores the second, so counts stay balanced.
+      const image = testRenderer.root.findByType('img');
+      await renderer.act(async () => {
+        image.props.onLoad();
+        image.props.onLoad();
+      });
+      expect(onImageLoadEnd).toHaveBeenCalledTimes(2);
+
+      // Nothing left pending, so unmount adds no further settle: start and end are balanced.
+      await renderer.act(async () => {
+        testRenderer.unmount();
+      });
+      expect(onImageLoadStart).toHaveBeenCalledTimes(2);
+      expect(onImageLoadEnd).toHaveBeenCalledTimes(2);
+    });
+  });
+
   test('retries a new src on the same cell instance even if the previous src had errored', async () => {
     const testRenderer = await render(
       <Image representation={{ imageSize: 'fitHeight', imagePosition: 'topLeft' }} src="http://foo/broken.png" />

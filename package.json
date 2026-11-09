@@ -72,7 +72,7 @@
     "eslint-plugin-mocha": "12.0.2",
     "eslint-plugin-prettier": "5.5.7",
     "eslint-plugin-react": "7.37.5",
-    "globals": "^17.13.0",
+    "globals": "^17.14.0",
     "husky": "9.1.7",
     "jest": "^30.5.2",
     "jest-environment-jsdom": "^30.5.2",
@@ -85,7 +85,7 @@
   },
   "resolutions": {
     "dts-dom": "3.7.0",
-    "caniuse-lite": "1.0.30001819",
+    "caniuse-lite": "1.0.30001820",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "react-is": "19.3.1",
@@ -98,11 +98,11 @@
     "glob@npm:^10.0.0": "^13.0.6",
     "glob@npm:^11.0.0": "^13.0.6"
   },
-  "packageManager": "pnpm@12.15.0",
+  "packageManager": "pnpm@12.16.1",
   "devEngines": {
     "runtime": {
       "name": "node",
-      "version": "24.22.1",
+      "version": "24.22.2",
       "onFail": "download"
     }
   }
