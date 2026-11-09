@@ -12,17 +12,16 @@ const require = createRequire(import.meta.url);
 
 const getPackage = (argv, cwd = process.cwd()) => require(path.resolve(argv.cwd || cwd, 'package.json'));
 
+// the field of package.json that has the output file of a format
+const OUTPUT_FIELDS = { systemjs: 'systemjs', esm: 'module' };
+
 const validateWatchInput = (argv) => {
-  if (argv.watch === 'systemjs') {
-    const pkg = getPackage(argv);
-    if (!pkg.systemjs) {
-      console.log(
-        `${chalk.white.bgRed(' ERROR ')} ${chalk.red(
-          'No "systemjs" field specifying output file found in package.json'
-        )}`
-      );
-      return false;
-    }
+  const field = OUTPUT_FIELDS[argv.watch];
+  if (field && !getPackage(argv)[field]) {
+    console.log(
+      `${chalk.white.bgRed(' ERROR ')} ${chalk.red(`No "${field}" field specifying output file found in package.json`)}`
+    );
+    return false;
   }
   return true;
 };
@@ -38,6 +37,17 @@ const getWatchConfig = (argv) => {
   switch (argv.watch) {
     case 'systemjs':
       opts = { ...base, format: 'systemjs', behaviours: systemjsBehaviours };
+      break;
+    case 'esm':
+      opts = {
+        ...base,
+        format: 'esm',
+        behaviours: {
+          getOutputFile: ({ pkg }) => pkg.module,
+          // the modules that the host of the bundle has, the peer dependencies of the package when it is not told
+          getExternal: ({ pkg, config: cfg }) => cfg.external || Object.keys(pkg.peerDependencies || {}),
+        },
+      };
       break;
     case 'umd':
     default:
