@@ -1,16 +1,15 @@
 name: Changeset comment
 
-# Runs with pull_request_target so the token can comment on pull requests from forks.
-# It never checks out or runs code from the pull request, it only reads the list of changed files.
 on:
-  pull_request_target:
+  pull_request:
     types: [opened, synchronize, reopened]
 
 permissions: {}
 
 jobs:
   comment:
-    if: ${{ !startsWith(github.head_ref, 'changeset-release/') && github.actor != 'renovate[bot]' }}
+    # the token of a pull request from a fork cannot write
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository && !startsWith(github.head_ref, 'changeset-release/') && github.actor != 'renovate[bot]' }}
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
