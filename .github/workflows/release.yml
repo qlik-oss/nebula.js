@@ -39,10 +39,23 @@ jobs:
           publish-script: pnpm release
           commit-message: 'chore(release): version packages'
           pr-title: 'chore(release): version packages'
+          # one tag and release for all packages, created below
+          create-github-releases: false
+          push-git-tags: false
       - name: Read the released version
         id: version
         if: steps.changesets.outputs.published == 'true'
         run: echo "version=$(node -p "require('./apis/stardust/package.json').version")" >> "$GITHUB_OUTPUT"
+      # the packages share a version, so the version of stardust is the one of the release
+      - name: Tag and release
+        if: steps.changesets.outputs.published == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          prerelease=""
+          case "$VERSION" in *-*) prerelease="--prerelease" ;; esac
+          gh release create "v$VERSION" --target "$GITHUB_SHA" --generate-notes $prerelease
 
   # a tag pushed with the workflow token does not start the workflows of the tag
   api-governance:
