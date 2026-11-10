@@ -253,6 +253,8 @@ const config = ({
         },
         optimization: {
           ...base.optimization,
+          // process.env.NODE_ENV is defined above, rslib defines it again for an iife and the two conflict in development
+          nodeEnv: false,
           // rollup tree-shakes in development too, rspack's development mode would not
           usedExports: true,
           sideEffects: true,

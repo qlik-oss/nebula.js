@@ -67,6 +67,10 @@ const run = async (config) => {
     config: {
       ...config,
       logLevel: 'silent',
+      // rsbuild keeps the cache of every iife build in the same directory, so this build shares it with the systemjs
+      // build of nebula build and takes the modules of its sources, the imports of which are then warned about as amd
+      // dependencies that are not in the extension
+      performance: { buildCache: { cacheDirectory: 'node_modules/.cache/nebula-sense' } },
       plugins: [
         {
           name: 'nebula-sense',
@@ -142,12 +146,12 @@ async function build(argv) {
       }
     }
 
-    if (supernovaPkg.files) {
-      [path.basename(qextLegacyTargetDir), path.basename(qextFileName)].forEach((f) => {
-        if (!supernovaPkg.files.includes(f)) {
-          console.warn(`  \x1b[33mwarn:\x1b[0m \x1b[36m${f}\x1b[0m should be included in package.json 'files' array`);
-        }
-      });
+    // the qext is in the directory, which is what the files array has to include
+    const targetName = path.basename(qextLegacyTargetDir);
+    if (supernovaPkg.files && !supernovaPkg.files.includes(targetName)) {
+      console.warn(
+        `  \x1b[33mwarn:\x1b[0m \x1b[36m${targetName}\x1b[0m should be included in package.json 'files' array`
+      );
     }
   };
 
