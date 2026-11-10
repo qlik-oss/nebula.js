@@ -5,7 +5,7 @@ Copy the prompt below into a coding agent (for example Claude Code) at the root 
 ## Prompt
 
 ````markdown
-Update this repository from nebula.js 7.x to nebula.js 8 (`@nebula.js/*` packages at 8.0.0-alpha.x or later).
+Update this repository from nebula.js 7.x to nebula.js 8 (`@nebula.js/*` packages at the latest stable 8.x release, not an alpha or other prerelease).
 
 ## Context
 
@@ -17,7 +17,7 @@ Nebula 8 rewrote `nebula build` (rspack/rslib instead of rollup). Known breaking
 
 ## Steps
 
-1. Bump every `@nebula.js/*` dependency (cli, cli-build, cli-sense, cli-serve, stardust, and others) to the same 8.x version. Use the repo's package manager and keep lockfile changes minimal.
+1. Bump every `@nebula.js/*` dependency (cli, cli-build, cli-sense, cli-serve, stardust, and others) to the same stable 8.x version. Use the repo's package manager and keep lockfile changes minimal.
 2. Find every package that runs `nebula build`, `nebula sense` or `nebula serve`, including via wrapper scripts (check `scripts/` for files that call `@nebula.js/cli-build` or `cli-sense` programmatically).
 3. For each of those packages, add a `"module"` field to `package.json`:
    - Published package: keep `main` and set `module` to the same file as `main`. Make sure `"type": "module"` is set if consumers import the file as ESM.
