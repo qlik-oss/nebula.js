@@ -31,7 +31,7 @@
     "prepare": "husky install",
     "changeset": "changeset",
     "version-packages": "node tools/renovate-changeset.cjs && changeset version && pnpm install --lockfile-only && pnpm spec",
-    "release": "pnpm build && changeset pack --out-dir .changeset-packs && changeset publish --from-pack-dir .changeset-packs --tag next"
+    "release": "pnpm build && changeset pack --out-dir .changeset-packs && changeset publish --from-pack-dir .changeset-packs"
   },
   "repository": {
     "type": "git",
