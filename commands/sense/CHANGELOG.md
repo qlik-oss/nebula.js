@@ -1,5 +1,14 @@
 # Change Log
 
+## 8.0.0-alpha.1
+
+### Patch Changes
+
+- [#2437](https://github.com/qlik-oss/nebula.js/pull/2437) [`9ecc089`](https://github.com/qlik-oss/nebula.js/commit/9ecc089d6faa7897a82aafad02f2407d5801df80) Thanks [@enell](https://github.com/enell)! - Create git tags and GitHub releases when the packages are published.
+- Updated dependencies [[`9ecc089`](https://github.com/qlik-oss/nebula.js/commit/9ecc089d6faa7897a82aafad02f2407d5801df80)]:
+  - @nebula.js/cli-build@8.0.0-alpha.1
+  - @nebula.js/stardust@8.0.0-alpha.1
+
 ## 8.0.0-alpha.0
 
 ### Major Changes

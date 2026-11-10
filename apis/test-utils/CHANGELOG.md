@@ -1,5 +1,12 @@
 # Change Log
 
+## 8.0.0-alpha.1
+
+### Patch Changes
+
+- Updated dependencies [[`9ecc089`](https://github.com/qlik-oss/nebula.js/commit/9ecc089d6faa7897a82aafad02f2407d5801df80)]:
+  - @nebula.js/stardust@8.0.0-alpha.1
+
 ## 8.0.0-alpha.0
 
 ### Patch Changes
