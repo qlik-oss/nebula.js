@@ -229,6 +229,8 @@ const config = ({
           ...(isEsm ? {} : { library: { type: 'system' } }),
           // an iife has no chunks in rslib, a code split systemjs bundle loads its chunks with script tags
           ...(systemChunks ? { asyncChunks: true, chunkLoading: 'jsonp', chunkFormat: 'array-push' } : {}),
+          // LimitChunkCountPlugin alone leaves the chunks of some dynamic imports, which then collide on the file name
+          ...(singleFile ? { asyncChunks: false } : {}),
         },
         // the modules of the host are System.register dependencies, and `import()` of one stays a dynamic import
         externalsType: isEsm ? 'module-import' : 'system',

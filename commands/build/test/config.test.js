@@ -150,9 +150,12 @@ describe('build config', () => {
     const behaviours = { getOutputFile: ({ pkg }) => pkg.module, enabled: () => true };
     const isLimited = (cfg) => rspackOf(cfg).plugins.some((p) => p.name === 'LimitChunkCountPlugin');
 
-    assert.equal(isLimited(config({ format: 'esm', cwd, argv: argv(), behaviours })), true);
+    const single = config({ format: 'esm', cwd, argv: argv(), behaviours });
+    assert.equal(isLimited(single), true);
+    assert.equal(rspackOf(single).output.asyncChunks, false);
     const split = config({ format: 'esm', cwd, argv: argv({ codeSplit: true }), behaviours });
     assert.equal(isLimited(split), false);
+    assert.equal(rspackOf(split).output.asyncChunks, undefined);
     assert.equal(libOf(split).output.distPath.root, path.join(cwd, 'dist'));
     // inlineDynamic forces one file for the other formats too
     assert.equal(
