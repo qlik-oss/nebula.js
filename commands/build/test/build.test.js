@@ -512,9 +512,27 @@ export { getAuthRuntimeModule as t, getQixRuntimeModule as r, getInvokeFetchRunt
       fs.rmSync(path.join(dir, 'dist'), { recursive: true });
       await run({ systemjs: false, codeSplit: true });
       const files = fs.readdirSync(path.join(dir, 'dist')).filter((f) => !f.endsWith('.map'));
-      assert.ok(files.includes('index.js'), files.join(', '));
-      assert.ok(files.length >= 2, `expected a chunk next to index.js, got ${files.join(', ')}`);
-      assert.equal((await (await import(pathToFileURL(path.join(dir, 'dist/index.js')))).default()).default, 'lazy');
+      assert.ok(files.includes('viz.esm.js'), files.join(', '));
+      assert.ok(files.length >= 2, `expected a chunk next to viz.esm.js, got ${files.join(', ')}`);
+      assert.equal((await (await import(pathToFileURL(path.join(dir, 'dist/viz.esm.js')))).default()).default, 'lazy');
+    });
+
+    it('writes the es and the systemjs entry that the package fields name, with chunks of their own', async () => {
+      write('src/lazy.js', 'export default "lazy";\n');
+      write('src/index.js', `export default () => import('./lazy.js');\n`);
+      await run({ codeSplit: true });
+
+      const files = fs.readdirSync(path.join(dir, 'dist')).filter((f) => f.endsWith('.js'));
+      assert.ok(files.includes('viz.esm.js') && files.includes('viz.systemjs.js'), files.join(', '));
+      assert.ok(!files.includes('index.js'), files.join(', '));
+      const chunksOf = (entry) => files.filter((f) => f.startsWith(`${entry}.`) && f !== `${entry}.js`);
+      const esChunks = chunksOf('viz.esm');
+      const systemChunks = chunksOf('viz.systemjs');
+      assert.equal(esChunks.length, 1);
+      assert.equal(systemChunks.length, 1);
+      assert.equal(files.length, 4, files.join(', '));
+      assert.match(fs.readFileSync(path.join(dir, 'dist/viz.esm.js'), 'utf8'), /export/);
+      assert.match(fs.readFileSync(path.join(dir, 'dist/viz.systemjs.js'), 'utf8'), /System\.register/);
     });
 
     it('loads the chunks of a code split systemjs bundle from where SystemJS loaded the entry', async () => {
@@ -524,7 +542,7 @@ export { getAuthRuntimeModule as t, getQixRuntimeModule as r, getInvokeFetchRunt
       write('src/index.js', `export default () => ({ load: () => import('./lazy.js') });\n`);
       await run({ codeSplit: true, systemjs: true });
 
-      const chunks = fs.readdirSync(path.join(dir, 'dist')).filter((f) => f !== 'index.js' && f.endsWith('.js'));
+      const chunks = fs.readdirSync(path.join(dir, 'dist')).filter((f) => f !== 'viz.systemjs.js' && f.endsWith('.js'));
       assert.equal(chunks.length, 1, 'one chunk for the dynamic import');
 
       const requested = [];
@@ -563,7 +581,7 @@ export { getAuthRuntimeModule as t, getQixRuntimeModule as r, getInvokeFetchRunt
         console,
       };
       vm.createContext(sandbox);
-      vm.runInContext(fs.readFileSync(path.join(dir, 'dist/index.js'), 'utf8'), sandbox);
+      vm.runInContext(fs.readFileSync(path.join(dir, 'dist/viz.systemjs.js'), 'utf8'), sandbox);
 
       const exported = {};
       const mod = registered(

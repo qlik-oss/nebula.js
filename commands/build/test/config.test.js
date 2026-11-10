@@ -157,11 +157,36 @@ describe('build config', () => {
     assert.equal(isLimited(split), false);
     assert.equal(rspackOf(split).output.asyncChunks, undefined);
     assert.equal(libOf(split).output.distPath.root, path.join(cwd, 'dist'));
+    assert.equal(libOf(split).output.filename.js, 'viz.esm.js');
+    assert.deepEqual(Object.keys(libOf(split).source.entry), ['viz.esm']);
+    assert.equal(rspackOf(split).output.chunkFilename, 'viz.esm.[name]-[contenthash].js');
     // inlineDynamic forces one file for the other formats too
     assert.equal(
       isLimited(config({ format: 'esm', cwd, argv: argv({ codeSplit: true, inlineDynamic: true }), behaviours })),
       true
     );
+  });
+
+  it('writes a code split bundle where the package field names it, with chunks that do not collide', () => {
+    const cwd = makeProject({ module: 'lib/out/viz.esm.js', systemjs: 'lib/out/viz.systemjs.js' });
+    const es = config({
+      format: 'esm',
+      cwd,
+      argv: argv({ codeSplit: true }),
+      behaviours: { getOutputFile: ({ pkg }) => pkg.module },
+    });
+    const system = config({
+      format: 'systemjs',
+      cwd,
+      argv: argv({ codeSplit: true }),
+      behaviours: systemjsBehaviours,
+    });
+    assert.equal(libOf(es).output.distPath.root, path.join(cwd, 'lib/out'));
+    assert.equal(libOf(system).output.distPath.root, path.join(cwd, 'lib/out'));
+    assert.equal(libOf(es).output.filename.js, 'viz.esm.js');
+    assert.equal(libOf(system).output.filename.js, 'viz.systemjs.js');
+    assert.deepEqual(Object.keys(libOf(system).source.entry), ['viz.systemjs']);
+    assert.notEqual(rspackOf(es).output.chunkFilename, rspackOf(system).output.chunkFilename);
   });
 
   it('always keeps stardust and the peer dependencies external', () => {

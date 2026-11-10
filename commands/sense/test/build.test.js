@@ -5,6 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import vm from 'node:vm';
 
+import buildBundle from '@nebula.js/cli-build';
 import build from '../lib/build.js';
 
 // objects created in a vm sandbox have the prototypes of another realm, compare them as plain data
@@ -148,6 +149,27 @@ describe('nebula sense', () => {
       );
       await run();
       assert.match(warnings.join('\n'), /viz\.qext.*should be included in package\.json 'files'/);
+    });
+
+    it('finds the module after a code split build of a package with module and systemjs', async () => {
+      write(
+        'package.json',
+        JSON.stringify({
+          name: '@acme/viz',
+          version: '1',
+          module: 'dist/viz.esm.js',
+          systemjs: 'dist/viz.systemjs.js',
+          files: ['viz-ext', 'viz.qext'],
+          peerDependencies: { '@nebula.js/stardust': '*' },
+        })
+      );
+      write('src/lazy.js', 'export default "lazy";\n');
+      write('src/index.js', "export default () => import('./lazy.js');\n");
+      fs.rmSync(path.join(dir, 'dist'), { recursive: true });
+      await buildBundle({ cwd: dir, codeSplit: true, sourcemap: false });
+
+      await run();
+      assert.ok(fs.existsSync(path.join(dir, 'viz-ext/viz.js')));
     });
 
     it('rejects when package.json has no module', async () => {

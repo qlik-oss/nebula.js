@@ -132,6 +132,12 @@ describe('nebula build --watch', () => {
     assert.match(output(), /fixed/);
   });
 
+  it('watches the es module when watch is true, as `nebula build --watch` does', async () => {
+    watcher = await startWatch({ watch: true });
+    assert.equal(typeof watcher.close, 'function');
+    assert.match(output(), /first/);
+  });
+
   it('rejects when the first build fails', async () => {
     write('src/index.js', 'export default function ( {\n');
     await assert.rejects(startWatch(), (rejection) => {
