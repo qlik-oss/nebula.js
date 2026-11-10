@@ -1,5 +1,17 @@
 # Change Log
 
+## 8.0.0-alpha.2
+
+### Patch Changes
+
+- Update dependencies
+
+  - `postcss` from `^8.5.31` to `^8.5.32`
+
+- [#2443](https://github.com/qlik-oss/nebula.js/pull/2443) [`f969468`](https://github.com/qlik-oss/nebula.js/commit/f9694684145fd4e260386907b4612b54cf2fd175) Thanks [@enell](https://github.com/enell)! - fix: merge the chunks of dynamic imports into the bundle of a single file build, so that the esm build of a package with dependencies that use import() no longer fails with "Multiple assets emit different content to the same filename"
+
+- [#2440](https://github.com/qlik-oss/nebula.js/pull/2440) [`1465ecf`](https://github.com/qlik-oss/nebula.js/commit/1465ecf0324a1bfc781a8d5bc4fcf53632d0eef3) Thanks [@enell](https://github.com/enell)! - Create one git tag and one GitHub release for all the packages, in place of one for each package.
+
 ## 8.0.0-alpha.1
 
 ### Patch Changes

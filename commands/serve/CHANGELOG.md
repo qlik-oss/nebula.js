@@ -1,5 +1,18 @@
 # Change Log
 
+## 8.0.0-alpha.2
+
+### Patch Changes
+
+- Update dependencies
+
+  - `@qlik/api` from `2.20.0` to `2.21.0`
+  - `ws` from `8.22.0` to `8.22.1`
+
+- [#2440](https://github.com/qlik-oss/nebula.js/pull/2440) [`1465ecf`](https://github.com/qlik-oss/nebula.js/commit/1465ecf0324a1bfc781a8d5bc4fcf53632d0eef3) Thanks [@enell](https://github.com/enell)! - Create one git tag and one GitHub release for all the packages, in place of one for each package.
+- Updated dependencies [[`f969468`](https://github.com/qlik-oss/nebula.js/commit/f9694684145fd4e260386907b4612b54cf2fd175), [`1465ecf`](https://github.com/qlik-oss/nebula.js/commit/1465ecf0324a1bfc781a8d5bc4fcf53632d0eef3)]:
+  - @nebula.js/cli-build@8.0.0-alpha.2
+
 ## 8.0.0-alpha.1
 
 ### Patch Changes

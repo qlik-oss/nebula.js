@@ -1,5 +1,15 @@
 # Change Log
 
+## 8.0.0-alpha.2
+
+### Patch Changes
+
+- Update dependencies
+
+  - `@inquirer/prompts` from `8.7.4` to `8.7.5`
+
+- [#2440](https://github.com/qlik-oss/nebula.js/pull/2440) [`1465ecf`](https://github.com/qlik-oss/nebula.js/commit/1465ecf0324a1bfc781a8d5bc4fcf53632d0eef3) Thanks [@enell](https://github.com/enell)! - Create one git tag and one GitHub release for all the packages, in place of one for each package.
+
 ## 8.0.0-alpha.1
 
 ### Patch Changes
