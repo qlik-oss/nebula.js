@@ -34,6 +34,9 @@ jobs:
       - name: Version packages or publish
         id: changesets
         uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
+        env:
+          # the alpha releases are published with the next dist-tag, main with latest
+          NPM_TAG: ${{ startsWith(github.ref_name, 'alpha/') && 'next' || '' }}
         with:
           version-script: pnpm version-packages
           publish-script: pnpm release
