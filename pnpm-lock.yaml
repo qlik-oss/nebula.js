@@ -604,8 +604,8 @@ importers:
         specifier: 1.15.3
         version: 1.15.3(rollup@4.67.4)
       rollup-plugin-visualizer:
-        specifier: 7.1.1
-        version: 7.1.1(rollup@4.67.4)
+        specifier: 7.1.2
+        version: 7.1.2(rollup@4.67.4)
       yargs:
         specifier: 18.2.0
         version: 18.2.0
@@ -7985,6 +7985,19 @@ packages:
 
   rollup-plugin-visualizer@7.1.1:
     resolution: {integrity: sha512-ThaGiHTU8XW02OkK80TrTHATraJmM9OAduU4otal+7gyXLpYEtmGBLfx5kW+EHvvLwn03YGW2NnwKUIqsYlJAA==}
+    engines: {node: '>=22'}
+    hasBin: true
+    peerDependencies:
+      rolldown: 1.x || ^1.0.0-beta || ^1.0.0-rc
+      rollup: 2.x || 3.x || 4.x
+    peerDependenciesMeta:
+      rolldown:
+        optional: true
+      rollup:
+        optional: true
+
+  rollup-plugin-visualizer@7.1.2:
+    resolution: {integrity: sha512-+yrEz9LJ7fxd7T0yj4GPvcKHKfJNzTzKT7FHiF3f/US+7EaWlgB8PoGbUOlobD4Al8v6TeCCl/Fgbov5FV/DaA==}
     engines: {node: '>=22'}
     hasBin: true
     peerDependencies:
@@ -18205,7 +18218,7 @@ snapshots:
     optionalDependencies:
       rollup: 4.65.0
 
-  rollup-plugin-visualizer@7.1.1(rollup@4.67.4):
+  rollup-plugin-visualizer@7.1.2(rollup@4.67.4):
     dependencies:
       open: 11.0.4
       picomatch: 4.0.7
