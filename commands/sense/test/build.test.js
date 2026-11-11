@@ -148,7 +148,15 @@ describe('nebula sense', () => {
         JSON.stringify({ name: '@acme/viz', version: '1', module: 'dist/viz.esm.js', files: ['dist'] })
       );
       await run();
-      assert.match(warnings.join('\n'), /viz\.qext.*should be included in package\.json 'files'/);
+      assert.match(warnings.join('\n'), /viz-ext.*should be included in package\.json 'files'/);
+    });
+    it('does not warn about the qext when the directory it is in is in package.json files', async () => {
+      write(
+        'package.json',
+        JSON.stringify({ name: '@acme/viz', version: '1', module: 'dist/viz.esm.js', files: ['viz-ext'] })
+      );
+      await run();
+      assert.doesNotMatch(warnings.join('\n'), /should be included/);
     });
 
     it('finds the module after a code split build of a package with module and systemjs', async () => {
@@ -172,6 +180,11 @@ describe('nebula sense', () => {
       assert.ok(fs.existsSync(path.join(dir, 'viz-ext/viz.js')));
     });
 
+    it('keeps its build cache apart from the one of nebula build', async () => {
+      await run();
+      assert.ok(fs.existsSync(path.join(dir, 'node_modules/.cache/nebula-sense')));
+      assert.ok(!fs.existsSync(path.join(dir, 'node_modules/.cache/rspack')));
+    });
     it('rejects when package.json has no module', async () => {
       write('package.json', JSON.stringify({ name: '@acme/viz', version: '1' }));
       await assert.rejects(run(), /no "module" field/);

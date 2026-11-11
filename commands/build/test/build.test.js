@@ -343,6 +343,21 @@ module.exports = { double: function (n) { return n * 2 + path.length - 7; } };
       assert.equal((await loadEsm('dist/viz.esm.js')).exports().env, 'development');
     });
 
+    it('defines process.env.NODE_ENV once in a development build of both bundles', async () => {
+      write('src/index.js', `export default function supernova() { return { env: process.env.NODE_ENV }; }\n`);
+      const logged = [];
+      const { log } = console;
+      console.log = (...args) => logged.push(args.join(' '));
+      try {
+        await run({ mode: 'development' });
+      } finally {
+        console.log = log;
+      }
+      assert.doesNotMatch(logged.join('\n'), /Conflicting values/);
+      assert.equal((await loadEsm('dist/viz.esm.js')).exports().env, 'development');
+      assert.match(fs.readFileSync(path.join(dir, 'dist/viz.systemjs.js'), 'utf8'), /env: ?"development"/);
+    });
+
     it('reads json files', async () => {
       write('src/data.json', '{ "answer": 42 }');
       write('src/index.js', `import data from './data.json';\nexport default () => data.answer;\n`);
