@@ -222,12 +222,11 @@ const config = ({
         context: CWD,
         output: {
           ...base.output,
-          // the chunks are in a directory beside the entry and prefixed with the entry, so that the chunks of es and
-          // systemjs bundles can share it
-          chunkFilename: `chunks/${name}.[name]-[contenthash].js`,
+          // prefixed with the entry so that the chunks of es and systemjs bundles can share a directory
+          chunkFilename: `${name}.[name]-[contenthash].js`,
           // the es module library hoists what the entry and a dynamic import share into an initial chunk without a name
           filename: ({ chunk }) =>
-            chunk?.name === name ? path.basename(outputFile) : `chunks/${name}.[name]-[contenthash].js`,
+            chunk?.name === name ? path.basename(outputFile) : `${name}.[name]-[contenthash].js`,
           // the url of a chunk of a code split systemjs bundle is relative to the module, see system-public-path.js
           ...(systemChunks ? { publicPath: '' } : {}),
           ...(isEsm ? {} : { library: { type: 'system' } }),
