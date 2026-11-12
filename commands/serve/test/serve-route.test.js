@@ -5,16 +5,11 @@ import os from 'os';
 import path from 'path';
 import express from 'express';
 
-import { initiateWatch, getUrlPath } from '../lib/serve.js';
+import { initiateWatch, getModuleUrl } from '../lib/serve.js';
 
-describe('getUrlPath', () => {
-  it('is the path of the file in the package', () => {
-    assert.equal(getUrlPath('/pkg', '/pkg/dist/sn-viz.js'), '/dist/sn-viz.js');
-    assert.equal(getUrlPath('/pkg', '/pkg/sn-viz.js'), '/sn-viz.js');
-  });
-
-  it('is the root for a file that is not in the package', () => {
-    assert.equal(getUrlPath('/pkg', '/other/dist/sn-viz.js'), '/sn-viz.js');
+describe('getModuleUrl', () => {
+  it('is the file name', () => {
+    assert.equal(getModuleUrl('/pkg/dist/sn-viz.systemjs.js'), '/sn-viz.systemjs.js');
   });
 });
 
@@ -44,7 +39,6 @@ describe('the files of the build', () => {
       systemPath: path.join(dir, 'dist/sn-viz.systemjs.js'),
       snName: 'sn-viz',
       host: 'localhost',
-      root: dir,
     });
     const app = express();
     watch.addRoutes(app, { headers: { 'X-Test': 'yes' } });
@@ -63,31 +57,39 @@ describe('the files of the build', () => {
     fs.rmSync(dir, { recursive: true, force: true });
   });
 
-  it('should serve the es module where it is in the package', async () => {
-    const res = await get('esm/sn-viz.js');
+  it('should serve the es module by its file name', async () => {
+    const res = await get('sn-viz.js');
     assert.equal(res.status, 200);
     assert.match(res.headers.get('content-type'), /javascript/);
     assert.equal(res.headers.get('x-test'), 'yes');
     assert.equal(await res.text(), 'export default "esm";');
   });
 
-  it('should serve the systemjs module where it is in the package', async () => {
-    const res = await get('dist/sn-viz.systemjs.js');
+  it('should serve the systemjs module by its file name', async () => {
+    const res = await get('sn-viz.systemjs.js');
     assert.equal(res.status, 200);
     assert.equal(await res.text(), 'System.register([]);');
   });
 
-  it('should serve the chunks and the source maps beside the modules', async () => {
-    assert.equal(await (await get('esm/chunks/sn-viz.chunk-a.js')).text(), 'export default "chunk";');
-    assert.equal(await (await get('dist/chunks/sn-viz.systemjs.chunk-a.js')).text(), 'System.register(["chunk"]);');
-    assert.match((await get('dist/sn-viz.systemjs.js.map')).headers.get('content-type'), /json/);
+  it('should serve the source map of a module', async () => {
+    assert.match((await get('sn-viz.systemjs.js.map')).headers.get('content-type'), /json/);
+  });
+
+  it('should serve the chunks beside the modules from chunks', async () => {
+    assert.equal(await (await get('chunks/sn-viz.chunk-a.js')).text(), 'export default "chunk";');
+    assert.equal(await (await get('chunks/sn-viz.systemjs.chunk-a.js')).text(), 'System.register(["chunk"]);');
+  });
+
+  it('should not serve the directories of the build', async () => {
+    assert.equal((await get('dist/sn-viz.systemjs.js')).status, 418);
+    assert.equal((await get('esm/sn-viz.js')).status, 418);
+    assert.equal((await get('chunks/missing.js')).status, 418);
+    assert.equal((await get('chunks/..%2Fsn-viz.js')).status, 418);
   });
 
   it('should leave everything else to the web app', async () => {
     assert.equal((await get('index.html')).status, 418);
     assert.equal((await get('src/index.js')).status, 418);
     assert.equal((await get('package.json')).status, 418);
-    assert.equal((await get('dist/..%2Fpackage.json')).status, 418);
-    assert.equal((await get('sn-viz.js')).status, 418);
   });
 });

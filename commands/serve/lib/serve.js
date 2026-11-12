@@ -16,17 +16,12 @@ import rsbuildServe from './rsbuild.serve.js';
 
 const require = createRequire(import.meta.url);
 
-// A file of the build is served at its path in the package, so that what a module imports by a relative url, such as the
-// chunks and the source maps, is served too. A file that is not in the package is served from the root.
-export const getUrlPath = (root, file) => {
-  const relative = path.relative(root, file);
-  return relative && !relative.startsWith('..') && !path.isAbsolute(relative)
-    ? `/${relative.split(path.sep).join('/')}`
-    : `/${path.basename(file)}`;
-};
+// The entry that nebula build writes is served by its file name, and the chunks beside it from `chunks`, which is where
+// the module imports them from, relative to its url.
+export const getModuleUrl = (file) => `/${path.basename(file)}`;
 
-// `snPath` is the es module of the visualization and `systemPath` the systemjs module of it, `root` is the package
-export const initiateWatch = async ({ snPath, snName, host, systemPath, root = process.cwd() }) => {
+// `snPath` is the es module of the visualization and `systemPath` the systemjs module of it
+export const initiateWatch = async ({ snPath, snName, host, systemPath }) => {
   if (!snPath) {
     return null;
   }
@@ -55,10 +50,19 @@ export const initiateWatch = async ({ snPath, snName, host, systemPath, root = p
 
   return {
     addRoutes(app, options) {
-      // the directories that nebula build writes to are served as they are
-      [...new Set([snPath, systemPath].filter(Boolean).map((file) => path.dirname(file)))].forEach((dir) => {
-        const urlPath = path.posix.dirname(getUrlPath(root, path.join(dir, 'file')));
-        app.use(urlPath, express.static(dir, { setHeaders: (res) => res.set(options.headers) }));
+      const entries = [snPath, systemPath].filter(Boolean);
+      // an entry and the source map of it, which it imports by its file name
+      const files = entries.flatMap((file) => [file, `${file}.map`]);
+      app.get('/:file', (req, res, next) => {
+        const file = files.find((f) => path.basename(f) === req.params.file);
+        if (file && fs.existsSync(file)) {
+          res.sendFile(file, { headers: options.headers });
+        } else {
+          next();
+        }
+      });
+      [...new Set(entries.map((file) => path.join(path.dirname(file), 'chunks')))].forEach((dir) => {
+        app.use('/chunks', express.static(dir, { setHeaders: (res) => res.set(options.headers) }));
       });
     },
     async close() {
@@ -136,9 +140,7 @@ export default async (argv, { pages } = {}) => {
     }
   }
 
-  const ww = snUrl
-    ? null
-    : await initiateWatch({ snPath, snName: serveConfig.type || snName, host, systemPath, root: context });
+  const ww = snUrl ? null : await initiateWatch({ snPath, snName: serveConfig.type || snName, host, systemPath });
 
   const server = await rsbuildServe({
     host,
@@ -149,7 +151,7 @@ export default async (argv, { pages } = {}) => {
     webIntegrationId: serveConfig.webIntegrationId,
     snName: serveConfig.type || snName,
     snUrl,
-    snModule: ww ? getUrlPath(context, snPath) : undefined,
+    snModule: ww ? getModuleUrl(snPath) : undefined,
     pages,
     open: serveConfig.open !== false,
     entryWatcher: ww,
@@ -157,8 +159,8 @@ export default async (argv, { pages } = {}) => {
   });
 
   if (systemPath) {
-    console.log(`SystemJS module served at ${server.url}${getUrlPath(context, systemPath)}`);
-    console.log(`ES module served at ${server.url}${getUrlPath(context, snPath)}`);
+    console.log(`SystemJS module served at ${server.url}${getModuleUrl(systemPath)}`);
+    console.log(`ES module served at ${server.url}${getModuleUrl(snPath)}`);
   }
 
   const close = async () => {
