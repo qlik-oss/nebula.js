@@ -26,7 +26,7 @@ Options:
       --build               Build the nebula visualization into /dist dictionary
                                                        [boolean] [default: true]
       --host                Specify a host to use[string] [default: "localhost"]
-      --port                Specify a port number to listen for requests on
+  -p, --port                Specify a port number to listen for requests on
                                                                         [number]
       --disableHostCheck    Bypasses host checking    [boolean] [default: false]
       --keyboardNavigation  Whether or not Nebula handles keyboard navigation

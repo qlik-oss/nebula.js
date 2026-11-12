@@ -34,6 +34,7 @@ const options = {
     default: 'localhost',
   },
   port: {
+    alias: 'p',
     type: 'number',
     description: 'Specify a port number to listen for requests on',
   },
