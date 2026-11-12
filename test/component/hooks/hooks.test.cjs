@@ -14,7 +14,6 @@ test.describe('hooks', () => {
       entry: path.resolve(__dirname, 'sn-hooks'),
       config: 'nebula.config.cjs',
       open: false,
-      https: false,
       build: true,
       fixturePath: 'test/component/hooks',
       port: 0,

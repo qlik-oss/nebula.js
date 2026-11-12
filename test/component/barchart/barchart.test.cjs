@@ -13,7 +13,6 @@ test.describe('bar chart', () => {
       entry: path.resolve(__dirname, 'sn-barchart'),
       config: 'nebula.config.cjs',
       open: false,
-      https: false,
       build: true,
       fixturePath: 'test/component/barchart',
     });

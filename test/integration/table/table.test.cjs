@@ -13,7 +13,6 @@ test.describe('Table visualization', () => {
       entry: path.resolve(__dirname, 'sn-table'),
       config: 'nebula.config.cjs',
       open: false,
-      https: false,
       fixturePath: 'test/integration/table',
     });
   });
