@@ -11,20 +11,28 @@ const both = [paths.keyPath, paths.certPath];
 
 describe('resolveHttps', () => {
   it('should use https when the certificates are installed and nothing is asked for', () => {
-    assert.deepEqual(resolve(undefined, both), { https: true, auto: true, ...paths });
+    const result = resolve(undefined, both);
+    assert.equal(result.https, true);
+    assert.match(result.reason, /certificates found in \/home\/\.certs/);
   });
 
   it('should use http when the certificates are not installed and nothing is asked for', () => {
-    assert.deepEqual(resolve(undefined, []), { https: false, auto: true, ...paths });
+    const result = resolve(undefined, []);
+    assert.equal(result.https, false);
+    assert.match(result.reason, /no certificates in \/home\/\.certs, install them to serve over https/);
     assert.equal(resolve(undefined, [paths.keyPath]).https, false);
   });
 
   it('should use http when it is asked for, also when the certificates are installed', () => {
-    assert.deepEqual(resolve(false, both), { https: false, auto: false, ...paths });
+    const result = resolve(false, both);
+    assert.equal(result.https, false);
+    assert.match(result.reason, /turned off.*--no-https/);
   });
 
   it('should use https when it is asked for', () => {
-    assert.deepEqual(resolve(true, both), { https: true, auto: false, ...paths });
+    const result = resolve(true, both);
+    assert.equal(result.https, true);
+    assert.match(result.reason, /asked for/);
   });
 
   it('should not start without the certificates when https is asked for', () => {

@@ -13,7 +13,7 @@ export const getCertificatePaths = (home = homedir()) => ({
  * runner.
  * @param {object} options
  * @param {boolean} [options.https] `--https` or `--no-https`
- * @returns {{ https: boolean, auto: boolean, keyPath: string, certPath: string }}
+ * @returns {{ https: boolean, reason: string, keyPath: string, certPath: string }} `reason` tells why it is served as it is
  */
 export const resolveHttps = ({ https, paths = getCertificatePaths(), exists = fs.existsSync } = {}) => {
   const { keyPath, certPath } = paths;
@@ -24,5 +24,17 @@ export const resolveHttps = ({ https, paths = getCertificatePaths(), exists = fs
     throw new Error(`Failed to start using HTTPS. Missing ${missing}, install certificates or use --no-https`);
   }
 
-  return { https: https ?? installed, auto: https === undefined, keyPath, certPath };
+  const dir = path.dirname(keyPath);
+  let reason;
+  if (https === true) {
+    reason = 'asked for with the https option';
+  } else if (https === false) {
+    reason = 'turned off with the https option, as with --no-https';
+  } else if (installed) {
+    reason = `certificates found in ${dir}`;
+  } else {
+    reason = `no certificates in ${dir}, install them to serve over https`;
+  }
+
+  return { https: https ?? installed, reason, keyPath, certPath };
 };

@@ -73,7 +73,7 @@ export default async ({
   entryWatcher,
   serveConfig,
 }) => {
-  const { https: HTTPS, auto, keyPath, certPath } = resolveHttps({ https: serveConfig.https });
+  const { https: HTTPS, reason: httpsReason, keyPath, certPath } = resolveHttps({ https: serveConfig.https });
   const url = `${HTTPS ? 'https' : 'http'}://${host}:${port}`;
 
   const snapshotRoute = '/njs';
@@ -223,9 +223,7 @@ export default async ({
     console.log(styledBanner());
 
     console.log(`Development server running at ${chalk.green(url)}`);
-    if (auto && !HTTPS) {
-      console.log(`No certificates in ${path.dirname(keyPath)}, serving over http. Install them to serve over https.`);
-    }
+    console.log(`Protocol: ${chalk.green(HTTPS ? 'https' : 'http')}, ${httpsReason}`);
 
     return { context: '', url, close };
   };
