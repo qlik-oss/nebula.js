@@ -16,22 +16,20 @@ import rsbuildServe from './rsbuild.serve.js';
 
 const require = createRequire(import.meta.url);
 
-// the file names of the modules in the urls that the micro frontend tooling asks for, @scope/name is scope-name.js
-const getFileName = (name, suffix) => `${name.replace(/^@/, '').replace(/\//g, '-')}${suffix}`;
-export const getSystemFileName = (name) => getFileName(name, '.js');
-export const getEsmFileName = (name) => getFileName(name, '.esm.js');
+// A file of the build is served at its path in the package, so that what a module imports by a relative url, such as the
+// chunks and the source maps, is served too. A file that is not in the package is served from the root.
+export const getUrlPath = (root, file) => {
+  const relative = path.relative(root, file);
+  return relative && !relative.startsWith('..') && !path.isAbsolute(relative)
+    ? `/${relative.split(path.sep).join('/')}`
+    : `/${path.basename(file)}`;
+};
 
-// `snPath` is the es module of the visualization and `systemPath` the systemjs module of it
-// `snName` is the type of the visualization and `moduleName` the name of the package, which the urls of the modules have
-export const initiateWatch = async ({ snPath, snName, moduleName = snName, host, systemPath }) => {
+// `snPath` is the es module of the visualization and `systemPath` the systemjs module of it, `root` is the package
+export const initiateWatch = async ({ snPath, snName, host, systemPath, root = process.cwd() }) => {
   if (!snPath) {
     return null;
   }
-  // TODO - timeout
-  let onInitiated;
-  const done = new Promise((resolve) => {
-    onInitiated = resolve;
-  });
 
   const wsPort = await portfinder.getPortPromise({ port: 5001, host });
 
@@ -43,10 +41,6 @@ export const initiateWatch = async ({ snPath, snName, moduleName = snName, host,
   const choker = chokidar.watch(snPath, {
     ignoreInitial: false,
     disableGlobbing: true,
-  });
-
-  choker.on('add', () => {
-    onInitiated();
   });
 
   choker.on('change', () => {
@@ -61,32 +55,10 @@ export const initiateWatch = async ({ snPath, snName, moduleName = snName, host,
 
   return {
     addRoutes(app, options) {
-      // the files of the build are where the build wrote them, the urls are the ones that the micro frontend tooling and
-      // the web app ask for
-      const modules = [
-        [getEsmFileName(moduleName), snPath],
-        ...(systemPath ? [[getSystemFileName(moduleName), systemPath]] : []),
-      ];
-      app.get('/:file', async (req, res, next) => {
-        const module = modules.find(([name]) => name === req.params.file);
-        if (!module) {
-          next();
-          return;
-        }
-        await done;
-        if (!fs.existsSync(module[1])) {
-          res.sendStatus(404);
-          return;
-        }
-        res.set(options.headers);
-        // a module script is only run when the type of it is javascript
-        res.type('text/javascript');
-        res.send(fs.readFileSync(module[1]));
-      });
-
-      // a code split module imports its chunks from `chunks`, relative to the url of the module
-      [...new Set(modules.map(([, file]) => path.join(path.dirname(file), 'chunks')))].forEach((dir) => {
-        app.use('/chunks', express.static(dir, { setHeaders: (res) => res.set(options.headers) }));
+      // the directories that nebula build writes to are served as they are
+      [...new Set([snPath, systemPath].filter(Boolean).map((file) => path.dirname(file)))].forEach((dir) => {
+        const urlPath = path.posix.dirname(getUrlPath(root, path.join(dir, 'file')));
+        app.use(urlPath, express.static(dir, { setHeaders: (res) => res.set(options.headers) }));
       });
     },
     async close() {
@@ -166,7 +138,7 @@ export default async (argv, { pages } = {}) => {
 
   const ww = snUrl
     ? null
-    : await initiateWatch({ snPath, snName: serveConfig.type || snName, moduleName: snName, host, systemPath });
+    : await initiateWatch({ snPath, snName: serveConfig.type || snName, host, systemPath, root: context });
 
   const server = await rsbuildServe({
     host,
@@ -177,7 +149,7 @@ export default async (argv, { pages } = {}) => {
     webIntegrationId: serveConfig.webIntegrationId,
     snName: serveConfig.type || snName,
     snUrl,
-    snModule: ww ? `/${getEsmFileName(snName)}` : undefined,
+    snModule: ww ? getUrlPath(context, snPath) : undefined,
     pages,
     open: serveConfig.open !== false,
     entryWatcher: ww,
@@ -185,8 +157,8 @@ export default async (argv, { pages } = {}) => {
   });
 
   if (systemPath) {
-    console.log(`SystemJS module served at ${server.url}/${getSystemFileName(snName)}`);
-    console.log(`ES module served at ${server.url}/${getEsmFileName(snName)}`);
+    console.log(`SystemJS module served at ${server.url}${getUrlPath(context, systemPath)}`);
+    console.log(`ES module served at ${server.url}${getUrlPath(context, snPath)}`);
   }
 
   const close = async () => {

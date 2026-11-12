@@ -2,9 +2,7 @@
 '@nebula.js/cli-serve': major
 ---
 
-feat!: `nebula serve` serves the SystemJS module at `/<package name>.js` and the es module at `/<package name>.esm.js`, `@scope/name` is `/scope-name.js`, also with `--type`. It builds and watches the `systemjs` field of package.json beside the `module` field, and `-p` is an alias of `--port`.
-
-The files are served from where nebula build wrote them, the chunks of a code split module from `/chunks`. The web app loads the es module from `/<package name>.esm.js`.
+feat!: `nebula serve` serves the directories that nebula build writes to, at the paths of the files in the package (`/dist/sn-viz.js`, `/dist/sn-viz.systemjs.js` and the chunks and source maps beside them), and the urls are printed when it has started. It builds and watches the `systemjs` field of package.json beside the `module` field, and `-p` is an alias of `--port`. The web app loads the es module from the path of the `module` field.
 
 **Breaking:**
 

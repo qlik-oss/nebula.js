@@ -108,20 +108,19 @@ is bundled into the visualization, also the ones that are `peerDependencies` of 
 
 A code split `module` imports its chunks from the `chunks` directory beside the entry, which nebula build writes.
 
-### SystemJS and es module
+### The modules of the visualization
 
-Nebula serve serves the es module (the `module` field of `package.json`) and the SystemJS module (the `systemjs` field),
-which it builds and watches beside the es module of the web app:
+Nebula serve builds and watches the es module (the `module` field of `package.json`) and the SystemJS module (the
+`systemjs` field), and serves the directories that nebula build writes them to. A file is served at its path in the
+package, so the chunks and the source maps that a module imports by a relative url are served too:
 
 ```
-http://<host>:<port>/<package name>.js       the SystemJS module
-http://<host>:<port>/<package name>.esm.js   the es module
+https://<host>:<port>/dist/sn-viz.js            the es module, when "module" is dist/sn-viz.js
+https://<host>:<port>/dist/sn-viz.systemjs.js   the SystemJS module, when "systemjs" is dist/sn-viz.systemjs.js
+https://<host>:<port>/dist/chunks/...           the chunks of a code split module
 ```
 
-The package name has the `@` removed and the `/` replaced by `-`, `@scope/sn-viz` is served at `/scope-sn-viz.js` and
-`/scope-sn-viz.esm.js`. The files are not copied, they are served from where nebula build wrote them. A code split module
-imports its chunks from `chunks` relative to its url, and `/chunks` is served from the `chunks` directory beside the
-module. The names are the one of the package, also with `--type`.
+The urls are printed when nebula serve has started.
 
 ### HTTPS
 
