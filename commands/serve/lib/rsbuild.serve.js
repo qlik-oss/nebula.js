@@ -201,6 +201,8 @@ export default async ({
           '/render': {
             target: `${url}/eRender.html`,
             ignorePath: true,
+            // the server calls itself, and the local certificate is not one that node trusts
+            secure: false,
           },
         },
       },
