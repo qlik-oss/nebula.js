@@ -52,9 +52,12 @@ const addImportMap = () => {
 // the visualization is the default export of a module
 const visualization = (m) => (m && typeof m === 'object' && 'default' in m ? m.default : m);
 
+// the url of the es module of a visualization, the same as the one that nebula serve serves it at
+const getModuleUrl = (name) => `/${name.replace(/^@/, '').replace(/\//g, '-')}.esm.js`;
+
 export const getModule = async (name, url) => {
   addImportMap();
-  const src = url || `/pkg/${encodeURIComponent(name)}`;
+  const src = url || getModuleUrl(name);
   // a new url for every load, since a module that was imported is never loaded again
   const mod = await import(/* webpackIgnore: true */ `${src}${src.includes('?') ? '&' : '?'}t=${Date.now()}`);
   return visualization(mod);

@@ -106,8 +106,7 @@ The page has `@nebula.js/stardust`, `react`, `react-dom`, `react-dom/client` and
 visualization imports those by their names, so that the page and the visualization share one of each. Any other module
 is bundled into the visualization, also the ones that are `peerDependencies` of it.
 
-A code split `module` imports its chunks relatively, and these are served from the directory of the `module` file, so the
-chunks have to be written beside the entry.
+A code split `module` imports its chunks from the `chunks` directory beside the entry, which nebula build writes.
 
 ### SystemJS and es module
 
@@ -120,7 +119,9 @@ http://<host>:<port>/<package name>.esm.js   the es module
 ```
 
 The package name has the `@` removed and the `/` replaced by `-`, `@scope/sn-viz` is served at `/scope-sn-viz.js` and
-`/scope-sn-viz.esm.js`. The chunks of a code split module are served beside them. `--type` overrides the package name.
+`/scope-sn-viz.esm.js`. The files are not copied, they are served from where nebula build wrote them. A code split module
+imports its chunks from `chunks` relative to its url, and `/chunks` is served from the `chunks` directory beside the
+module. `--type` overrides the package name.
 
 ### HTTPS
 

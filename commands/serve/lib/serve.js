@@ -7,6 +7,7 @@ import extend from 'extend';
 import yargs from 'yargs';
 import { WebSocketServer } from 'ws';
 import chokidar from 'chokidar';
+import express from 'express';
 import build from '@nebula.js/cli-build';
 
 import initConfig from './init-config.js';
@@ -15,21 +16,12 @@ import rsbuildServe from './rsbuild.serve.js';
 
 const require = createRequire(import.meta.url);
 
-// a code split module imports its chunks, and their source maps, from beside the entry
-const siblingFile = (snPath, name) => {
-  if (path.basename(name) !== name || name === '.' || name === '..') {
-    return null;
-  }
-  const file = path.join(path.dirname(snPath), name);
-  return fs.existsSync(file) && fs.statSync(file).isFile() ? file : null;
-};
-
 // the file names of the modules in the urls that the micro frontend tooling asks for, @scope/name is scope-name.js
 const getFileName = (name, suffix) => `${name.replace(/^@/, '').replace(/\//g, '-')}${suffix}`;
 export const getSystemFileName = (name) => getFileName(name, '.js');
 export const getEsmFileName = (name) => getFileName(name, '.esm.js');
 
-// `systemPath` is the systemjs module when `snPath` is the es module of the visualization
+// `snPath` is the es module of the visualization and `systemPath` the systemjs module of it
 export const initiateWatch = async ({ snPath, snName, host, systemPath }) => {
   if (!snPath) {
     return null;
@@ -66,72 +58,34 @@ export const initiateWatch = async ({ snPath, snName, host, systemPath }) => {
     });
   });
 
-  const cache = {};
-
-  const send = (res, file, headers) => {
-    if (fs.existsSync(file)) {
-      res.set(headers);
-      // a module script is only run when the type of it is javascript
-      res.type(/\.map$/.test(file) ? 'application/json' : 'text/javascript');
-      res.send(fs.readFileSync(file));
-    } else {
-      res.sendStatus('404');
-    }
-  };
-
   return {
     addRoutes(app, options) {
-      // the chunks of a code split module are loaded relative to the url of the module
+      // the files of the build are where the build wrote them, the urls are the ones that the micro frontend tooling and
+      // the web app ask for
       const modules = [
         [getEsmFileName(snName), snPath],
         ...(systemPath ? [[getSystemFileName(snName), systemPath]] : []),
       ];
       app.get('/:file', async (req, res, next) => {
-        const { file } = req.params;
-        const module = modules.find(([name]) => name === file);
-        const target = module
-          ? module[1]
-          : /\.(js|map)$/.test(file) && modules.map(([, p]) => siblingFile(p, file)).find(Boolean);
-        if (target) {
-          await done;
-          send(res, target, options.headers);
-        } else {
+        const module = modules.find(([name]) => name === req.params.file);
+        if (!module) {
           next();
+          return;
         }
+        await done;
+        if (!fs.existsSync(module[1])) {
+          res.sendStatus(404);
+          return;
+        }
+        res.set(options.headers);
+        // a module script is only run when the type of it is javascript
+        res.type('text/javascript');
+        res.send(fs.readFileSync(module[1]));
       });
 
-      app.get('/pkg/:name', async (req, res) => {
-        const { name } = req.params;
-        await done;
-
-        const sibling = snPath ? siblingFile(snPath, name) : null;
-
-        let file;
-        if (cache[name]) {
-          file = cache[name];
-        } else if (name === snName) {
-          file = snPath;
-        } else if (sibling) {
-          file = sibling;
-        } else if (/\.map$/.test(name)) {
-          const sources = Object.keys(cache);
-          for (let i = 0; i < sources.length; i++) {
-            const p = cache[sources[i]];
-            const filename = path.basename(p);
-            if (`${filename}.map` === name) {
-              file = path.resolve(path.dirname(p), name);
-              break;
-            }
-          }
-        } else {
-          file = require.resolve(name, {
-            paths: [process.cwd()],
-          });
-        }
-
-        cache[name] = file;
-
-        send(res, file, options.headers);
+      // a code split module imports its chunks from `chunks`, relative to the url of the module
+      [...new Set(modules.map(([, file]) => path.join(path.dirname(file), 'chunks')))].forEach((dir) => {
+        app.use('/chunks', express.static(dir, { setHeaders: (res) => res.set(options.headers) }));
       });
     },
     async close() {
