@@ -108,6 +108,9 @@ The page has `@nebula.js/stardust`, `react`, `react-dom`, `react-dom/client` and
 visualization imports those by their names, so that the page and the visualization share one of each. Any other module
 is bundled into the visualization, also the ones that are `peerDependencies` of it.
 
+A code split `module` imports its chunks relatively, and these are served from the directory of the `module` file, so the
+chunks have to be written beside the entry.
+
 ### Micro Frontend (MFE) Mode
 
 The MFE mode activated with the `--mfe` option, builds a visualisation as a SystemJS module (the `systemjs` field of

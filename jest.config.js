@@ -67,8 +67,8 @@ const config = {
   modulePathIgnorePatterns: ['<rootDir>/local-dev/.*/.yalc/', '<rootDir>/.claude/'],
   testPathIgnorePatterns: [
     '/node_modules/',
-    '<rootDir>/commands/serve/test/e2e/',
-    // run by node's test runner (`pnpm test` in the package), they build real projects
+    '<rootDir>/commands/serve/test/',
+    // run by node's test runner (`pnpm test` in the package), they build real projects or load the ESM of the command
     '<rootDir>/commands/(build|sense)/test/',
   ],
 };

@@ -35,6 +35,7 @@
     "build:dev": "cross-env NODE_ENV=development rsbuild build --config ./rsbuild.config.mjs",
     "lint": "eslint web",
     "start": "node dev.js",
+    "test": "node --test test/*.test.js",
     "prepublishOnly": "rm -rf dist && pnpm run build"
   },
   "dependencies": {

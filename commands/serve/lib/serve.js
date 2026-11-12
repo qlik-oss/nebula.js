@@ -15,7 +15,16 @@ import rsbuildServe from './rsbuild.serve.js';
 
 const require = createRequire(import.meta.url);
 
-const initiateWatch = async ({ snPath, snName, host }) => {
+// a code split module imports its chunks, and their source maps, from beside the entry
+const siblingFile = (snPath, name) => {
+  if (path.basename(name) !== name || name === '.' || name === '..') {
+    return null;
+  }
+  const file = path.join(path.dirname(snPath), name);
+  return fs.existsSync(file) && fs.statSync(file).isFile() ? file : null;
+};
+
+export const initiateWatch = async ({ snPath, snName, host }) => {
   if (!snPath) {
     return null;
   }
@@ -59,11 +68,15 @@ const initiateWatch = async ({ snPath, snName, host }) => {
         const { name } = req.params;
         await done;
 
+        const sibling = snPath ? siblingFile(snPath, name) : null;
+
         let file;
         if (cache[name]) {
           file = cache[name];
         } else if (name === snName) {
           file = snPath;
+        } else if (sibling) {
+          file = sibling;
         } else if (/\.map$/.test(name)) {
           const sources = Object.keys(cache);
           for (let i = 0; i < sources.length; i++) {
