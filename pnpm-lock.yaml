@@ -318,8 +318,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/ui
       '@qlik/api':
-        specifier: 2.21.0
-        version: 2.21.0
+        specifier: 2.22.0
+        version: 2.22.0
       '@testing-library/dom':
         specifier: ^10.4.2
         version: 10.4.2
@@ -414,8 +414,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/ui
       '@qlik/api':
-        specifier: 2.21.0
-        version: 2.21.0
+        specifier: 2.22.0
+        version: 2.22.0
       '@rollup/plugin-babel':
         specifier: 7.1.0
         version: 7.1.0(@babel/core@7.29.13(supports-color@11.0.0))(@types/babel__core@7.20.5)(rollup@4.67.5)(supports-color@11.0.0)
@@ -719,8 +719,8 @@ importers:
         specifier: workspace:*
         version: link:../build
       '@qlik/api':
-        specifier: 2.21.0
-        version: 2.21.0
+        specifier: 2.22.0
+        version: 2.22.0
       body-parser:
         specifier: 2.4.0
         version: 2.4.0(supports-color@11.0.0)
@@ -3111,8 +3111,8 @@ packages:
     resolution: {integrity: sha512-NzGsmfwiSAHOhd7GsCcdi67y2FLl1oODGfrLt74oPm8qXxPULOiZxJVbovBCkvXvbniEkqkoXWznL8vbvYJB7g==}
     engines: {node: '>=20.0.0'}
 
-  '@qlik/api@2.21.0':
-    resolution: {integrity: sha512-IwcqACUxhRJaEdGaMRQjVrE5kPa2uMgjRYgooDn8FVOQOiXqeXBZksuQydo23ssxbzoBBsO/pwEHeCaLf7X+Tw==}
+  '@qlik/api@2.22.0':
+    resolution: {integrity: sha512-1/vpOY8bPGCHYhtzDv10P3OZqEyebeCG3djpf+0fGGL/3bv8jEWK5ICVdI01aNLvTOgyLMMbN1F770TcS2RqGA==}
     engines: {node: '>=20.0.0'}
 
   '@qlik/browserslist-config@3.1.0':
@@ -12768,7 +12768,7 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@qlik/api@2.21.0':
+  '@qlik/api@2.22.0':
     dependencies:
       enigma.js: 2.15.0
       extend: 3.0.2
