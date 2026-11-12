@@ -44,8 +44,6 @@ Options:
       --fixturePath         Path to a folder that will be used as basis when
                             locating fixtures
                                             [string] [default: "test/component"]
-      --mfe                 Serves bundle to use in micro frontend
-                                                      [boolean] [default: false]
   -h, --help                Show help                                  [boolean]
       --open                Open up in browser         [boolean] [default: true]
 ```
@@ -122,23 +120,10 @@ http://<host>:<port>/<package name>.js
 The package name has the `@` removed and the `/` replaced by `-`, `@scope/sn-viz` is served at `/scope-sn-viz.js`, and the
 chunks of a code split module are served beside it. `--type` overrides the package name.
 
-### Micro Frontend (MFE) Mode
+### HTTPS
 
-The MFE mode activated with the `--mfe` option, builds a visualisation as a SystemJS module (the `systemjs` field of
-`package.json`) which is used in a micro frontend environment. The visualisation is served at:
-
-```
-https://<host>:<port>/pkg/<module name>
-```
-
-The module name is by default the name in `package.json` but may be overridden using the
-`--type` option.
-
-The MFE mode runs in HTTPS which requires certificates to be installed in the
-environment running nebula serve.
-
-The regular dev environment in nebula serve is disabled when running in this mode, and only the SystemJS module is built.
-The SystemJS module is also served at `/<package name>.js`, as it is without the `--mfe` option.
+The `--https` option serves over HTTPS, which requires certificates to be installed in the environment running nebula
+serve. Use it when the page that loads the SystemJS module is served over HTTPS.
 
 #### How to install trusted certificates locally
 

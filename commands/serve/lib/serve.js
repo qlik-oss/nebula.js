@@ -183,8 +183,7 @@ export default async (argv, { pages } = {}) => {
       //
     }
     // the web app loads the es module, the micro frontend tooling loads the systemjs module, so both are served
-    // unless it is the micro frontend mode, which does not have the web app
-    const formats = serveConfig.mfe ? ['systemjs'] : ['esm', ...(externalPkg.systemjs ? ['systemjs'] : [])];
+    const formats = ['esm', ...(externalPkg.systemjs ? ['systemjs'] : [])];
     if (serveConfig.build !== false) {
       // the formats of one package are built one after the other, to keep the output of the builds apart
       await formats.reduce(async (previous, format) => {
@@ -194,7 +193,7 @@ export default async (argv, { pages } = {}) => {
       // build({ watch }) has no watcher when the build is not possible
       watcher = { close: () => Promise.all(watchers.map((w) => w && w.close())) };
     }
-    const externalEntry = serveConfig.mfe ? externalPkg.systemjs : externalPkg.module;
+    const externalEntry = externalPkg.module;
     if (externalEntry) {
       snName = externalPkg.name;
       snPath = path.resolve(context, externalEntry);
@@ -216,7 +215,7 @@ export default async (argv, { pages } = {}) => {
     snName: serveConfig.type || snName,
     snUrl,
     pages,
-    open: serveConfig.open !== false && !serveConfig.mfe,
+    open: serveConfig.open !== false,
     entryWatcher: ww,
     serveConfig,
   });
