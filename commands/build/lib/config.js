@@ -107,14 +107,8 @@ const config = ({
 
   const extensions = ['.mjs', '.js', '.jsx', '.json', '.node'];
 
-  let typescriptPlugin;
   if (typescript) {
     extensions.push('.tsx', '.ts');
-    try {
-      typescriptPlugin = require('@rollup/plugin-typescript'); // eslint-disable-line
-    } catch (e) {
-      throw new Error(`${e}\n '@rollup/plugin-typescript' is required to build using typescript.`);
-    }
   }
 
   const external = core ? getExternalCore({ pkg }) : getExternal({ pkg, config: argv });
