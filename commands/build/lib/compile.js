@@ -9,8 +9,10 @@ const formatErrors = (stats) => stats.toString({ all: false, errors: true, error
  * Rslib with what a build of nebula needs: it prints nothing itself, the stats of the compilations are
  * handed to `onCompile` and the build is started with the plugin of `hooks`.
  */
-const create = async ({ cwd, config }, hooks = () => {}) =>
-  createRslib({
+const create = async ({ cwd, config }, hooks = () => {}) => {
+  // rsbuild takes its mode, and the NODE_ENV it defines, from the environment and not from `config.mode`
+  process.env.NODE_ENV = config.mode;
+  return createRslib({
     cwd,
     config: {
       ...config,
@@ -18,6 +20,7 @@ const create = async ({ cwd, config }, hooks = () => {}) =>
       plugins: [{ name: 'nebula-build', setup: hooks }],
     },
   });
+};
 
 /**
  * Run a build once and resolve when it is written to disk.
