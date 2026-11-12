@@ -5,7 +5,7 @@ import { createRequire } from 'module';
 import { rspack } from '@rslib/core';
 
 import builtins from './builtins.js';
-import matchPeers from './peers.js';
+import matchPeers, { isExternal } from './peers.js';
 
 const require = createRequire(import.meta.url);
 const dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -109,7 +109,7 @@ const config = ({
 
   const external = core ? getExternalCore({ pkg }) : getExternal({ pkg, config: argv });
   // stardust should always be external
-  if (external.indexOf('@nebula.js/stardust') === -1) {
+  if (!isExternal(external, '@nebula.js/stardust')) {
     console.warn('@nebula.js/stardust should be specified as a peer dependency');
     external.push('@nebula.js/stardust');
   }
@@ -179,6 +179,28 @@ const config = ({
       : []),
   ];
 
+  // rsbuild caches a build on disk and only looks at its own config files, nebula has none: what the output depends
+  // on is the digest, and nebula.config.js is watched
+  const configFile = typeof argv.config === 'string' ? path.resolve(CWD, argv.config) : undefined;
+  const buildCache = {
+    buildDependencies: configFile && fs.existsSync(configFile) ? [configFile] : [],
+    cacheDigest: [
+      JSON.stringify({
+        format,
+        mode,
+        external: external.map(String),
+        replacementStrings,
+        typescript: !!typescript,
+        browser: !!browser,
+        codeSplit: !!argv.codeSplit,
+        inlineDynamic: !!argv.inlineDynamic,
+        sourcemap: !!sourcemap,
+        core: core || null,
+        reactNative: !!reactNative,
+      }),
+    ],
+  };
+
   const name = path.basename(outputFile).replace(/\.js$/, '');
 
   const lib = {
@@ -186,6 +208,7 @@ const config = ({
     format: isEsm ? 'esm' : 'iife',
     bundle: true,
     syntax: browsersList,
+    performance: { buildCache },
     banner: { js: banner },
     source: {
       entry: {
@@ -204,7 +227,7 @@ const config = ({
       filename: { js: path.basename(outputFile) },
       minify: !development,
       sourceMap: sourcemap ? { js: 'source-map' } : false,
-      externals: matchPeers(external),
+      externals: matchPeers(external, format),
       // the notices of the licenses go to <bundle>.LICENSE.txt
       legalComments: 'linked',
       cleanDistPath: false,

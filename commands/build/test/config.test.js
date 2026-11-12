@@ -209,4 +209,50 @@ describe('build config', () => {
       console.warn = warn;
     }
   });
+
+  it('leaves a package out of a systemjs bundle by its name, and the modules of it out of an es module bundle', () => {
+    const cwd = makeProject();
+    const externalsOf = (format) => libOf(config({ format, cwd, argv: argv() })).output.externals;
+    const matches = (format, id) => externalsOf(format).some((rx) => rx.test(id));
+    assert.ok(matches('systemjs', 'react'));
+    assert.ok(!matches('systemjs', 'react/jsx-runtime'));
+    assert.ok(!matches('systemjs', 'react-dom/client'));
+    assert.ok(matches('esm', 'react'));
+    assert.ok(matches('esm', 'react/jsx-runtime'));
+    assert.ok(!matches('esm', 'reactive'));
+  });
+
+  it('keeps a regular expression external as it is', () => {
+    const cwd = makeProject();
+    const rx = /^react\/.*$/;
+    const cfg = config({ format: 'systemjs', cwd, argv: argv(), behaviours: { getExternal: () => [rx] } });
+    assert.ok(libOf(cfg).output.externals.includes(rx));
+  });
+
+  it('does not warn about stardust when a regular expression matches it', () => {
+    const cwd = makeProject();
+    const { warn } = console;
+    const warnings = [];
+    console.warn = (m) => warnings.push(m);
+    try {
+      config({ format: 'esm', cwd, argv: argv(), behaviours: { getExternal: () => [/^@nebula\.js\//] } });
+      assert.deepEqual(warnings, []);
+    } finally {
+      console.warn = warn;
+    }
+  });
+
+  it('keys the build cache on what the output depends on and on nebula.config.js', () => {
+    const cwd = makeProject({}, { 'nebula.config.js': 'module.exports = {};\n' });
+    const cache = (extra, mode) =>
+      libOf(config({ format: 'systemjs', mode, cwd, argv: argv(extra), behaviours: systemjsBehaviours })).performance
+        .buildCache;
+    assert.deepEqual(cache({ config: 'nebula.config.js' }).buildDependencies, [path.join(cwd, 'nebula.config.js')]);
+    assert.deepEqual(cache({}).buildDependencies, []);
+    const digest = (extra, mode) => cache(extra, mode).cacheDigest;
+    assert.notDeepEqual(digest({ replacementStrings: { a: '1' } }), digest({ replacementStrings: { a: '2' } }));
+    assert.notDeepEqual(digest({ systemjs: { external: [/^a$/] } }), digest({ systemjs: { external: [/^b$/] } }));
+    assert.notDeepEqual(digest({}, 'development'), digest({}, 'production'));
+    assert.deepEqual(digest({ typescript: true }), digest({ typescript: true }));
+  });
 });

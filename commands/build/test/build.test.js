@@ -386,6 +386,48 @@ export default () => ({ el: Comp({ label: 'hi' }), spread: { ...{ a: 1 }, b: 2 }
       assert.equal(out.optional, 'none');
     });
 
+    it('bundles the modules of a peer for systemjs, a host resolves only the names it lists', async () => {
+      write('node_modules/react/package.json', JSON.stringify({ name: 'react', main: 'index.js' }));
+      write('node_modules/react/index.js', 'module.exports = { useState: (v) => [v] };\n');
+      write(
+        'node_modules/react/jsx-runtime.js',
+        'exports.jsx = (type, props) => ({ type, props });\nexports.jsxs = exports.jsx;\n'
+      );
+      write('src/Comp.jsx', 'export default ({ label }) => <span>{label}</span>;\n');
+      write(
+        'src/index.js',
+        `import { useState } from 'react';\nimport Comp from './Comp.jsx';\nexport default () => [useState, Comp];\n`
+      );
+      write(
+        'package.json',
+        JSON.stringify({
+          name: '@acme/viz',
+          version: '2.3.4',
+          module: 'dist/viz.esm.js',
+          systemjs: 'dist/viz.systemjs.js',
+          peerDependencies: { '@nebula.js/stardust': '*', react: '*' },
+        })
+      );
+      await run({ mode: 'development' });
+      assert.deepEqual(plain(loadSystem('dist/viz.systemjs.js').deps), ['react']);
+    });
+
+    it('builds again when the externals or the replacementStrings change, the cache does not hide it', async () => {
+      write('src/index.js', `export default function supernova() { return { version: __VERSION__ }; }\n`);
+      await run({ replacementStrings: { __VERSION__: '"1"' } });
+      assert.equal((await loadEsm('dist/viz.esm.js')).exports().version, '1');
+      await run({ replacementStrings: { __VERSION__: '"2"' } });
+      assert.equal((await loadEsm('dist/viz.esm.js')).exports().version, '2');
+
+      write('node_modules/other/package.json', JSON.stringify({ name: 'other', main: 'index.js' }));
+      write('node_modules/other/index.js', 'module.exports = 1;\n');
+      write('src/index.js', `import other from 'other';\nexport default () => other;\n`);
+      await run({ systemjs: true });
+      assert.deepEqual(plain(loadSystem('dist/viz.systemjs.js').deps), []);
+      await run({ systemjs: { external: [/^other$/] } });
+      assert.deepEqual(plain(loadSystem('dist/viz.systemjs.js').deps), ['other']);
+    });
+
     it('builds typescript with the typescript option', async () => {
       write('src/types.ts', 'export interface Options { n: number }\nexport enum Kind { A = "a" }\n');
       write(
