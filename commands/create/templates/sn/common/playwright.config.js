@@ -17,7 +17,7 @@ export default {
   ],
 
   webServer: {
-    command: 'pnpm start --port 8077 --open false',
+    command: 'pnpm start --port 8077 --open false --no-https',
     reuseExistingServer: !process.env.CI,
     port: '8077',
   },
