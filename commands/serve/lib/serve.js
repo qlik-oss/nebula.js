@@ -24,8 +24,10 @@ const siblingFile = (snPath, name) => {
   return fs.existsSync(file) && fs.statSync(file).isFile() ? file : null;
 };
 
-// the file name of the systemjs module in the url that the micro frontend tooling asks for, @scope/name is scope-name.js
-export const getSystemFileName = (name) => `${name.replace(/^@/, '').replace(/\//g, '-')}.js`;
+// the file names of the modules in the urls that the micro frontend tooling asks for, @scope/name is scope-name.js
+const getFileName = (name, suffix) => `${name.replace(/^@/, '').replace(/\//g, '-')}${suffix}`;
+export const getSystemFileName = (name) => getFileName(name, '.js');
+export const getEsmFileName = (name) => getFileName(name, '.esm.js');
 
 // `systemPath` is the systemjs module when `snPath` is the es module of the visualization
 export const initiateWatch = async ({ snPath, snName, host, systemPath }) => {
@@ -79,20 +81,24 @@ export const initiateWatch = async ({ snPath, snName, host, systemPath }) => {
 
   return {
     addRoutes(app, options) {
-      if (systemPath) {
-        // the chunks of a code split systemjs module are loaded relative to the url of the module
-        const systemFileName = getSystemFileName(snName);
-        app.get('/:file', (req, res, next) => {
-          const { file } = req.params;
-          const target =
-            file === systemFileName ? systemPath : /\.(js|map)$/.test(file) && siblingFile(systemPath, file);
-          if (target) {
-            send(res, target, options.headers);
-          } else {
-            next();
-          }
-        });
-      }
+      // the chunks of a code split module are loaded relative to the url of the module
+      const modules = [
+        [getEsmFileName(snName), snPath],
+        ...(systemPath ? [[getSystemFileName(snName), systemPath]] : []),
+      ];
+      app.get('/:file', async (req, res, next) => {
+        const { file } = req.params;
+        const module = modules.find(([name]) => name === file);
+        const target = module
+          ? module[1]
+          : /\.(js|map)$/.test(file) && modules.map(([, p]) => siblingFile(p, file)).find(Boolean);
+        if (target) {
+          await done;
+          send(res, target, options.headers);
+        } else {
+          next();
+        }
+      });
 
       app.get('/pkg/:name', async (req, res) => {
         const { name } = req.params;
@@ -222,6 +228,7 @@ export default async (argv, { pages } = {}) => {
 
   if (systemPath) {
     console.log(`SystemJS module served at ${server.url}/${getSystemFileName(serveConfig.type || snName)}`);
+    console.log(`ES module served at ${server.url}/${getEsmFileName(serveConfig.type || snName)}`);
   }
 
   const close = async () => {

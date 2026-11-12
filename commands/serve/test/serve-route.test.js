@@ -5,7 +5,7 @@ import os from 'os';
 import path from 'path';
 import express from 'express';
 
-import { initiateWatch, getSystemFileName } from '../lib/serve.js';
+import { initiateWatch, getSystemFileName, getEsmFileName } from '../lib/serve.js';
 
 describe('/pkg/:name', () => {
   let dir;
@@ -121,6 +121,14 @@ describe('/<name>.js', () => {
   it('should name the file after the package without the @ and the /', () => {
     assert.equal(getSystemFileName('@scope/sn-viz'), 'scope-sn-viz.js');
     assert.equal(getSystemFileName('sn-viz'), 'sn-viz.js');
+    assert.equal(getEsmFileName('@scope/sn-viz'), 'scope-sn-viz.esm.js');
+  });
+
+  it('should serve the es module', async () => {
+    const res = await get('scope-sn-viz.esm.js');
+    assert.equal(res.status, 200);
+    assert.match(res.headers.get('content-type'), /javascript/);
+    assert.equal(await res.text(), 'export default "esm";');
   });
 
   it('should serve the systemjs module, not the es module', async () => {

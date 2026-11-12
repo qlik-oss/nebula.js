@@ -109,16 +109,18 @@ is bundled into the visualization, also the ones that are `peerDependencies` of 
 A code split `module` imports its chunks relatively, and these are served from the directory of the `module` file, so the
 chunks have to be written beside the entry.
 
-### SystemJS module
+### SystemJS and es module
 
-When `package.json` has a `systemjs` field, nebula serve builds and watches the SystemJS module beside the es module of the web app and serves it at:
+Nebula serve serves the es module (the `module` field of `package.json`) and the SystemJS module (the `systemjs` field),
+which it builds and watches beside the es module of the web app:
 
 ```
-http://<host>:<port>/<package name>.js
+http://<host>:<port>/<package name>.js       the SystemJS module
+http://<host>:<port>/<package name>.esm.js   the es module
 ```
 
-The package name has the `@` removed and the `/` replaced by `-`, `@scope/sn-viz` is served at `/scope-sn-viz.js`, and the
-chunks of a code split module are served beside it. `--type` overrides the package name.
+The package name has the `@` removed and the `/` replaced by `-`, `@scope/sn-viz` is served at `/scope-sn-viz.js` and
+`/scope-sn-viz.esm.js`. The chunks of a code split module are served beside them. `--type` overrides the package name.
 
 ### HTTPS
 
