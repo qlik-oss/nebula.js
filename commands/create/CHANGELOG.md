@@ -1,5 +1,11 @@
 # Change Log
 
+## 8.0.0-alpha.3
+
+### Patch Changes
+
+- [#2455](https://github.com/qlik-oss/nebula.js/pull/2455) [`19a0568`](https://github.com/qlik-oss/nebula.js/commit/19a0568fec468b6ea7fc0f84c7dd463755d39a57) Thanks [@enell](https://github.com/enell)! - fix: the e2e tests of a created visualization serve over http (`--no-https`), as their base url is `http://localhost`
+
 ## 8.0.0-alpha.2
 
 ### Patch Changes

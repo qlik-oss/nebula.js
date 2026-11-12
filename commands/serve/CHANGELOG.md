@@ -1,5 +1,23 @@
 # Change Log
 
+## 8.0.0-alpha.3
+
+### Major Changes
+
+- [#2455](https://github.com/qlik-oss/nebula.js/pull/2455) [`19a0568`](https://github.com/qlik-oss/nebula.js/commit/19a0568fec468b6ea7fc0f84c7dd463755d39a57) Thanks [@enell](https://github.com/enell)! - feat!: `nebula serve` serves the directories that nebula build writes to from the root, so the es module and the SystemJS module are at their file names (`/sn-viz.js` and `/sn-viz.systemjs.js` for `dist/sn-viz.js` and `dist/sn-viz.systemjs.js`), with the chunks and the source maps beside them. The urls are printed when it has started. It builds and watches the `systemjs` field of package.json beside the `module` field, and `-p` is an alias of `--port`. The web app loads the es module from its file name.
+
+  **Breaking:**
+
+  - `--mfe` is removed, `nebula serve` serves the web app and the SystemJS module together. Remove `--mfe` from the scripts that start nebula serve.
+  - `/pkg/<name>` is removed.
+  - Nebula serve serves over HTTPS when the certificates are installed in `~/.certs`, as `--mfe` did, and over HTTP when they are not, with a message. `--https` requires the certificates and `--no-https` serves over HTTP also when they are installed, see the README.
+
+### Patch Changes
+
+- [#2446](https://github.com/qlik-oss/nebula.js/pull/2446) [`c1d2c4e`](https://github.com/qlik-oss/nebula.js/commit/c1d2c4e1e0845e172fa4ab1beb577e141eac1116) Thanks [@enell](https://github.com/enell)! - fix: serve the chunks of a code split `module` from beside the entry, so that `nebula serve` can render a visualization built with `codeSplit`
+- Updated dependencies [[`19a0568`](https://github.com/qlik-oss/nebula.js/commit/19a0568fec468b6ea7fc0f84c7dd463755d39a57), [`a071006`](https://github.com/qlik-oss/nebula.js/commit/a0710061dea3ce882a63e1ceaa897b4b756ded72), [`97f95c7`](https://github.com/qlik-oss/nebula.js/commit/97f95c7062fe76f89ca6fb82db36da18fa55c5e7), [`2142d8d`](https://github.com/qlik-oss/nebula.js/commit/2142d8d7cf942758f753658151de18abf74bd0b6)]:
+  - @nebula.js/cli-build@8.0.0-alpha.3
+
 ## 8.0.0-alpha.2
 
 ### Patch Changes

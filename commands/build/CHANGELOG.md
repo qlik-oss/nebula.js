@@ -1,5 +1,19 @@
 # Change Log
 
+## 8.0.0-alpha.3
+
+### Patch Changes
+
+- [#2455](https://github.com/qlik-oss/nebula.js/pull/2455) [`19a0568`](https://github.com/qlik-oss/nebula.js/commit/19a0568fec468b6ea7fc0f84c7dd463755d39a57) Thanks [@enell](https://github.com/enell)! - fix: a development build, as `nebula serve` makes, no longer imports `react/jsx-dev-runtime`. React is left out of the bundle and the host of it, such as the page of nebula serve, has the production runtime, so the module could not be loaded.
+
+- [#2445](https://github.com/qlik-oss/nebula.js/pull/2445) [`a071006`](https://github.com/qlik-oss/nebula.js/commit/a0710061dea3ce882a63e1ceaa897b4b756ded72) Thanks [@enell](https://github.com/enell)! - fix: write a code split build (`--codeSplit`) to the files that the `module` and `systemjs` fields of package.json name, with the chunks beside them, and let `build({ watch: true })` watch the es module like `--watch` does
+
+  A code split build no longer writes `index.js` to the first directory of the field. This is a breaking change for 7.x wrapper scripts that move `dist/index.js` after a code split systemjs build (`mv dist/index.js ...`): the file is now named by the field, and the chunks are named `<entry>.<name>-<contenthash>.js` so that the es and systemjs bundles of one package do not overwrite each other.
+
+- [#2454](https://github.com/qlik-oss/nebula.js/pull/2454) [`97f95c7`](https://github.com/qlik-oss/nebula.js/commit/97f95c7062fe76f89ca6fb82db36da18fa55c5e7) Thanks [@enell](https://github.com/enell)! - fix: a code split es module build no longer fails with "Multiple assets emit different content to the same filename" when the entry and a dynamic import share modules. The shared modules are written to `<entry>.<id>-<contenthash>.js` and the entry file re-exports them.
+
+- [#2444](https://github.com/qlik-oss/nebula.js/pull/2444) [`2142d8d`](https://github.com/qlik-oss/nebula.js/commit/2142d8d7cf942758f753658151de18abf74bd0b6) Thanks [@enell](https://github.com/enell)! - fix: remove the warnings of builds that were wrong or noise. `nebula build --mode development` no longer warns about conflicting values for `process.env.NODE_ENV`, `nebula sense` no longer warns that the qext file should be in the `files` array when its directory is, and no longer warns about unresolved imports of sources that are not in the extension, which came from the build cache directory that it shared with `nebula build`
+
 ## 8.0.0-alpha.2
 
 ### Patch Changes
