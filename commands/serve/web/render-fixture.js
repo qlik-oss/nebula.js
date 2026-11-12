@@ -29,7 +29,7 @@ const getServeOptions = ({ themes = [], supernova = {}, flags, anything }) => {
     options.type = supernova.name;
   }
   if (supernova.name || supernova.url) {
-    options.load = async () => getModule(supernova.name, supernova.url);
+    options.load = async () => getModule(supernova.name, supernova.url || supernova.module);
   }
 
   return options;

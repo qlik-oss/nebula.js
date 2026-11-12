@@ -3,7 +3,6 @@ import path from 'path';
 import fs from 'fs';
 import http from 'http';
 import https from 'https';
-import { homedir } from 'os';
 import { fileURLToPath } from 'url';
 import chalk from 'chalk';
 import express from 'express';
@@ -11,12 +10,9 @@ import { createRsbuild } from '@rsbuild/core';
 
 import snapshooterFn from './snapshot-server.js';
 import snapshotRouter from './snapshot-router.js';
+import { resolveHttps } from './https.js';
 
 const moduleDir = path.dirname(fileURLToPath(import.meta.url));
-const homeDir = homedir();
-
-const httpsKeyPath = path.join(homeDir, '.certs/key.pem');
-const httpsCertPath = path.join(homeDir, '.certs/cert.pem');
 
 const HEADERS = {
   'Access-Control-Allow-Credentials': 'true',
@@ -71,22 +67,14 @@ export default async ({
   webIntegrationId,
   snName,
   snUrl,
+  snModule,
   pages = publishedPages,
   open = true,
   entryWatcher,
   serveConfig,
 }) => {
-  const HTTPS = serveConfig.mfe || serveConfig.https;
+  const { https: HTTPS, reason: httpsReason, keyPath, certPath } = resolveHttps({ https: serveConfig.https });
   const url = `${HTTPS ? 'https' : 'http'}://${host}:${port}`;
-
-  if (HTTPS) {
-    if (!fs.existsSync(httpsKeyPath)) {
-      throw new Error(`Failed to start using HTTPS. Missing key cert at path ${httpsKeyPath}`);
-    }
-    if (!fs.existsSync(httpsCertPath)) {
-      throw new Error(`Failed to start using HTTPS. Missing cert at path ${httpsCertPath}`);
-    }
-  }
 
   const snapshotRoute = '/njs';
 
@@ -156,6 +144,7 @@ export default async ({
       supernova: {
         name: snName,
         url: snUrl,
+        module: snModule,
       },
       sock: {
         port: entryWatcher && entryWatcher.port,
@@ -189,38 +178,36 @@ export default async ({
         port,
         allowedHosts: disableHostCheck ? true : undefined,
         headers: HEADERS,
-        open: Boolean(open && !serveConfig.mfe),
-        // Disable the pages of nebula serve in MFE mode, it only serves the bundle
-        publicDir: serveConfig.mfe ? false : { name: contentBase, copyOnBuild: false },
+        open: Boolean(open),
+        publicDir: { name: contentBase, copyOnBuild: false },
         proxy: {
           '/render': {
             target: `${url}/eRender.html`,
             ignorePath: true,
+            // the server calls itself, and the local certificate is not one that node trusts
+            secure: false,
           },
         },
       },
     },
   });
 
-  // in MFE mode there is nothing to build, the bundle of the visualization is built by nebula build
-  const devServer = await rsbuild.createDevServer({ runCompile: !serveConfig.mfe, getPortSilently: true });
+  const devServer = await rsbuild.createDevServer({ getPortSilently: true });
   app.use(devServer.middlewares);
 
-  if (!serveConfig.mfe) {
-    // The hub is served for all paths that ask for a page: @qlik/api detects the authorization code of the OAuth2
-    // callback at /auth/login/callback in the URL, to complete the token exchange in the page
-    app.use((req, res, next) => {
-      if (req.method === 'GET' && !path.extname(req.path) && req.accepts('html')) {
-        // the folder is the root, a path with a segment that starts with a dot, such as .pnpm, is not sent otherwise
-        res.sendFile('index.html', { root: contentBase });
-      } else {
-        next();
-      }
-    });
-  }
+  // The hub is served for all paths that ask for a page: @qlik/api detects the authorization code of the OAuth2
+  // callback at /auth/login/callback in the URL, to complete the token exchange in the page
+  app.use((req, res, next) => {
+    if (req.method === 'GET' && !path.extname(req.path) && req.accepts('html')) {
+      // the folder is the root, a path with a segment that starts with a dot, such as .pnpm, is not sent otherwise
+      res.sendFile('index.html', { root: contentBase });
+    } else {
+      next();
+    }
+  });
 
   const httpServer = HTTPS
-    ? https.createServer({ key: fs.readFileSync(httpsKeyPath), cert: fs.readFileSync(httpsCertPath) }, app)
+    ? https.createServer({ key: fs.readFileSync(keyPath), cert: fs.readFileSync(certPath) }, app)
     : http.createServer(app);
 
   const close = async () => {
@@ -235,15 +222,8 @@ export default async ({
   const started = () => {
     console.log(styledBanner());
 
-    if (serveConfig.mfe) {
-      const bundleUrl = `${url}/pkg/${encodeURIComponent(snName)}`;
-      console.log('Development server running in MFE mode');
-      console.log(`Bundle served at ${chalk.green(bundleUrl)}`);
-      console.log('');
-      console.log('Use the bundle when overriding the import map');
-    } else {
-      console.log(`Development server running at ${chalk.green(url)}`);
-    }
+    console.log(`Development server running at ${chalk.green(url)}`);
+    console.log(`Protocol: ${chalk.green(HTTPS ? 'https' : 'http')}, ${httpsReason}`);
 
     return { context: '', url, close };
   };
@@ -265,17 +245,12 @@ export default async ({
       }
     };
 
-    if (!serveConfig.mfe) {
-      rsbuild.onDevCompileDone(({ stats }) => start(stats));
-    }
+    rsbuild.onDevCompileDone(({ stats }) => start(stats));
 
     httpServer.on('error', reject);
     httpServer.listen(port, host, async () => {
       devServer.connectWebSocket({ server: httpServer });
       await devServer.afterListen();
-      if (serveConfig.mfe) {
-        start();
-      }
     });
   });
 };

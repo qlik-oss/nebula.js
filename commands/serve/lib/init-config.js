@@ -34,6 +34,7 @@ const options = {
     default: 'localhost',
   },
   port: {
+    alias: 'p',
     type: 'number',
     description: 'Specify a port number to listen for requests on',
   },
@@ -82,11 +83,6 @@ const options = {
     description: 'Path to a folder that will be used as basis when locating fixtures',
     default: 'test/component',
   },
-  mfe: {
-    type: 'boolean',
-    description: 'Serves bundle to use in micro frontend',
-    default: false,
-  },
   open: {
     type: 'boolean',
     description: 'Opens browser on serving nebula',
@@ -94,8 +90,8 @@ const options = {
   },
   https: {
     type: 'boolean',
-    description: 'Uses https protocol, requires certificates',
-    default: false,
+    description:
+      'Uses https protocol, requires certificates. Without --https or --no-https, https is used when the certificates are installed',
   },
 };
 

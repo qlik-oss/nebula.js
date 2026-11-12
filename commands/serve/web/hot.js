@@ -54,9 +54,8 @@ const visualization = (m) => (m && typeof m === 'object' && 'default' in m ? m.d
 
 export const getModule = async (name, url) => {
   addImportMap();
-  const src = url || `/pkg/${encodeURIComponent(name)}`;
   // a new url for every load, since a module that was imported is never loaded again
-  const mod = await import(/* webpackIgnore: true */ `${src}${src.includes('?') ? '&' : '?'}t=${Date.now()}`);
+  const mod = await import(/* webpackIgnore: true */ `${url}${url.includes('?') ? '&' : '?'}t=${Date.now()}`);
   return visualization(mod);
 };
 
@@ -89,7 +88,7 @@ window.onHotChange = onHotChange;
 
 export default function initiateWatch(info) {
   const update = () => {
-    getModule(info.supernova.name, info.supernova.url).then((mo) => {
+    getModule(info.supernova.name, info.supernova.url || info.supernova.module).then((mo) => {
       window[info.supernova.name] = mo;
       lightItUp(info.supernova.name);
     });

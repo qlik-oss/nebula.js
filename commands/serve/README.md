@@ -26,7 +26,7 @@ Options:
       --build               Build the nebula visualization into /dist dictionary
                                                        [boolean] [default: true]
       --host                Specify a host to use[string] [default: "localhost"]
-      --port                Specify a port number to listen for requests on
+  -p, --port                Specify a port number to listen for requests on
                                                                         [number]
       --disableHostCheck    Bypasses host checking    [boolean] [default: false]
       --keyboardNavigation  Whether or not Nebula handles keyboard navigation
@@ -44,8 +44,6 @@ Options:
       --fixturePath         Path to a folder that will be used as basis when
                             locating fixtures
                                             [string] [default: "test/component"]
-      --mfe                 Serves bundle to use in micro frontend
-                                                      [boolean] [default: false]
   -h, --help                Show help                                  [boolean]
       --open                Open up in browser         [boolean] [default: true]
 ```
@@ -70,8 +68,12 @@ module.exports = {
 };
 ```
 
+Every option of nebula serve can be set here, and an option on the command line is used before the one in the file, as
+`port: 8000` in the file and `-p 9000` on the command line serves on port 9000.
+
 Serve properties:
 
+- port: The port to listen for requests on, which is a free one when it is not set
 - types: Additional types to load into the serve instance. Useful in conjunction with useEmbed. The `url` is an es module.
   - `ex: types: [{ name: 'barchart', url: "https://example.com/sn-bar-chart.esm.js"}],`
 - themes: Theme files to load
@@ -108,25 +110,31 @@ The page has `@nebula.js/stardust`, `react`, `react-dom`, `react-dom/client` and
 visualization imports those by their names, so that the page and the visualization share one of each. Any other module
 is bundled into the visualization, also the ones that are `peerDependencies` of it.
 
-A code split `module` imports its chunks relatively, and these are served from the directory of the `module` file, so the
-chunks have to be written beside the entry.
+A code split `module` imports its chunks from the `chunks` directory beside the entry, which nebula build writes.
 
-### Micro Frontend (MFE) Mode
+### The modules of the visualization
 
-The MFE mode activated with the `--mfe` option, builds a visualisation as a SystemJS module (the `systemjs` field of
-`package.json`) which is used in a micro frontend environment. The visualisation is served at:
+Nebula serve builds and watches the es module (the `module` field of `package.json`) and the SystemJS module (the
+`systemjs` field), and serves the directories that nebula build writes them to, from the root. A module is at its file
+name, and the chunks and the source maps beside it are too, as the module imports them relative to its own url. The
+directory is not in the url:
 
 ```
-https://<host>:<port>/pkg/<module name>
+https://<host>:<port>/sn-viz.js           the es module, when "module" is dist/sn-viz.js
+https://<host>:<port>/sn-viz.systemjs.js  the SystemJS module, when "systemjs" is dist/sn-viz.systemjs.js
 ```
 
-The module name is by default the name in `package.json` but may be overridden using the
-`--type` option.
+The urls are printed when nebula serve has started.
 
-The MFE mode runs in HTTPS which requires certificates to be installed in the
-environment running nebula serve.
+### HTTPS
 
-The regular dev environment in nebula serve is disabled when running in this mode.
+Nebula serve serves over HTTPS when the certificates are installed in `~/.certs` (see below), as they are on a development
+machine, because the page that loads the SystemJS module is served over HTTPS. Without certificates, as on a CI runner,
+it serves over HTTP and tells you so.
+
+- `--https` serves over HTTPS, and fails to start if the certificates are not installed.
+- `--no-https` serves over HTTP, also when the certificates are installed. Use it where the url has to be `http`, such
+  as in a test that has a `http://localhost` base url.
 
 #### How to install trusted certificates locally
 

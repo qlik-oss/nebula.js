@@ -7,6 +7,7 @@ import extend from 'extend';
 import yargs from 'yargs';
 import { WebSocketServer } from 'ws';
 import chokidar from 'chokidar';
+import express from 'express';
 import build from '@nebula.js/cli-build';
 
 import initConfig from './init-config.js';
@@ -15,24 +16,15 @@ import rsbuildServe from './rsbuild.serve.js';
 
 const require = createRequire(import.meta.url);
 
-// a code split module imports its chunks, and their source maps, from beside the entry
-const siblingFile = (snPath, name) => {
-  if (path.basename(name) !== name || name === '.' || name === '..') {
-    return null;
-  }
-  const file = path.join(path.dirname(snPath), name);
-  return fs.existsSync(file) && fs.statSync(file).isFile() ? file : null;
-};
+// The files of nebula build are served by their file names, from the root, as the modules import their chunks and are
+// imported by their source maps relative to their own urls.
+export const getModuleUrl = (file) => `/${path.basename(file)}`;
 
-export const initiateWatch = async ({ snPath, snName, host }) => {
+// `snPath` is the es module of the visualization and `systemPath` the systemjs module of it
+export const initiateWatch = async ({ snPath, snName, host, systemPath }) => {
   if (!snPath) {
     return null;
   }
-  // TODO - timeout
-  let onInitiated;
-  const done = new Promise((resolve) => {
-    onInitiated = resolve;
-  });
 
   const wsPort = await portfinder.getPortPromise({ port: 5001, host });
 
@@ -46,10 +38,6 @@ export const initiateWatch = async ({ snPath, snName, host }) => {
     disableGlobbing: true,
   });
 
-  choker.on('add', () => {
-    onInitiated();
-  });
-
   choker.on('change', () => {
     [...ws.clients].forEach((client) => {
       client.send(
@@ -60,50 +48,11 @@ export const initiateWatch = async ({ snPath, snName, host }) => {
     });
   });
 
-  const cache = {};
-
   return {
     addRoutes(app, options) {
-      app.get('/pkg/:name', async (req, res) => {
-        const { name } = req.params;
-        await done;
-
-        const sibling = snPath ? siblingFile(snPath, name) : null;
-
-        let file;
-        if (cache[name]) {
-          file = cache[name];
-        } else if (name === snName) {
-          file = snPath;
-        } else if (sibling) {
-          file = sibling;
-        } else if (/\.map$/.test(name)) {
-          const sources = Object.keys(cache);
-          for (let i = 0; i < sources.length; i++) {
-            const p = cache[sources[i]];
-            const filename = path.basename(p);
-            if (`${filename}.map` === name) {
-              file = path.resolve(path.dirname(p), name);
-              break;
-            }
-          }
-        } else {
-          file = require.resolve(name, {
-            paths: [process.cwd()],
-          });
-        }
-
-        cache[name] = file;
-
-        if (fs.existsSync(file)) {
-          const f = fs.readFileSync(file);
-          res.set(options.headers);
-          // a module script is only run when the type of it is javascript
-          res.type(/\.map$/.test(file) ? 'application/json' : 'text/javascript');
-          res.send(f);
-        } else {
-          res.sendStatus('404');
-        }
+      // the directories that nebula build writes to, which are not served by their names
+      [...new Set([snPath, systemPath].filter(Boolean).map((file) => path.dirname(file)))].forEach((dir) => {
+        app.use(express.static(dir, { index: false, setHeaders: (res) => res.set(options.headers) }));
       });
     },
     async close() {
@@ -134,6 +83,8 @@ export default async (argv, { pages } = {}) => {
   let snName;
   let watcher;
   let snUrl;
+  let systemPath;
+  const watchers = [];
   if (/^https?/.test(serveConfig.entry)) {
     snName = 'remote';
     snUrl = serveConfig.entry;
@@ -152,25 +103,34 @@ export default async (argv, { pages } = {}) => {
   }
 
   if (runFromDirectory) {
-    if (serveConfig.build !== false) {
-      watcher = await build({
-        watch: serveConfig.mfe ? 'systemjs' : 'esm',
-        external: provided,
-        config: serveConfig.config,
-        cwd: context,
-      });
-    }
+    let externalPkg = {};
     try {
-      const externalPkg = require(path.resolve(context, 'package.json'));
-      const externalEntry = serveConfig.mfe ? externalPkg.systemjs : externalPkg.module;
-      snName = externalPkg.name;
-      snPath = path.resolve(context, externalEntry);
+      externalPkg = require(path.resolve(context, 'package.json'));
     } catch (e) {
       //
     }
+    // the web app loads the es module, the micro frontend tooling loads the systemjs module, so both are served
+    const formats = ['esm', ...(externalPkg.systemjs ? ['systemjs'] : [])];
+    if (serveConfig.build !== false) {
+      // the formats of one package are built one after the other, to keep the output of the builds apart
+      await formats.reduce(async (previous, format) => {
+        await previous;
+        watchers.push(await build({ watch: format, external: provided, config: serveConfig.config, cwd: context }));
+      }, Promise.resolve());
+      // build({ watch }) has no watcher when the build is not possible
+      watcher = { close: () => Promise.all(watchers.map((w) => w && w.close())) };
+    }
+    const externalEntry = externalPkg.module;
+    if (externalEntry) {
+      snName = externalPkg.name;
+      snPath = path.resolve(context, externalEntry);
+    }
+    if (externalPkg.systemjs) {
+      systemPath = path.resolve(context, externalPkg.systemjs);
+    }
   }
 
-  const ww = snUrl ? null : await initiateWatch({ snPath, snName: serveConfig.type || snName, host });
+  const ww = snUrl ? null : await initiateWatch({ snPath, snName: serveConfig.type || snName, host, systemPath });
 
   const server = await rsbuildServe({
     host,
@@ -181,11 +141,17 @@ export default async (argv, { pages } = {}) => {
     webIntegrationId: serveConfig.webIntegrationId,
     snName: serveConfig.type || snName,
     snUrl,
+    snModule: ww ? getModuleUrl(snPath) : undefined,
     pages,
-    open: serveConfig.open !== false && !serveConfig.mfe,
+    open: serveConfig.open !== false,
     entryWatcher: ww,
     serveConfig,
   });
+
+  if (systemPath) {
+    console.log(`SystemJS module served at ${server.url}${getModuleUrl(systemPath)}`);
+    console.log(`ES module served at ${server.url}${getModuleUrl(snPath)}`);
+  }
 
   const close = async () => {
     if (watcher) {

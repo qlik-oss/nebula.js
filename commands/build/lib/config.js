@@ -211,7 +211,8 @@ const config = ({
     },
     tools: {
       swc: {
-        jsc: { transform: { react: { runtime: 'automatic', development } } },
+        // react is left out of the bundle and the host of it has the production runtime, jsx-dev-runtime is not there
+        jsc: { transform: { react: { runtime: 'automatic', development: false } } },
       },
       // the stylesheets are handled below, with what they were handled with
       bundlerChain: (chain) => {

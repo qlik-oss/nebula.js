@@ -31,7 +31,6 @@ await rsbuildServe({
     renderConfigs: [],
     keyboardNavigation: false,
     resources: null,
-    mfe: false,
     https: false,
     // Required by rsbuild.prod.js for the fixtures alias
     fixturePath: 'test/component',

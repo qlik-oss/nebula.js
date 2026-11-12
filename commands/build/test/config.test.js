@@ -83,6 +83,13 @@ describe('build config', () => {
     assert.equal(libOf(config({ mode: 'development', format: 'esm', cwd, argv: argv() })).output.minify, false);
   });
 
+  it('does not import jsx-dev-runtime in development, the host of react does not have it', () => {
+    const cwd = makeProject();
+    const react = (mode) => libOf(config({ mode, format: 'esm', cwd, argv: argv() })).tools.swc.jsc.transform.react;
+    assert.equal(react('development').development, false);
+    assert.equal(react('production').development, false);
+  });
+
   it('rejects replacementStrings that is not an object', () => {
     const cwd = makeProject();
     assert.throws(
