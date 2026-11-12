@@ -90,8 +90,8 @@ const options = {
   },
   https: {
     type: 'boolean',
-    description: 'Uses https protocol, requires certificates, use --no-https to serve over http',
-    default: true,
+    description:
+      'Uses https protocol, requires certificates. Without --https or --no-https, https is used when the certificates are installed',
   },
 };
 

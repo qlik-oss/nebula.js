@@ -128,8 +128,13 @@ The urls are printed when nebula serve has started.
 
 ### HTTPS
 
-Nebula serve serves over HTTPS, which requires certificates to be installed in the environment running nebula serve,
-because the page that loads the SystemJS module is served over HTTPS. Use `--no-https` to serve over HTTP.
+Nebula serve serves over HTTPS when the certificates are installed in `~/.certs` (see below), as they are on a development
+machine, because the page that loads the SystemJS module is served over HTTPS. Without certificates, as on a CI runner,
+it serves over HTTP and tells you so.
+
+- `--https` serves over HTTPS, and fails to start if the certificates are not installed.
+- `--no-https` serves over HTTP, also when the certificates are installed. Use it where the url has to be `http`, such
+  as in a test that has a `http://localhost` base url.
 
 #### How to install trusted certificates locally
 

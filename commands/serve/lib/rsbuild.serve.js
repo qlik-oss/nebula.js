@@ -3,7 +3,6 @@ import path from 'path';
 import fs from 'fs';
 import http from 'http';
 import https from 'https';
-import { homedir } from 'os';
 import { fileURLToPath } from 'url';
 import chalk from 'chalk';
 import express from 'express';
@@ -11,12 +10,9 @@ import { createRsbuild } from '@rsbuild/core';
 
 import snapshooterFn from './snapshot-server.js';
 import snapshotRouter from './snapshot-router.js';
+import { resolveHttps } from './https.js';
 
 const moduleDir = path.dirname(fileURLToPath(import.meta.url));
-const homeDir = homedir();
-
-const httpsKeyPath = path.join(homeDir, '.certs/key.pem');
-const httpsCertPath = path.join(homeDir, '.certs/cert.pem');
 
 const HEADERS = {
   'Access-Control-Allow-Credentials': 'true',
@@ -77,21 +73,8 @@ export default async ({
   entryWatcher,
   serveConfig,
 }) => {
-  const HTTPS = serveConfig.https;
+  const { https: HTTPS, auto, keyPath, certPath } = resolveHttps({ https: serveConfig.https });
   const url = `${HTTPS ? 'https' : 'http'}://${host}:${port}`;
-
-  if (HTTPS) {
-    if (!fs.existsSync(httpsKeyPath)) {
-      throw new Error(
-        `Failed to start using HTTPS. Missing key cert at path ${httpsKeyPath}, install certificates or use --no-https`
-      );
-    }
-    if (!fs.existsSync(httpsCertPath)) {
-      throw new Error(
-        `Failed to start using HTTPS. Missing cert at path ${httpsCertPath}, install certificates or use --no-https`
-      );
-    }
-  }
 
   const snapshotRoute = '/njs';
 
@@ -224,7 +207,7 @@ export default async ({
   });
 
   const httpServer = HTTPS
-    ? https.createServer({ key: fs.readFileSync(httpsKeyPath), cert: fs.readFileSync(httpsCertPath) }, app)
+    ? https.createServer({ key: fs.readFileSync(keyPath), cert: fs.readFileSync(certPath) }, app)
     : http.createServer(app);
 
   const close = async () => {
@@ -240,6 +223,9 @@ export default async ({
     console.log(styledBanner());
 
     console.log(`Development server running at ${chalk.green(url)}`);
+    if (auto && !HTTPS) {
+      console.log(`No certificates in ${path.dirname(keyPath)}, serving over http. Install them to serve over https.`);
+    }
 
     return { context: '', url, close };
   };

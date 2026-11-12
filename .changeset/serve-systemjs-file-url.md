@@ -8,4 +8,4 @@ feat!: `nebula serve` serves the directories that nebula build writes to from th
 
 - `--mfe` is removed, `nebula serve` serves the web app and the SystemJS module together. Remove `--mfe` from the scripts that start nebula serve.
 - `/pkg/<name>` is removed.
-- Nebula serve serves over HTTPS by default, as `--mfe` did, which needs the certificates in `~/.certs` (see the README). Use `--no-https` to serve over HTTP.
+- Nebula serve serves over HTTPS when the certificates are installed in `~/.certs`, as `--mfe` did, and over HTTP when they are not, with a message. `--https` requires the certificates and `--no-https` serves over HTTP also when they are installed, see the README.
