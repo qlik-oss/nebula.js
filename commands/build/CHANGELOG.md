@@ -1,5 +1,13 @@
 # Change Log
 
+## 8.0.0-alpha.4
+
+### Patch Changes
+
+- [#2461](https://github.com/qlik-oss/nebula.js/pull/2461) [`ee4a21b`](https://github.com/qlik-oss/nebula.js/commit/ee4a21b90bb60ac4cb545647311276a25701e0f5) Thanks [@enell](https://github.com/enell)! - fix: nebula build runs rsbuild in the mode it is given, `--mode development` no longer builds as production
+
+- [#2460](https://github.com/qlik-oss/nebula.js/pull/2460) [`2461557`](https://github.com/qlik-oss/nebula.js/commit/2461557d9be3a7fc523f6f7e24fa1cee340392b3) Thanks [@enell](https://github.com/enell)! - fix: a systemjs bundle only registers the peer packages by their names, not `react/jsx-runtime` or `react-dom/client`, and the build cache no longer outlives a change of nebula.config.js
+
 ## 8.0.0-alpha.3
 
 ### Patch Changes
