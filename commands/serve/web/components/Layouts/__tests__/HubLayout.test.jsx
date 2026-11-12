@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
 import HubLayout from '../HubLayout';
-import { TestRenderer } from '../../../utils';
+import { TestRenderer } from '../../../utils/testRenderer';
 import { steps } from '../../../constants/connectionSteps';
 
 describe('Should render layout', () => {

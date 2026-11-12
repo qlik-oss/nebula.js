@@ -7,7 +7,7 @@ import {
   handleSessionNotification,
 } from '../useConnection';
 import * as connectModule from '../../connect';
-import { RouterWrapper } from '../../utils';
+import { RouterWrapper } from '../../utils/testRenderer';
 import getCsrfToken from '../../utils/getCsrfToken';
 
 jest.mock('../../utils/getCsrfToken', () => jest.fn());
