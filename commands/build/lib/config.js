@@ -118,9 +118,8 @@ const config = ({
   const development = mode === 'development';
   // a bundle ends up in one file unless code splitting is asked for
   const singleFile = argv.inlineDynamic || !argv.codeSplit;
-  const outputDir = singleFile
-    ? path.dirname(path.resolve(dir, outputFile))
-    : path.resolve(dir, outputFile.split('/')[0]);
+  // the chunks land beside the entry, the url of a chunk is relative to the url of the entry
+  const outputDir = path.dirname(path.resolve(dir, outputFile));
   // rslib wants the entry as a file, the extension of it is the first that exists
   const entry =
     ['.js', '.jsx', '.mjs', ...(typescript ? ['.ts', '.tsx'] : [])]
@@ -190,7 +189,7 @@ const config = ({
     banner: { js: banner },
     source: {
       entry: {
-        [singleFile ? name : 'index']: systemChunks ? [path.resolve(dirname, 'system-public-path.js'), entry] : entry,
+        [name]: systemChunks ? [path.resolve(dirname, 'system-public-path.js'), entry] : entry,
       },
       define: {
         'process.env.NODE_ENV': JSON.stringify(development ? 'development' : 'production'),
@@ -202,7 +201,7 @@ const config = ({
     output: {
       target: 'web',
       distPath: { root: outputDir },
-      filename: { js: singleFile ? path.basename(outputFile) : '[name].js' },
+      filename: { js: path.basename(outputFile) },
       minify: !development,
       sourceMap: sourcemap ? { js: 'source-map' } : false,
       externals: matchPeers(external),
@@ -223,7 +222,8 @@ const config = ({
         context: CWD,
         output: {
           ...base.output,
-          chunkFilename: '[name]-[contenthash].js',
+          // prefixed with the entry so that the chunks of es and systemjs bundles can share a directory
+          chunkFilename: `${name}.[name]-[contenthash].js`,
           // the url of a chunk of a code split systemjs bundle is relative to the module, see system-public-path.js
           ...(systemChunks ? { publicPath: '' } : {}),
           ...(isEsm ? {} : { library: { type: 'system' } }),

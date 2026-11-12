@@ -15,8 +15,11 @@ const getPackage = (argv, cwd = process.cwd()) => require(path.resolve(argv.cwd 
 // the field of package.json that has the output file of a format
 const OUTPUT_FIELDS = { systemjs: 'systemjs', esm: 'module' };
 
+// `watch: true` is the same as 'esm', as it is for `nebula build --watch`
+const getWatchFormat = ({ watch }) => (watch === true ? 'esm' : watch);
+
 const validateWatchInput = (argv) => {
-  const field = OUTPUT_FIELDS[argv.watch];
+  const field = OUTPUT_FIELDS[getWatchFormat(argv)];
   if (field && !getPackage(argv)[field]) {
     console.log(
       `${chalk.white.bgRed(' ERROR ')} ${chalk.red(`No "${field}" field specifying output file found in package.json`)}`
@@ -34,7 +37,7 @@ const getWatchConfig = (argv) => {
 
   let opts;
 
-  switch (argv.watch) {
+  switch (getWatchFormat(argv)) {
     case 'systemjs':
       opts = { ...base, format: 'systemjs', behaviours: systemjsBehaviours };
       break;
