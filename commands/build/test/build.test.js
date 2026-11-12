@@ -528,7 +528,7 @@ export { getAuthRuntimeModule as t, getQixRuntimeModule as r, getInvokeFetchRunt
       await run({ systemjs: false, codeSplit: true });
       const files = fs.readdirSync(path.join(dir, 'dist')).filter((f) => !f.endsWith('.map'));
       assert.ok(files.includes('viz.esm.js'), files.join(', '));
-      assert.ok(files.length >= 2, `expected a chunk next to viz.esm.js, got ${files.join(', ')}`);
+      assert.ok(files.includes('chunks'), `expected a chunk in chunks, got ${files.join(', ')}`);
       assert.equal((await (await import(pathToFileURL(path.join(dir, 'dist/viz.esm.js')))).default()).default, 'lazy');
     });
 
@@ -538,14 +538,12 @@ export { getAuthRuntimeModule as t, getQixRuntimeModule as r, getInvokeFetchRunt
       await run({ codeSplit: true });
 
       const files = fs.readdirSync(path.join(dir, 'dist')).filter((f) => f.endsWith('.js'));
-      assert.ok(files.includes('viz.esm.js') && files.includes('viz.systemjs.js'), files.join(', '));
-      assert.ok(!files.includes('index.js'), files.join(', '));
-      const chunksOf = (entry) => files.filter((f) => f.startsWith(`${entry}.`) && f !== `${entry}.js`);
-      const esChunks = chunksOf('viz.esm');
-      const systemChunks = chunksOf('viz.systemjs');
-      assert.equal(esChunks.length, 1);
-      assert.equal(systemChunks.length, 1);
-      assert.equal(files.length, 4, files.join(', '));
+      assert.deepEqual(files.sort(), ['viz.esm.js', 'viz.systemjs.js']);
+      const chunks = fs.readdirSync(path.join(dir, 'dist/chunks')).filter((f) => f.endsWith('.js'));
+      const chunksOf = (entry) => chunks.filter((f) => f.startsWith(`${entry}.`));
+      assert.equal(chunksOf('viz.esm').length, 1);
+      assert.equal(chunksOf('viz.systemjs').length, 1);
+      assert.equal(chunks.length, 2, chunks.join(', '));
       assert.match(fs.readFileSync(path.join(dir, 'dist/viz.esm.js'), 'utf8'), /export/);
       assert.match(fs.readFileSync(path.join(dir, 'dist/viz.systemjs.js'), 'utf8'), /System\.register/);
     });
@@ -557,7 +555,7 @@ export { getAuthRuntimeModule as t, getQixRuntimeModule as r, getInvokeFetchRunt
       write('src/index.js', `export default () => ({ load: () => import('./lazy.js') });\n`);
       await run({ codeSplit: true, systemjs: true });
 
-      const chunks = fs.readdirSync(path.join(dir, 'dist')).filter((f) => f !== 'viz.systemjs.js' && f.endsWith('.js'));
+      const chunks = fs.readdirSync(path.join(dir, 'dist/chunks')).filter((f) => f.endsWith('.js'));
       assert.equal(chunks.length, 1, 'one chunk for the dynamic import');
 
       const requested = [];
@@ -569,7 +567,7 @@ export { getAuthRuntimeModule as t, getQixRuntimeModule as r, getInvokeFetchRunt
             requested.push(url);
             // the chunk arrives as the script tag would have run it
             setTimeout(() => {
-              vm.runInContext(fs.readFileSync(path.join(dir, 'dist', url.split('/').pop()), 'utf8'), sandbox);
+              vm.runInContext(fs.readFileSync(path.join(dir, 'dist/chunks', url.split('/').pop()), 'utf8'), sandbox);
               node.onload({ type: 'load' });
             }, 0);
           },
@@ -614,7 +612,7 @@ export { getAuthRuntimeModule as t, getQixRuntimeModule as r, getInvokeFetchRunt
       mod.execute();
       const lazy = await exported.default().load();
 
-      assert.deepEqual(plain(requested), [`https://cdn.test/assets/v1/${chunks[0]}`]);
+      assert.deepEqual(plain(requested), [`https://cdn.test/assets/v1/chunks/${chunks[0]}`]);
       assert.equal(lazy.named, 1);
     });
 

@@ -159,7 +159,7 @@ describe('build config', () => {
     assert.equal(libOf(split).output.distPath.root, path.join(cwd, 'dist'));
     assert.equal(libOf(split).output.filename.js, 'viz.esm.js');
     assert.deepEqual(Object.keys(libOf(split).source.entry), ['viz.esm']);
-    assert.equal(rspackOf(split).output.chunkFilename, 'viz.esm.[name]-[contenthash].js');
+    assert.equal(rspackOf(split).output.chunkFilename, 'chunks/viz.esm.[name]-[contenthash].js');
     // inlineDynamic forces one file for the other formats too
     assert.equal(
       isLimited(config({ format: 'esm', cwd, argv: argv({ codeSplit: true, inlineDynamic: true }), behaviours })),
