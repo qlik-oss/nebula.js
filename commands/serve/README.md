@@ -68,8 +68,12 @@ module.exports = {
 };
 ```
 
+Every option of nebula serve can be set here, and an option on the command line is used before the one in the file, as
+`port: 8000` in the file and `-p 9000` on the command line serves on port 9000.
+
 Serve properties:
 
+- port: The port to listen for requests on, which is a free one when it is not set
 - types: Additional types to load into the serve instance. Useful in conjunction with useEmbed. The `url` is an es module.
   - `ex: types: [{ name: 'barchart', url: "https://example.com/sn-bar-chart.esm.js"}],`
 - themes: Theme files to load
