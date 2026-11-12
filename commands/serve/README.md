@@ -111,6 +111,17 @@ is bundled into the visualization, also the ones that are `peerDependencies` of 
 A code split `module` imports its chunks relatively, and these are served from the directory of the `module` file, so the
 chunks have to be written beside the entry.
 
+### SystemJS module
+
+When `package.json` has a `systemjs` field, nebula serve builds and watches the SystemJS module beside the es module of the web app and serves it at:
+
+```
+http://<host>:<port>/<package name>.js
+```
+
+The package name has the `@` removed and the `/` replaced by `-`, `@scope/sn-viz` is served at `/scope-sn-viz.js`, and the
+chunks of a code split module are served beside it. `--type` overrides the package name.
+
 ### Micro Frontend (MFE) Mode
 
 The MFE mode activated with the `--mfe` option, builds a visualisation as a SystemJS module (the `systemjs` field of
@@ -126,7 +137,8 @@ The module name is by default the name in `package.json` but may be overridden u
 The MFE mode runs in HTTPS which requires certificates to be installed in the
 environment running nebula serve.
 
-The regular dev environment in nebula serve is disabled when running in this mode.
+The regular dev environment in nebula serve is disabled when running in this mode, and only the SystemJS module is built.
+The SystemJS module is also served at `/<package name>.js`, as it is without the `--mfe` option.
 
 #### How to install trusted certificates locally
 

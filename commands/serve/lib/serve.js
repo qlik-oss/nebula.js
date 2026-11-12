@@ -84,7 +84,8 @@ export const initiateWatch = async ({ snPath, snName, host, systemPath }) => {
         const systemFileName = getSystemFileName(snName);
         app.get('/:file', (req, res, next) => {
           const { file } = req.params;
-          const target = file === systemFileName ? systemPath : /\.(js|map)$/.test(file) && siblingFile(systemPath, file);
+          const target =
+            file === systemFileName ? systemPath : /\.(js|map)$/.test(file) && siblingFile(systemPath, file);
           if (target) {
             send(res, target, options.headers);
           } else {
@@ -186,10 +187,10 @@ export default async (argv, { pages } = {}) => {
     const formats = serveConfig.mfe ? ['systemjs'] : ['esm', ...(externalPkg.systemjs ? ['systemjs'] : [])];
     if (serveConfig.build !== false) {
       // the formats of one package are built one after the other, to keep the output of the builds apart
-      for (const format of formats) {
-        // eslint-disable-next-line no-await-in-loop
+      await formats.reduce(async (previous, format) => {
+        await previous;
         watchers.push(await build({ watch: format, external: provided, config: serveConfig.config, cwd: context }));
-      }
+      }, Promise.resolve());
       // build({ watch }) has no watcher when the build is not possible
       watcher = { close: () => Promise.all(watchers.map((w) => w && w.close())) };
     }
