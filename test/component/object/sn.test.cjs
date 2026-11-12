@@ -11,6 +11,7 @@ test.describe('sn', () => {
     ({ default: serve } = await import('@nebula.js/cli-serve'));
     s = await serve({
       open: false,
+      https: false,
       config: 'nebula.config.cjs',
       build: false,
       fixturePath: 'test/component/object',

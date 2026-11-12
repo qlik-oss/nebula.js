@@ -121,12 +121,12 @@ http://<host>:<port>/<package name>.esm.js   the es module
 The package name has the `@` removed and the `/` replaced by `-`, `@scope/sn-viz` is served at `/scope-sn-viz.js` and
 `/scope-sn-viz.esm.js`. The files are not copied, they are served from where nebula build wrote them. A code split module
 imports its chunks from `chunks` relative to its url, and `/chunks` is served from the `chunks` directory beside the
-module. `--type` overrides the package name.
+module. The names are the one of the package, also with `--type`.
 
 ### HTTPS
 
-The `--https` option serves over HTTPS, which requires certificates to be installed in the environment running nebula
-serve. Use it when the page that loads the SystemJS module is served over HTTPS.
+Nebula serve serves over HTTPS, which requires certificates to be installed in the environment running nebula serve,
+because the page that loads the SystemJS module is served over HTTPS. Use `--no-https` to serve over HTTP.
 
 #### How to install trusted certificates locally
 

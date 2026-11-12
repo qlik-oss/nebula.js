@@ -71,6 +71,7 @@ export default async ({
   webIntegrationId,
   snName,
   snUrl,
+  snModule,
   pages = publishedPages,
   open = true,
   entryWatcher,
@@ -81,10 +82,14 @@ export default async ({
 
   if (HTTPS) {
     if (!fs.existsSync(httpsKeyPath)) {
-      throw new Error(`Failed to start using HTTPS. Missing key cert at path ${httpsKeyPath}`);
+      throw new Error(
+        `Failed to start using HTTPS. Missing key cert at path ${httpsKeyPath}, install certificates or use --no-https`
+      );
     }
     if (!fs.existsSync(httpsCertPath)) {
-      throw new Error(`Failed to start using HTTPS. Missing cert at path ${httpsCertPath}`);
+      throw new Error(
+        `Failed to start using HTTPS. Missing cert at path ${httpsCertPath}, install certificates or use --no-https`
+      );
     }
   }
 
@@ -156,6 +161,7 @@ export default async ({
       supernova: {
         name: snName,
         url: snUrl,
+        module: snModule,
       },
       sock: {
         port: entryWatcher && entryWatcher.port,

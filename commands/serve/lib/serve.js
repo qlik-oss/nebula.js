@@ -22,7 +22,8 @@ export const getSystemFileName = (name) => getFileName(name, '.js');
 export const getEsmFileName = (name) => getFileName(name, '.esm.js');
 
 // `snPath` is the es module of the visualization and `systemPath` the systemjs module of it
-export const initiateWatch = async ({ snPath, snName, host, systemPath }) => {
+// `snName` is the type of the visualization and `moduleName` the name of the package, which the urls of the modules have
+export const initiateWatch = async ({ snPath, snName, moduleName = snName, host, systemPath }) => {
   if (!snPath) {
     return null;
   }
@@ -63,8 +64,8 @@ export const initiateWatch = async ({ snPath, snName, host, systemPath }) => {
       // the files of the build are where the build wrote them, the urls are the ones that the micro frontend tooling and
       // the web app ask for
       const modules = [
-        [getEsmFileName(snName), snPath],
-        ...(systemPath ? [[getSystemFileName(snName), systemPath]] : []),
+        [getEsmFileName(moduleName), snPath],
+        ...(systemPath ? [[getSystemFileName(moduleName), systemPath]] : []),
       ];
       app.get('/:file', async (req, res, next) => {
         const module = modules.find(([name]) => name === req.params.file);
@@ -163,7 +164,9 @@ export default async (argv, { pages } = {}) => {
     }
   }
 
-  const ww = snUrl ? null : await initiateWatch({ snPath, snName: serveConfig.type || snName, host, systemPath });
+  const ww = snUrl
+    ? null
+    : await initiateWatch({ snPath, snName: serveConfig.type || snName, moduleName: snName, host, systemPath });
 
   const server = await rsbuildServe({
     host,
@@ -174,6 +177,7 @@ export default async (argv, { pages } = {}) => {
     webIntegrationId: serveConfig.webIntegrationId,
     snName: serveConfig.type || snName,
     snUrl,
+    snModule: ww ? `/${getEsmFileName(snName)}` : undefined,
     pages,
     open: serveConfig.open !== false,
     entryWatcher: ww,
@@ -181,8 +185,8 @@ export default async (argv, { pages } = {}) => {
   });
 
   if (systemPath) {
-    console.log(`SystemJS module served at ${server.url}/${getSystemFileName(serveConfig.type || snName)}`);
-    console.log(`ES module served at ${server.url}/${getEsmFileName(serveConfig.type || snName)}`);
+    console.log(`SystemJS module served at ${server.url}/${getSystemFileName(snName)}`);
+    console.log(`ES module served at ${server.url}/${getEsmFileName(snName)}`);
   }
 
   const close = async () => {
