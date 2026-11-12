@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, act } from '@testing-library/react';
 import { useNavigate } from 'react-router';
-import { TestRenderer } from '../../../../utils';
+import { TestRenderer } from '../../../../utils/testRenderer';
 import ConnectionHistory from '../ConnectionHistory';
 
 describe('<ConnectionHistory />', () => {

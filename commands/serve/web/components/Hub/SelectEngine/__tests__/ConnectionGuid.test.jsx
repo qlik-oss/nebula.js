@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
 import ConnectionGuid from '../ConnectionGuid';
-import { TestRenderer } from '../../../../utils';
+import { TestRenderer } from '../../../../utils/testRenderer';
 
 describe('<ConnectionGuid />', () => {
   test('should render required titles', () => {
