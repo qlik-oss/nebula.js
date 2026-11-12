@@ -111,13 +111,13 @@ A code split `module` imports its chunks from the `chunks` directory beside the 
 ### The modules of the visualization
 
 Nebula serve builds and watches the es module (the `module` field of `package.json`) and the SystemJS module (the
-`systemjs` field), and serves the files that nebula build writes, by their file names. The directory of a file is not
-served:
+`systemjs` field), and serves the directories that nebula build writes them to, from the root. A module is at its file
+name, and the chunks and the source maps beside it are too, as the module imports them relative to its own url. The
+directory is not in the url:
 
 ```
 https://<host>:<port>/sn-viz.js           the es module, when "module" is dist/sn-viz.js
 https://<host>:<port>/sn-viz.systemjs.js  the SystemJS module, when "systemjs" is dist/sn-viz.systemjs.js
-https://<host>:<port>/chunks/...          the chunks of a code split module, from the chunks directory beside it
 ```
 
 The urls are printed when nebula serve has started.

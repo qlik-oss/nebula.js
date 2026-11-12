@@ -23,14 +23,14 @@ describe('the files of the build', () => {
 
   before(async () => {
     dir = fs.mkdtempSync(path.join(os.tmpdir(), 'serve-route-'));
-    fs.mkdirSync(path.join(dir, 'esm/chunks'), { recursive: true });
-    fs.mkdirSync(path.join(dir, 'dist/chunks'), { recursive: true });
+    fs.mkdirSync(path.join(dir, 'esm'));
+    fs.mkdirSync(path.join(dir, 'dist'));
     fs.mkdirSync(path.join(dir, 'src'));
     fs.writeFileSync(path.join(dir, 'esm/sn-viz.js'), 'export default "esm";');
-    fs.writeFileSync(path.join(dir, 'esm/chunks/sn-viz.chunk-a.js'), 'export default "chunk";');
+    fs.writeFileSync(path.join(dir, 'esm/sn-viz.chunk-a.js'), 'export default "chunk";');
     fs.writeFileSync(path.join(dir, 'dist/sn-viz.systemjs.js'), 'System.register([]);');
     fs.writeFileSync(path.join(dir, 'dist/sn-viz.systemjs.js.map'), '{"version":3}');
-    fs.writeFileSync(path.join(dir, 'dist/chunks/sn-viz.systemjs.chunk-a.js'), 'System.register(["chunk"]);');
+    fs.writeFileSync(path.join(dir, 'dist/sn-viz.systemjs.chunk-a.js'), 'System.register(["chunk"]);');
     fs.writeFileSync(path.join(dir, 'src/index.js'), 'export default "source";');
     fs.writeFileSync(path.join(dir, 'package.json'), '{"name":"secret"}');
 
@@ -75,16 +75,16 @@ describe('the files of the build', () => {
     assert.match((await get('sn-viz.systemjs.js.map')).headers.get('content-type'), /json/);
   });
 
-  it('should serve the chunks beside the modules from chunks', async () => {
-    assert.equal(await (await get('chunks/sn-viz.chunk-a.js')).text(), 'export default "chunk";');
-    assert.equal(await (await get('chunks/sn-viz.systemjs.chunk-a.js')).text(), 'System.register(["chunk"]);');
+  it('should serve the chunks beside the modules', async () => {
+    assert.equal(await (await get('sn-viz.chunk-a.js')).text(), 'export default "chunk";');
+    assert.equal(await (await get('sn-viz.systemjs.chunk-a.js')).text(), 'System.register(["chunk"]);');
   });
 
-  it('should not serve the directories of the build', async () => {
+  it('should not serve the directories of the build by their names', async () => {
     assert.equal((await get('dist/sn-viz.systemjs.js')).status, 418);
     assert.equal((await get('esm/sn-viz.js')).status, 418);
-    assert.equal((await get('chunks/missing.js')).status, 418);
-    assert.equal((await get('chunks/..%2Fsn-viz.js')).status, 418);
+    assert.equal((await get('missing.js')).status, 418);
+    assert.equal((await get('..%2Fpackage.json')).status, 418);
   });
 
   it('should leave everything else to the web app', async () => {

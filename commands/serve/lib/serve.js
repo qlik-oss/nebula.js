@@ -16,8 +16,8 @@ import rsbuildServe from './rsbuild.serve.js';
 
 const require = createRequire(import.meta.url);
 
-// The entry that nebula build writes is served by its file name, and the chunks beside it from `chunks`, which is where
-// the module imports them from, relative to its url.
+// The files of nebula build are served by their file names, from the root, as the modules import their chunks and are
+// imported by their source maps relative to their own urls.
 export const getModuleUrl = (file) => `/${path.basename(file)}`;
 
 // `snPath` is the es module of the visualization and `systemPath` the systemjs module of it
@@ -50,19 +50,9 @@ export const initiateWatch = async ({ snPath, snName, host, systemPath }) => {
 
   return {
     addRoutes(app, options) {
-      const entries = [snPath, systemPath].filter(Boolean);
-      // an entry and the source map of it, which it imports by its file name
-      const files = entries.flatMap((file) => [file, `${file}.map`]);
-      app.get('/:file', (req, res, next) => {
-        const file = files.find((f) => path.basename(f) === req.params.file);
-        if (file && fs.existsSync(file)) {
-          res.sendFile(file, { headers: options.headers });
-        } else {
-          next();
-        }
-      });
-      [...new Set(entries.map((file) => path.join(path.dirname(file), 'chunks')))].forEach((dir) => {
-        app.use('/chunks', express.static(dir, { setHeaders: (res) => res.set(options.headers) }));
+      // the directories that nebula build writes to, which are not served by their names
+      [...new Set([snPath, systemPath].filter(Boolean).map((file) => path.dirname(file)))].forEach((dir) => {
+        app.use(express.static(dir, { index: false, setHeaders: (res) => res.set(options.headers) }));
       });
     },
     async close() {
