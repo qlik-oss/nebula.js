@@ -1,5 +1,12 @@
 # Change Log
 
+## 8.0.0-alpha.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @nebula.js/stardust@8.0.0-alpha.3
+
 ## 8.0.0-alpha.2
 
 ### Patch Changes
