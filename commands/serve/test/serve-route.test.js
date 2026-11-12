@@ -5,7 +5,7 @@ import os from 'os';
 import path from 'path';
 import express from 'express';
 
-import { initiateWatch } from '../lib/serve.js';
+import { initiateWatch, getSystemFileName } from '../lib/serve.js';
 
 describe('/pkg/:name', () => {
   let dir;
@@ -74,5 +74,71 @@ describe('/pkg/:name', () => {
     // not beside the entry, so it is resolved as a module, which does not exist
     const res = await get('no-such-chunk.js');
     assert.equal(res.status, 500);
+  });
+});
+
+describe('/<name>.js', () => {
+  let dir;
+  let watch;
+  let server;
+  let base;
+
+  const get = (name) => fetch(`${base}/${name}`);
+
+  before(async () => {
+    dir = fs.mkdtempSync(path.join(os.tmpdir(), 'serve-system-route-'));
+    const dist = path.join(dir, 'dist');
+    fs.mkdirSync(dist);
+    fs.writeFileSync(path.join(dist, 'sn-viz.js'), 'export default "esm";');
+    fs.writeFileSync(path.join(dist, 'sn-viz.systemjs.js'), 'System.register([]);');
+    fs.writeFileSync(path.join(dist, 'sn-viz.systemjs.chunk-a.js'), 'System.register(["chunk"]);');
+    fs.writeFileSync(path.join(dist, 'sn-viz.systemjs.chunk-a.js.map'), '{"version":3}');
+    fs.writeFileSync(path.join(dir, 'secret.js'), 'export default "secret";');
+
+    watch = await initiateWatch({
+      snPath: path.join(dist, 'sn-viz.js'),
+      systemPath: path.join(dist, 'sn-viz.systemjs.js'),
+      snName: '@scope/sn-viz',
+      host: 'localhost',
+    });
+    const app = express();
+    watch.addRoutes(app, { headers: {} });
+    app.use((req, res) => res.status(418).send('web app'));
+    await new Promise((resolve) => {
+      server = app.listen(0, 'localhost', resolve);
+    });
+    base = `http://localhost:${server.address().port}`;
+  });
+
+  after(async () => {
+    await new Promise((resolve) => {
+      server.close(resolve);
+    });
+    await watch.close();
+    fs.rmSync(dir, { recursive: true, force: true });
+  });
+
+  it('should name the file after the package without the @ and the /', () => {
+    assert.equal(getSystemFileName('@scope/sn-viz'), 'scope-sn-viz.js');
+    assert.equal(getSystemFileName('sn-viz'), 'sn-viz.js');
+  });
+
+  it('should serve the systemjs module, not the es module', async () => {
+    const res = await get('scope-sn-viz.js');
+    assert.equal(res.status, 200);
+    assert.match(res.headers.get('content-type'), /javascript/);
+    assert.equal(await res.text(), 'System.register([]);');
+  });
+
+  it('should serve a chunk and its source map beside the systemjs module', async () => {
+    assert.equal(await (await get('sn-viz.systemjs.chunk-a.js')).text(), 'System.register(["chunk"]);');
+    const map = await get('sn-viz.systemjs.chunk-a.js.map');
+    assert.match(map.headers.get('content-type'), /json/);
+  });
+
+  it('should leave other paths to the web app', async () => {
+    assert.equal((await get('index.html')).status, 418);
+    assert.equal((await get('unknown.js')).status, 418);
+    assert.equal((await get('..%2Fsecret.js')).status, 418);
   });
 });

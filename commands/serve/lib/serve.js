@@ -24,7 +24,11 @@ const siblingFile = (snPath, name) => {
   return fs.existsSync(file) && fs.statSync(file).isFile() ? file : null;
 };
 
-export const initiateWatch = async ({ snPath, snName, host }) => {
+// the file name of the systemjs module in the url that the micro frontend tooling asks for, @scope/name is scope-name.js
+export const getSystemFileName = (name) => `${name.replace(/^@/, '').replace(/\//g, '-')}.js`;
+
+// `systemPath` is the systemjs module when `snPath` is the es module of the visualization
+export const initiateWatch = async ({ snPath, snName, host, systemPath }) => {
   if (!snPath) {
     return null;
   }
@@ -62,8 +66,33 @@ export const initiateWatch = async ({ snPath, snName, host }) => {
 
   const cache = {};
 
+  const send = (res, file, headers) => {
+    if (fs.existsSync(file)) {
+      res.set(headers);
+      // a module script is only run when the type of it is javascript
+      res.type(/\.map$/.test(file) ? 'application/json' : 'text/javascript');
+      res.send(fs.readFileSync(file));
+    } else {
+      res.sendStatus('404');
+    }
+  };
+
   return {
     addRoutes(app, options) {
+      if (systemPath) {
+        // the chunks of a code split systemjs module are loaded relative to the url of the module
+        const systemFileName = getSystemFileName(snName);
+        app.get('/:file', (req, res, next) => {
+          const { file } = req.params;
+          const target = file === systemFileName ? systemPath : /\.(js|map)$/.test(file) && siblingFile(systemPath, file);
+          if (target) {
+            send(res, target, options.headers);
+          } else {
+            next();
+          }
+        });
+      }
+
       app.get('/pkg/:name', async (req, res) => {
         const { name } = req.params;
         await done;
@@ -95,15 +124,7 @@ export const initiateWatch = async ({ snPath, snName, host }) => {
 
         cache[name] = file;
 
-        if (fs.existsSync(file)) {
-          const f = fs.readFileSync(file);
-          res.set(options.headers);
-          // a module script is only run when the type of it is javascript
-          res.type(/\.map$/.test(file) ? 'application/json' : 'text/javascript');
-          res.send(f);
-        } else {
-          res.sendStatus('404');
-        }
+        send(res, file, options.headers);
       });
     },
     async close() {
@@ -134,6 +155,8 @@ export default async (argv, { pages } = {}) => {
   let snName;
   let watcher;
   let snUrl;
+  let systemPath;
+  const watchers = [];
   if (/^https?/.test(serveConfig.entry)) {
     snName = 'remote';
     snUrl = serveConfig.entry;
@@ -152,25 +175,35 @@ export default async (argv, { pages } = {}) => {
   }
 
   if (runFromDirectory) {
-    if (serveConfig.build !== false) {
-      watcher = await build({
-        watch: serveConfig.mfe ? 'systemjs' : 'esm',
-        external: provided,
-        config: serveConfig.config,
-        cwd: context,
-      });
-    }
+    let externalPkg = {};
     try {
-      const externalPkg = require(path.resolve(context, 'package.json'));
-      const externalEntry = serveConfig.mfe ? externalPkg.systemjs : externalPkg.module;
-      snName = externalPkg.name;
-      snPath = path.resolve(context, externalEntry);
+      externalPkg = require(path.resolve(context, 'package.json'));
     } catch (e) {
       //
     }
+    // the web app loads the es module, the micro frontend tooling loads the systemjs module, so both are served
+    // unless it is the micro frontend mode, which does not have the web app
+    const formats = serveConfig.mfe ? ['systemjs'] : ['esm', ...(externalPkg.systemjs ? ['systemjs'] : [])];
+    if (serveConfig.build !== false) {
+      // the formats of one package are built one after the other, to keep the output of the builds apart
+      for (const format of formats) {
+        // eslint-disable-next-line no-await-in-loop
+        watchers.push(await build({ watch: format, external: provided, config: serveConfig.config, cwd: context }));
+      }
+      // build({ watch }) has no watcher when the build is not possible
+      watcher = { close: () => Promise.all(watchers.map((w) => w && w.close())) };
+    }
+    const externalEntry = serveConfig.mfe ? externalPkg.systemjs : externalPkg.module;
+    if (externalEntry) {
+      snName = externalPkg.name;
+      snPath = path.resolve(context, externalEntry);
+    }
+    if (externalPkg.systemjs) {
+      systemPath = path.resolve(context, externalPkg.systemjs);
+    }
   }
 
-  const ww = snUrl ? null : await initiateWatch({ snPath, snName: serveConfig.type || snName, host });
+  const ww = snUrl ? null : await initiateWatch({ snPath, snName: serveConfig.type || snName, host, systemPath });
 
   const server = await rsbuildServe({
     host,
@@ -186,6 +219,10 @@ export default async (argv, { pages } = {}) => {
     entryWatcher: ww,
     serveConfig,
   });
+
+  if (systemPath) {
+    console.log(`SystemJS module served at ${server.url}/${getSystemFileName(serveConfig.type || snName)}`);
+  }
 
   const close = async () => {
     if (watcher) {
