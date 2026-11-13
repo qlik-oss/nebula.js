@@ -44,6 +44,31 @@ const loadAmd = (name, modules = {}) => {
   return defined;
 };
 
+// loads a System.register module the way SystemJS does: hand the dependencies to the setters, run the module
+const loadSystem = (name, modules = {}) => {
+  let registered;
+  const System = {
+    register: (deps, declare) => {
+      registered = { deps, declare };
+    },
+  };
+  vm.runInNewContext(read(name), { System }, { filename: name });
+  const exported = {};
+  const { setters, execute } = registered.declare(
+    (key, value) => {
+      if (typeof key === 'string') {
+        exported[key] = value;
+      } else {
+        Object.assign(exported, key);
+      }
+    },
+    { import: () => Promise.resolve({}), meta: { url: `file:///${name}` } }
+  );
+  registered.deps.forEach((d, i) => setters[i](modules[d] ?? {}));
+  execute();
+  return { deps: registered.deps, exported };
+};
+
 describe('nebula sense', () => {
   before(() => {
     root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'nebula-sense-')));
@@ -98,8 +123,13 @@ describe('nebula sense', () => {
       });
       assert.ok(fs.existsSync(path.join(dir, 'viz-ext/viz.js')));
       assert.equal(read('viz-ext/preview.png'), 'png');
-      // one module, the extension is not in a file of its own and no copy of the es module is written
-      assert.deepEqual(fs.readdirSync(path.join(dir, 'viz-ext')).sort(), ['preview.png', 'viz.js', 'viz.qext']);
+      // one module per format, the extension is not in a file of its own and no copy of the es module is written
+      assert.deepEqual(fs.readdirSync(path.join(dir, 'viz-ext')).sort(), [
+        'preview.png',
+        'viz.js',
+        'viz.qext',
+        'viz.systemjs.js',
+      ]);
     });
 
     it('is the supernova as an amd module, when there is no extension definition', async () => {
@@ -108,6 +138,35 @@ describe('nebula sense', () => {
       assert.deepEqual(plain(deps), []);
       assert.equal(typeof value, 'function');
       assert.equal(typeof value({}).component, 'function');
+    });
+
+    it('is the supernova as a System.register module as well, in <name>.systemjs.js', async () => {
+      await run();
+      const { deps, exported } = loadSystem('viz-ext/viz.systemjs.js');
+      assert.deepEqual(plain(deps), []);
+      assert.equal(typeof exported.default({}).component, 'function');
+    });
+
+    it('adds the extension definition to the supernova in both formats', async () => {
+      write('src/ext.js', 'export default { support: { export: true } };\n');
+      await run({ ext: 'src/ext.js' });
+      assert.deepEqual(plain(loadSystem('viz-ext/viz.systemjs.js').exported.default({}).ext), {
+        support: { export: true },
+      });
+    });
+
+    it('leaves the modules that the host provides out of the System.register module as dependencies', async () => {
+      write(
+        'dist/viz.esm.js',
+        "import { useElement } from '@nebula.js/stardust';\nimport qlik from 'qlik';\nexport default () => ({ useElement, qlik });\n"
+      );
+      await run();
+      const { deps, exported } = loadSystem('viz-ext/viz.systemjs.js', {
+        '@nebula.js/stardust': { useElement: 1 },
+        qlik: { default: { app: true } },
+      });
+      assert.deepEqual(plain(deps).sort(), ['@nebula.js/stardust', 'qlik']);
+      assert.equal(plain(exported.default()).useElement, 1);
     });
 
     it('adds the extension definition to the supernova', async () => {
@@ -178,6 +237,39 @@ describe('nebula sense', () => {
 
       await run();
       assert.ok(fs.existsSync(path.join(dir, 'viz-ext/viz.js')));
+    });
+
+    it('writes one file per format, without chunks, of a code split es module', async () => {
+      write(
+        'package.json',
+        JSON.stringify({
+          name: '@acme/viz',
+          version: '1',
+          module: 'dist/viz.esm.js',
+          systemjs: 'dist/viz.systemjs.js',
+          files: ['viz-ext'],
+          peerDependencies: { '@nebula.js/stardust': '*' },
+        })
+      );
+      write('src/lazy.js', 'export default "lazy";\n');
+      write('src/other.js', 'export default "other";\n');
+      write('src/index.js', "export default () => Promise.all([import('./lazy.js'), import('./other.js')]);\n");
+      fs.rmSync(path.join(dir, 'dist'), { recursive: true });
+      await buildBundle({ cwd: dir, codeSplit: true, sourcemap: false });
+      // the es module has chunks of its own beside it
+      assert.ok(fs.readdirSync(path.join(dir, 'dist')).filter((f) => f.endsWith('.js')).length > 2);
+
+      await run();
+      await run({ minify: false });
+      assert.deepEqual(fs.readdirSync(path.join(dir, 'viz-ext')).sort(), ['viz.js', 'viz.qext', 'viz.systemjs.js']);
+      // the lazy modules are in both
+      assert.match(read('viz-ext/viz.js'), /"lazy"/);
+      assert.match(read('viz-ext/viz.systemjs.js'), /"other"/);
+      assert.deepEqual(plain(await loadAmd('viz-ext/viz.js').value()), [{ default: 'lazy' }, { default: 'other' }]);
+      assert.deepEqual(plain(await loadSystem('viz-ext/viz.systemjs.js').exported.default()), [
+        { default: 'lazy' },
+        { default: 'other' },
+      ]);
     });
 
     it('keeps its build cache apart from the one of nebula build', async () => {
