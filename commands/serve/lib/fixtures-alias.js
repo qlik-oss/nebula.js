@@ -2,6 +2,12 @@ import fs from 'fs';
 import path from 'path';
 
 /**
+ * @param {string} [fixturePath] the --fixturePath value, relative to cwd (or absolute)
+ * @returns {string} the absolute path of the folder of the fixtures, that may not exist
+ */
+export const resolveFixturePath = (fixturePath) => path.resolve(process.cwd(), fixturePath || '');
+
+/**
  * Builds the `fixtures` entry for the bundler's `resolve.alias`, as a spreadable object.
  *
  * `lib/fixtures.js` builds a context over this alias with
@@ -26,7 +32,7 @@ import path from 'path';
  * @returns {{fixtures?: string}} spread into `resolve.alias`
  */
 export default function fixturesAlias(fixturePath) {
-  const resolved = path.resolve(process.cwd(), fixturePath || '');
+  const resolved = resolveFixturePath(fixturePath);
 
   if (fs.existsSync(resolved) && fs.statSync(resolved).isDirectory()) {
     return { fixtures: resolved };

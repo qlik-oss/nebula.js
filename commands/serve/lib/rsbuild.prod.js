@@ -1,7 +1,7 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import fixturesAlias, { fixturesIgnoreWarnings } from './fixtures-alias.js';
+import fixturesAlias, { resolveFixturePath, fixturesIgnoreWarnings } from './fixtures-alias.js';
 
 const moduleDir = path.dirname(fileURLToPath(import.meta.url));
 
@@ -14,6 +14,7 @@ const cfg = ({ srcDir = path.resolve(moduleDir, '../dist'), serveConfig = {} }) 
   root: srcDir,
   source: {
     entry: { fixtures: path.resolve(moduleDir, './fixtures.js') },
+    define: { __NEBULA_FIXTURE_DIR__: JSON.stringify(resolveFixturePath(serveConfig.fixturePath)) },
   },
   output: {
     target: 'web',

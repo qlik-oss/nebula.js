@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+/* global __NEBULA_FIXTURE_DIR__ */
 /**
  * Manages loading and delivering fixtures.
  *
@@ -7,6 +8,8 @@
 window.serveFixtures = {
   get(key = '') {
     const k = ['/', './'].some((v) => key.startsWith(v)) ? key : `./${key}`;
+    // the file that is looked for, as it is on disk
+    const file = `${__NEBULA_FIXTURE_DIR__}/${k.replace(/^\.?\//, '')}`;
     let context;
     try {
       // ESM-safe context API in webpack 5
@@ -15,7 +18,9 @@ window.serveFixtures = {
         regExp: /\.fix\.js$/,
       });
     } catch (_) {
-      const error = new Error(`Unable to load fixture "${k}": the folder of "--fixturePath" does not exist`);
+      const error = new Error(
+        `Unable to load fixture ${file}: the folder of "--fixturePath" does not exist (${__NEBULA_FIXTURE_DIR__})`
+      );
       console.error(error.message);
       throw error;
     }
@@ -37,6 +42,8 @@ window.serveFixtures = {
     );
     console.groupEnd();
 
-    throw new Error(`No fixture found at "${k}"`);
+    const error = new Error(`Unable to load fixture ${file}: no such file in ${__NEBULA_FIXTURE_DIR__}`);
+    console.error(error.message);
+    throw error;
   },
 };
