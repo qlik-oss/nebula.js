@@ -40,7 +40,7 @@ const cfg = ({ srcDir = path.resolve(moduleDir, '../dist'), serveConfig = {} }) 
     rspack: (config) => ({
       ...config,
       devtool: false,
-      ignoreWarnings: [...(config.ignoreWarnings || []), ...fixturesIgnoreWarnings(serveConfig.fixturePath)],
+      ignoreWarnings: [...(config.ignoreWarnings || []), ...fixturesIgnoreWarnings],
       resolve: { ...config.resolve, alias: { ...config.resolve?.alias, ...fixturesAlias(serveConfig.fixturePath) } },
       module: {
         ...config.module,

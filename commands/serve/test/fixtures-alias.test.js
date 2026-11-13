@@ -4,7 +4,7 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 
-import fixturesAlias, { fixturesIgnoreWarnings } from '../lib/fixtures-alias.js';
+import fixturesAlias from '../lib/fixtures-alias.js';
 
 describe('fixtures-alias', () => {
   let dir;
@@ -24,22 +24,17 @@ describe('fixtures-alias', () => {
     fs.rmSync(dir, { recursive: true, force: true });
   });
 
-  it('should be silent when the default path does not exist', () => {
+  it('should warn once with the folder when no fixtures are found', () => {
     warn.mock.resetCalls();
-    assert.deepEqual(fixturesAlias(undefined), {});
-    assert.equal(warn.mock.callCount(), 0);
-    assert.equal(fixturesIgnoreWarnings(undefined).length, 1);
-  });
-
-  it('should warn when a path that was passed does not exist', () => {
-    warn.mock.resetCalls();
-    assert.deepEqual(fixturesAlias('nope'), {});
+    assert.deepEqual(fixturesAlias('test/component'), {});
     assert.equal(warn.mock.callCount(), 1);
-    assert.deepEqual(fixturesIgnoreWarnings('nope'), []);
+    assert.match(warn.mock.calls[0].arguments[0], /no fixtures found under ".*test\/component"/);
   });
 
-  it('should alias the default path when it exists', () => {
+  it('should alias the folder when it exists', () => {
+    warn.mock.resetCalls();
     fs.mkdirSync(path.join(dir, 'test/component'), { recursive: true });
-    assert.deepEqual(fixturesAlias(undefined), { fixtures: path.join(dir, 'test/component') });
+    assert.deepEqual(fixturesAlias('test/component'), { fixtures: path.join(dir, 'test/component') });
+    assert.equal(warn.mock.callCount(), 0);
   });
 });

@@ -81,8 +81,7 @@ const options = {
   fixturePath: {
     type: 'string',
     description: 'Path to a folder that will be used as basis when locating fixtures',
-    // not a yargs default, so that a path that was passed can be told from the one that was not
-    defaultDescription: 'test/component',
+    default: 'test/component',
   },
   open: {
     type: 'boolean',

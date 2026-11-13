@@ -88,7 +88,7 @@ export const pagesConfig = ({ srcDir, distDir, dev = false, serveConfig = {} }) 
           ...config.resolve?.alias,
         },
       },
-      ignoreWarnings: [/node_modules[/\\]@qlik[/\\]sdk/, ...fixturesIgnoreWarnings(serveConfig.fixturePath)],
+      ignoreWarnings: [/node_modules[/\\]@qlik[/\\]sdk/, ...fixturesIgnoreWarnings],
       module: {
         ...config.module,
         // Rspack defaults `exportsPresence` to 'error' (webpack 5 only warns for the same case).

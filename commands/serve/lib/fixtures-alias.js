@@ -1,8 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 
-const DEFAULT_FIXTURE_PATH = 'test/component';
-
 /**
  * Builds the `fixtures` entry for the bundler's `resolve.alias`, as a spreadable object.
  *
@@ -24,41 +22,30 @@ const DEFAULT_FIXTURE_PATH = 'test/component';
  * fixtures.js's own try/catch reports 'Specified "--fixturePath" does not exist' at runtime
  * if a fixture is ever requested.
  *
- * A missing default (`--fixturePath` not passed, no `test/component`) is not a mistake, most projects have no
- * fixtures, so it is left out silently. A `--fixturePath` that was passed is always reported.
- *
- * @param {string} [fixturePath] the --fixturePath value, relative to cwd (or absolute), undefined when not passed
+ * @param {string} [fixturePath] the --fixturePath value, relative to cwd (or absolute)
  * @returns {{fixtures?: string}} spread into `resolve.alias`
  */
 export default function fixturesAlias(fixturePath) {
-  const resolved = path.resolve(process.cwd(), fixturePath ?? DEFAULT_FIXTURE_PATH);
+  const resolved = path.resolve(process.cwd(), fixturePath || '');
   const exists = fs.existsSync(resolved);
 
   if (exists && fs.statSync(resolved).isDirectory()) {
     return { fixtures: resolved };
   }
 
-  if (fixturePath === undefined) {
-    return {};
-  }
-
-  // `stats: 'errors-only'` hides the bundler's own "Module not found" warning in serve's
-  // production mode, so say it out loud — a mistyped --fixturePath should not look like
-  // everything is fine.
+  // The bundler's own "Module not found" warning is ignored (see fixturesIgnoreWarnings) and
+  // `stats: 'errors-only'` hides it in serve's production mode anyway, so say it once, out loud,
+  // also for the default path — a mistyped --fixturePath should not look like everything is fine.
   // eslint-disable-next-line no-console
   console.warn(
-    `nebula serve: fixture path "${fixturePath}" ${exists ? 'is not a directory' : 'does not exist'} ` +
-      `(resolved to ${resolved}). Fixtures will be unavailable.`
+    `nebula serve: no fixtures found under "${resolved}" (${exists ? 'not a directory' : 'does not exist'}).`
   );
 
   return {};
 }
 
 /**
- * The bundler warns that 'fixtures' can't be resolved when the alias is left out. That is expected, and not worth a
- * warning, when `--fixturePath` was not passed.
- *
- * @param {string} [fixturePath] the --fixturePath value, undefined when not passed
- * @returns {RegExp[]} spread into the `ignoreWarnings` of the bundler
+ * The bundler warns that 'fixtures' can't be resolved when the alias is left out. The console warning of
+ * `fixturesAlias` says the same, once.
  */
-export const fixturesIgnoreWarnings = (fixturePath) => (fixturePath === undefined ? [/Can't resolve 'fixtures'/] : []);
+export const fixturesIgnoreWarnings = [/Can't resolve 'fixtures'/];

@@ -2,4 +2,4 @@
 '@nebula.js/cli-serve': patch
 ---
 
-Do not warn about a missing fixture path when `--fixturePath` was not passed. The default `test/component` is silent, in the console and in the build; a `--fixturePath` that was passed and does not exist is still reported.
+Print one warning when no fixtures are found under the fixture path, and drop the duplicate bundler warning (`Can't resolve 'fixtures'`) that `nebula serve` printed on every start.
