@@ -173,7 +173,7 @@ overrides:
   minimatch@npm:^3.0.0: ^11.0.8
   minimatch@npm:^5.0.0: ^11.0.8
   minimatch@npm:^9.0.0: ^11.0.8
-  minimatch@npm:^10.0.0: ^10.2.6
+  minimatch@npm:^10.0.0: ^11.0.8
   tar@npm:^7.0.0: ^7.5.22
   glob@npm:^10.0.0: ^13.0.7
   glob@npm:^11.0.0: ^13.0.7
