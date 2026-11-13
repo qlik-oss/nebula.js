@@ -1,5 +1,15 @@
 # Change Log
 
+## 8.0.0-alpha.5
+
+### Patch Changes
+
+- Updated dependencies [[`d50b503`](https://github.com/qlik-oss/nebula.js/commit/d50b503b288322bceba942a38094a6b836e53c23), [`b73e27e`](https://github.com/qlik-oss/nebula.js/commit/b73e27e982ad1fe9f0bc36dce47385e017dc7701)]:
+  - @nebula.js/cli-serve@8.0.0-alpha.5
+  - @nebula.js/cli-sense@8.0.0-alpha.5
+  - @nebula.js/cli-build@8.0.0-alpha.5
+  - @nebula.js/cli-create@8.0.0-alpha.5
+
 ## 8.0.0-alpha.4
 
 ### Patch Changes
