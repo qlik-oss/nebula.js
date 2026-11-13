@@ -8,11 +8,9 @@ Example: `http://localhost:8000/render?fixture=scenario-1.fix.js`
 
 ## Specify a fixture
 
-By default Nebula serve looks for fixtures within the path `test/component` (starting from the working directory).
+Use the serve config `--fixturePath` to specify where your fixtures are located (starting from the working directory). Without it, no fixtures are available.
 
-For example, if the fixture parameter in the URL is set to `scenario-1.fix.js` the fixture will be expected to be found at `<work-dir>/test/componet/scenario-1.fix.js`.
-
-Use the serve config `--fixturePath` to specify where your fixtures are located. Note that file name of the fixture needs to end with `.fix.js`.
+For example, with `--fixturePath test/component` and the fixture parameter in the URL set to `scenario-1.fix.js`, the fixture will be expected to be found at `<work-dir>/test/component/scenario-1.fix.js`. Note that the file name of the fixture needs to end with `.fix.js`.
 
 Given the project structure:
 

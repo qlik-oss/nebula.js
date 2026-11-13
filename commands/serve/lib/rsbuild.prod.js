@@ -1,7 +1,7 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import fixturesAlias from './fixtures-alias.js';
+import fixturesAlias, { fixturesEntry } from './fixtures-alias.js';
 
 const moduleDir = path.dirname(fileURLToPath(import.meta.url));
 
@@ -13,7 +13,7 @@ const cfg = ({ srcDir = path.resolve(moduleDir, '../dist'), serveConfig = {} }) 
   mode: 'development',
   root: srcDir,
   source: {
-    entry: { fixtures: path.resolve(moduleDir, './fixtures.js') },
+    entry: { fixtures: fixturesEntry(serveConfig.fixturePath) },
   },
   output: {
     target: 'web',

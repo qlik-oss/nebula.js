@@ -1,5 +1,45 @@
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+const moduleDir = path.dirname(fileURLToPath(import.meta.url));
+
+const resolveFixturePath = (fixturePath) => path.resolve(process.cwd(), fixturePath);
+
+const isDirectory = (resolved) => fs.existsSync(resolved) && fs.statSync(resolved).isDirectory();
+
+/**
+ * What to tell the user when serve has started: where the fixtures are loaded from, or that there is no such folder.
+ * The browser reports a fixture that fails to load without the path, this is where it is. Nothing is said when
+ * there is no --fixturePath, most projects have no fixtures.
+ *
+ * @param {string} [fixturePath] the --fixturePath value, relative to cwd (or absolute)
+ * @returns {{level: 'info' | 'warn', message: string} | undefined}
+ */
+export const fixturesStatus = (fixturePath) => {
+  if (!fixturePath) {
+    return undefined;
+  }
+  const resolved = resolveFixturePath(fixturePath);
+  return isDirectory(resolved)
+    ? { level: 'info', message: `Fixtures are loaded from ${resolved}` }
+    : { level: 'warn', message: `Fixture path ${resolved} does not exist, fixtures will be unavailable` };
+};
+
+/**
+ * The module that puts `window.serveFixtures` on the page. Only the one that builds a context over the `fixtures`
+ * alias asks the bundler to resolve it, so that is left out when there is no folder to alias, and the one that is used
+ * instead reports it when a fixture is requested: that there is no --fixturePath, or that its folder does not exist.
+ *
+ * @param {string} [fixturePath] the --fixturePath value, relative to cwd (or absolute)
+ * @returns {string} the absolute path of the module
+ */
+export const fixturesEntry = (fixturePath) => {
+  if (!fixturePath) {
+    return path.resolve(moduleDir, './no-fixture-path.js');
+  }
+  return path.resolve(moduleDir, isDirectory(resolveFixturePath(fixturePath)) ? './fixtures.js' : './no-fixtures.js');
+};
 
 /**
  * Builds the `fixtures` entry for the bundler's `resolve.alias`, as a spreadable object.
@@ -12,35 +52,18 @@ import path from 'path';
  * - alias present but pointing at a missing directory — rspack reports a build *error*
  *   ("Cannot find module 'fixtures' for matched aliased key"), webpack only warned.
  *   Since rsbuild.serve.js exits on `stats.hasErrors()`, that would stop the dev server
- *   from starting at all whenever --fixturePath doesn't exist — including the default
- *   `test/component` in any project that has no such directory.
+ *   from starting at all whenever --fixturePath doesn't exist.
  * - alias omitted — both bundlers emit a *warning* ("Module not found: Can't resolve
  *   'fixtures'") and the build succeeds.
  *
- * So the alias is registered only when it actually resolves to a directory. Leaving it out
- * otherwise restores webpack's warn-and-continue behaviour: the server still starts, and
- * fixtures.js's own try/catch reports 'Specified "--fixturePath" does not exist' at runtime
- * if a fixture is ever requested.
+ * So the alias is registered only when it actually resolves to a directory, and `fixturesEntry`
+ * then leaves out the module that asks for it.
  *
  * @param {string} [fixturePath] the --fixturePath value, relative to cwd (or absolute)
  * @returns {{fixtures?: string}} spread into `resolve.alias`
  */
 export default function fixturesAlias(fixturePath) {
-  const resolved = path.resolve(process.cwd(), fixturePath || '');
-  const exists = fs.existsSync(resolved);
+  const resolved = fixturePath ? resolveFixturePath(fixturePath) : undefined;
 
-  if (exists && fs.statSync(resolved).isDirectory()) {
-    return { fixtures: resolved };
-  }
-
-  // `stats: 'errors-only'` hides the bundler's own "Module not found" warning in serve's
-  // production mode, so say it out loud — a mistyped --fixturePath should not look like
-  // everything is fine.
-  // eslint-disable-next-line no-console
-  console.warn(
-    `nebula serve: fixture path "${fixturePath}" ${exists ? 'is not a directory' : 'does not exist'} ` +
-      `(resolved to ${resolved}). Fixtures will be unavailable.`
-  );
-
-  return {};
+  return resolved && isDirectory(resolved) ? { fixtures: resolved } : {};
 }

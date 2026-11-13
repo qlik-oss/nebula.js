@@ -11,6 +11,7 @@ import { createRsbuild } from '@rsbuild/core';
 import snapshooterFn from './snapshot-server.js';
 import snapshotRouter from './snapshot-router.js';
 import { resolveHttps } from './https.js';
+import { fixturesStatus } from './fixtures-alias.js';
 
 const moduleDir = path.dirname(fileURLToPath(import.meta.url));
 
@@ -224,6 +225,11 @@ export default async ({
 
     console.log(`Development server running at ${chalk.green(url)}`);
     console.log(`Protocol: ${chalk.green(HTTPS ? 'https' : 'http')}, ${httpsReason}`);
+
+    const fixtures = fixturesStatus(serveConfig.fixturePath);
+    if (fixtures) {
+      console[fixtures.level](fixtures.message);
+    }
 
     return { context: '', url, close };
   };

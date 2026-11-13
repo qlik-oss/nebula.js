@@ -7,16 +7,11 @@
 window.serveFixtures = {
   get(key = '') {
     const k = ['/', './'].some((v) => key.startsWith(v)) ? key : `./${key}`;
-    let context;
-    try {
-      // ESM-safe context API in webpack 5
-      context = import.meta.webpackContext('fixtures', {
-        recursive: true,
-        regExp: /\.fix\.js$/,
-      });
-    } catch (_) {
-      throw new Error('Specified "--fixturePath" does not exist');
-    }
+    // ESM-safe context API in webpack 5
+    const context = import.meta.webpackContext('fixtures', {
+      recursive: true,
+      regExp: /\.fix\.js$/,
+    });
 
     if (context.keys().includes(k)) {
       return context(k).default;
@@ -35,6 +30,8 @@ window.serveFixtures = {
     );
     console.groupEnd();
 
-    throw new Error(`No fixture found at "${k}"`);
+    const error = new Error(`Unable to load fixture "${k}" from the configured --fixturePath`);
+    console.error(error.message);
+    throw error;
   },
 };

@@ -3,7 +3,7 @@ import { fileURLToPath } from 'url';
 import { defineConfig } from '@rsbuild/core';
 
 import { browserList, readPackage, versionDefines } from '../../scripts/build-shared.mjs';
-import fixturesAlias from './lib/fixtures-alias.js';
+import fixturesAlias, { fixturesEntry } from './lib/fixtures-alias.js';
 
 const moduleDir = path.dirname(fileURLToPath(import.meta.url));
 
@@ -27,7 +27,7 @@ export const pagesConfig = ({ srcDir, distDir, dev = false, serveConfig = {} }) 
   source: {
     entry: {
       // the fixtures are in the page that renders only when running nebula serve, as a script of it
-      eRender: [path.resolve(srcDir, 'eRender'), ...(dev ? [path.resolve(moduleDir, './lib/fixtures.js')] : [])],
+      eRender: [path.resolve(srcDir, 'eRender'), ...(dev ? [fixturesEntry(serveConfig.fixturePath)] : [])],
       index: path.resolve(srcDir, 'eHub'),
     },
     define: {

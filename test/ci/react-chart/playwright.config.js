@@ -17,7 +17,7 @@ export default {
   ],
 
   webServer: {
-    command: 'pnpm start --no-build --port 8077 --open false --no-https',
+    command: 'pnpm start --fixturePath test/component --no-build --port 8077 --open false --no-https',
     reuseExistingServer: !process.env.CI,
     port: '8077',
   },
