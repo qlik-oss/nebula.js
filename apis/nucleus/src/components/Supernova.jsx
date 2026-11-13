@@ -59,7 +59,7 @@ function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
       return;
     }
 
-    renderDebouncer.schedule(() => {
+    renderDebouncer.schedule((isCurrent) => {
       const permissions = [];
       if (!constraints.passive) {
         permissions.push('passive');
@@ -101,13 +101,14 @@ function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
           },
         })
       ).then((done) => {
-        if (done === false) {
+        // a newer render has been started, ignore the result of this one
+        if (done === false || !isCurrent()) {
           return;
         }
         if (renderCnt === 0 && typeof options.onInitialRender === 'function') {
           options.onInitialRender.call(null);
         }
-        setRenderCnt(renderCnt + 1);
+        setRenderCnt((cnt) => cnt + 1);
       });
     });
   }, [
