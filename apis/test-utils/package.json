@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/test-utils",
-  "version": "8.0.0-alpha.4",
+  "version": "8.0.0-alpha.5",
   "private": true,
   "description": "",
   "license": "MIT",
@@ -25,7 +25,7 @@
     "prepublishOnly": "rm -rf dist && pnpm run build"
   },
   "peerDependencies": {
-    "@nebula.js/stardust": ">=8.0.0-alpha.4"
+    "@nebula.js/stardust": ">=8.0.0-alpha.5"
   },
   "devDependencies": {
     "@babel/preset-env": "8.0.7",

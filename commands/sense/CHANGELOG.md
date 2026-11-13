@@ -1,5 +1,17 @@
 # Change Log
 
+## 8.0.0-alpha.5
+
+### Minor Changes
+
+- [#2468](https://github.com/qlik-oss/nebula.js/pull/2468) [`b73e27e`](https://github.com/qlik-oss/nebula.js/commit/b73e27e982ad1fe9f0bc36dce47385e017dc7701) Thanks [@enell](https://github.com/enell)! - feat(sense): build the extension as a SystemJS module, `<name>.systemjs.js`, next to the AMD module
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @nebula.js/stardust@8.0.0-alpha.5
+  - @nebula.js/cli-build@8.0.0-alpha.5
+
 ## 8.0.0-alpha.4
 
 ### Patch Changes
