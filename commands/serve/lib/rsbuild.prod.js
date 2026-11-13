@@ -1,7 +1,7 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import fixturesAlias from './fixtures-alias.js';
+import fixturesAlias, { fixturesIgnoreWarnings } from './fixtures-alias.js';
 
 const moduleDir = path.dirname(fileURLToPath(import.meta.url));
 
@@ -40,6 +40,7 @@ const cfg = ({ srcDir = path.resolve(moduleDir, '../dist'), serveConfig = {} }) 
     rspack: (config) => ({
       ...config,
       devtool: false,
+      ignoreWarnings: [...(config.ignoreWarnings || []), ...fixturesIgnoreWarnings(serveConfig.fixturePath)],
       resolve: { ...config.resolve, alias: { ...config.resolve?.alias, ...fixturesAlias(serveConfig.fixturePath) } },
       module: {
         ...config.module,

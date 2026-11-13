@@ -3,7 +3,7 @@ import { fileURLToPath } from 'url';
 import { defineConfig } from '@rsbuild/core';
 
 import { browserList, readPackage, versionDefines } from '../../scripts/build-shared.mjs';
-import fixturesAlias from './lib/fixtures-alias.js';
+import fixturesAlias, { fixturesIgnoreWarnings } from './lib/fixtures-alias.js';
 
 const moduleDir = path.dirname(fileURLToPath(import.meta.url));
 
@@ -88,7 +88,7 @@ export const pagesConfig = ({ srcDir, distDir, dev = false, serveConfig = {} }) 
           ...config.resolve?.alias,
         },
       },
-      ignoreWarnings: [/node_modules[/\\]@qlik[/\\]sdk/],
+      ignoreWarnings: [/node_modules[/\\]@qlik[/\\]sdk/, ...fixturesIgnoreWarnings(serveConfig.fixturePath)],
       module: {
         ...config.module,
         // Rspack defaults `exportsPresence` to 'error' (webpack 5 only warns for the same case).

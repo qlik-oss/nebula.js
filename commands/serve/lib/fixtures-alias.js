@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 
+const DEFAULT_FIXTURE_PATH = 'test/component';
+
 /**
  * Builds the `fixtures` entry for the bundler's `resolve.alias`, as a spreadable object.
  *
@@ -22,15 +24,22 @@ import path from 'path';
  * fixtures.js's own try/catch reports 'Specified "--fixturePath" does not exist' at runtime
  * if a fixture is ever requested.
  *
- * @param {string} [fixturePath] the --fixturePath value, relative to cwd (or absolute)
+ * A missing default (`--fixturePath` not passed, no `test/component`) is not a mistake, most projects have no
+ * fixtures, so it is left out silently. A `--fixturePath` that was passed is always reported.
+ *
+ * @param {string} [fixturePath] the --fixturePath value, relative to cwd (or absolute), undefined when not passed
  * @returns {{fixtures?: string}} spread into `resolve.alias`
  */
 export default function fixturesAlias(fixturePath) {
-  const resolved = path.resolve(process.cwd(), fixturePath || '');
+  const resolved = path.resolve(process.cwd(), fixturePath ?? DEFAULT_FIXTURE_PATH);
   const exists = fs.existsSync(resolved);
 
   if (exists && fs.statSync(resolved).isDirectory()) {
     return { fixtures: resolved };
+  }
+
+  if (fixturePath === undefined) {
+    return {};
   }
 
   // `stats: 'errors-only'` hides the bundler's own "Module not found" warning in serve's
@@ -44,3 +53,12 @@ export default function fixturesAlias(fixturePath) {
 
   return {};
 }
+
+/**
+ * The bundler warns that 'fixtures' can't be resolved when the alias is left out. That is expected, and not worth a
+ * warning, when `--fixturePath` was not passed.
+ *
+ * @param {string} [fixturePath] the --fixturePath value, undefined when not passed
+ * @returns {RegExp[]} spread into the `ignoreWarnings` of the bundler
+ */
+export const fixturesIgnoreWarnings = (fixturePath) => (fixturePath === undefined ? [/Can't resolve 'fixtures'/] : []);
