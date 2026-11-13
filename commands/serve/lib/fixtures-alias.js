@@ -27,25 +27,16 @@ import path from 'path';
  */
 export default function fixturesAlias(fixturePath) {
   const resolved = path.resolve(process.cwd(), fixturePath || '');
-  const exists = fs.existsSync(resolved);
 
-  if (exists && fs.statSync(resolved).isDirectory()) {
+  if (fs.existsSync(resolved) && fs.statSync(resolved).isDirectory()) {
     return { fixtures: resolved };
   }
-
-  // The bundler's own "Module not found" warning is ignored (see fixturesIgnoreWarnings) and
-  // `stats: 'errors-only'` hides it in serve's production mode anyway, so say it once, out loud,
-  // also for the default path — a mistyped --fixturePath should not look like everything is fine.
-  // eslint-disable-next-line no-console
-  console.warn(
-    `nebula serve: no fixtures found under "${resolved}" (${exists ? 'not a directory' : 'does not exist'}).`
-  );
 
   return {};
 }
 
 /**
- * The bundler warns that 'fixtures' can't be resolved when the alias is left out. The console warning of
- * `fixturesAlias` says the same, once.
+ * The bundler warns that 'fixtures' can't be resolved when the alias is left out. Like in nebula 7 that is not
+ * reported when serve starts, only when a fixture is requested.
  */
 export const fixturesIgnoreWarnings = [/Can't resolve 'fixtures'/];

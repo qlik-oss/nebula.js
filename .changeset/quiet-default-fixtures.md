@@ -2,4 +2,4 @@
 '@nebula.js/cli-serve': patch
 ---
 
-Print one warning when no fixtures are found under the fixture path, and drop the duplicate bundler warning (`Can't resolve 'fixtures'`) that `nebula serve` printed on every start.
+Do not warn when the fixture path does not exist as `nebula serve` starts, like in nebula 7. The bundler warning `Can't resolve 'fixtures'` is dropped, and the error when a fixture is requested names the fixture.

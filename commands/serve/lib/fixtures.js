@@ -15,7 +15,9 @@ window.serveFixtures = {
         regExp: /\.fix\.js$/,
       });
     } catch (_) {
-      throw new Error('Specified "--fixturePath" does not exist');
+      const error = new Error(`Unable to load fixture "${k}": the folder of "--fixturePath" does not exist`);
+      console.error(error.message);
+      throw error;
     }
 
     if (context.keys().includes(k)) {
