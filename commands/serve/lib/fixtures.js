@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-/* global __NEBULA_FIXTURE_DIR__ */
 /**
  * Manages loading and delivering fixtures.
  *
@@ -8,8 +7,6 @@
 window.serveFixtures = {
   get(key = '') {
     const k = ['/', './'].some((v) => key.startsWith(v)) ? key : `./${key}`;
-    // the file that is looked for, as it is on disk
-    const file = `${__NEBULA_FIXTURE_DIR__}/${k.replace(/^\.?\//, '')}`;
     // ESM-safe context API in webpack 5
     const context = import.meta.webpackContext('fixtures', {
       recursive: true,
@@ -33,7 +30,7 @@ window.serveFixtures = {
     );
     console.groupEnd();
 
-    const error = new Error(`Unable to load fixture ${file}: no such file in ${__NEBULA_FIXTURE_DIR__}`);
+    const error = new Error(`Unable to load fixture "${k}" from the configured --fixturePath`);
     console.error(error.message);
     throw error;
   },

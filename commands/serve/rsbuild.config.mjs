@@ -3,7 +3,7 @@ import { fileURLToPath } from 'url';
 import { defineConfig } from '@rsbuild/core';
 
 import { browserList, readPackage, versionDefines } from '../../scripts/build-shared.mjs';
-import fixturesAlias, { fixturesEntry, resolveFixturePath } from './lib/fixtures-alias.js';
+import fixturesAlias, { fixturesEntry } from './lib/fixtures-alias.js';
 
 const moduleDir = path.dirname(fileURLToPath(import.meta.url));
 
@@ -32,7 +32,6 @@ export const pagesConfig = ({ srcDir, distDir, dev = false, serveConfig = {} }) 
     },
     define: {
       __NEBULA_DEV__: true,
-      __NEBULA_FIXTURE_DIR__: JSON.stringify(resolveFixturePath(serveConfig.fixturePath)),
       ...versionDefines(pkg),
     },
     alias: {

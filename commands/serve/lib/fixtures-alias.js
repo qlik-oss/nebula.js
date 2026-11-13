@@ -8,9 +8,23 @@ const moduleDir = path.dirname(fileURLToPath(import.meta.url));
  * @param {string} [fixturePath] the --fixturePath value, relative to cwd (or absolute)
  * @returns {string} the absolute path of the folder of the fixtures, that may not exist
  */
-export const resolveFixturePath = (fixturePath) => path.resolve(process.cwd(), fixturePath || '');
+const resolveFixturePath = (fixturePath) => path.resolve(process.cwd(), fixturePath || '');
 
 const isDirectory = (resolved) => fs.existsSync(resolved) && fs.statSync(resolved).isDirectory();
+
+/**
+ * What to tell the user when serve has started: where the fixtures are loaded from, or that there is no such folder.
+ * The browser reports a fixture that fails to load without the path, this is where it is.
+ *
+ * @param {string} [fixturePath] the --fixturePath value, relative to cwd (or absolute)
+ * @returns {{level: 'info' | 'warn', message: string}}
+ */
+export const fixturesStatus = (fixturePath) => {
+  const resolved = resolveFixturePath(fixturePath);
+  return isDirectory(resolved)
+    ? { level: 'info', message: `Fixtures are loaded from ${resolved}` }
+    : { level: 'warn', message: `Fixture path ${resolved} does not exist, fixtures will be unavailable` };
+};
 
 /**
  * The module that puts `window.serveFixtures` on the page. Only the one that builds a context over the `fixtures`
