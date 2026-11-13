@@ -19,7 +19,7 @@ import path from 'path';
  *
  * So the alias is registered only when it actually resolves to a directory. Leaving it out
  * otherwise restores webpack's warn-and-continue behaviour: the server still starts, and
- * fixtures.js's own try/catch reports 'Specified "--fixturePath" does not exist' at runtime
+ * fixtures.js's own try/catch reports that the folder does not exist at runtime
  * if a fixture is ever requested.
  *
  * @param {string} [fixturePath] the --fixturePath value, relative to cwd (or absolute)
