@@ -10,20 +10,11 @@ window.serveFixtures = {
     const k = ['/', './'].some((v) => key.startsWith(v)) ? key : `./${key}`;
     // the file that is looked for, as it is on disk
     const file = `${__NEBULA_FIXTURE_DIR__}/${k.replace(/^\.?\//, '')}`;
-    let context;
-    try {
-      // ESM-safe context API in webpack 5
-      context = import.meta.webpackContext('fixtures', {
-        recursive: true,
-        regExp: /\.fix\.js$/,
-      });
-    } catch (_) {
-      const error = new Error(
-        `Unable to load fixture ${file}: the folder of "--fixturePath" does not exist (${__NEBULA_FIXTURE_DIR__})`
-      );
-      console.error(error.message);
-      throw error;
-    }
+    // ESM-safe context API in webpack 5
+    const context = import.meta.webpackContext('fixtures', {
+      recursive: true,
+      regExp: /\.fix\.js$/,
+    });
 
     if (context.keys().includes(k)) {
       return context(k).default;

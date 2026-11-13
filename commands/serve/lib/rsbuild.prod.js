@@ -1,7 +1,7 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import fixturesAlias, { resolveFixturePath, fixturesIgnoreWarnings } from './fixtures-alias.js';
+import fixturesAlias, { fixturesEntry, resolveFixturePath } from './fixtures-alias.js';
 
 const moduleDir = path.dirname(fileURLToPath(import.meta.url));
 
@@ -13,7 +13,7 @@ const cfg = ({ srcDir = path.resolve(moduleDir, '../dist'), serveConfig = {} }) 
   mode: 'development',
   root: srcDir,
   source: {
-    entry: { fixtures: path.resolve(moduleDir, './fixtures.js') },
+    entry: { fixtures: fixturesEntry(serveConfig.fixturePath) },
     define: { __NEBULA_FIXTURE_DIR__: JSON.stringify(resolveFixturePath(serveConfig.fixturePath)) },
   },
   output: {
@@ -41,7 +41,6 @@ const cfg = ({ srcDir = path.resolve(moduleDir, '../dist'), serveConfig = {} }) 
     rspack: (config) => ({
       ...config,
       devtool: false,
-      ignoreWarnings: [...(config.ignoreWarnings || []), ...fixturesIgnoreWarnings],
       resolve: { ...config.resolve, alias: { ...config.resolve?.alias, ...fixturesAlias(serveConfig.fixturePath) } },
       module: {
         ...config.module,

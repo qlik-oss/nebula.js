@@ -4,7 +4,7 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 
-import fixturesAlias, { fixturesIgnoreWarnings } from '../lib/fixtures-alias.js';
+import fixturesAlias, { fixturesEntry } from '../lib/fixtures-alias.js';
 
 describe('fixtures-alias', () => {
   let dir;
@@ -30,7 +30,13 @@ describe('fixtures-alias', () => {
     assert.deepEqual(fixturesAlias('test/component'), { fixtures: path.join(dir, 'test/component') });
   });
 
-  it('should ignore the warning of the bundler about the missing alias', () => {
-    assert.ok(fixturesIgnoreWarnings.some((re) => re.test("Module not found: Can't resolve 'fixtures'")));
+  it('should leave out the module that asks for the alias when the folder does not exist', () => {
+    fs.rmSync(path.join(dir, 'test/component'), { recursive: true });
+    assert.equal(path.basename(fixturesEntry('test/component')), 'no-fixtures.js');
+  });
+
+  it('should use the module that asks for the alias when the folder exists', () => {
+    fs.mkdirSync(path.join(dir, 'test/component'), { recursive: true });
+    assert.equal(path.basename(fixturesEntry('test/component')), 'fixtures.js');
   });
 });
