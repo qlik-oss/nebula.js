@@ -81,7 +81,6 @@ const options = {
   fixturePath: {
     type: 'string',
     description: 'Path to a folder that will be used as basis when locating fixtures',
-    default: 'test/component',
   },
   open: {
     type: 'boolean',

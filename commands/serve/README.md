@@ -43,7 +43,7 @@ Options:
       --webIntegrationId    Tenant's webIntegrationId for connection    [string]
       --fixturePath         Path to a folder that will be used as basis when
                             locating fixtures
-                                            [string] [default: "test/component"]
+                                            [string]
   -h, --help                Show help                                  [boolean]
       --open                Open up in browser         [boolean] [default: true]
 ```

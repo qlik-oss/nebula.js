@@ -227,7 +227,9 @@ export default async ({
     console.log(`Protocol: ${chalk.green(HTTPS ? 'https' : 'http')}, ${httpsReason}`);
 
     const fixtures = fixturesStatus(serveConfig.fixturePath);
-    console[fixtures.level](fixtures.message);
+    if (fixtures) {
+      console[fixtures.level](fixtures.message);
+    }
 
     return { context: '', url, close };
   };

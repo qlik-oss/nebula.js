@@ -51,4 +51,10 @@ describe('fixtures-alias', () => {
     fs.rmSync(path.join(dir, 'test/component'), { recursive: true });
     assert.equal(fixturesStatus('test/component').level, 'warn');
   });
+
+  it('should leave everything out and say nothing when there is no fixturePath', () => {
+    assert.deepEqual(fixturesAlias(undefined), {});
+    assert.equal(path.basename(fixturesEntry(undefined)), 'no-fixture-path.js');
+    assert.equal(fixturesStatus(undefined), undefined);
+  });
 });

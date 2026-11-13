@@ -4,22 +4,22 @@ import { fileURLToPath } from 'url';
 
 const moduleDir = path.dirname(fileURLToPath(import.meta.url));
 
-/**
- * @param {string} [fixturePath] the --fixturePath value, relative to cwd (or absolute)
- * @returns {string} the absolute path of the folder of the fixtures, that may not exist
- */
-const resolveFixturePath = (fixturePath) => path.resolve(process.cwd(), fixturePath || '');
+const resolveFixturePath = (fixturePath) => path.resolve(process.cwd(), fixturePath);
 
 const isDirectory = (resolved) => fs.existsSync(resolved) && fs.statSync(resolved).isDirectory();
 
 /**
  * What to tell the user when serve has started: where the fixtures are loaded from, or that there is no such folder.
- * The browser reports a fixture that fails to load without the path, this is where it is.
+ * The browser reports a fixture that fails to load without the path, this is where it is. Nothing is said when
+ * there is no --fixturePath, most projects have no fixtures.
  *
  * @param {string} [fixturePath] the --fixturePath value, relative to cwd (or absolute)
- * @returns {{level: 'info' | 'warn', message: string}}
+ * @returns {{level: 'info' | 'warn', message: string} | undefined}
  */
 export const fixturesStatus = (fixturePath) => {
+  if (!fixturePath) {
+    return undefined;
+  }
   const resolved = resolveFixturePath(fixturePath);
   return isDirectory(resolved)
     ? { level: 'info', message: `Fixtures are loaded from ${resolved}` }
@@ -28,14 +28,18 @@ export const fixturesStatus = (fixturePath) => {
 
 /**
  * The module that puts `window.serveFixtures` on the page. Only the one that builds a context over the `fixtures`
- * alias asks the bundler to resolve it, so that is left out when there is no folder to alias: nothing is then
- * reported when serve starts, like in nebula 7, and the one that is used instead reports it when a fixture is requested.
+ * alias asks the bundler to resolve it, so that is left out when there is no folder to alias, and the one that is used
+ * instead reports it when a fixture is requested: that there is no --fixturePath, or that its folder does not exist.
  *
  * @param {string} [fixturePath] the --fixturePath value, relative to cwd (or absolute)
  * @returns {string} the absolute path of the module
  */
-export const fixturesEntry = (fixturePath) =>
-  path.resolve(moduleDir, isDirectory(resolveFixturePath(fixturePath)) ? './fixtures.js' : './no-fixtures.js');
+export const fixturesEntry = (fixturePath) => {
+  if (!fixturePath) {
+    return path.resolve(moduleDir, './no-fixture-path.js');
+  }
+  return path.resolve(moduleDir, isDirectory(resolveFixturePath(fixturePath)) ? './fixtures.js' : './no-fixtures.js');
+};
 
 /**
  * Builds the `fixtures` entry for the bundler's `resolve.alias`, as a spreadable object.
@@ -48,8 +52,7 @@ export const fixturesEntry = (fixturePath) =>
  * - alias present but pointing at a missing directory — rspack reports a build *error*
  *   ("Cannot find module 'fixtures' for matched aliased key"), webpack only warned.
  *   Since rsbuild.serve.js exits on `stats.hasErrors()`, that would stop the dev server
- *   from starting at all whenever --fixturePath doesn't exist — including the default
- *   `test/component` in any project that has no such directory.
+ *   from starting at all whenever --fixturePath doesn't exist.
  * - alias omitted — both bundlers emit a *warning* ("Module not found: Can't resolve
  *   'fixtures'") and the build succeeds.
  *
@@ -60,11 +63,7 @@ export const fixturesEntry = (fixturePath) =>
  * @returns {{fixtures?: string}} spread into `resolve.alias`
  */
 export default function fixturesAlias(fixturePath) {
-  const resolved = resolveFixturePath(fixturePath);
+  const resolved = fixturePath ? resolveFixturePath(fixturePath) : undefined;
 
-  if (isDirectory(resolved)) {
-    return { fixtures: resolved };
-  }
-
-  return {};
+  return resolved && isDirectory(resolved) ? { fixtures: resolved } : {};
 }
