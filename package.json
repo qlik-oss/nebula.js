@@ -79,8 +79,8 @@
     "minimatch@npm:^9.0.0": "^11.0.8",
     "minimatch@npm:^10.0.0": "^11.0.8",
     "tar@npm:^7.0.0": "^7.5.22",
-    "glob@npm:^10.0.0": "^13.0.7",
-    "glob@npm:^11.0.0": "^13.0.7"
+    "glob@npm:^10.0.0": "^14.0.4",
+    "glob@npm:^11.0.0": "^14.0.4"
   },
   "packageManager": "pnpm@12.16.1",
   "devEngines": {
