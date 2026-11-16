@@ -302,6 +302,143 @@ describe('use-listbox-interactions', () => {
       });
     });
 
+    test('"replace" mode: plain click unselects an already-selected value', async () => {
+      updateSelectionState({
+        pages: createPageWithSingle(23, 'S'),
+      });
+      await render({ selectionMode: 'replace' });
+      const { interactionEvents } = ref.current.result;
+
+      await act(() => {
+        interactionEvents.onMouseDown({
+          button: 0,
+          currentTarget: { getAttribute: jest.fn().mockReturnValue(23) },
+        });
+      });
+      const [, docMouseUpListener] = global.document.addEventListener.mock.lastCall;
+      await act(() => {
+        docMouseUpListener({ button: 0 });
+      });
+
+      expect(listboxSelections.selectValues).toHaveBeenLastCalledWith({
+        selections,
+        elemNumbers: [23],
+        isSingleSelect: false,
+        toggle: true,
+      });
+      expect(setPages).toHaveBeenLastCalledWith(createPageWithSingle(23, 'A'));
+    });
+
+    test('"replace" mode: dragging from a selected value replaces with the range', async () => {
+      updateSelectionState({
+        pages: createPageWithRange({ qElemNumber: 23, qState: 'S' }, { qElemNumber: 24, qState: 'O' }),
+      });
+      await render({ selectionMode: 'replace' });
+      const { interactionEvents } = ref.current.result;
+
+      await act(() => {
+        interactionEvents.onMouseDown({
+          button: 0,
+          currentTarget: { getAttribute: jest.fn().mockReturnValue(23) },
+        });
+        interactionEvents.onMouseEnter({
+          currentTarget: { getAttribute: jest.fn().mockReturnValue(24) },
+        });
+        interactionEvents.onMouseUp({
+          button: 0,
+          currentTarget: { getAttribute: jest.fn().mockReturnValue(24) },
+        });
+      });
+
+      expect(listboxSelections.selectValues).toHaveBeenLastCalledWith({
+        selections,
+        elemNumbers: [23, 24],
+        isSingleSelect: false,
+        toggle: false,
+      });
+    });
+
+    test('"replace" mode: dragging back over the start value keeps it selected', async () => {
+      updateSelectionState({
+        pages: createPageWithRange({ qElemNumber: 23, qState: 'S' }, { qElemNumber: 24, qState: 'O' }),
+      });
+      await render({ selectionMode: 'replace' });
+      const { interactionEvents } = ref.current.result;
+      const enterAt = (elemNumber) => ({
+        currentTarget: { getAttribute: jest.fn().mockReturnValue(elemNumber) },
+      });
+
+      await act(() => {
+        interactionEvents.onMouseDown({
+          button: 0,
+          currentTarget: { getAttribute: jest.fn().mockReturnValue(23) },
+        });
+      });
+      await act(() => {
+        interactionEvents.onMouseEnter(enterAt(23));
+      });
+      expect(setPages).toHaveBeenLastCalledWith(
+        createPageWithRange({ qElemNumber: 23, qState: 'S' }, { qElemNumber: 24, qState: 'O' })
+      );
+      await act(() => {
+        interactionEvents.onMouseEnter(enterAt(24));
+      });
+      await act(() => {
+        interactionEvents.onMouseUp({
+          button: 0,
+          currentTarget: { getAttribute: jest.fn().mockReturnValue(24) },
+        });
+      });
+
+      expect(listboxSelections.selectValues).toHaveBeenLastCalledWith({
+        selections,
+        elemNumbers: [23, 24],
+        isSingleSelect: false,
+        toggle: false,
+      });
+    });
+
+    test('"replace" mode: single select never deselects on click', async () => {
+      updateSelectionState({
+        isSingleSelect: true,
+        pages: createPageWithSingle(23, 'S'),
+      });
+      await render({ selectionMode: 'replace' });
+
+      await act(() => {
+        ref.current.result.interactionEvents.onMouseDown({
+          button: 0,
+          currentTarget: { getAttribute: jest.fn().mockReturnValue(23) },
+        });
+      });
+      expect(listboxSelections.selectValues).toHaveBeenLastCalledWith({
+        selections,
+        elemNumbers: [23],
+        isSingleSelect: true,
+        toggle: false,
+      });
+    });
+
+    test('"replace" mode: checkbox click on a selected value deselects it', async () => {
+      updateSelectionState({
+        pages: createPageWithSingle(24, 'S'),
+      });
+      await render({ checkboxes: true, selectionMode: 'replace' });
+
+      await act(() => {
+        ref.current.result.interactionEvents.onChange({
+          nativeEvent: {},
+          target: { getAttribute: jest.fn().mockReturnValue(24) },
+        });
+      });
+      expect(listboxSelections.selectValues).toHaveBeenLastCalledWith({
+        selections,
+        elemNumbers: [24],
+        isSingleSelect: false,
+        toggle: true,
+      });
+    });
+
     test('"replace" mode applies to checkbox-mode clicks too', async () => {
       updateSelectionState({
         pages: createPageWithSingle(24, 'O'),
@@ -332,6 +469,63 @@ describe('use-listbox-interactions', () => {
         elemNumbers: [24],
         isSingleSelect: false,
         toggle: true,
+      });
+    });
+
+    test('"replace" mode: manual select of a selected value deselects it', async () => {
+      updateSelectionState({
+        pages: createPageWithSingle(23, 'S'),
+      });
+      await render({ selectionMode: 'replace' });
+      const args = ref.current.result;
+
+      await act(() => {
+        args.select([23]);
+      });
+      expect(listboxSelections.selectValues).toHaveBeenLastCalledWith({
+        selections,
+        elemNumbers: [23],
+        isSingleSelect: false,
+        toggle: true,
+      });
+
+      await act(() => {
+        args.select([23, 24]);
+      });
+      expect(listboxSelections.selectValues).toHaveBeenLastCalledWith({
+        selections,
+        elemNumbers: [23, 24],
+        isSingleSelect: false,
+        toggle: false,
+      });
+    });
+
+    test('"replace" mode: keyboard Space on a selected value deselects it', async () => {
+      updateSelectionState({
+        pages: createPageWithSingle(23, 'S'),
+      });
+      await render({ selectionMode: 'replace' });
+      const args = ref.current.result;
+      const spaceKeyEvent = { nativeEvent: { keyCode: 32 } };
+
+      await act(() => {
+        args.select([23], false, spaceKeyEvent);
+      });
+      expect(listboxSelections.selectValues).toHaveBeenLastCalledWith({
+        selections,
+        elemNumbers: [23],
+        isSingleSelect: false,
+        toggle: true,
+      });
+
+      await act(() => {
+        args.select([24], false, spaceKeyEvent);
+      });
+      expect(listboxSelections.selectValues).toHaveBeenLastCalledWith({
+        selections,
+        elemNumbers: [24],
+        isSingleSelect: false,
+        toggle: false,
       });
     });
 
