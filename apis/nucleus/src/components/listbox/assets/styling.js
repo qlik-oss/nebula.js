@@ -1,4 +1,4 @@
-import { createColor, getContrastingColor, isDark } from 'qlik-chart-modules';
+import { createColor, getContrastingColor, isDark } from '@qlik/chart-modules';
 import { resolveBgColor, resolveBgImage } from '../../../utils/style/styling-props';
 
 export const DEFAULT_SELECTION_COLORS = {
