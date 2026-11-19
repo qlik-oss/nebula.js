@@ -9,9 +9,9 @@ const getToggle = (event, selectionMode) => {
   const modifierPressed = !!(event?.metaKey || event?.ctrlKey);
   return selectionMode === 'replace' ? modifierPressed : !modifierPressed;
 };
-// Replace mode: a plain click on a selected value deselects it, as Add mode does.
-const isReplaceDeselectClick = (event, selectionMode, isSelected) =>
-  selectionMode === 'replace' && !getToggle(event, selectionMode) && isSelected;
+// Replace mode: a plain click on the only selected value deselects it; with several selected it replaces.
+const isReplaceDeselectClick = (event, selectionMode, isSelected, selectedCount) =>
+  selectionMode === 'replace' && !getToggle(event, selectionMode) && isSelected && selectedCount === 1;
 
 export default function useSelectionsInteractions({
   selectionState,
@@ -104,7 +104,12 @@ export default function useSelectionsInteractions({
     const replaceSelectedValue =
       !additive &&
       elementIds.length === 1 &&
-      isReplaceDeselectClick(event?.nativeEvent, selectionMode, selectionState.isSelected(elementIds[0]));
+      isReplaceDeselectClick(
+        event?.nativeEvent,
+        selectionMode,
+        selectionState.isSelected(elementIds[0]),
+        selectionState.selectedCount()
+      );
     const toggle =
       !selectionState.isSingleSelect &&
       (additive || getToggle(event?.nativeEvent, selectionMode) || replaceSelectedValue);
@@ -140,7 +145,8 @@ export default function useSelectionsInteractions({
       const replaceSelectedValue = isReplaceDeselectClick(
         event.nativeEvent,
         selectionMode,
-        selectionState.isSelected(elemNumber)
+        selectionState.isSelected(elemNumber),
+        selectionState.selectedCount()
       );
       const toggle =
         !selectionState.isSingleSelect && (getToggle(event.nativeEvent, selectionMode) || replaceSelectedValue);
@@ -172,7 +178,12 @@ export default function useSelectionsInteractions({
       currentSelect.current.active = true;
       currentSelect.current.replaceSelectedCandidate =
         !selectionState.isSingleSelect &&
-        isReplaceDeselectClick(event, selectionMode, selectionState.isSelected(elemNumber));
+        isReplaceDeselectClick(
+          event,
+          selectionMode,
+          selectionState.isSelected(elemNumber),
+          selectionState.selectedCount()
+        );
 
       if (!toggle && !currentSelect.current.replaceSelectedCandidate) {
         selectionState.clearItemStates(true);

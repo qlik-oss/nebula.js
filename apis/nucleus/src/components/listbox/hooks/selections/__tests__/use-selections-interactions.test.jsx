@@ -329,6 +329,59 @@ describe('use-listbox-interactions', () => {
       expect(setPages).toHaveBeenLastCalledWith(createPageWithSingle(23, 'A'));
     });
 
+    test('"replace" mode: plain click deselects a value selected by a previous click before the engine responds', async () => {
+      await render({ selectionMode: 'replace' });
+      const { interactionEvents } = ref.current.result;
+      const clickValue = async () => {
+        await act(() => {
+          interactionEvents.onMouseDown({
+            button: 0,
+            currentTarget: { getAttribute: jest.fn().mockReturnValue(23) },
+          });
+        });
+        const [, docMouseUpListener] = global.document.addEventListener.mock.lastCall;
+        await act(() => {
+          docMouseUpListener({ button: 0 });
+        });
+      };
+
+      await clickValue();
+      await clickValue();
+
+      expect(listboxSelections.selectValues).toHaveBeenLastCalledWith({
+        selections,
+        elemNumbers: [23],
+        isSingleSelect: false,
+        toggle: true,
+      });
+    });
+
+    test('"replace" mode: plain click on one of several selected values replaces with that value', async () => {
+      updateSelectionState({
+        pages: createPageWithRange({ qElemNumber: 23, qState: 'S' }, { qElemNumber: 24, qState: 'S' }),
+      });
+      await render({ selectionMode: 'replace' });
+      const { interactionEvents } = ref.current.result;
+
+      await act(() => {
+        interactionEvents.onMouseDown({
+          button: 0,
+          currentTarget: { getAttribute: jest.fn().mockReturnValue(23) },
+        });
+      });
+      const [, docMouseUpListener] = global.document.addEventListener.mock.lastCall;
+      await act(() => {
+        docMouseUpListener({ button: 0 });
+      });
+
+      expect(listboxSelections.selectValues).toHaveBeenLastCalledWith({
+        selections,
+        elemNumbers: [23],
+        isSingleSelect: false,
+        toggle: false,
+      });
+    });
+
     test('"replace" mode: dragging from a selected value replaces with the range', async () => {
       updateSelectionState({
         pages: createPageWithRange({ qElemNumber: 23, qState: 'S' }, { qElemNumber: 24, qState: 'O' }),
