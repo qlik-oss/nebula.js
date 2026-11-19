@@ -174,7 +174,7 @@ overrides:
   minimatch@npm:^5.0.0: ^11.0.8
   minimatch@npm:^9.0.0: ^11.0.8
   minimatch@npm:^10.0.0: ^11.0.8
-  tar@npm:^7.0.0: ^7.5.22
+  tar@npm:^7.0.0: ^7.5.23
   glob@npm:^10.0.0: ^13.0.7
   glob@npm:^11.0.0: ^13.0.7
 
@@ -232,7 +232,7 @@ importers:
         version: 12.0.2(eslint@9.39.5(jiti@2.7.0)(supports-color@11.0.0))
       eslint-plugin-prettier:
         specifier: 5.5.7
-        version: 5.5.7(eslint-config-prettier@10.1.8(eslint@9.39.5(jiti@2.7.0)(supports-color@11.0.0)))(eslint@9.39.5(jiti@2.7.0)(supports-color@11.0.0))(prettier@3.9.10)
+        version: 5.5.7(eslint-config-prettier@10.1.8(eslint@9.39.5(jiti@2.7.0)(supports-color@11.0.0)))(eslint@9.39.5(jiti@2.7.0)(supports-color@11.0.0))(prettier@3.10.0)
       eslint-plugin-react:
         specifier: 7.37.5
         version: 7.37.5(eslint@9.39.5(jiti@2.7.0)(supports-color@11.0.0))
@@ -264,8 +264,8 @@ importers:
         specifier: runtime:24.22.3
         version: runtime:24.22.3
       prettier:
-        specifier: 3.9.10
-        version: 3.9.10
+        specifier: 3.10.0
+        version: 3.10.0
       whatwg-fetch:
         specifier: ^3.6.20
         version: 3.6.20
@@ -7676,8 +7676,8 @@ packages:
     resolution: {integrity: sha512-SxToR7P8Y2lWmv/kTzVLC1t/GDI2WGjMwNhLLE9qtH8Q13C+aEmuRlzDst4Up4s0Wc8sF2M+J57iB3cMLqftfg==}
     engines: {node: '>=6.0.0'}
 
-  prettier@3.9.10:
-    resolution: {integrity: sha512-skGHTH1Yb9QvaTC4hWnRTzEYtCpApF0UMBPz+t/0ZPzP8ihefo/btKd+QA7pUE0fEwA1SbS/NmhyEcstdXOIdA==}
+  prettier@3.10.0:
+    resolution: {integrity: sha512-mBi4765LgjO1PFjlEs7pUeK0nb1bw71c+N4/ItfeUWNdY5cV2pRKaFpbbFRYmDJMO+5ZwzGxHRqHxFZna7iv5w==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -15004,10 +15004,10 @@ snapshots:
       json-schema-to-ts: 3.1.1
       type-fest: 5.8.0
 
-  eslint-plugin-prettier@5.5.7(eslint-config-prettier@10.1.8(eslint@9.39.5(jiti@2.7.0)(supports-color@11.0.0)))(eslint@9.39.5(jiti@2.7.0)(supports-color@11.0.0))(prettier@3.9.10):
+  eslint-plugin-prettier@5.5.7(eslint-config-prettier@10.1.8(eslint@9.39.5(jiti@2.7.0)(supports-color@11.0.0)))(eslint@9.39.5(jiti@2.7.0)(supports-color@11.0.0))(prettier@3.10.0):
     dependencies:
       eslint: 9.39.5(jiti@2.7.0)(supports-color@11.0.0)
-      prettier: 3.9.10
+      prettier: 3.10.0
       prettier-linter-helpers: 1.0.1
       synckit: 0.12.3
     optionalDependencies:
@@ -17882,7 +17882,7 @@ snapshots:
     dependencies:
       fast-diff: 1.3.0
 
-  prettier@3.9.10: {}
+  prettier@3.10.0: {}
 
   pretty-error@4.0.0:
     dependencies:
