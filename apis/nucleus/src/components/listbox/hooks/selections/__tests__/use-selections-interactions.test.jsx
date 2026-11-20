@@ -356,6 +356,32 @@ describe('use-listbox-interactions', () => {
       });
     });
 
+    test('"replace" mode: plain click deselects when the engine reports the same selected value twice', async () => {
+      updateSelectionState({
+        pages: createPageWithRange({ qElemNumber: 23, qState: 'S' }, { qElemNumber: 23, qState: 'XS' }),
+      });
+      await render({ selectionMode: 'replace' });
+      const { interactionEvents } = ref.current.result;
+
+      await act(() => {
+        interactionEvents.onMouseDown({
+          button: 0,
+          currentTarget: { getAttribute: jest.fn().mockReturnValue(23) },
+        });
+      });
+      const [, docMouseUpListener] = global.document.addEventListener.mock.lastCall;
+      await act(() => {
+        docMouseUpListener({ button: 0 });
+      });
+
+      expect(listboxSelections.selectValues).toHaveBeenLastCalledWith({
+        selections,
+        elemNumbers: [23],
+        isSingleSelect: false,
+        toggle: true,
+      });
+    });
+
     test('"replace" mode: plain click on one of several selected values replaces with that value', async () => {
       updateSelectionState({
         pages: createPageWithRange({ qElemNumber: 23, qState: 'S' }, { qElemNumber: 24, qState: 'S' }),

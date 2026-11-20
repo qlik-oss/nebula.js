@@ -65,7 +65,8 @@ export default function selectionState(initialState = {}) {
       if (state.ignoreSelectionState) {
         return clientSelected;
       }
-      const engineOnly = state.selectedInEngine.filter((e) => !(e in state.itemStates)).length;
+      // selectedInEngine can contain duplicates
+      const engineOnly = new Set(state.selectedInEngine.filter((e) => !(e in state.itemStates))).size;
       return clientSelected + engineOnly;
     },
 
