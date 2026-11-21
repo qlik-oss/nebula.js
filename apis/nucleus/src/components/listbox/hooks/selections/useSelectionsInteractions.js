@@ -9,6 +9,9 @@ const getToggle = (event, selectionMode) => {
   const modifierPressed = !!(event?.metaKey || event?.ctrlKey);
   return selectionMode === 'replace' ? modifierPressed : !modifierPressed;
 };
+// Replace mode: a plain click on the only selected value deselects it; with several selected it replaces.
+const isReplaceDeselectClick = (event, selectionMode, isSelected, selectedCount) =>
+  selectionMode === 'replace' && !getToggle(event, selectionMode) && isSelected && selectedCount === 1;
 
 export default function useSelectionsInteractions({
   selectionState,
@@ -24,6 +27,7 @@ export default function useSelectionsInteractions({
     isRange: false,
     toggle: false,
     active: false,
+    replaceSelectedCandidate: false,
     touchElemNumbers: [],
     touchRangeSmall: false,
   });
@@ -60,6 +64,25 @@ export default function useSelectionsInteractions({
     });
   };
 
+  const resolveReplaceCandidateAsDeselect = () => {
+    currentSelect.current.replaceSelectedCandidate = false;
+    currentSelect.current.toggle = true;
+    selectionState.updateItem(currentSelect.current.startElemNumber);
+  };
+
+  const resolveReplaceCandidateAsRange = () => {
+    currentSelect.current.replaceSelectedCandidate = false;
+    selectionState.clearItemStates(true);
+    selectionState.updateItem(currentSelect.current.startElemNumber);
+  };
+
+  const finishSelection = () => {
+    if (currentSelect.current.replaceSelectedCandidate) {
+      resolveReplaceCandidateAsDeselect();
+    }
+    return doSelect();
+  };
+
   const getRange = (start, end) => {
     const elemNumbersOrdered = getElemNumbersFromPages(selectionState.enginePages);
     return fillRange([start, end], elemNumbersOrdered);
@@ -78,7 +101,18 @@ export default function useSelectionsInteractions({
     if (selectionState.selectDisabled?.()) {
       return false;
     }
-    const toggle = !selectionState.isSingleSelect && (additive || getToggle(event?.nativeEvent, selectionMode));
+    const replaceSelectedValue =
+      !additive &&
+      elementIds.length === 1 &&
+      isReplaceDeselectClick(
+        event?.nativeEvent,
+        selectionMode,
+        selectionState.isSelected(elementIds[0]),
+        selectionState.selectedCount()
+      );
+    const toggle =
+      !selectionState.isSingleSelect &&
+      (additive || getToggle(event?.nativeEvent, selectionMode) || replaceSelectedValue);
     if (!toggle) {
       selectionState.clearItemStates(true);
     }
@@ -108,7 +142,14 @@ export default function useSelectionsInteractions({
         return;
       }
       const elemNumber = +event.target.getAttribute('data-n');
-      const toggle = !selectionState.isSingleSelect && getToggle(event.nativeEvent, selectionMode);
+      const replaceSelectedValue = isReplaceDeselectClick(
+        event.nativeEvent,
+        selectionMode,
+        selectionState.isSelected(elemNumber),
+        selectionState.selectedCount()
+      );
+      const toggle =
+        !selectionState.isSingleSelect && (getToggle(event.nativeEvent, selectionMode) || replaceSelectedValue);
       currentSelect.current.elemNumbers = [elemNumber];
       currentSelect.current.toggle = toggle;
 
@@ -135,11 +176,21 @@ export default function useSelectionsInteractions({
       currentSelect.current.elemNumbers = [elemNumber];
       currentSelect.current.toggle = toggle;
       currentSelect.current.active = true;
+      currentSelect.current.replaceSelectedCandidate =
+        !selectionState.isSingleSelect &&
+        isReplaceDeselectClick(
+          event,
+          selectionMode,
+          selectionState.isSelected(elemNumber),
+          selectionState.selectedCount()
+        );
 
-      if (!toggle) {
+      if (!toggle && !currentSelect.current.replaceSelectedCandidate) {
         selectionState.clearItemStates(true);
       }
-      selectionState.updateItem(elemNumber);
+      if (!currentSelect.current.replaceSelectedCandidate) {
+        selectionState.updateItem(elemNumber);
+      }
 
       if (selectionState.isSingleSelect) {
         currentSelect.current.active = false;
@@ -160,7 +211,7 @@ export default function useSelectionsInteractions({
       const elemNumber = +event.currentTarget.getAttribute('data-n');
       addToRange(elemNumber);
     }
-    doSelect();
+    finishSelection();
   }, []);
 
   const onMouseUpDoc = useCallback((event) => {
@@ -169,7 +220,7 @@ export default function useSelectionsInteractions({
       return;
     }
     currentSelect.current.active = false;
-    doSelect();
+    finishSelection();
   }, []);
 
   const onMouseEnter = useCallback((event) => {
@@ -178,9 +229,15 @@ export default function useSelectionsInteractions({
     }
     if (!currentSelect.current.isRange) {
       currentSelect.current.isRange = true;
-      if (!selectionState.isSelected(currentSelect.current.startElemNumber)) {
-        selectionState.updateItem(currentSelect.current.startElemNumber, true);
-        currentSelect.current.elemNumbers = [];
+      const { replaceSelectedCandidate, startElemNumber } = currentSelect.current;
+      if (replaceSelectedCandidate) {
+        resolveReplaceCandidateAsRange();
+      }
+      if (!selectionState.isSelected(startElemNumber)) {
+        selectionState.updateItem(startElemNumber, true);
+        if (!replaceSelectedCandidate) {
+          currentSelect.current.elemNumbers = [];
+        }
       }
     }
     const elemNumber = +event.currentTarget.getAttribute('data-n');

@@ -60,6 +60,16 @@ export default function selectionState(initialState = {}) {
       return state.selectedInEngine.includes(elementNumber);
     },
 
+    selectedCount() {
+      const clientSelected = Object.keys(state.itemStates).filter((e) => state.itemStates[e]).length;
+      if (state.ignoreSelectionState) {
+        return clientSelected;
+      }
+      // selectedInEngine can contain duplicates
+      const engineOnly = new Set(state.selectedInEngine.filter((e) => !(e in state.itemStates))).size;
+      return clientSelected + engineOnly;
+    },
+
     getState(item) {
       const { qElemNumber, qState } = item;
       if (!state.useClientItemState(qElemNumber)) {
