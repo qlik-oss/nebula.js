@@ -318,8 +318,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/ui
       '@qlik/api':
-        specifier: 2.25.0
-        version: 2.25.0
+        specifier: 2.26.0
+        version: 2.26.0
       '@qlik/chart-modules':
         specifier: 1.11.0
         version: 1.11.0(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.1)(supports-color@11.0.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.1)(supports-color@11.0.0))(@types/react@19.3.0)(react@19.3.1)(supports-color@11.0.0))(@mui/material@7.3.11(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.1)(supports-color@11.0.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.1)(supports-color@11.0.0))(@types/react@19.3.0)(react@19.3.1)(supports-color@11.0.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
@@ -414,8 +414,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/ui
       '@qlik/api':
-        specifier: 2.25.0
-        version: 2.25.0
+        specifier: 2.26.0
+        version: 2.26.0
       '@rollup/plugin-babel':
         specifier: 7.1.0
         version: 7.1.0(@babel/core@7.29.13(supports-color@11.0.0))(@types/babel__core@7.20.5)(rollup@4.68.3)(supports-color@11.0.0)
@@ -719,8 +719,8 @@ importers:
         specifier: workspace:*
         version: link:../build
       '@qlik/api':
-        specifier: 2.25.0
-        version: 2.25.0
+        specifier: 2.26.0
+        version: 2.26.0
       body-parser:
         specifier: 2.4.0
         version: 2.4.0(supports-color@11.0.0)
@@ -3124,8 +3124,8 @@ packages:
     resolution: {integrity: sha512-NzGsmfwiSAHOhd7GsCcdi67y2FLl1oODGfrLt74oPm8qXxPULOiZxJVbovBCkvXvbniEkqkoXWznL8vbvYJB7g==}
     engines: {node: '>=20.0.0'}
 
-  '@qlik/api@2.25.0':
-    resolution: {integrity: sha512-Ixui3E7wbbXasqSf2LxpIVcWTYmowyUC2g45xJRX7Pi/4r7qHiuKoXxkVcjBFaAhqYR8+VWNnCyGQox19fV3uw==}
+  '@qlik/api@2.26.0':
+    resolution: {integrity: sha512-AKS6LWXYL3W+pXQcSsYn6Rd3vRwzAg4TL/ImmUURH5GOU+IKguRF1aPBZKrSBXD3cJYHHJ38ZNoHqTscZC92tA==}
     engines: {node: '>=20.0.0'}
 
   '@qlik/browserslist-config@3.1.0':
@@ -12808,7 +12808,7 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@qlik/api@2.25.0':
+  '@qlik/api@2.26.0':
     dependencies:
       enigma.js: 2.15.0
       extend: 3.0.2
