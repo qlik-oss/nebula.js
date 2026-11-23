@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.10.0](https://github.com/qlik-oss/nebula.js/compare/v7.9.0...v7.10.0) (2026-11-23)
+
+### Bug Fixes
+
+- **deps:** update dependency @qlik/api to v2.21.0 ([#2400](https://github.com/qlik-oss/nebula.js/issues/2400)) ([47c5169](https://github.com/qlik-oss/nebula.js/commit/47c5169d1057b24ce6f66471f259ca91f6ae037d))
+- **deps:** update dependency @qlik/api to v2.22.0 ([#2452](https://github.com/qlik-oss/nebula.js/issues/2452)) ([8043baf](https://github.com/qlik-oss/nebula.js/commit/8043baf0e2c88f99937c8ee1a6f4021a7cfc2dbe))
+- **deps:** update dependency @qlik/api to v2.23.0 ([#2470](https://github.com/qlik-oss/nebula.js/issues/2470)) ([49ce46f](https://github.com/qlik-oss/nebula.js/commit/49ce46f0dd2738ef7f54357122d35d56eb06a898))
+- **deps:** update dependency @qlik/api to v2.24.0 ([#2478](https://github.com/qlik-oss/nebula.js/issues/2478)) ([3b6dffb](https://github.com/qlik-oss/nebula.js/commit/3b6dffb6def860a3b741d5eee8efab2e38cd1116))
+- **deps:** update dependency @qlik/api to v2.25.0 ([#2482](https://github.com/qlik-oss/nebula.js/issues/2482)) ([94c1c15](https://github.com/qlik-oss/nebula.js/commit/94c1c155c186f6e1721a37d19c538a42eb9576ba))
+- **deps:** update dependency rollup to v4.65.1 ([#2380](https://github.com/qlik-oss/nebula.js/issues/2380)) ([12525cc](https://github.com/qlik-oss/nebula.js/commit/12525cc82288d8d15605ffd5e8c2205213e48c21))
+- **deps:** update dependency rollup to v4.66.0 ([#2402](https://github.com/qlik-oss/nebula.js/issues/2402)) ([545c18e](https://github.com/qlik-oss/nebula.js/commit/545c18e6b3d562490a51fe8771bdbc2b2754a9d0))
+- **deps:** update dependency rollup to v4.67.2 ([#2420](https://github.com/qlik-oss/nebula.js/issues/2420)) ([8d9ddb5](https://github.com/qlik-oss/nebula.js/commit/8d9ddb5637468acf555d97be3487334bf0b74ebc))
+- **deps:** update dependency rollup to v4.67.3 ([#2423](https://github.com/qlik-oss/nebula.js/issues/2423)) ([47fcc21](https://github.com/qlik-oss/nebula.js/commit/47fcc218c1dfd5dd8e4f971fb66a1746c28d245c))
+- **deps:** update dependency rollup to v4.67.4 ([#2424](https://github.com/qlik-oss/nebula.js/issues/2424)) ([5917cb7](https://github.com/qlik-oss/nebula.js/commit/5917cb719cca128e7e2bb42033a6c26fac81586e))
+- **deps:** update dependency rollup to v4.67.5 ([#2449](https://github.com/qlik-oss/nebula.js/issues/2449)) ([a7aae14](https://github.com/qlik-oss/nebula.js/commit/a7aae141b7362a20afd7d4aa1ce2537d38a75b61))
+- **deps:** update dependency rollup to v4.68.0 ([#2471](https://github.com/qlik-oss/nebula.js/issues/2471)) ([d23ed6a](https://github.com/qlik-oss/nebula.js/commit/d23ed6ae993b42d0724502956b568d65d48e583b))
+- **deps:** update dependency rollup to v4.68.2 ([#2475](https://github.com/qlik-oss/nebula.js/issues/2475)) ([f17e925](https://github.com/qlik-oss/nebula.js/commit/f17e925e3c1dd8b5b93541e615c72f6007e3668c))
+- **deps:** update dependency rollup to v4.68.3 ([#2491](https://github.com/qlik-oss/nebula.js/issues/2491)) ([ce96a86](https://github.com/qlik-oss/nebula.js/commit/ce96a8673b15255ec8a0f0fa04139866302c5bec))
+
 # [7.9.0](https://github.com/qlik-oss/nebula.js/compare/v7.8.0...v7.9.0) (2026-10-30)
 
 ### Bug Fixes

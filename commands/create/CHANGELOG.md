@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.10.0](https://github.com/qlik-oss/nebula.js/compare/v7.9.0...v7.10.0) (2026-11-23)
+
+### Bug Fixes
+
+- **deps:** update dependency @inquirer/prompts to v8.7.5 ([#2385](https://github.com/qlik-oss/nebula.js/issues/2385)) ([ee00e8a](https://github.com/qlik-oss/nebula.js/commit/ee00e8a1cbb913f5ac5fbe62340ac1162626d09c))
+- **deps:** update dependency @inquirer/prompts to v8.8.0 ([#2480](https://github.com/qlik-oss/nebula.js/issues/2480)) ([c1a2d54](https://github.com/qlik-oss/nebula.js/commit/c1a2d5464be78704bbf87d8d1b03bbdb3c2aaa66))
+
 # [7.9.0](https://github.com/qlik-oss/nebula.js/compare/v7.8.0...v7.9.0) (2026-10-30)
 
 ### Bug Fixes
