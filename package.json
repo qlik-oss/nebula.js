@@ -74,15 +74,15 @@
     "react-dom": "19.3.1",
     "react-is": "19.3.1",
     "@playwright/test": "^1.65.1",
-    "minimatch@npm:^3.0.0": "^11.0.9",
-    "minimatch@npm:^5.0.0": "^11.0.9",
-    "minimatch@npm:^9.0.0": "^11.0.9",
-    "minimatch@npm:^10.0.0": "^11.0.9",
-    "tar@npm:^7.0.0": "^7.5.23",
-    "glob@npm:^10.0.0": "^14.0.6",
-    "glob@npm:^11.0.0": "^14.0.6"
+    "minimatch@^3.0.0": "^3.1.5",
+    "minimatch@^5.0.0": "^5.1.9",
+    "minimatch@^9.0.0": "^11.0.9",
+    "minimatch@^10.0.0": "^11.0.9",
+    "tar@^7.0.0": "^7.5.23",
+    "glob@^10.0.0": "^14.0.6",
+    "glob@^11.0.0": "^14.0.6"
   },
-  "packageManager": "pnpm@12.16.1",
+  "packageManager": "pnpm@12.21.0",
   "devEngines": {
     "runtime": {
       "name": "node",
