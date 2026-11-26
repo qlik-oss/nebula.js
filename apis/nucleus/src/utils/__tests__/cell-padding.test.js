@@ -172,7 +172,7 @@ describe('cell padding', () => {
       subtitle: 'X',
     });
     expect(bodyPadding).toBeUndefined();
-    expect(titleStyles.main.padding).toBe('10px 0 0');
-    expect(titleStyles.subTitle.padding).toBe('0');
+    expect(titleStyles.main.padding).toBe('10px 10px 0');
+    expect(titleStyles.subTitle.padding).toBe('0 10px');
   });
 });
