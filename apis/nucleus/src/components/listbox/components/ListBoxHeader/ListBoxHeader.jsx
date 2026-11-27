@@ -164,10 +164,11 @@ export default function ListBoxHeader({
   ) : (
     <IconButton
       onClick={onShowSearch}
-      tabIndex={-1}
       title={translator.get('Listbox.Search')}
+      aria-label={translator.get('Listbox.Search')}
       size="large"
       disableRipple
+      tabIndex={keyboard?.innerTabStops ? 0 : -1}
       data-testid="search-toggle-btn"
     >
       <SearchIcon style={iconStyle} />
