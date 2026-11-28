@@ -26,7 +26,7 @@ overrides:
   'react-is': '19.3.1'
   '@playwright/test': '^1.65.1'
   'minimatch@^3.0.0': '^3.1.5'
-  'minimatch@^5.0.0': '^5.1.9'
+  'minimatch@^5.0.0': '^11.0.9'
   'minimatch@^9.0.0': '^11.0.9'
   'minimatch@^10.0.0': '^11.0.9'
   'tar@^7.0.0': '^7.5.23'
